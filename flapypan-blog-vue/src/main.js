@@ -30,8 +30,7 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: colors.blue.lighten1,
-          secondary: colors.green.lighten1,
+          primary: colors.green.lighten1,
         },
       },
     },

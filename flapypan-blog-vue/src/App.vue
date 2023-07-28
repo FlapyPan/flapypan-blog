@@ -44,5 +44,18 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
   --md-bk-color: rgb(var(--v-theme-background)) !important;
 }
 
+.md-editor .default-theme {
+  --md-theme-link-color: rgb(var(--v-theme-primary)) !important;
+  --md-theme-link-hover-color: rgb(var(--v-theme-primary)) !important;
+}
+
+.md-editor .default-theme a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.md-editor .default-theme blockquote {
+  border-left: 5px solid rgb(var(--v-theme-primary)) !important;
+}
 
 </style>

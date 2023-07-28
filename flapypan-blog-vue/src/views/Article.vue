@@ -47,8 +47,10 @@ watch(path, () => {
 /// endregion 文章数据
 
 /// 格式化时间
-const createDate = useDateFormat(articleData.value?.createDate, 'YYYY-MM-DD HH:mm:ss')
-const updateDate = useDateFormat(articleData.value?.updateDate, 'YYYY-MM-DD HH:mm:ss')
+const createDate = computed(() => articleData.value?.createDate)
+const formattedCreateDate = useDateFormat(createDate, 'YYYY-MM-DD HH:mm:ss')
+const updateDate = computed(() => articleData.value?.updateDate)
+const formattedUpdateDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm:ss')
 
 /// region 文章删除
 const deleteDialog = ref(false)
@@ -118,38 +120,24 @@ useTitle(title)
             <v-card-title>{{ articleData?.title }}</v-card-title>
           </v-img>
           <div class="mt-4 mx-2 d-flex flex-wrap">
-            <v-chip class="ml-2" color="secondary" v-for="tag in articleData?.tags || []"
+            <v-chip class="ml-2" color="primary" v-for="tag in articleData?.tags || []"
                     :to="`/tag/${tag.name}`">
               {{ tag.name }}
             </v-chip>
           </div>
-          <v-card-actions v-show="articleData" class="d-flex flex-wrap">
-            <p class="mx-2">创建时间: {{ createDate }}</p>
-            <p class="mx-2">修改时间: {{ updateDate }}</p>
+          <v-card-actions v-show="articleData?.title" class="d-flex flex-wrap">
+            <p class="mx-2">创建时间: {{ formattedCreateDate }}</p>
+            <p class="mx-2">修改时间: {{ formattedUpdateDate }}</p>
             <v-spacer></v-spacer>
             <v-menu v-if="settingStore.isLogin">
               <template v-slot:activator="{ props }">
                 <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
               </template>
               <v-list elevation="2" density="compact">
-                <v-list-item @click="openEdit">
-                  <template #prepend>
-                    <v-icon class="mr-3" color="primary">mdi-pencil</v-icon>
-                  </template>
-                  <template #title>
-                    <span class="text-primary">编辑</span>
-                  </template>
-                </v-list-item>
+                <v-list-item @click="openEdit" title="编辑"></v-list-item>
                 <v-dialog v-model="deleteDialog" width="auto">
                   <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props">
-                      <template #prepend>
-                        <v-icon class="mr-3" color="red-lighten-1">mdi-delete</v-icon>
-                      </template>
-                      <template #title>
-                        <span class="text-red-lighten-2">删除</span>
-                      </template>
-                    </v-list-item>
+                    <v-list-item v-bind="props" title="删除"></v-list-item>
                   </template>
                   <v-card>
                     <v-card-text>

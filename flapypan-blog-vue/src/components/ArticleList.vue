@@ -19,19 +19,28 @@ const formatDate = (s) => {
   <v-list rounded="xl">
     <template v-for="{year,list} in articleList ?? []" :key="year">
       <v-list-item><h3 class="ml-3 mt-4">{{ year }}</h3></v-list-item>
-      <v-list-item class="ma-3" rounded="xl" v-for="{title,createDate,path,tags} in list" :to="`/${path}`"
+      <v-list-item class="ma-3 py-3" rounded="xl" v-for="{title,createDate,path,tags} in list" :to="`/${path}`"
                    @click="emits('onRoute')">
         <template #title>
-          <div class="d-flex align-center flex-wrap">
-            <span class="mr-2">{{ title }}</span>
-            <div class="d-flex align-center flex-wrap">
-              <v-chip class="mr-1" size="small" color="secondary" v-for="tag in tags || []" :to="`/tag/${tag.name}`">
-                {{ tag.name }}
-              </v-chip>
-            </div>
+          <v-row dense>
+            <v-col cols="12" sm="10">
+              <v-row dense>
+                <v-col cols="12" lg="4"><span class="mr-2">{{ title }}</span></v-col>
+                <v-col align-self="stretch">
+                  <div class="d-flex align-center">
+                    <v-chip class="mr-1" size="small" color="primary" v-for="tag in tags || []"
+                            :to="`/tag/${tag.name}`">
+                      {{ tag.name }}
+                    </v-chip>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-col>
             <v-spacer></v-spacer>
-            <span>{{ formatDate(createDate) }}</span>
-          </div>
+            <v-col>
+              <span>{{ formatDate(createDate) }}</span>
+            </v-col>
+          </v-row>
         </template>
       </v-list-item>
     </template>

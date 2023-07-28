@@ -1,6 +1,7 @@
 <script setup>
 import { useDateFormat } from '@vueuse/core'
 import { useSettingStore } from '@/store/setting'
+import { computed } from 'vue'
 
 const props = defineProps({
   article: {},
@@ -9,7 +10,8 @@ const emits = defineEmits(['onRoute'])
 
 const settingStore = useSettingStore()
 
-const formattedDate = useDateFormat(props.article.updateDate, 'YYYY-MM-DD HH:mm')
+const updateDate = computed(() => props.article.updateDate)
+const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
 
 </script>
 
@@ -34,7 +36,7 @@ const formattedDate = useDateFormat(props.article.updateDate, 'YYYY-MM-DD HH:mm'
           <div class="d-flex align-center flex-wrap">
             <v-icon class="text-grey-darken-1 text-body-2">mdi-tag</v-icon>
             <v-card-subtitle class="mx-1">标签:</v-card-subtitle>
-            <v-chip class="mr-1" size="small" color="green" v-for="tag in article.tags || []" :to="`/tag/${tag.name}`">
+            <v-chip class="mr-1" size="small" color="primary" v-for="tag in article.tags || []" :to="`/tag/${tag.name}`">
               {{ tag.name }}
             </v-chip>
             <v-card-subtitle v-if="article.tags?.length===0" class="mx-1">null</v-card-subtitle>

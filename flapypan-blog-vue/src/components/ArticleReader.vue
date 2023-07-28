@@ -19,7 +19,7 @@ const catalogDrawer = ref(!mobile.value)
 
 <template>
   <v-container class="markdown px-0">
-    <MdPreview editor-id="read" :modelValue="data?.content ?? ''" codeTheme="github"
+    <MdPreview editor-id="read" :modelValue="data?.content ?? ''" preview-theme="default" codeTheme="gradient"
                :theme="themeStore.isDark?'dark':'light'" />
 
     <v-navigation-drawer v-if="data" v-model="catalogDrawer" location="right">

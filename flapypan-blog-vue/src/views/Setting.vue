@@ -88,7 +88,7 @@ useTitle(title)
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-alert color="secondary" text="注意：只有点击对应的保存按钮后才会保存至服务器" type="info"
+        <v-alert color="primary" text="注意：只有点击对应的保存按钮后才会保存至服务器" type="info"
                  variant="tonal"></v-alert>
       </v-col>
       <v-col cols="12">
@@ -151,16 +151,17 @@ useTitle(title)
         <v-list rounded="xl">
           <v-list-item class="ma-3" rounded="xl" v-for="article in articleData?.content ?? []"
                        @click="addPath(article)">
-            <template #title>
+            <template #prepend>
               <div class="d-flex align-center">
-                <span>{{ article.title }}</span>
-                <v-chip class="ml-2" size="small" color="green" v-for="tag in article.tags || []">
-                  {{ tag.name }}
-                </v-chip>
+                <span class="mr-2">{{ article.title }}</span>
+                  <v-chip class="mr-1" size="small" color="primary" v-for="tag in article.tags || []"
+                          :to="`/tag/${tag.name}`">
+                    {{ tag.name }}
+                  </v-chip>
               </div>
             </template>
             <template #append>
-              {{ formatDate(article.createDate) }}
+              <span>{{ formatDate(article.createDate) }}</span>
             </template>
           </v-list-item>
         </v-list>

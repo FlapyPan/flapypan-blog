@@ -78,7 +78,7 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
       标签
       <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false">
         <template v-slot:activator="{ props }">
-          <v-btn class="ml-2" v-bind="props" icon="mdi-plus" size="small" variant="text"></v-btn>
+          <v-btn class="ml-2" v-bind="props" icon="mdi-plus" size="small" variant="text" color="primary"></v-btn>
         </template>
 
         <v-card class="ma-2 pt-2" min-width="300" elevation="2">
@@ -90,7 +90,7 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
           </v-card-item>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" variant="text" :loading="addingTag" :disabled="newTagName.trim()===''"
+            <v-btn variant="text" :loading="addingTag" :disabled="newTagName.trim()===''"
                    @click="addTag">
               保存
             </v-btn>
@@ -103,7 +103,7 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
     <div class="flex-wrap d-flex mb-2">
       <template v-for="({name,count},i) in tagList" :key="name">
         <v-divider v-if="i!==0&&i%20===0" class="my-4" color="info"></v-divider>
-        <v-btn class="mx-1 my-2" size="small" color="secondary" prepend-icon="mdi-tag"
+        <v-btn class="mx-1 my-2 text-none" size="small" color="primary" prepend-icon="mdi-tag"
                variant="tonal" @click:close="" :to="`/tag/${name}`">
           {{ name }} ({{ count }})
         </v-btn>

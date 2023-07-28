@@ -97,7 +97,7 @@ const saveArticle = async () => {
   <div>
     <v-form>
       <v-container>
-        <v-alert color="secondary" type="info" variant="tonal" class="mb-4"
+        <v-alert color="primary" type="info" variant="tonal" class="mb-4"
                  text="编辑的内容会在本机自动保存，编辑完成后点击最下方发布按钮发布"></v-alert>
         <v-row dense>
           <v-col cols="6">
@@ -117,8 +117,8 @@ const saveArticle = async () => {
         </v-row>
       </v-container>
     </v-form>
-    <MdEditor editor-id="edit" v-model="draft.content" codeTheme="github" @onUploadImg="onUploadImg"
-              :theme="themeStore.isDark?'dark':'light'" />
+    <MdEditor editor-id="edit" v-model="draft.content" @onUploadImg="onUploadImg"
+              preview-theme="default" codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" />
     <v-row class="mt-4">
       <v-col cols="12" class="px-12">
         <v-alert v-show="saveError" rounded="lg" :text="saveError" type="error"></v-alert>

@@ -158,9 +158,9 @@ useFavicon(favicon)
           </router-link>
         </v-app-bar-title>
         <div class="d-none d-sm-flex">
-          <v-btn rounded="lg" variant="text" to="/" :active="false">主页</v-btn>
-          <v-btn rounded="lg" variant="text" to="/archive">归档</v-btn>
-          <v-btn rounded="lg" v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url">
+          <v-btn class="text-none" rounded="lg" variant="text" to="/" :active="false">主页</v-btn>
+          <v-btn class="text-none" rounded="lg" variant="text" to="/archive">归档</v-btn>
+          <v-btn class="text-none" rounded="lg" v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url">
             {{ name }}
           </v-btn>
         </div>

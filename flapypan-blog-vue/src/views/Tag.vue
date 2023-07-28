@@ -101,9 +101,10 @@ useTitle(title)
   <v-container>
     <h2 class="my-6 d-flex align-center">
       {{ tagData?.name }}
-      <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false">
+      <v-menu v-if="settingStore.isLogin && !fetchArticleError" v-model="tagEditor" location="end"
+              :close-on-content-click="false">
         <template v-slot:activator="{ props }">
-          <v-btn class="ml-2" v-bind="props" icon="mdi-pencil" size="small" variant="text"></v-btn>
+          <v-btn class="ml-2" v-bind="props" icon="mdi-pencil" size="small" variant="text" color="primary"></v-btn>
         </template>
 
         <v-card class="ma-2 pt-2" min-width="300" elevation="2">
@@ -138,7 +139,7 @@ useTitle(title)
               </v-card>
             </v-dialog>
 
-            <v-btn color="primary" variant="text" :disabled="editTagName.trim()===''" @click="updateTag"
+            <v-btn variant="text" :disabled="editTagName.trim()===''" @click="updateTag"
                    :loading="isUpdatingTag">
               保存
             </v-btn>
