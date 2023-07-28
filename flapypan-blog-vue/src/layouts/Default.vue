@@ -160,7 +160,8 @@ useFavicon(favicon)
         <div class="d-none d-sm-flex">
           <v-btn class="text-none" rounded="lg" variant="text" to="/" :active="false">主页</v-btn>
           <v-btn class="text-none" rounded="lg" variant="text" to="/archive">归档</v-btn>
-          <v-btn class="text-none" rounded="lg" v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url">
+          <v-btn class="text-none" rounded="lg" v-for="{name,url} in settingStore.links ?? []" variant="text"
+                 :key="name" :to="`/${url}`">
             {{ name }}
           </v-btn>
         </div>
@@ -172,7 +173,7 @@ useFavicon(favicon)
             <v-list elevation="3">
               <v-list-item to="/" title="主页" :active="false"></v-list-item>
               <v-list-item to="/archive" title="归档"></v-list-item>
-              <v-list-item v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url"
+              <v-list-item v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="`/${url}`"
                            :title="name"></v-list-item>
             </v-list>
           </v-menu>
