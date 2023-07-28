@@ -10,7 +10,7 @@
     </parent>
     <groupId>top.flapypan</groupId>
     <artifactId>flapypan-blog-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>flapypan-blog-api</name>
     <description>flapypan-blog-api</description>
     <properties>

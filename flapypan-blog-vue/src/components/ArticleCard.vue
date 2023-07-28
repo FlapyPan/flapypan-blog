@@ -31,10 +31,10 @@ const formattedDate = useDateFormat(props.article.updateDate, 'YYYY-MM-DD HH:mm'
 
         <v-card-item>
 
-          <div class="d-flex align-center">
+          <div class="d-flex align-center flex-wrap">
             <v-icon class="text-grey-darken-1 text-body-2">mdi-tag</v-icon>
             <v-card-subtitle class="mx-1">标签:</v-card-subtitle>
-            <v-chip class="mr-2" size="small" color="green" v-for="tag in article.tags || []" :to="`/tag/${tag.name}`">
+            <v-chip class="mr-1" size="small" color="green" v-for="tag in article.tags || []" :to="`/tag/${tag.name}`">
               {{ tag.name }}
             </v-chip>
             <v-card-subtitle v-if="article.tags?.length===0" class="mx-1">null</v-card-subtitle>

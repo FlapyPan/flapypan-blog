@@ -117,10 +117,15 @@ useTitle(title)
             </template>
             <v-card-title>{{ articleData?.title }}</v-card-title>
           </v-img>
-
+          <div class="mt-4 mx-2 d-flex flex-wrap">
+            <v-chip class="ml-2" color="secondary" v-for="tag in articleData?.tags || []"
+                    :to="`/tag/${tag.name}`">
+              {{ tag.name }}
+            </v-chip>
+          </div>
           <v-card-actions v-show="articleData" class="d-flex flex-wrap">
-            <p class="mx-2">创建: {{ createDate }}</p>
-            <p class="mx-2">最后修改: {{ updateDate }}</p>
+            <p class="mx-2">创建时间: {{ createDate }}</p>
+            <p class="mx-2">修改时间: {{ updateDate }}</p>
             <v-spacer></v-spacer>
             <v-menu v-if="settingStore.isLogin">
               <template v-slot:activator="{ props }">

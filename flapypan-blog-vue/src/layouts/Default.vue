@@ -152,14 +152,14 @@ useFavicon(favicon)
 
     <v-app-bar class="app-bar align-center" rounded="b-lg" elevation="0" border="b" density="comfortable">
       <template #prepend>
-        <v-app-bar-title class="rounded mr-2" v-ripple>
+        <v-app-bar-title class="rounded mr-2 d-none d-sm-flex" v-ripple>
           <router-link to="/" class="pa-2 text-decoration-none text-high-emphasis">
             {{ settingStore.settings?.siteTitle }}
           </router-link>
         </v-app-bar-title>
         <div class="d-none d-sm-flex">
           <v-btn rounded="lg" variant="text" to="/" :active="false">主页</v-btn>
-          <v-btn rounded="lg" variant="text" to="/archive" :active="false">归档</v-btn>
+          <v-btn rounded="lg" variant="text" to="/archive">归档</v-btn>
           <v-btn rounded="lg" v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url">
             {{ name }}
           </v-btn>
@@ -170,9 +170,10 @@ useFavicon(favicon)
               <v-btn icon="mdi-menu" v-bind="props"></v-btn>
             </template>
             <v-list elevation="3">
-              <v-list-item to="/archive" title="归档" :active="false"></v-list-item>
+              <v-list-item to="/" title="主页" :active="false"></v-list-item>
+              <v-list-item to="/archive" title="归档"></v-list-item>
               <v-list-item v-for="{name,url} in settingStore.links ?? []" variant="text" :key="name" :to="url"
-                           title="归档" :active="false"></v-list-item>
+                           :title="name"></v-list-item>
             </v-list>
           </v-menu>
         </div>
