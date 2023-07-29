@@ -37,16 +37,6 @@ spring:
 logging:
   level:
     root: info
-# spring doc 配置
-springdoc:
-  api-docs:
-    enabled: true
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui
-    persist-authorization: true
-  default-consumes-media-type: application/json
-  writer-with-order-by-keys: true
 # SaToken的配置
 sa-token:
   # token名称，也就是cookie的名称

@@ -1,6 +1,6 @@
 # FlapyPan Blog
 
-一款简单高效的博客系统，基于 SpringBoot 3.0 和 Vue 3 开发
+一款简单高效的博客系统，基于 SpringBoot 3 和 Vue 3 开发
 
 **功能列表**
 
@@ -15,6 +15,21 @@
 - 支持 Postgresql、MySQL、H2(默认)数据库
 - 其他自定义设置功能
 
+**技术栈**
+
+- Kotlin
+- Spring Boot 3.x
+- Spring Data JPA
+- Spring Validation
+- SaToken
+- Postgres、MySQL、H2
+- Vue 3.x
+- Vite
+- Vuetify
+- Pinia
+- Vue Router
+- Vueuse
+
 ## 启动方法
 
 ### 编译
@@ -22,7 +37,7 @@
 **前置要求**
 
 - `jdk` (version >= 17)
-- `maven` (version >= 3.8)
+- `gradle` (version >= 8 非必须)
 - `node.js` (version >= 18)
 - `pnpm` (version >= 6)
 
@@ -37,11 +52,12 @@ cd flapypan-blog
 
 #### 编译后端 api
 
-在`target`目录下可以找到编译好的 jar 包
+在`build/libs`目录下可以找到编译好的 jar 包
 
 ```shell
 cd flapypan-blog-api # 进入目录
-mvn install && mvn package # 编译 jar
+# 如果没有 gradle 可以使用 .\gradlew bootJar，将自动下载 gradle
+gradle bootJar # 编译 jar
 ```
 
 #### 编译前端页面
