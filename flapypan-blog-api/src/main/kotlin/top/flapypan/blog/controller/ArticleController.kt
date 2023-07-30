@@ -59,10 +59,10 @@ class ArticleController(
 
 data class ArticleAddRequest(
 
-    @field:Size(min = 3, max = 32, message = "标题长度应在3-32之间")
+    @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
     val title: String,
 
-    @field:Size(min = 3, max = 64, message = "路径长度应在3-32之间")
+    @field:Size(min = 3, max = 64, message = "路径长度应在3-64之间")
     @field:Pattern(regexp = "^[a-z0-9:@._-]+$", message = "路径只允许小写字母,数字,冒号,@,英文点,下划线,分隔符")
     val path: String,
 
@@ -90,10 +90,10 @@ data class ArticleUpdateRequest(
     @field:Positive
     val id: Long,
 
-    @field:Size(min = 2, max = 16, message = "标题长度应在2-16之间")
+    @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
     val title: String,
 
-    @field:Size(min = 3, max = 32, message = "路径长度应在3-32之间")
+    @field:Size(min = 3, max = 64, message = "路径长度应在3-64之间")
     @field:Pattern(
         regexp = "^[a-z0-9:@._-]+$",
         message = "路径只允许小写字母,数字,冒号,@,英文点,下划线,分隔符"
