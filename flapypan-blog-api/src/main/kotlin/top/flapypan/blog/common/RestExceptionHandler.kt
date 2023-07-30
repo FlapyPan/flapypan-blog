@@ -22,8 +22,8 @@ class RestExceptionHandler {
      */
     @ExceptionHandler(SaTokenException::class)
     @ResponseStatus(HttpStatus.OK)
-    fun handleSaTokenException(e: SaTokenException?): RestResult<Nothing?> {
-        return failure(HttpStatus.UNAUTHORIZED.value())
+    fun handleSaTokenException(e: SaTokenException?): RestResult<String?> {
+        return "请登录".restErr(HttpStatus.UNAUTHORIZED.value())
     }
 
     /**
@@ -35,7 +35,7 @@ class RestExceptionHandler {
         val objectError = e.bindingResult.allErrors[0]
         val message = objectError.defaultMessage
         log.warn("字段错误 $message")
-        return failure(HttpStatus.BAD_REQUEST.value(), message)
+        return message.restErr(HttpStatus.BAD_REQUEST.value())
     }
 
     /**
@@ -45,13 +45,13 @@ class RestExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     fun handleRestException(e: RestException): RestResult<String?> {
         log.error("业务错误", e)
-        return failure(e.code, e.message)
+        return e.message.restErr(e.code)
     }
 
     @ExceptionHandler(ServletException::class)
     @ResponseStatus(HttpStatus.OK)
     fun handleServletException(e: ServletException): RestResult<String?> {
-        return failure(HttpStatus.BAD_REQUEST.value(), e.message)
+        return e.message.restErr(HttpStatus.BAD_REQUEST.value())
     }
 
     /**
@@ -59,9 +59,9 @@ class RestExceptionHandler {
      */
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.OK)
-    fun handleException(e: Exception?): RestResult<Nothing?> {
+    fun handleException(e: Exception?): RestResult<String?> {
         log.error("服务器内部错误", e)
-        return failure(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        return "服务器内部错误".restErr()
     }
 
 }

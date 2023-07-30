@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.util.StringUtils
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.RestResult
-import top.flapypan.blog.common.success
+import top.flapypan.blog.common.restOk
 import top.flapypan.blog.dto.ArticleSimpleDTO
 import top.flapypan.blog.entity.Article
 import top.flapypan.blog.service.ArticleService
@@ -24,37 +23,31 @@ class ArticleController(
     @SaIgnore
     @GetMapping
     fun getPage(keyword: String?, pageable: Pageable) =
-        success(
-            if (keyword?.isNotBlank() == true) {
-                articleService.searchByKeyword(keyword, pageable)
-            } else {
-                articleService.getPage(pageable)
-            }
-        )
+        (keyword?.takeIf(String::isNotBlank)?.let {
+            articleService.searchByKeyword(it, pageable)
+        } ?: articleService.getPage(pageable)).restOk()
 
     @GetMapping("/group-by/year")
     @SaIgnore
-    fun getGroupByYear(): RestResult<List<ArticleGroupByYear>> =
-        success(articleService.groupByYear())
+    fun getGroupByYear() = articleService.groupByYear().restOk()
 
     @SaIgnore
     @Validated
     @GetMapping("/{path}")
     fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String) =
-        success(articleService.getByPath(path))
+        articleService.getByPath(path).restOk()
 
     @PostMapping
     fun add(@RequestBody @Validated articleAddRequest: ArticleAddRequest) =
-        success(articleService.add(articleAddRequest).path)
+        articleService.add(articleAddRequest).path.restOk()
 
     @PutMapping
     fun update(@RequestBody @Validated articleUpdateRequest: ArticleUpdateRequest) =
-        success(articleService.update(articleUpdateRequest).path)
+        articleService.update(articleUpdateRequest).path.restOk()
 
     @Validated
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: @Positive Long) =
-        articleService.delete(id).run { success() }
+    fun delete(@PathVariable id: @Positive Long) = articleService.delete(id).restOk()
 }
 
 data class ArticleAddRequest(

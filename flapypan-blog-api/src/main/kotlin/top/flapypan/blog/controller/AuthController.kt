@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.RestResult
-import top.flapypan.blog.common.failure
-import top.flapypan.blog.common.success
+import top.flapypan.blog.common.restErr
+import top.flapypan.blog.common.restOk
 
 @RestController
 @RequestMapping("/auth")
@@ -28,12 +28,12 @@ class AuthController(
      */
     @SaIgnore
     @PostMapping
-    fun login(@RequestBody @Validated loginRequest: LoginRequest): RestResult<Nothing?> {
+    fun login(@RequestBody @Validated loginRequest: LoginRequest): RestResult<String?> {
         if (username == loginRequest.username && BCrypt.checkpw(loginRequest.password, password)) {
             StpUtil.login(username)
-            return success()
+            return "登录成功".restOk()
         }
-        return failure(HttpStatus.UNAUTHORIZED.value())
+        return "用户名或密码错误".restErr(HttpStatus.UNAUTHORIZED.value())
     }
 
     /**
@@ -41,14 +41,14 @@ class AuthController(
      */
     @SaIgnore
     @GetMapping
-    fun check() = success(StpUtil.isLogin())
+    fun check() = StpUtil.isLogin().restOk()
 
     /**
      * 退出登录
      */
     @SaIgnore
     @GetMapping("/logout")
-    fun logout() = StpUtil.logout().run { success() }
+    fun logout() = StpUtil.logout().restOk()
 }
 
 data class LoginRequest(
