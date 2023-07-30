@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.1.2"
     id("io.spring.dependency-management") version "1.1.2"
+    id("org.graalvm.buildtools.native") version "0.9.23"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.jpa") version "1.8.22"
@@ -13,6 +14,7 @@ version = "1.1.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -20,12 +22,25 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("cn.dev33:sa-token-spring-boot3-starter:1.35.0.RC")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        // 排除 tomcat
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
+    }
+    // undertow servlet 容器
+    implementation("org.springframework.boot:spring-boot-starter-undertow") {
+        // 用不到 websocket, 暂时排除相关依赖
+        exclude(group = "io.undertow", module = "undertow-websockets-jsr")
+    }
+    // sa-token 鉴权框架
+    implementation("cn.dev33:sa-token-spring-boot3-starter:1.35.0.RC") {
+        // 排除多余的 web 依赖
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-web")
+    }
+    // bean 校验框架
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
     runtimeOnly("org.postgresql:postgresql")
