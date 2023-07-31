@@ -1,7 +1,7 @@
 package top.flapypan.blog.controller
 
-import cn.dev33.satoken.annotation.SaIgnore
 import org.springframework.web.bind.annotation.*
+import top.flapypan.blog.common.checkLogin
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.entity.Link
 import top.flapypan.blog.service.LinkService
@@ -13,9 +13,9 @@ class LinkController(
 ) {
 
     @GetMapping
-    @SaIgnore
     fun all() = linkService.getAll().restOk()
 
     @PostMapping
-    fun save(@RequestBody links: List<Link>) = linkService.save(links).restOk()
+    fun save(@RequestBody links: List<Link>) =
+        checkLogin { linkService.save(links).restOk() }
 }

@@ -26,7 +26,6 @@ class AuthController(
     /**
      * 登录返回 token
      */
-    @SaIgnore
     @PostMapping
     fun login(@RequestBody @Validated loginRequest: LoginRequest): RestResult<String?> {
         if (username == loginRequest.username && BCrypt.checkpw(loginRequest.password, password)) {
@@ -39,14 +38,12 @@ class AuthController(
     /**
      * 检查登录状态
      */
-    @SaIgnore
     @GetMapping
     fun check() = StpUtil.isLogin().restOk()
 
     /**
      * 退出登录
      */
-    @SaIgnore
     @GetMapping("/logout")
     fun logout() = StpUtil.logout().restOk()
 }

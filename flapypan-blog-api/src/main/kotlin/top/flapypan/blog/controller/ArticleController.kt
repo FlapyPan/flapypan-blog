@@ -1,6 +1,5 @@
 package top.flapypan.blog.controller
 
-import cn.dev33.satoken.annotation.SaIgnore
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Positive
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.util.StringUtils
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import top.flapypan.blog.common.checkLogin
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.dto.ArticleSimpleDTO
 import top.flapypan.blog.entity.Article
@@ -20,7 +20,6 @@ class ArticleController(
     private val articleService: ArticleService
 ) {
 
-    @SaIgnore
     @GetMapping
     fun getPage(keyword: String?, pageable: Pageable) =
         (keyword?.takeIf(String::isNotBlank)?.let {
@@ -28,10 +27,8 @@ class ArticleController(
         } ?: articleService.getPage(pageable)).restOk()
 
     @GetMapping("/group-by/year")
-    @SaIgnore
     fun getGroupByYear() = articleService.groupByYear().restOk()
 
-    @SaIgnore
     @Validated
     @GetMapping("/{path}")
     fun getByPath(@PathVariable @Pattern(regexp = "^[a-z0-9:@._-]+$") path: String) =
@@ -39,15 +36,16 @@ class ArticleController(
 
     @PostMapping
     fun add(@RequestBody @Validated articleAddRequest: ArticleAddRequest) =
-        articleService.add(articleAddRequest).path.restOk()
+        checkLogin { articleService.add(articleAddRequest).path.restOk() }
 
     @PutMapping
     fun update(@RequestBody @Validated articleUpdateRequest: ArticleUpdateRequest) =
-        articleService.update(articleUpdateRequest).path.restOk()
+        checkLogin { articleService.update(articleUpdateRequest).path.restOk() }
 
     @Validated
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: @Positive Long) = articleService.delete(id).restOk()
+    fun delete(@PathVariable id: @Positive Long) =
+        checkLogin { articleService.delete(id).restOk() }
 }
 
 data class ArticleAddRequest(
