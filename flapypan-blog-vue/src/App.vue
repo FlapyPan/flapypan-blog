@@ -3,11 +3,7 @@
 </script>
 
 <template>
-  <router-view v-slot="{ Component }">
-    <transition name="page" mode="out-in">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+  <router-view></router-view>
 </template>
 
 <style>
@@ -20,17 +16,6 @@
 html, body, .v-application [class*="text-"] { font-family: var(--fonts-proportional) !important; }
 
 code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-  filter: blur(1em);
-}
 
 .md-editor-catalog-active > span {
   color: rgb(var(--v-theme-primary)) !important;
