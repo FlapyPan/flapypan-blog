@@ -5,9 +5,16 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
+import autoprefixer from 'autoprefixer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    target: 'modules',
+    modulePreload: {polyfill: true},
+    chunkSizeWarningLimit: 1024,
+    cssCodeSplit: false,
+  },
   plugins: [
     vue({
       template: {transformAssetUrls},
@@ -17,6 +24,13 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  css: {
+    postcss: {
+      plugins: [
+        autoprefixer({}), // add options if needed
+      ],
+    },
+  },
   define: {'process.env': {}},
   resolve: {
     alias: {
@@ -25,10 +39,8 @@ export default defineConfig({
     extensions: [
       '.js',
       '.json',
-      '.jsx',
       '.mjs',
       '.ts',
-      '.tsx',
       '.vue',
     ],
   },

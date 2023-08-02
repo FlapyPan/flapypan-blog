@@ -1,4 +1,4 @@
-> 1%
-last 2 versions
-not dead
-not ie 11
+Chrome >= 87
+Firefox >= 78
+Safari >= 14
+Edge >= 88
