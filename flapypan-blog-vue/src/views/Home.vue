@@ -4,6 +4,7 @@ import { useSettingStore } from '@/store/setting'
 import { useTitle } from '@vueuse/core'
 import ArticleCard from '@/components/ArticleCard.vue'
 import { api } from '@/api'
+import GiscusCard from '@/components/GiscusCard.vue'
 
 const settingStore = useSettingStore()
 
@@ -60,6 +61,7 @@ useTitle(`主页 - ${settingStore.settings?.siteTitle ?? '博客'}`)
         <v-btn to="/archive" color="primary">前往归档查看更多</v-btn>
       </v-col>
     </v-row>
+    <giscus-card></giscus-card>
   </v-container>
 </template>
 

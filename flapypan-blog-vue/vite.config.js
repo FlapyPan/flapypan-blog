@@ -17,7 +17,13 @@ export default defineConfig({
   },
   plugins: [
     vue({
-      template: {transformAssetUrls},
+      template: {
+        transformAssetUrls,
+        compilerOptions: {
+          // 排除自定义组件，防止 vue 编译处理
+          isCustomElement: (tag) => ['giscus-widget'].includes(tag),
+        },
+      },
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({

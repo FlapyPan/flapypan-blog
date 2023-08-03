@@ -16,7 +16,11 @@ private val DEFAULT_SETTINGS = mapOf(
     "email" to "flapypan@gmail.com",
     "info" to "个人博客",
     "pageSize" to "12",
-    "footer" to "Copyright"
+    "footer" to "Copyright",
+    "giscusRepo" to "",
+    "giscusRepoId" to "",
+    "giscusCategory" to "",
+    "giscusCategoryId" to "",
 )
 
 @Service

@@ -6,6 +6,7 @@
 
 - 单用户登录
 - 文章的在线查看、新建、编辑、删除
+- Giscus 评论系统 (version >= 1.2.0)
 - 文章搜索
 - 标签管理
 - 使用 Markdown 渲染，支持 mermaid 流程图和 latex 语法
@@ -197,3 +198,9 @@ server {
 
 }
 ```
+
+## 评论系统配置(可选)
+
+参考 Giscus [官方教程](https://giscus.app/zh-CN)
+
+获取到对应的 `repo` `repoid` `category` `categoryid` 后，登录博客后台填入相应的位置保存即可

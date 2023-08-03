@@ -128,6 +128,21 @@ useTitle(title)
       <v-col cols="12" md="6">
         <v-text-field v-model.trim="settingStore.settings.email" label="邮箱"></v-text-field>
       </v-col>
+      <v-col cols="12">
+        <h3>Giscus 设置</h3>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field v-model.trim="settingStore.settings.giscusRepo" label="Repo"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field v-model.trim="settingStore.settings.giscusRepoId" label="RepoId"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field v-model.trim="settingStore.settings.giscusCategory" label="Category"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field v-model.trim="settingStore.settings.giscusCategoryId" label="CategoryId"></v-text-field>
+      </v-col>
       <v-col cols="12" v-show="saveSettingError">
         <v-alert rounded="lg" :text="saveSettingError" type="error"></v-alert>
       </v-col>
