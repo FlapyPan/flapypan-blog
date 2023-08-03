@@ -160,7 +160,7 @@ useTitle(title)
       <v-progress-linear v-show="fetchingArticleData" class="mt-4" color="primary" indeterminate></v-progress-linear>
       <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
       <article-reader v-show="path!==''" :data="articleData"></article-reader>
-      <giscus-card v-if="path!==''"></giscus-card>
+      <giscus-card v-if="!fetchingArticleData"></giscus-card>
     </v-container>
   </div>
 </template>
