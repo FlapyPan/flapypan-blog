@@ -198,11 +198,7 @@ useFavicon(favicon)
     </v-app-bar>
 
     <v-main>
-      <router-view v-slot="{ Component }">
-        <keep-alive :include="['Article']">
-          <component :is="Component" />
-        </keep-alive>
-      </router-view>
+      <router-view></router-view>
     </v-main>
 
     <footer class="text-center pt-2 pb-3 text-body-2 text-medium-emphasis">
