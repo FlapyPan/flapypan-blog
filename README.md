@@ -87,7 +87,7 @@ pnpm i && pnpm build # 编译
 | ADMIN_USERNAME | 无                                 | 管理员用户名    |
 | ADMIN_PASSWORD | 无                                 | 管理员密码(加密) |
 | DB_URL         | jdbc:h2:file:./data/flapypan-blog | 数据库连接地址   |
-| DB_PASSWORD    | sa                                | 数据库用户名    |
+| DB_USERNAME    | sa                                | 数据库用户名    |
 | DB_PASSWORD    | 无                                 | 数据库密码     |
 | UPLOAD_DIR     | ./upload                          | 图片上传的路径   |
 
@@ -144,17 +144,18 @@ java -jar flapypan-blog.jar
 caddy v2 参考示例
 
 ```text
-:80 {
-    root * <前端页面路径>
-    file_server
-    try_files {path}.html {path} /
-    encode zstd gzip
-}
-:80/api/* {
-    # handle_path 去除前缀
-    handle_path /api/* {
-        reverse_proxy <后端地址>
-    }
+:80 { # 也可以直接写域名
+        encode zstd gzip
+        root * <前端页面路径>
+        route {
+                # handle_path 去除前缀
+                handle_path /api/* {
+                        reverse_proxy localhost:8180
+                }
+                # 单页面应用
+                try_files {path}.html {path} /
+                file_server
+        }
 }
 ```
 
@@ -162,7 +163,7 @@ nginx 参考示例
 
 ```text
 server {
-    listen                  80;
+    listen          80;
 
     gzip            on;
     gzip_vary       on;
