@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useThemeStore } from '@/store/theme'
 import { useSettingStore } from '@/store/setting'
+import Giscus from '@giscus/vue'
 
 const settingStore = useSettingStore()
 
@@ -22,20 +23,21 @@ const theme = computed(() => themeStore.isDark ? 'noborder_dark' : 'noborder_lig
 <template>
   <div class="pt-8" v-if="valid">
     <v-divider class="my-8"></v-divider>
-    <giscus-widget
+    <Giscus
       id="comments"
       :repo="settingStore.settings.giscusRepo"
-      :repoid="settingStore.settings.giscusRepoId"
+      :repo-id="settingStore.settings.giscusRepoId"
       :category="settingStore.settings.giscusCategory"
-      :categoryid="settingStore.settings.giscusCategoryId"
+      :category-id="settingStore.settings.giscusCategoryId"
       mapping="pathname"
-      reactionsenabled="1"
-      emitmetadata="0"
-      inputposition="top"
+      term="Welcome!"
+      reactions-enabled="1"
+      emit-metadata="0"
+      input-position="top"
       :theme="theme"
       lang="zh-CN"
-      loading="lazy"
-    ></giscus-widget>
+      loading="eager"
+    ></Giscus>
   </div>
 </template>
 
