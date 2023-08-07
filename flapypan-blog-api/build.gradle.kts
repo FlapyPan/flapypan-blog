@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "top.flapypan"
-version = "1.2.0"
+version = "1.2.1"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -32,11 +32,8 @@ dependencies {
         // 用不到 websocket, 暂时排除相关依赖
         exclude(group = "io.undertow", module = "undertow-websockets-jsr")
     }
-    // sa-token 鉴权框架
-    implementation("cn.dev33:sa-token-spring-boot3-starter:1.35.0.RC") {
-        // 排除多余的 web 依赖
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-web")
-    }
+    // spring security 鉴权框架
+    implementation("org.springframework.boot:spring-boot-starter-security")
     // bean 校验框架
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

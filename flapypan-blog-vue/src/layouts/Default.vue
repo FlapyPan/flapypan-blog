@@ -45,6 +45,7 @@ const loginDialog = ref(false)
 const form = reactive({
   username: '',
   password: '',
+  remember: false,
 })
 const usernameRule = (value) => {
   if (value?.trim() !== '') return true
@@ -59,8 +60,12 @@ const loginError = ref(null)
 const login = async () => {
   loginError.value = null
   isDoLogin.value = true
+  const formData = new FormData()
+  formData.append('username', form.username)
+  formData.append('password', form.password)
+  formData.append('remember-me', `${form.remember}`)
   try {
-    await api(`/auth`, 'POST', form)
+    await api(`/auth/login`, 'POST', formData, false)
     settingStore.isLogin = true
     loginDialog.value = false
   } catch (e) {
@@ -132,6 +137,7 @@ useFavicon(favicon)
           <v-form class="pa-4" validate-on="submit lazy" @submit.prevent="login">
             <v-text-field :rules="[usernameRule]" v-model="form.username" label="用户名"></v-text-field>
             <v-text-field :rules="[passwordRule]" v-model="form.password" type="password" label="密码"></v-text-field>
+            <v-checkbox v-model="form.remember" label="在此设备上记住我"></v-checkbox>
             <v-btn color="primary" :loading="isDoLogin" type="submit" block class="mt-2" text="登录"></v-btn>
           </v-form>
         </v-card-item>

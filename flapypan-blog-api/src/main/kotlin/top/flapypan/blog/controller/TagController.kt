@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Size
 import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.checkLogin
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.entity.Tag
 import top.flapypan.blog.service.TagService
@@ -24,17 +23,14 @@ class TagController(
     fun getByName(@PathVariable name: String) = tagService.findByName(name).restOk()
 
     @PostMapping
-    fun add(@RequestBody @Validated addRequest: TagAddRequest) =
-        checkLogin { tagService.add(addRequest).restOk() }
+    fun add(@RequestBody @Validated addRequest: TagAddRequest) = tagService.add(addRequest).restOk()
 
     @PutMapping
-    fun update(@RequestBody @Validated updateRequest: TagUpdateRequest) =
-        checkLogin { tagService.update(updateRequest).restOk() }
+    fun update(@RequestBody @Validated updateRequest: TagUpdateRequest) = tagService.update(updateRequest).restOk()
 
     @Validated
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable @Positive id: Long) =
-        checkLogin { tagService.delete(id).restOk() }
+    fun delete(@PathVariable @Positive id: Long) = tagService.delete(id).restOk()
 
     @GetMapping("/{tag}/article")
     fun getByCategory(@PathVariable tag: String, pageable: Pageable) =

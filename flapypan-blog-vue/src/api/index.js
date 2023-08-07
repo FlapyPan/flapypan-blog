@@ -30,10 +30,7 @@ export const api = async (url, method = 'GET', payload = (void 0), jsonPayload =
   const json = await response.json()
   if (!json?.success) {
     const {code} = json
-    if (code === 401) {
-      localStorage.removeItem('token')
-      throw Error('请登录')
-    }
+    if (code === 401) throw Error(json?.data ?? '请登录')
     if (code === 400) throw Error(json?.data ?? '请求格式错误')
     if (code === 400) throw Error(json?.data ?? '请求的资源不存在')
     if (code === 500) throw Error('服务器内部错误')

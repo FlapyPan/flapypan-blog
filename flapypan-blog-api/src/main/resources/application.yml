@@ -37,25 +37,3 @@ spring:
 logging:
   level:
     root: info
-# SaToken的配置
-sa-token:
-  # token名称，也就是cookie的名称
-  token-name: blog-token
-  # token有效期 7天
-  timeout: 604800
-  # 关闭多点登录
-  is-concurrent: false
-  # 多点登录使用同一token
-  is-share: true
-  # token格式
-  token-style: simple-uuid
-  # 不打印日志
-  is-log: false
-  # 不从请求体中读取token
-  is-read-body: false
-  # 从cookie中读取token
-  is-read-cookie: true
-  # 不从请求头中读取token
-  is-read-header: false
-  # 不打印 banner
-  is-print: false

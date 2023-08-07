@@ -1,13 +1,12 @@
 package top.flapypan.blog.common
 
-import cn.dev33.satoken.exception.SaTokenException
 import jakarta.servlet.ServletException
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.AuthenticationException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
-import top.flapypan.blog.common.RestException
 
 /**
  * 全局异常处理类
@@ -20,9 +19,9 @@ class RestExceptionHandler {
     /**
      * sa token 异常处理
      */
-    @ExceptionHandler(SaTokenException::class)
+    @ExceptionHandler(AuthenticationException::class)
     @ResponseStatus(HttpStatus.OK)
-    fun handleSaTokenException(e: SaTokenException?): RestResult<String?> {
+    fun handleAuthenticationException(e: AuthenticationException?): RestResult<String?> {
         return "请登录".restErr(HttpStatus.UNAUTHORIZED.value())
     }
 

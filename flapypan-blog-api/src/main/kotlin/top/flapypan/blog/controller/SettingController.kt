@@ -1,7 +1,6 @@
 package top.flapypan.blog.controller
 
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.checkLogin
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.SettingService
 
@@ -16,5 +15,5 @@ class SettingController(
 
     @PostMapping
     fun updateSettings(@RequestBody settingsMap: Map<String, String?>) =
-        checkLogin { settingService.saveSettingsMap(settingsMap).restOk() }
+        settingService.saveSettingsMap(settingsMap).restOk()
 }

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.util.StringUtils
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import top.flapypan.blog.common.checkLogin
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.dto.ArticleSimpleDTO
 import top.flapypan.blog.entity.Article
@@ -36,16 +35,16 @@ class ArticleController(
 
     @PostMapping
     fun add(@RequestBody @Validated articleAddRequest: ArticleAddRequest) =
-        checkLogin { articleService.add(articleAddRequest).path.restOk() }
+        articleService.add(articleAddRequest).path.restOk()
 
     @PutMapping
     fun update(@RequestBody @Validated articleUpdateRequest: ArticleUpdateRequest) =
-        checkLogin { articleService.update(articleUpdateRequest).path.restOk() }
+        articleService.update(articleUpdateRequest).path.restOk()
 
     @Validated
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: @Positive Long) =
-        checkLogin { articleService.delete(id).restOk() }
+        articleService.delete(id).restOk()
 }
 
 data class ArticleAddRequest(
