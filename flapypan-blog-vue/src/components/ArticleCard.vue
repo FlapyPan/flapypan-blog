@@ -2,6 +2,7 @@
 import { useDateFormat } from '@vueuse/core'
 import { useSettingStore } from '@/store/setting'
 import { computed } from 'vue'
+import colorMap from '@/utils/color-map'
 
 const props = defineProps({
   article: {},
@@ -36,7 +37,8 @@ const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
           <div class="d-flex align-center flex-wrap">
             <v-icon class="text-grey-darken-1 text-body-2">mdi-tag</v-icon>
             <v-card-subtitle class="mx-1">标签:</v-card-subtitle>
-            <v-chip class="mr-1" size="small" color="primary" v-for="tag in article.tags || []" :to="`/tag/${tag.name}`">
+            <v-chip class="mr-1" size="small" v-for="tag in article.tags || []"
+                    :color="colorMap(tag.name)" :to="`/tag/${tag.name}`">
               {{ tag.name }}
             </v-chip>
             <v-card-subtitle v-if="article.tags?.length===0" class="mx-1">null</v-card-subtitle>

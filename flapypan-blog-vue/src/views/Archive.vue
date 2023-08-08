@@ -5,6 +5,7 @@ import { useTitle } from '@vueuse/core'
 import ArticleList from '@/components/ArticleList.vue'
 import { api } from '@/api'
 import router from '@/router'
+import colorMap from '@/utils/color-map'
 
 const settingStore = useSettingStore()
 
@@ -103,8 +104,8 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
     <div class="flex-wrap d-flex mb-2">
       <template v-for="({name,count},i) in tagList" :key="name">
         <v-divider v-if="i!==0&&i%20===0" class="my-4" color="info"></v-divider>
-        <v-btn class="mx-1 my-2 text-none" size="small" color="primary" prepend-icon="mdi-tag"
-               variant="tonal" @click:close="" :to="`/tag/${name}`">
+        <v-btn class="mx-1 my-2 text-none" size="small" prepend-icon="mdi-tag"
+               variant="tonal" @click:close="" :to="`/tag/${name}`" :color="colorMap(name)">
           {{ name }} ({{ count }})
         </v-btn>
       </template>

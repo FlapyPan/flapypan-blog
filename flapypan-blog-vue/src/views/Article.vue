@@ -7,6 +7,7 @@ import { api } from '@/api'
 import ArticleReader from '@/components/ArticleReader.vue'
 import ArticleEditor from '@/components/ArticleEditor.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
+import colorMap from '@/utils/color-map'
 
 const router = useRouter()
 const settingStore = useSettingStore()
@@ -121,8 +122,8 @@ useTitle(title)
             <v-card-title>{{ articleData?.title }}</v-card-title>
           </v-img>
           <div class="mt-4 mx-2 d-flex flex-wrap">
-            <v-chip class="ml-2" color="primary" v-for="tag in articleData?.tags || []"
-                    :to="`/tag/${tag.name}`">
+            <v-chip class="ml-2" v-for="tag in articleData?.tags || []"
+                    :to="`/tag/${tag.name}`" :color="colorMap(tag.name)">
               {{ tag.name }}
             </v-chip>
           </div>

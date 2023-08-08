@@ -1,4 +1,6 @@
 <script setup>
+import colorMap from '@/utils/color-map'
+
 defineProps({
   articleList: {type: Array},
 })
@@ -28,8 +30,8 @@ const formatDate = (s) => {
                 <v-col cols="12" lg="4"><span class="mr-2">{{ title }}</span></v-col>
                 <v-col align-self="stretch">
                   <div class="d-flex align-center">
-                    <v-chip class="mr-1" size="small" color="primary" v-for="tag in tags || []"
-                            :to="`/tag/${tag.name}`">
+                    <v-chip class="mr-1" size="small" v-for="tag in tags || []"
+                            :to="`/tag/${tag.name}`" :color="colorMap(tag.name)">
                       {{ tag.name }}
                     </v-chip>
                   </div>

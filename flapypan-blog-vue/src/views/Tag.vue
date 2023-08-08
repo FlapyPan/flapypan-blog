@@ -5,6 +5,7 @@ import ArticleList from '@/components/ArticleCardList.vue'
 import { useSettingStore } from '@/store/setting'
 import { useTitle } from '@vueuse/core'
 import { api } from '@/api'
+import colorMap from '@/utils/color-map'
 
 const router = useRouter()
 const settingStore = useSettingStore()
@@ -100,7 +101,7 @@ useTitle(title)
 <template>
   <v-container>
     <h2 class="my-6 d-flex align-center">
-      {{ tagData?.name }}
+      <v-chip size="x-large" :color="colorMap(tagData?.name)">{{ tagData?.name }}</v-chip>
       <v-menu v-if="settingStore.isLogin && !fetchArticleError" v-model="tagEditor" location="end"
               :close-on-content-click="false">
         <template v-slot:activator="{ props }">
