@@ -47,7 +47,7 @@ const updateTag = async () => {
   updateError.value = null
   isUpdatingTag.value = true
   try {
-    const {name} = await api(`/tag`, 'PUT', {
+    const name = await api(`/tag`, 'PUT', {
       id: tagData.value?.id,
       name: editTagName.value.trim(),
     })

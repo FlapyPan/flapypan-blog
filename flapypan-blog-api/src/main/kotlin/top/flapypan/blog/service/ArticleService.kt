@@ -7,12 +7,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.flapypan.blog.common.RestException
-import top.flapypan.blog.controller.ArticleGroupByYear
-import top.flapypan.blog.controller.ArticleUpdateRequest
-import top.flapypan.blog.dto.ArticleDTO
-import top.flapypan.blog.dto.ArticleSimpleDTO
+import top.flapypan.blog.entity.Article
 import top.flapypan.blog.repository.ArticleRepository
 import top.flapypan.blog.repository.TagRepository
+import top.flapypan.blog.vo.ArticleAddRequest
+import top.flapypan.blog.vo.ArticleUpdateRequest
 
 @Service
 class ArticleService(
@@ -20,42 +19,32 @@ class ArticleService(
     private val tagRepository: TagRepository
 ) {
 
-    fun getPage(pageable: Pageable) =
-        repository.findAll(pageable)
-            .map(::ArticleSimpleDTO)
+    fun getPage(pageable: Pageable) = repository.findAll(pageable)
+
+    fun getPageByCreateDate(): List<Article> =
+        repository.findAll(Sort.by(Sort.Order.by("createDate").reverse()))
 
     fun searchByKeyword(keyword: String, pageable: Pageable) =
-        repository.findByKeyword("%${keyword.lowercase()}%", pageable)
-            .map(::ArticleSimpleDTO)
+        repository.findAllByTitleContainingIgnoreCaseOrTagsNameContainingIgnoreCase(keyword, keyword, pageable)
 
-    fun groupByYear(): List<ArticleGroupByYear> =
-        repository.findAll(Sort.by(Sort.Order.by("createDate").reverse()))
-            .groupBy { it.createDate.year }
-            .map { (year, articles) -> ArticleGroupByYear(year, articles) }
-
-    fun getByPath(path: String): ArticleDTO {
-        val article = repository.findFirstByPath(path)
-            ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")
-        return ArticleDTO(article)
-    }
-
+    fun getByPath(path: String) =
+        repository.findFirstByPath(path) ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")
 
     @Transactional
-    fun add(addRequest: top.flapypan.blog.controller.ArticleAddRequest) =
+    fun add(addRequest: ArticleAddRequest) =
         // 转换为实体
-        addRequest.createEntity().let {
-            if (addRequest.tagNames.isNotEmpty()) {
-                // 获取 tag
-                it.tags = tagRepository.findAllByNameIn(addRequest.tagNames)
-            }
-            // 保存返回
-            ArticleDTO(repository.save(it))
+        addRequest.createEntity {
+            // 获取 tag
+            tags = tagRepository.findAllByNameIn(addRequest.tagNames)
+        }.let {
+            // 保存
+            repository.save(it).path
         }
 
     private val pathRegex = Regex("^[a-z0-9:@._-]+$")
 
     @Transactional
-    fun update(updateRequest: ArticleUpdateRequest): ArticleDTO {
+    fun update(updateRequest: ArticleUpdateRequest): String {
         // 检查 path 有效性
         if (!pathRegex.matches(updateRequest.path)) {
             throw RestException(HttpStatus.BAD_REQUEST.value(), "path 格式无效")
@@ -64,12 +53,11 @@ class ArticleService(
         val article = repository.findByIdOrNull(updateRequest.id)
             ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")
         // 复制属性到实体
-        updateRequest.copyToEntity(article)
-        // 获取 tag
-        if (updateRequest.tagNames.isNotEmpty()) {
-            article.tags = tagRepository.findAllByNameIn(updateRequest.tagNames)
+        updateRequest.copyToEntity(article) {
+            // 获取 tag
+            tags = tagRepository.findAllByNameIn(updateRequest.tagNames)
         }
-        return ArticleDTO(repository.save(article))
+        return repository.save(article).path
     }
 
     @Transactional

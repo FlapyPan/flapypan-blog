@@ -6,27 +6,23 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@Table(
-    name = "t_article",
-    indexes = [
-        Index(columnList = "title", unique = true),
-        Index(columnList = "path", unique = true)
-    ]
-)
+@Table(name = "t_article")
 class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var title: String = ""
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var path: String = ""
 
     var cover: String? = null
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Basic(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    @Lob
     var content: String = ""
 
     @ManyToMany(fetch = FetchType.EAGER)

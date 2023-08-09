@@ -4,8 +4,8 @@ import { ref } from 'vue'
 import { useTitle } from '@vueuse/core'
 import ArticleList from '@/components/ArticleList.vue'
 import { api } from '@/api'
-import router from '@/router'
 import colorMap from '@/utils/color-map'
+import router from '@/router'
 
 const settingStore = useSettingStore()
 
@@ -56,9 +56,9 @@ const addTag = async () => {
   addTagError.value = null
   addingTag.value = true
   try {
-    const {name} = await api('/tag', 'POST', {name: newTagName.value})
-    // 添加后跳转过去
-    return router.push(`/tag/${name}`)
+    await api('/tag', 'POST', {name: newTagName.value})
+    // 添加后刷新数据
+    router.go(0)
   } catch (e) {
     console.error(e)
     addTagError.value = e.message
@@ -102,11 +102,11 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
     <v-progress-linear v-show="fetchingTagList" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="tagListError" rounded="lg" :text="tagListError" type="error"></v-alert>
     <div class="flex-wrap d-flex mb-2">
-      <template v-for="({name,count},i) in tagList" :key="name">
+      <template v-for="({name},i) in tagList" :key="name">
         <v-divider v-if="i!==0&&i%20===0" class="my-4" color="info"></v-divider>
         <v-btn class="mx-1 my-2 text-none" size="small" prepend-icon="mdi-tag"
                variant="tonal" @click:close="" :to="`/tag/${name}`" :color="colorMap(name)">
-          {{ name }} ({{ count }})
+          {{ name }}
         </v-btn>
       </template>
     </div>
