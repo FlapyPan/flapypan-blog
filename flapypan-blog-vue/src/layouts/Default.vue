@@ -189,6 +189,9 @@ useFavicon(favicon)
         <v-btn icon="mdi-magnify" @click="openSearchDialog()"></v-btn>
         <v-btn :icon="themeStore.isDark?'mdi-weather-night':'mdi-weather-sunny'"
                @click="themeStore.toggleTheme()"></v-btn>
+        <a class="text-none v-btn--variant-text" href="https://github.com/FlapyPan/flapypan-blog" target="_blank">
+          <v-btn icon="mdi-github"></v-btn>
+        </a>
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
