@@ -135,11 +135,8 @@ java -jar flapypan-blog.jar
 
 #### 前端页面部署
 
-下面是一些参考配置，caddy v2 的配置测试过可以使用
-
 > 注意：因为使用的是 cookie 模式来认证，为了保证安全，禁止了跨域请求。
 > 前端访问 /api 作为后端，所以请使用 http 代理服务器将 /api 的请求转发到后端。
-
 
 caddy v2 参考示例
 
@@ -156,47 +153,6 @@ caddy v2 参考示例
                 try_files {path}.html {path} /
                 file_server
         }
-}
-```
-
-nginx 参考示例
-
-```text
-server {
-    listen          80;
-
-    gzip            on;
-    gzip_vary       on;
-    gzip_proxied    any;
-    gzip_comp_level 6;
-    gzip_types      text/plain text/css text/xml application/json application/javascript application/rss+xml application/atom+xml image/svg+xml;
-
-    root <前端页面路径>;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    location /api {
-        proxy_pass            http://<后端地址>$request_uri;
-        proxy_set_header Host $host;
-        # 下面的部分设置因为nginx版本问题可能无效甚至导致报错，自行排查
-        proxy_http_version                 1.1;
-        proxy_cache_bypass                 $http_upgrade;
-        proxy_set_header Upgrade           $http_upgrade;
-        proxy_set_header Connection        $connection_upgrade;
-        proxy_set_header X-Real-IP         $remote_addr;
-        proxy_set_header Forwarded         $proxy_add_forwarded;
-        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Host  $host;
-        proxy_set_header X-Forwarded-Port  $server_port;
-        proxy_connect_timeout              60s;
-        proxy_send_timeout                 60s;
-        proxy_read_timeout                 60s;
-    }
-
 }
 ```
 
