@@ -11,12 +11,18 @@ import top.flapypan.blog.common.RestResult
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.UploadService
 
+/**
+ * 上传相关接口
+ */
 @RestController
 @RequestMapping("/upload")
 class UploadController(
     private val uploadService: UploadService
 ) {
 
+    /**
+     * 上传图片
+     */
     @PostMapping
     fun add(@RequestParam("file") multipartFile: MultipartFile): RestResult<String?> {
         // 限制为图片

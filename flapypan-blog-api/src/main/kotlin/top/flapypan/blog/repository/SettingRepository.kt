@@ -7,6 +7,9 @@ import top.flapypan.blog.entity.Setting
 
 @Repository
 interface SettingRepository : JpaRepository<Setting, String> {
+    /**
+     * 获取所有设置的 key
+     */
     @Query("SELECT DISTINCT s.key FROM Setting s")
     fun findAllKey(): Set<String>
 }

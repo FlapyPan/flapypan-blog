@@ -6,23 +6,9 @@ import top.flapypan.blog.common.LoggerDelegate
 import top.flapypan.blog.entity.Setting
 import top.flapypan.blog.repository.SettingRepository
 
-// 默认设置
-private val DEFAULT_SETTINGS = mapOf(
-    "siteTitle" to "FlapyPan's Blog",
-    "favicon" to "/avatar.webp",
-    "avatar" to "/avatar.webp",
-    "banner" to "/banner.webp",
-    "name" to "FlapyPan",
-    "email" to "flapypan@gmail.com",
-    "info" to "个人博客",
-    "pageSize" to "12",
-    "footer" to "Copyright",
-    "giscusRepo" to "",
-    "giscusRepoId" to "",
-    "giscusCategory" to "",
-    "giscusCategoryId" to "",
-)
-
+/**
+ * 设置相关服务
+ */
 @Service
 class SettingService(
     private val repository: SettingRepository
@@ -30,6 +16,28 @@ class SettingService(
 
     private val log by LoggerDelegate()
 
+    companion object {
+        // 默认设置
+        private val DEFAULT_SETTINGS = mapOf(
+            "siteTitle" to "FlapyPan's Blog",
+            "favicon" to "/avatar.webp",
+            "avatar" to "/avatar.webp",
+            "banner" to "/banner.webp",
+            "name" to "FlapyPan",
+            "email" to "flapypan@gmail.com",
+            "info" to "个人博客",
+            "pageSize" to "12",
+            "footer" to "Copyright",
+            "giscusRepo" to "",
+            "giscusRepoId" to "",
+            "giscusCategory" to "",
+            "giscusCategoryId" to "",
+        )
+    }
+
+    /**
+     * 初始化默认设置
+     */
     fun initDefaultSettings() {
         if (repository.count() >= DEFAULT_SETTINGS.size) return
         synchronized(SettingService::class) {
@@ -44,12 +52,18 @@ class SettingService(
         }
     }
 
+    /**
+     * 获取设置
+     */
     fun getSettingsMap(): Map<String, String?> {
         initDefaultSettings()
         return repository.findAll()
             .associateBy(Setting::key, Setting::value)
     }
 
+    /**
+     * 保存设置
+     */
     @Transactional
     fun saveSettingsMap(settingsMap: Map<String, String?>) {
         // 获取所有设置

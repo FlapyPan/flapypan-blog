@@ -14,17 +14,29 @@ import top.flapypan.blog.vo.ArticleInfo
 import top.flapypan.blog.vo.TagAddRequest
 import top.flapypan.blog.vo.TagUpdateRequest
 
+/**
+ * 标签相关服务
+ */
 @Service
 class TagService(
     private val repository: TagRepository,
     private val articleRepository: ArticleRepository
 ) {
 
+    /**
+     * 获取所有标签
+     */
     fun getAll(): List<Tag> = repository.findAll()
 
+    /**
+     * 通过标签名查询
+     */
     fun findByName(name: String) =
         repository.findByName(name) ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的标签")
 
+    /**
+     * 添加标签
+     */
     @Transactional
     fun add(addRequest: TagAddRequest): String {
         val tag = addRequest.createEntity()
@@ -34,6 +46,9 @@ class TagService(
         return repository.save(tag).name
     }
 
+    /**
+     * 修改标签
+     */
     @Transactional
     fun update(updateRequest: TagUpdateRequest): String {
         val tag = repository.findByIdOrNull(updateRequest.id)
@@ -42,6 +57,9 @@ class TagService(
         return repository.save(tag).name
     }
 
+    /**
+     * 删除标签
+     */
     @Transactional
     fun delete(id: Long) {
         if (articleRepository.countByTagsId(id) > 0) {
@@ -50,6 +68,9 @@ class TagService(
         repository.deleteById(id)
     }
 
+    /**
+     * 通过标签名获取文章列表
+     */
     fun getArticleByTag(tagName: String, pageable: Pageable): Page<ArticleInfo> {
         repository.findByName(tagName) ?: RestException(HttpStatus.NOT_FOUND.value(), "不存在的标签")
         return articleRepository

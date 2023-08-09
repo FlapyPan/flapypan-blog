@@ -5,6 +5,9 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 
+/**
+ * 设置实体类
+ */
 @Entity
 @Table(name = "t_setting")
 class Setting {

@@ -4,6 +4,9 @@ import top.flapypan.blog.entity.Article
 import top.flapypan.blog.entity.Tag
 import java.time.LocalDateTime
 
+/**
+ * 文章信息，无文章内容
+ */
 data class ArticleInfo(
     val id: Long,
     val title: String,
@@ -14,6 +17,9 @@ data class ArticleInfo(
     val updateDate: LocalDateTime
 ) {
 
+    /**
+     * 通过实体类构造
+     */
     constructor(article: Article) : this(
         id = article.id,
         title = article.title,
@@ -26,13 +32,12 @@ data class ArticleInfo(
 
 }
 
+/**
+ * 通过年份分组的文章列表
+ */
 data class ArticleGroupByYear(
     val year: String,
     val list: List<ArticleInfo>
 ) {
     constructor(year: Int, list: List<Article>) : this(year.toString(), list.map(::ArticleInfo))
 }
-
-fun List<Article>.groupByYear() =
-    groupBy { it.createDate.year }
-        .map { (year, articles) -> ArticleGroupByYear(year, articles) }

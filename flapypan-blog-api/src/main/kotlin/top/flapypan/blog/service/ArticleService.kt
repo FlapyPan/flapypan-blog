@@ -13,23 +13,45 @@ import top.flapypan.blog.repository.TagRepository
 import top.flapypan.blog.vo.ArticleAddRequest
 import top.flapypan.blog.vo.ArticleUpdateRequest
 
+/**
+ * 文章相关服务
+ */
 @Service
 class ArticleService(
     private val repository: ArticleRepository,
     private val tagRepository: TagRepository
 ) {
 
+    companion object {
+        private val pathRegex = Regex("^[a-z0-9:@._-]+$")
+    }
+
+    /**
+     * 获取文章分页
+     */
     fun getPage(pageable: Pageable) = repository.findAll(pageable)
 
+    /**
+     * 获取文章分页，按照创建日期倒序
+     */
     fun getPageByCreateDate(): List<Article> =
         repository.findAll(Sort.by(Sort.Order.by("createDate").reverse()))
 
+    /**
+     * 模糊查询文章
+     */
     fun searchByKeyword(keyword: String, pageable: Pageable) =
         repository.findAllByTitleContainingIgnoreCaseOrTagsNameContainingIgnoreCase(keyword, keyword, pageable)
 
+    /**
+     * 通过路径查询文章
+     */
     fun getByPath(path: String) =
         repository.findFirstByPath(path) ?: throw RestException(HttpStatus.NOT_FOUND.value(), "不存在的文章")
 
+    /**
+     * 添加文章
+     */
     @Transactional
     fun add(addRequest: ArticleAddRequest) =
         // 转换为实体
@@ -41,8 +63,9 @@ class ArticleService(
             repository.save(it).path
         }
 
-    private val pathRegex = Regex("^[a-z0-9:@._-]+$")
-
+    /**
+     * 修改文章
+     */
     @Transactional
     fun update(updateRequest: ArticleUpdateRequest): String {
         // 检查 path 有效性
@@ -60,6 +83,9 @@ class ArticleService(
         return repository.save(article).path
     }
 
+    /**
+     * 删除文章
+     */
     @Transactional
     fun delete(id: Long) = repository.deleteById(id)
 

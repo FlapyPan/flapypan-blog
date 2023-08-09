@@ -9,6 +9,9 @@ import top.flapypan.blog.entity.Article
 import top.flapypan.blog.entity.Tag
 
 
+/**
+ * 添加文章的请求
+ */
 data class ArticleAddRequest(
 
     @field:Size(min = 2, max = 32, message = "标题长度应在2-32之间")
@@ -27,6 +30,9 @@ data class ArticleAddRequest(
 
 ) {
 
+    /**
+     * 创建新的实体类
+     */
     inline fun createEntity(after: (Article.() -> Unit) = {}) = Article().also {
         it.title = title
         // 没有指定路径则使用标题
@@ -38,6 +44,9 @@ data class ArticleAddRequest(
 
 }
 
+/**
+ * 更新文章的请求
+ */
 data class ArticleUpdateRequest(
 
     @field:Positive
@@ -62,6 +71,9 @@ data class ArticleUpdateRequest(
 
 ) {
 
+    /**
+     * 复制属性值到已有实体
+     */
     inline fun copyToEntity(entity: Article, after: (Article.() -> Unit) = {}) {
         if (title.isNotBlank()) {
             entity.title = title
@@ -79,16 +91,25 @@ data class ArticleUpdateRequest(
     }
 }
 
+/**
+ * 标签添加请求
+ */
 data class TagAddRequest(
     @Size(min = 2, max = 16, message = "标签名称应在2-16之间")
     val name: String
 ) {
+    /**
+     * 创建新的实体类
+     */
     fun createEntity() = Tag().also {
         it.name = name
     }
 
 }
 
+/**
+ * 标签更新请求
+ */
 data class TagUpdateRequest(
 
     @field:Positive(message = "无效的id")
@@ -98,6 +119,9 @@ data class TagUpdateRequest(
     val name: String
 
 ) {
+    /**
+     * 复制属性值到已有实体类
+     */
     fun copyToEntity(entity: Tag) {
         if (name.isNotBlank()) {
             entity.name = name

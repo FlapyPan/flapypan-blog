@@ -13,6 +13,9 @@ import java.util.*
 
 private val DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss_")
 
+/**
+ * 上传相关服务
+ */
 @Service
 class UploadService(
     @Value("\${blog.upload-path}")
@@ -20,6 +23,9 @@ class UploadService(
 ) {
     private val log by LoggerDelegate()
 
+    /**
+     * 上传文件
+     */
     fun upload(multipartFile: MultipartFile): String {
         val now = LocalDateTime.now()
         // 获取时间

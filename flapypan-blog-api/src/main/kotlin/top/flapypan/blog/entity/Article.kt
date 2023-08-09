@@ -5,6 +5,9 @@ import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
+/**
+ * 文章实体类
+ */
 @Entity
 @Table(name = "t_article")
 class Article {
@@ -21,8 +24,7 @@ class Article {
     var cover: String? = null
 
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = false)
-    @Lob
+    @Column(columnDefinition = "TEXT", nullable = false)
     var content: String = ""
 
     @ManyToMany(fetch = FetchType.EAGER)
