@@ -12,6 +12,8 @@ server:
 spring:
   application:
     name: flapypan-blog-api
+  profiles:
+    default: prod
   datasource:
     url: ${DB_URL:jdbc:h2:file:./data/flapypan-blog}
     username: ${DB_USERNAME:sa}
@@ -33,7 +35,3 @@ spring:
     resources:
       # 自带的静态资源处理器读取文件的位置
       static-locations: file:${blog.upload-path}
-# 日志等级
-logging:
-  level:
-    root: info
