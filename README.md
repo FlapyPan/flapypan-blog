@@ -1,29 +1,31 @@
-# FlapyPan Blog
+# FlapyPan Blog Vue
 
-一款简单高效的博客系统，基于 SpringBoot 3 和 Vue 3 开发
+基于 Vue 3 开发的一款简单高效的博客系统(前端页面)
 
-**功能列表**
+**本仓库为前端项目，要配合下列其中之一的后端项目使用**
+
+| 名称                     | Gitea 地址                                                 | Github 地址                                        |
+|------------------------|----------------------------------------------------------|--------------------------------------------------|
+| flapypan-blog-java(推荐) | <https://git.flapypan.top/FlapyPan/flapypan-blog-java>   | https://github.com/FlapyPan/flapypan-blog-java   |
+| flapypan-blog-kotlin   | <https://git.flapypan.top/FlapyPan/flapypan-blog-kotlin> | https://github.com/FlapyPan/flapypan-blog-kotlin |
+
+后端部署方法请参考对应仓库的说明
+
+## 功能列表
 
 - 单用户登录
 - 文章的在线查看、新建、编辑、删除
-- Giscus 评论系统 (version >= 1.2.0)
+- Giscus 评论系统
 - 文章搜索
 - 标签管理
 - 使用 Markdown 渲染，支持 mermaid 流程图和 latex 语法
 - 图片快速上传
 - 亮色、暗色模式切换
 - 文章编辑本地及时保存
-- 支持 Postgresql、MySQL、H2(默认)数据库
 - 其他自定义设置功能
 
-**技术栈**
+## 技术栈
 
-- Kotlin
-- Spring Boot 3.x
-- Spring Data JPA
-- Spring Validation
-- SaToken
-- Postgres、MySQL、H2
 - Vue 3.x
 - Vite
 - Vuetify
@@ -33,112 +35,42 @@
 
 ## 启动方法
 
-### 编译
-
 **前置要求**
 
-- `jdk` (version >= 17)
-- `gradle` (version >= 8 非必须)
 - `node.js` (version >= 18)
 - `pnpm` (version >= 6)
 
 > pnpm 可以使用 npm 来安装 `npm install -g pnpm`
 
-克隆本仓库源码，并进入对应目录
+克隆本仓库源码，并安装依赖
 
 ```shell
 git clone <仓库地址> # 替换成对应的仓库地址
-cd flapypan-blog
+cd flapypan-blog-vue # 进入对应目录
+pnpm i # 安装依赖
 ```
 
-#### 编译后端 api
+### 开发模式启动
 
-在`build/libs`目录下可以找到编译好的 jar 包
+> 请确保后端程序已运行，并且运行在本地`8080`端口，如果不是请修改`vite.confg.js`里的反向代理地址
 
 ```shell
-cd flapypan-blog-api # 进入目录
-# 如果没有 gradle 可以使用 .\gradlew bootJar，将自动下载 gradle
-gradle bootJar # 编译 jar
+pnpm dev # 运行开发服务器
 ```
 
-#### 编译前端页面
+### 编译部署
 
-编译页面，在`dist`目录下可以找到编译产物
+编译完成后可以在`dist`目录下可以找到编译产物
 
 ```shell
-cd flapypan-blog-vue # 进入目录
-pnpm i && pnpm build # 编译
+pnpm build # 打包编译
 ```
 
-### 运行
+注意：因为使用的是 cookie 模式来认证，为了保证安全，禁止了跨域请求。
 
-**前置要求**
+前端访问 /api 作为后端，所以请使用 http 代理服务器将 /api 的请求转发到后端。
 
-- `jdk` (version >= 17)
-- `nginx`或`caddy v2` 等 http 服务器
-
-#### 后端 api 运行
-
-**环境变量说明**
-
-| 环境变量           | 默认值                               | 说明        |
-|----------------|-----------------------------------|-----------|
-| PORT           | 8080                              | 运行端口      |
-| ADMIN_USERNAME | 无                                 | 管理员用户名    |
-| ADMIN_PASSWORD | 无                                 | 管理员密码(加密) |
-| DB_URL         | jdbc:h2:file:./data/flapypan-blog | 数据库连接地址   |
-| DB_USERNAME    | sa                                | 数据库用户名    |
-| DB_PASSWORD    | 无                                 | 数据库密码     |
-| UPLOAD_DIR     | ./upload                          | 图片上传的路径   |
-
-管理员密码需要使用 hash 加密过的密码，可以使用下列方式获得
-
-```shell
-java -jar flapypan-blog.jar hash <密码>
-```
-
-H2 示例
-
-```shell
-export ADMIN_USERNAME='admin'
-# admin
-export ADMIN_PASSWORD='$2a$10$6MRSKmrdg7kjYn1Dh4pFT.5jxDMQ7wPYV9M.Qhs9A2QOjIWX.DFDi'
-
-java -jar flapypan-blog.jar
-```
-
-Postgres 示例
-
-```shell
-export ADMIN_USERNAME='admin'
-# admin
-export ADMIN_PASSWORD='$2a$10$6MRSKmrdg7kjYn1Dh4pFT.5jxDMQ7wPYV9M.Qhs9A2QOjIWX.DFDi'
-export DB_URL='jdbc:postgresql://127.0.0.1:5432/db_blog'
-export DB_USERNAME='postgres'
-export DB_PASSWORD='postgres'
-
-java -jar flapypan-blog.jar
-```
-
-MySQL 示例
-
-```shell
-export ADMIN_USERNAME='admin'
-# admin
-export ADMIN_PASSWORD='$2a$10$6MRSKmrdg7kjYn1Dh4pFT.5jxDMQ7wPYV9M.Qhs9A2QOjIWX.DFDi'
-export DB_URL='jdbc:mysql://127.0.0.1:3306/db_blog?useSSL=false&serverTimezone=UTC'
-export DB_USERNAME='root'
-export DB_PASSWORD='root'
-
-java -jar flapypan-blog.jar
-```
-
-#### 前端页面部署
-
-> 注意：因为使用的是 cookie 模式来认证，为了保证安全，禁止了跨域请求。
-> 前端访问 /api 作为后端，所以请使用 http 代理服务器将 /api 的请求转发到后端。
-
-caddy v2 参考示例
+caddy v2 参考示例:
 
 ```text
 :80 { # 也可以直接写域名

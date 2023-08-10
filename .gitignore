@@ -1,41 +1,23 @@
-### core template
-*.swp
-*.*~
-project.lock.json
 .DS_Store
-*.pyc
-nupkg/
+node_modules
+/dist
 
-# Visual Studio Code
-.vscode
 
-# Rider
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
 .idea
-
-# User-specific files
+.vscode
 *.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-[Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
-
-# Visual Studio 2015
-.vs/
-
-/upload
-/data
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
