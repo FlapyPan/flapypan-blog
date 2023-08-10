@@ -1,16 +1,15 @@
 package top.flapypan.blog.service
 
 import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.flapypan.blog.common.RestException
-import top.flapypan.blog.entity.Article
 import top.flapypan.blog.repository.ArticleRepository
 import top.flapypan.blog.repository.TagRepository
 import top.flapypan.blog.vo.ArticleAddRequest
+import top.flapypan.blog.vo.ArticleGroupByYear
 import top.flapypan.blog.vo.ArticleUpdateRequest
 
 /**
@@ -32,10 +31,15 @@ class ArticleService(
     fun getPage(pageable: Pageable) = repository.findAll(pageable)
 
     /**
-     * 获取文章分页，按照创建日期倒序
+     * 根据年份获取文章，按照创建日期倒序
      */
-    fun getPageByCreateDate(): List<Article> =
-        repository.findAll(Sort.by(Sort.Order.by("createDate").reverse()))
+    fun groupByYear() =
+        repository.findYears().map { year ->
+            ArticleGroupByYear(
+                year,
+                repository.findByYear(year)
+            )
+        }
 
     /**
      * 模糊查询文章

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*
 import top.flapypan.blog.common.restOk
 import top.flapypan.blog.service.ArticleService
 import top.flapypan.blog.vo.ArticleAddRequest
-import top.flapypan.blog.vo.ArticleGroupByYear
 import top.flapypan.blog.vo.ArticleInfo
 import top.flapypan.blog.vo.ArticleUpdateRequest
 
@@ -34,11 +33,7 @@ class ArticleController(
      * 获取所有文章信息，并根据年份分组
      */
     @GetMapping("/group-by/year")
-    fun getGroupByYear() =
-        articleService.getPageByCreateDate()
-            .groupBy { it.createDate.year }
-            .map { (year, articles) -> ArticleGroupByYear(year, articles) }
-            .restOk()
+    fun getGroupByYear() = articleService.groupByYear().restOk()
 
     /**
      * 通过路径获取文章内容
