@@ -28,7 +28,6 @@ export default (str) => {
     const h = str.charCodeAt(i) + ((hash << (len - i)) - hash)
     hash = h & h
   }
-  console.log(hash)
   // 获取颜色索引
   const index = Math.abs(hash) % colors.length
   // 存储颜色到缓存中
