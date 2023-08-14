@@ -55,17 +55,41 @@ const getTagList = async () => {
 getTagList()
 /// endregion 标签数据
 
+// 编辑器相关错误信息
+const editorError = ref(null)
+const catchEditorError = ({message}) => editorError.value = message
+
 /// region 图片上传
+// 图片压缩
+const compress = async (file) => new Promise((resolve, reject) => {
+  if (file.type === 'image/gif') {
+    // Compressor.js 目前不支持 gif 压缩，暂时跳过
+    resolve(file)
+    return
+  }
+  new Compressor(file, {
+    quality: 0.6, // 压缩率，针对 jpg 和 webp
+    maxWidth: 1920, // 最大宽度
+    maxHeight: 1080, // 最大高度
+    success: resolve,
+    error: reject,
+  })
+})
 const onUploadImg = async (files, cb) => {
-  // 批量上传
-  const tasks = files.map((file) => new Promise((resolve, reject) => {
-    const form = new FormData()
-    form.append('file', file)
-    api('/upload', 'POST', form, false)
-      .then((path) => resolve(`${API_URL}${path}`))
-      .catch(reject)
-  }))
-  const res = await Promise.all(tasks)
+  const res = []
+  try {
+    for (const file of files) {
+      const form = new FormData()
+      const compressFile = await compress(file)
+      form.append('file', compressFile, compressFile.name)
+      // 上传获取路径
+      const path = await api('/upload', 'POST', form, false)
+      res.push(`${API_URL}${path}`)
+    }
+  } catch (e) {
+    editorError.value = e.message
+    console.error(e)
+  }
   cb(res)
 }
 /// endregion 图片上传
@@ -117,7 +141,10 @@ const saveArticle = async () => {
         </v-row>
       </v-container>
     </v-form>
-    <MdEditor editor-id="edit" v-model="draft.content" @onUploadImg="onUploadImg"
+    <v-container v-if="editorError">
+      <v-alert rounded="lg" :text="editorError" type="error"></v-alert>
+    </v-container>
+    <MdEditor editor-id="edit" v-model="draft.content" @onUploadImg="onUploadImg" @onError="catchEditorError"
               preview-theme="default" codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" />
     <v-row class="mt-4">
       <v-col cols="12" class="px-12">
