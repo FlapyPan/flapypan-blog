@@ -2,7 +2,6 @@
 import { MdCatalog, MdPreview } from 'md-editor-v3'
 import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
-import 'md-editor-v3/lib/preview.css'
 import { useThemeStore } from '@/store/theme'
 
 const scrollElement = document.documentElement

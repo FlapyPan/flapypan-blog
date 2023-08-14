@@ -4,7 +4,6 @@ import { ref } from 'vue'
 import { api, API_URL } from '@/api'
 import { MdEditor } from 'md-editor-v3'
 import { useThemeStore } from '@/store/theme'
-import 'md-editor-v3/lib/style.css'
 
 const props = defineProps({
   articleData: {type: Object},
