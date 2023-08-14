@@ -12,7 +12,7 @@
   "dependencies": {
     "@giscus/vue": "^2.3.0",
     "@vueuse/core": "^10.3.0",
-    "md-editor-v3": "^4.2.2",
+    "md-editor-v3": "^4.3.0",
     "pinia": "^2.1.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.4.15",
     "postcss": "^8.4.27",
     "vite": "^4.4.9",
     "vite-plugin-vuetify": "^1.0.2"

@@ -12,8 +12,8 @@ dependencies:
     specifier: ^10.3.0
     version: 10.3.0(vue@3.3.4)
   md-editor-v3:
-    specifier: ^4.2.2
-    version: 4.2.2(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)(@lezer/common@1.0.3)(vue@3.3.4)
+    specifier: ^4.3.0
+    version: 4.3.0(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)(@lezer/common@1.0.3)(vue@3.3.4)
   pinia:
     specifier: ^2.1.6
     version: 2.1.6(vue@3.3.4)
@@ -32,8 +32,8 @@ devDependencies:
     specifier: ^4.2.3
     version: 4.2.3(vite@4.4.9)(vue@3.3.4)
   autoprefixer:
-    specifier: ^10.4.14
-    version: 10.4.14(postcss@8.4.27)
+    specifier: ^10.4.15
+    version: 10.4.15(postcss@8.4.27)
   postcss:
     specifier: ^8.4.27
     version: 8.4.27
@@ -699,8 +699,8 @@ packages:
     resolution: {integrity: sha512-4p9vcSmxAayx72yn70joFoL44c9MO/0+iVEBIQXe3v2h2SiAsEIo/G5v6ObFWvNKRFjbrVadNf9LqEEZeQPzdA==}
     dev: false
 
-  /@vavt/util@1.1.1:
-    resolution: {integrity: sha512-0x+Acegd8k6lFJc7SN4kVhO669fBiMtBjq/WqX2C8Uz5mSgS+nRvfXs0BK2aiV67T0rauBoAmEkQfURQjI2+4Q==}
+  /@vavt/util@1.2.0:
+    resolution: {integrity: sha512-g/20ugYpM09EpzvGvLPUReEo3fPBefq810NYR31EZwPozZvymkPs1pM1A60GfG0wlQq35iiWoV6HHTyDy/FbwA==}
     dev: false
 
   /@vitejs/plugin-vue@4.2.3(vite@4.4.9)(vue@3.3.4):
@@ -831,15 +831,15 @@ packages:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
     dev: false
 
-  /autoprefixer@10.4.14(postcss@8.4.27):
-    resolution: {integrity: sha512-FQzyfOsTlwVzjHxKEqRIAdJx9niO6VCBCoEwax/VLSoQF29ggECcPuBqUMZ+u8jCZOPSy8b8/8KnuFbp0SaFZQ==}
+  /autoprefixer@10.4.15(postcss@8.4.27):
+    resolution: {integrity: sha512-KCuPB8ZCIqFdA4HwKXsvz7j6gvSDNhDP7WnUjBleRkKjPdvCmHFuQ77ocavI8FT6NdvlBnE2UFr2H4Mycn8Vew==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.10
-      caniuse-lite: 1.0.30001518
+      caniuse-lite: 1.0.30001520
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -852,14 +852,14 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001518
+      caniuse-lite: 1.0.30001520
       electron-to-chromium: 1.4.480
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
     dev: true
 
-  /caniuse-lite@1.0.30001518:
-    resolution: {integrity: sha512-rup09/e3I0BKjncL+FesTayKtPrdwKhUufQFd3riFw1hHg8JmIFoInYfB102cFcY/pPgGmdyl/iy+jgiDi2vdA==}
+  /caniuse-lite@1.0.30001520:
+    resolution: {integrity: sha512-tahF5O9EiiTzwTUqAeFjIZbn4Dnqxzz7ktrgGlMYNLH43Ul26IgTMH/zvL3DG0lZxBYnlT04axvInszUsZULdA==}
     dev: true
 
   /codemirror@6.0.1(@lezer/common@1.0.3):
@@ -1056,15 +1056,15 @@ packages:
       uc.micro: 1.0.6
     dev: false
 
-  /md-editor-v3@4.2.2(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)(@lezer/common@1.0.3)(vue@3.3.4):
-    resolution: {integrity: sha512-aVfbYCDHt74sVFJbYxY0YPBtkQwOBW2uF1+tOUuQc6JBR5DNvGmHwmTJN6/zCIFoeDCA2nPtaq++ZYcVmCc2qw==}
+  /md-editor-v3@4.3.0(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)(@lezer/common@1.0.3)(vue@3.3.4):
+    resolution: {integrity: sha512-VJbF9VpDqK7x8MWIkQIs/48FKp8rDIdR2ChItnAhWRERBmgSdKlCF+IaCnW90FWtfqyVNlTEqCzhhfMdmqdpaw==}
     peerDependencies:
       vue: ^3.2.47
     dependencies:
       '@codemirror/lang-markdown': 6.2.0
       '@codemirror/language-data': 6.3.1(@codemirror/state@6.2.1)(@codemirror/view@6.16.0)(@lezer/common@1.0.3)
       '@types/markdown-it': 12.2.3
-      '@vavt/util': 1.1.1
+      '@vavt/util': 1.2.0
       codemirror: 6.0.1(@lezer/common@1.0.3)
       copy-to-clipboard: 3.3.3
       lru-cache: 8.0.5
