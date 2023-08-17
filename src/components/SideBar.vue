@@ -116,7 +116,7 @@ const logout = () => {
       <v-divider></v-divider>
       <v-list-subheader>固定的文章</v-list-subheader>
 
-      <v-list-item v-for="{name,url} in settingStore.links" :to="url" :key="url" prepend-icon="mdi-book"
+      <v-list-item v-for="{name,url} in settingStore.links" :to="`/${url}`" :key="url" prepend-icon="mdi-book"
                    base-color="cyan">
         {{ name }}
       </v-list-item>
