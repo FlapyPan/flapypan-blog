@@ -2,20 +2,9 @@
 import { reactive, ref } from 'vue'
 import { useSettingStore } from '@/store/setting'
 import router from '@/router'
-import ArticleEditor from '@/components/ArticleEditor.vue'
 import { api } from '@/api'
 
 const settingStore = useSettingStore()
-
-/// region 新文章
-const writeDialog = ref(false)
-const onArticleSubmit = (path) => {
-  // 添加完成自动跳转
-  writeDialog.value = false
-  router.push(`/${ path }`)
-}
-/// endregion 新文章
-
 
 /// region 登录
 const loginDialog = ref(false)
@@ -40,7 +29,7 @@ const login = async () => {
   const formData = new FormData()
   formData.append('username', form.username)
   formData.append('password', form.password)
-  formData.append('remember-me', `${ form.remember }`)
+  formData.append('remember-me', `${form.remember}`)
   try {
     await api(`/auth/login`, 'POST', formData, false)
     settingStore.isLogin = true
@@ -65,20 +54,7 @@ const logout = () => {
 <template>
   <v-navigation-drawer border="none" location="left" v-model="settingStore.sideBarOpened">
 
-    <v-dialog v-if="settingStore.isLogin" v-model="writeDialog" fullscreen>
-      <v-sheet>
-        <v-toolbar color="transparent">
-          <v-btn icon dark @click="writeDialog=false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <v-toolbar-title>写作</v-toolbar-title>
-        </v-toolbar>
-        <article-editor @submit="onArticleSubmit"></article-editor>
-      </v-sheet>
-    </v-dialog>
-
-    <v-dialog v-if="!settingStore.isLogin" v-model="loginDialog" max-width="500px" transition="dialog-top-transition"
-              scrollable>
+    <v-dialog v-if="!settingStore.isLogin" v-model="loginDialog" max-width="500px">
       <v-card>
         <v-toolbar color="transparent">
           <v-btn icon dark @click="loginDialog=false">
@@ -102,38 +78,69 @@ const logout = () => {
 
     <v-list :nav="true" density="compact">
 
-      <v-list-item density="comfortable" :prepend-avatar="settingStore.settings?.avatar"
+      <v-list-item class="py-2" density="comfortable" rounded="xl"
+                   :prepend-avatar="settingStore.settings?.avatar"
                    :title="settingStore.settings?.name" :subtitle="settingStore.settings?.info"
+                   to="/" :active="router.currentRoute.value.name==='Home'"
+                   color="primary"
       ></v-list-item>
 
-      <v-list-item to="/" :active="router.currentRoute.value.name==='Home'" prepend-icon="mdi-home"
-                   base-color="primary">
-        主页
-      </v-list-item>
-      <v-list-item to="/archive" prepend-icon="mdi-archive" base-color="orange">归档
+      <v-list-item to="/archive" color="orange" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="orange" size="30">
+            <v-icon color="white" class="text-body-1">mdi-archive</v-icon>
+          </v-avatar>
+        </template>
+        归档
       </v-list-item>
 
       <v-divider></v-divider>
       <v-list-subheader>固定的文章</v-list-subheader>
 
-      <v-list-item v-for="{name,url} in settingStore.links" :to="`/${url}`" :key="url" prepend-icon="mdi-book"
-                   base-color="cyan">
+      <v-list-item v-for="{name,url} in settingStore.links" :to="`/${url}`" :key="url"
+                   color="primary" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="primary" size="30">
+            <v-icon color="white" class="text-body-1">mdi-book</v-icon>
+          </v-avatar>
+        </template>
         {{ name }}
       </v-list-item>
 
       <v-divider class="mb-2"></v-divider>
       <v-list-subheader>设置</v-list-subheader>
 
-      <v-list-item v-if="settingStore.isLogin" @click="writeDialog=true" prepend-icon="mdi-plus" base-color="primary">
+      <v-list-item v-if="settingStore.isLogin" to="/new" color="primary" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="primary" size="30">
+            <v-icon color="white" class="text-body-1">mdi-plus</v-icon>
+          </v-avatar>
+        </template>
         新文章
       </v-list-item>
-      <v-list-item v-if="settingStore.isLogin" to="/setting" :active="false" prepend-icon="mdi-cog"
-                   base-color="light-blue">
+      <v-list-item v-if="settingStore.isLogin" to="/setting" color="light-blue"
+                   rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="light-blue" size="30">
+            <v-icon color="white" class="text-body-1">mdi-cog</v-icon>
+          </v-avatar>
+        </template>
         博客设置
       </v-list-item>
-      <v-list-item v-if="settingStore.isLogin" @click="logout" prepend-icon="mdi-logout" base-color="red-lighten-1">退出登录
+      <v-list-item v-if="settingStore.isLogin" @click="logout" color="red-lighten-1" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="red-lighten-1" size="30">
+            <v-icon color="white" class="text-body-1">mdi-logout</v-icon>
+          </v-avatar>
+        </template>
+        退出登录
       </v-list-item>
-      <v-list-item v-else @click="loginDialog=true" :active="false" prepend-icon="mdi-login" base-color="indigo">
+      <v-list-item v-else @click="loginDialog=true" :active="loginDialog" color="indigo" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="indigo" size="30">
+            <v-icon color="white" class="text-body-1">mdi-login</v-icon>
+          </v-avatar>
+        </template>
         登录
       </v-list-item>
 

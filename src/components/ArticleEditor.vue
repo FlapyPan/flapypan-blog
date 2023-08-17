@@ -4,9 +4,10 @@ import { ref } from 'vue'
 import { api, API_URL } from '@/api'
 import { MdEditor } from 'md-editor-v3'
 import { useThemeStore } from '@/store/theme'
+import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
 
 const props = defineProps({
-  articleData: {type: Object},
+  articleData: { type: Object },
 })
 
 const emits = defineEmits(['submit'])
@@ -21,8 +22,8 @@ const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData.id
 // 编辑的草稿存放在 LocalStorage
 const makeDraft = () => {
   if (!isNewArticle
-    && localStorage.getItem(storageKey)
-    && !window.confirm('读取到上次编辑的内容，是否继续？')) {
+      && localStorage.getItem(storageKey)
+      && !window.confirm('读取到上次编辑的内容，是否继续？')) {
     localStorage.removeItem(storageKey)
   }
   return useLocalStorage(storageKey, props.articleData ?? {
@@ -49,14 +50,14 @@ const getTagList = async () => {
   tagData.value = tags.map((tag) => tag.name)
   // 去除无效标签
   draft.value.tagNames = draft.value.tagNames
-    .filter((tagName) => tagData.value.includes(tagName))
+      .filter((tagName) => tagData.value.includes(tagName))
 }
 getTagList()
 /// endregion 标签数据
 
 // 编辑器相关错误信息
 const editorError = ref(null)
-const catchEditorError = ({message}) => editorError.value = message
+const catchEditorError = ({ message }) => editorError.value = message
 
 /// region 图片上传
 // 图片压缩

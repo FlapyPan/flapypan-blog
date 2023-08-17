@@ -4,13 +4,13 @@ import pinia from '@/store'
 import router from '@/router'
 import { createVuetify } from 'vuetify'
 import { zhHans } from 'vuetify/locale'
-import { md3 } from 'vuetify/blueprints'
 import colors from 'vuetify/lib/util/colors'
+import 'md-editor-v3/lib/style.css'
+import './main.css'
 
 const app = createApp(App)
 
 const vuetify = createVuetify({
-  blueprint: md3,
   locale: {
     locale: 'zhHans',
     messages: { zhHans },
@@ -36,13 +36,13 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          surface: '#f7f7f8',
+          surface: '#f3f6fc',
           primary: colors.green.lighten1,
         },
       },
       dark: {
         colors: {
-          surface: '#1e1e20',
+          surface: '#2d2f31',
           primary: colors.green.lighten1,
         },
       },

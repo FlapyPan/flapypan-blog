@@ -1,13 +1,17 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingStore } from '@/store/setting'
 import { useDateFormat, useTitle } from '@vueuse/core'
 import { api } from '@/api'
 import ArticleReader from '@/components/ArticleReader.vue'
-import ArticleEditor from '@/components/ArticleEditor.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
 import colorMap from '@/utils/color-map'
+
+// 异步的编辑器组件
+const ArticleEditor = defineAsyncComponent(() =>
+    import('@/components/ArticleEditor.vue'),
+)
 
 const router = useRouter()
 const settingStore = useSettingStore()
@@ -32,8 +36,9 @@ const articleDataError = ref(null)
 const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
+  articleData.value = null
   try {
-    articleData.value = await api(`/article/${ path.value }`)
+    articleData.value = await api(`/article/${path.value}`)
   } catch (e) {
     console.error(e)
     articleDataError.value = e.message
@@ -62,7 +67,7 @@ const deleteArticle = async () => {
   deleting.value = true
   deleteError.value = null
   try {
-    await api(`/article/${ articleData.value.id }`, 'DELETE')
+    await api(`/article/${articleData.value.id}`, 'DELETE')
     await router.replace('/archive')
   } catch (e) {
     console.error(e)
@@ -87,12 +92,12 @@ const onSaveArticle = (newPath) => {
   // 如果没有修改路径，直接刷新
   if (lastPath === newPath) return router.go(0)
   // 修改了路径就跳转过去
-  return router.replace(`/${ newPath }`)
+  return router.replace(`/${newPath}`)
 }
 /// endregion 文章编辑
 
 /// 处理网页标题
-const title = computed(() => `${ articleData.value?.title ?? '文章' } - ${ settingStore.settings?.siteTitle ?? '博客' }`)
+const title = computed(() => `${articleData.value?.title ?? '文章'} - ${settingStore.settings?.siteTitle ?? '博客'}`)
 useTitle(title)
 
 </script>
