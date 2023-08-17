@@ -8,10 +8,10 @@ const scrollElement = document.documentElement
 const themeStore = useThemeStore()
 
 const props = defineProps({
-  data: {type: Object},
+  data: { type: Object },
 })
 
-const {mobile} = useDisplay()
+const { mobile } = useDisplay()
 const catalogDrawer = ref(!mobile.value)
 
 </script>
@@ -21,7 +21,7 @@ const catalogDrawer = ref(!mobile.value)
     <MdPreview editor-id="read" :modelValue="data?.content ?? ''" preview-theme="default" codeTheme="gradient"
                :theme="themeStore.isDark?'dark':'light'" />
 
-    <v-navigation-drawer v-if="data" v-model="catalogDrawer" location="right">
+    <v-navigation-drawer v-if="data" v-model="catalogDrawer" border="none" location="right">
       <div class="ml-4 my-4">
         <MdCatalog :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read"
                    :theme="themeStore.isDark?'dark':'light'" />

@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import { api } from '@/api'
 import { ref } from 'vue'
+import { useDisplay } from 'vuetify'
 
 export const useSettingStore = defineStore('setting', () => {
+
+  const { mobile } = useDisplay()
+  const sideBarOpened = ref(!mobile.value)
 
   const isLogin = ref(!!localStorage.getItem('token'))
   api(`/auth`).then((data) => isLogin.value = !!data)
@@ -29,5 +33,5 @@ export const useSettingStore = defineStore('setting', () => {
   api(`/link`).then(setLinks)
 
 
-  return {isLogin, settings, links, setLinks}
+  return { sideBarOpened, isLogin, settings, links, setLinks }
 })

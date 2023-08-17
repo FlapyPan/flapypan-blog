@@ -3,10 +3,10 @@ import { ref, watch } from 'vue'
 import ArticleCard from '@/components/ArticleCard.vue'
 
 const props = defineProps({
-  articleData: {type: Object},
-  page: {type: Number},
-  cols: {default: 12},
-  mdCols: {default: '6'},
+  articleData: { type: Object },
+  page: { type: Number },
+  cols: { default: 12 },
+  mdCols: { default: '6' },
 })
 
 const emits = defineEmits(['onPage', 'onRoute'])
@@ -17,7 +17,7 @@ watch(page, () => emits('onPage', page.value))
 </script>
 
 <template>
-  <v-row dense>
+  <v-row>
     <v-col v-for="a in articleData?.content ?? []" :key="a.id" :cols="cols" :md="mdCols">
       <article-card :article="a" @on-route="emits('onRoute')" />
     </v-col>

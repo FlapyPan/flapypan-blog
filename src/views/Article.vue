@@ -33,7 +33,7 @@ const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
   try {
-    articleData.value = await api(`/article/${path.value}`)
+    articleData.value = await api(`/article/${ path.value }`)
   } catch (e) {
     console.error(e)
     articleDataError.value = e.message
@@ -62,7 +62,7 @@ const deleteArticle = async () => {
   deleting.value = true
   deleteError.value = null
   try {
-    await api(`/article/${articleData.value.id}`, 'DELETE')
+    await api(`/article/${ articleData.value.id }`, 'DELETE')
     await router.replace('/archive')
   } catch (e) {
     console.error(e)
@@ -78,7 +78,7 @@ const editData = ref({})
 const isEdit = ref(false)
 const openEdit = () => {
   // 打开编辑器前处理标签
-  editData.value = {...articleData.value, tagNames: articleData.value.tags?.map((tag) => tag.name) ?? []}
+  editData.value = { ...articleData.value, tagNames: articleData.value.tags?.map((tag) => tag.name) ?? [] }
   isEdit.value = true
 }
 // 保存文章后的回调
@@ -87,12 +87,12 @@ const onSaveArticle = (newPath) => {
   // 如果没有修改路径，直接刷新
   if (lastPath === newPath) return router.go(0)
   // 修改了路径就跳转过去
-  return router.replace(`/${newPath}`)
+  return router.replace(`/${ newPath }`)
 }
 /// endregion 文章编辑
 
 /// 处理网页标题
-const title = computed(() => `${articleData.value?.title ?? '文章'} - ${settingStore.settings?.siteTitle ?? '博客'}`)
+const title = computed(() => `${ articleData.value?.title ?? '文章' } - ${ settingStore.settings?.siteTitle ?? '博客' }`)
 useTitle(title)
 
 </script>
@@ -112,9 +112,9 @@ useTitle(title)
     </div>
     <v-container v-else style="max-width: 900px;">
       <v-container>
-        <v-card class="mt-2" border>
+        <v-card class="mt-2">
           <v-img class="text-white align-end"
-                 :src="articleData?.cover" cover gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)" height="200px">
+                 :src="articleData?.cover" cover gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)" height="160px">
             <template v-slot:error>
               <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"
                      gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)"></v-img>

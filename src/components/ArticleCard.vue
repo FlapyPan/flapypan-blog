@@ -20,10 +20,10 @@ const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
   <router-link :to="`/${article.path}`" @click="emits('onRoute')"
                class="text-decoration-none cover-link">
     <v-hover v-slot="{ isHovering, props }">
-      <v-card v-bind="props" border="sm" v-ripple>
+      <v-card v-bind="props" v-ripple>
 
         <div class="cover-container">
-          <v-img height="100" :src="article.cover" class="cover" cover>
+          <v-img height="160px" :src="article.cover" cover class="cover">
             <template v-slot:error>
               <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"></v-img>
             </template>
@@ -59,7 +59,7 @@ const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
 
 <style scoped>
 .cover-container {
-  height: 100px;
+  height: 160px;
   overflow: hidden;
 }
 
