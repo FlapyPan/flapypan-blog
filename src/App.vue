@@ -91,11 +91,7 @@ useFavicon(favicon)
     <side-bar></side-bar>
 
     <v-main>
-      <router-view v-slot="{ Component }">
-        <transition name="page" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <router-view></router-view>
       <footer class="text-center pt-2 pb-3 text-body-2 text-medium-emphasis">
         {{ settingStore.settings?.footer }}
       </footer>

@@ -33,14 +33,3 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
 .md-editor .default-theme blockquote {
   border-left: 5px solid rgb(var(--v-theme-primary)) !important;
 }
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s ease-in-out;
-}
-
-.page-enter-from,
-.page-leave-to {
-  filter: blur(1rem);
-  opacity: 0;
-}
