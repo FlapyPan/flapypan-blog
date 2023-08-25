@@ -22,8 +22,8 @@ const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData.id
 // 编辑的草稿存放在 LocalStorage
 const makeDraft = () => {
   if (!isNewArticle
-      && localStorage.getItem(storageKey)
-      && !window.confirm('读取到上次编辑的内容，是否继续？')) {
+    && localStorage.getItem(storageKey)
+    && !window.confirm('读取到上次编辑的内容，是否继续？')) {
     localStorage.removeItem(storageKey)
   }
   return useLocalStorage(storageKey, props.articleData ?? {
@@ -50,7 +50,7 @@ const getTagList = async () => {
   tagData.value = tags.map((tag) => tag.name)
   // 去除无效标签
   draft.value.tagNames = draft.value.tagNames
-      .filter((tagName) => tagData.value.includes(tagName))
+    .filter((tagName) => tagData.value.includes(tagName))
 }
 getTagList()
 /// endregion 标签数据
@@ -145,7 +145,8 @@ const saveArticle = async () => {
       <v-alert rounded="lg" :text="editorError" type="error"></v-alert>
     </v-container>
     <MdEditor editor-id="edit" v-model="draft.content" @onUploadImg="onUploadImg" @onError="catchEditorError"
-              preview-theme="default" codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" />
+              preview-theme="default" codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'"
+              :noImgZoomIn="false" />
     <v-row class="mt-4">
       <v-col cols="12" class="px-12">
         <v-alert v-show="saveError" rounded="lg" :text="saveError" type="error"></v-alert>

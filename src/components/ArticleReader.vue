@@ -36,7 +36,7 @@ onBeforeRouteLeave(async () => {
 <template>
   <v-container class="markdown px-0">
     <MdPreview editor-id="read" :modelValue="data?.content ?? ''" preview-theme="default" codeTheme="gradient"
-               :theme="themeStore.isDark?'dark':'light'" />
+               :theme="themeStore.isDark?'dark':'light'" :noImgZoomIn="false" />
 
     <v-navigation-drawer v-model="catalogDrawer" border="none" location="right">
       <div class="ml-4 my-4">
