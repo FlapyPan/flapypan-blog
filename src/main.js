@@ -24,7 +24,7 @@ const vuetify = createVuetify({
       rounded: true,
     },
     VCard: {
-      rounded: 'xl',
+      rounded: 'lg',
       elevation: 0,
     },
     VTextField: {

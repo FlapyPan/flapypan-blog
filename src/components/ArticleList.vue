@@ -2,7 +2,7 @@
 import colorMap from '@/utils/color-map'
 
 defineProps({
-  articleList: {type: Array},
+  articleList: { type: Array },
 })
 const emits = defineEmits(['onRoute'])
 
@@ -18,7 +18,7 @@ const formatDate = (s) => {
 </script>
 
 <template>
-  <v-list rounded="xl">
+  <v-list rounded="lg">
     <template v-for="{year,list} in articleList ?? []" :key="year">
       <v-list-item><h3 class="ml-3 mt-4">{{ year }}</h3></v-list-item>
       <v-list-item class="ma-3 py-3" rounded="xl" v-for="{title,createDate,path,tags} in list" :to="`/${path}`"

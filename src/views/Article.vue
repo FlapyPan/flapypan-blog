@@ -1,5 +1,5 @@
 <script setup>
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingStore } from '@/store/setting'
 import { useDateFormat, useTitle } from '@vueuse/core'
@@ -33,12 +33,21 @@ const path = computed(() => router.currentRoute.value?.params['path'] ?? '')
 const fetchingArticleData = ref(false)
 const articleData = ref(null)
 const articleDataError = ref(null)
+let accessCountInterval = 0
+const accessCount = ref(0)
+const getAccessCount = async () => {
+  clearInterval(accessCountInterval)
+  accessCount.value = await api(`/access/article/${articleData.value.id}`)
+  accessCountInterval = setInterval(getAccessCount, 10000)
+}
+onBeforeUnmount(() => clearInterval(accessCountInterval))
 const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
   articleData.value = null
   try {
     articleData.value = await api(`/article/${path.value}`)
+    await getAccessCount()
   } catch (e) {
     console.error(e)
     articleDataError.value = e.message
@@ -117,51 +126,48 @@ useTitle(title)
     </div>
     <v-container v-else style="max-width: 900px;">
       <v-container>
-        <v-card class="mt-2">
-          <v-img class="text-white align-end"
-                 :src="articleData?.cover" cover gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)" height="160px">
-            <template v-slot:error>
-              <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"
-                     gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)"></v-img>
+        <v-img class="text-white align-end rounded-lg"
+               :src="articleData?.cover" cover gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)" height="160px">
+          <template v-slot:error>
+            <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"
+                   gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)"></v-img>
+          </template>
+          <v-card-title>{{ articleData?.title }}</v-card-title>
+        </v-img>
+        <div class="d-flex flex-wrap mt-4" style="gap: 6px">
+          <v-chip v-for="tag in articleData?.tags || []" :to="`/tag/${tag.name}`" :color="colorMap(tag.name)">
+            {{ tag.name }}
+          </v-chip>
+          <v-spacer></v-spacer>
+          <v-btn v-if="settingStore.isLogin" @click="openEdit" color="primary" size="small" variant="text">
+            <v-icon>mdi-pencil</v-icon>
+            编辑
+          </v-btn>
+          <v-dialog v-if="settingStore.isLogin" v-model="deleteDialog" width="auto">
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props" color="red" size="small" variant="text">
+                <v-icon>mdi-delete</v-icon>
+                删除
+              </v-btn>
             </template>
-            <v-card-title>{{ articleData?.title }}</v-card-title>
-          </v-img>
-          <div class="mt-4 mx-2 d-flex flex-wrap">
-            <v-chip class="ml-2" v-for="tag in articleData?.tags || []"
-                    :to="`/tag/${tag.name}`" :color="colorMap(tag.name)">
-              {{ tag.name }}
-            </v-chip>
-          </div>
-          <v-card-actions v-show="articleData?.title" class="d-flex flex-wrap">
-            <p class="mx-2">创建时间: {{ formattedCreateDate }}</p>
-            <p class="mx-2">修改时间: {{ formattedUpdateDate }}</p>
-            <v-spacer></v-spacer>
-            <v-menu v-if="settingStore.isLogin">
-              <template v-slot:activator="{ props }">
-                <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
-              </template>
-              <v-list elevation="2" density="compact">
-                <v-list-item @click="openEdit" title="编辑"></v-list-item>
-                <v-dialog v-model="deleteDialog" width="auto">
-                  <template v-slot:activator="{ props }">
-                    <v-list-item v-bind="props" title="删除"></v-list-item>
-                  </template>
-                  <v-card>
-                    <v-card-text>
-                      确认删除此文章 "{{ articleData.title }}" ?
-                    </v-card-text>
-                    <v-card-item v-show="deleteError">
-                      <v-alert rounded="lg" :text="deleteError" type="error"></v-alert>
-                    </v-card-item>
-                    <v-card-actions>
-                      <v-btn color="red-lighten-2" block @click="deleteArticle" :loading="deleting">确认删除</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-list>
-            </v-menu>
-          </v-card-actions>
-        </v-card>
+            <v-card>
+              <v-card-text>
+                确认删除此文章 "{{ articleData.title }}" ?
+              </v-card-text>
+              <v-card-item v-show="deleteError">
+                <v-alert rounded="lg" :text="deleteError" type="error"></v-alert>
+              </v-card-item>
+              <v-card-actions>
+                <v-btn color="red-lighten-2" block @click="deleteArticle" :loading="deleting">确认删除</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <div v-show="articleData?.title" class="d-flex flex-wrap mt-4 justify-center">
+          <p class="mx-2 text-body-2">阅读: {{ accessCount }}</p>
+          <p class="mx-2 text-body-2">创建: {{ formattedCreateDate }}</p>
+          <p class="mx-2 text-body-2">修改: {{ formattedUpdateDate }}</p>
+        </div>
       </v-container>
       <v-progress-linear v-show="fetchingArticleData" class="mt-4" color="primary" indeterminate></v-progress-linear>
       <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>

@@ -27,14 +27,13 @@ const getArticleData = async () => {
 getArticleData()
 /// endregion 文章数据
 
-useTitle(`主页 - ${ settingStore.settings?.siteTitle ?? '博客' }`)
+useTitle(`主页 - ${settingStore.settings?.siteTitle ?? '博客'}`)
 
 </script>
 
 <template>
   <v-container>
-    <v-img class="w-100 mt-3 rounded-xl" style="height: 240px" cover :src="settingStore.settings?.banner"
-    ></v-img>
+    <v-img class="w-100 mt-3 rounded-lg" style="height: 240px" cover :src="settingStore.settings?.banner"></v-img>
     <h3 class="mb-3 mt-6">最近更新</h3>
     <v-progress-linear v-show="fetchingArticleData" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>

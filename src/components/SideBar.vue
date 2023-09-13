@@ -3,8 +3,10 @@ import { reactive, ref } from 'vue'
 import { useSettingStore } from '@/store/setting'
 import router from '@/router'
 import { api } from '@/api'
+import { useAccessStore } from '@/store/access'
 
 const settingStore = useSettingStore()
+const accessStore = useAccessStore()
 
 /// region 登录
 const loginDialog = ref(false)
@@ -142,6 +144,25 @@ const logout = () => {
           </v-avatar>
         </template>
         登录
+      </v-list-item>
+
+      <v-divider class="mb-2"></v-divider>
+      <v-list-subheader>统计信息</v-list-subheader>
+
+      <v-list-item color="cyan" title="今日阅读量" :subtitle="accessStore.baseInfo.today">
+        <template v-slot:prepend>
+          <v-avatar color="cyan" size="30">
+            <v-icon color="white" class="text-body-1">mdi-book-open</v-icon>
+          </v-avatar>
+        </template>
+      </v-list-item>
+
+      <v-list-item color="pink" title="总阅读量" :subtitle="accessStore.baseInfo.all">
+        <template v-slot:prepend>
+          <v-avatar color="pink" size="30">
+            <v-icon color="white" class="text-body-1">mdi-book-open</v-icon>
+          </v-avatar>
+        </template>
       </v-list-item>
 
     </v-list>

@@ -50,7 +50,7 @@ useFavicon(favicon)
   <v-app>
     <v-dialog v-model="searchDialog" width="95vw" max-width="800px"
               transition="dialog-top-transition" scrollable>
-      <div class="rounded-xl" style="background-color: rgb(var(--v-theme-background));">
+      <div class="rounded-lg" style="background-color: rgb(var(--v-theme-background));">
         <v-toolbar color="transparent">
           <v-btn icon dark @click="searchDialog=false">
             <v-icon>mdi-close</v-icon>
