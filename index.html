@@ -16,10 +16,40 @@
         href="https://cdn.staticfile.org/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css" />
   <!-- Vuetify css -->
   <link rel="stylesheet" href="https://cdn.staticfile.org/vuetify/3.3.15/vuetify.min.css" />
+  <style>
+    #ld {
+      background-color: rgba(255, 255, 255, 0.5);
+      -webkit-backdrop-filter: blur(1em);
+      backdrop-filter: blur(1em);
+      box-sizing: border-box;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    #ld:before {
+      content: "";
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #66BB6A;
+      border-radius: 100%;
+      width: 50px;
+      height: 50px;
+      animation: spin 0.5s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
   <title>FlapyPan's Blog</title>
 </head>
 
 <body>
+<div id="ld"></div>
 <div id="app"></div>
 <script type="module" src="/src/main.js"></script>
 <!-- 加载评论插件 -->

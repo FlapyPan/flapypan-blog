@@ -26,7 +26,11 @@ export const useSettingStore = defineStore('setting', () => {
     giscusCategory: '',
     giscusCategoryId: '',
   })
-  api(`/setting`).then((data) => settings.value = data)
+  api(`/setting`).then((data) => {
+    settings.value = data
+    // 去除加载动画
+    document.querySelector('#ld').remove()
+  })
 
   const links = ref([])
   const setLinks = (data) => links.value = data
