@@ -8,6 +8,15 @@ import colors from 'vuetify/lib/util/colors'
 import 'md-editor-v3/lib/style.css'
 import './main.css'
 
+// 注册 Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Service Worker 注册成功'))
+    .catch((error) => console.log('Service Worker 注册失败:', error))
+} else {
+  console.warn('当前浏览器不支持 Service Worker')
+}
+
 const app = createApp(App)
 
 const vuetify = createVuetify({
