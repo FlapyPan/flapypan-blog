@@ -1,6 +1,5 @@
 <script setup>
 import { computed } from 'vue'
-import 'giscus'
 import { useThemeStore } from '@/store/theme'
 import { useSettingStore } from '@/store/setting'
 

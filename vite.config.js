@@ -5,13 +5,13 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // Utilities
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
-import autoprefixer from 'autoprefixer'
+import postcssPresetEnv from 'postcss-preset-env'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     target: 'modules',
-    modulePreload: {polyfill: true},
+    modulePreload: { polyfill: true },
     chunkSizeWarningLimit: 1024,
     cssCodeSplit: false,
   },
@@ -33,11 +33,15 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-        autoprefixer({}), // add options if needed
+        postcssPresetEnv({
+          features: {
+            'nesting-rules': true,
+          },
+        }),
       ],
     },
   },
-  define: {'process.env': {}},
+  define: { 'process.env': {} },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
