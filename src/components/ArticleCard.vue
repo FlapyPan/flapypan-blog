@@ -1,5 +1,4 @@
 <script setup>
-import { useDateFormat } from '@vueuse/core'
 import { useSettingStore } from '@/store/setting'
 import { computed } from 'vue'
 import colorMap from '@/utils/color-map'
@@ -11,8 +10,16 @@ const emits = defineEmits(['onRoute'])
 
 const settingStore = useSettingStore()
 
-const updateDate = computed(() => props.article.updateDate)
-const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
+const formatter = new Intl.DateTimeFormat(
+    'zh-CN',
+    {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      timeZone: 'Asia/ShangHai',
+    },
+)
+const formattedDate = computed(() => formatter.format(Date.parse(props.article.updateDate) ?? Date.now()))
 
 </script>
 
@@ -23,13 +30,12 @@ const formattedDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm')
       <v-card v-bind="props" v-ripple>
 
         <div class="cover-container">
-          <v-img height="160px" :src="article.cover" cover class="cover">
+          <v-img height="100%" width="100%" :src="article.cover" cover class="cover">
             <template v-slot:error>
-              <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"></v-img>
+              <v-img height="100%" width="100%" cover :src="settingStore.settings.banner"></v-img>
             </template>
           </v-img>
         </div>
-
         <v-card-title class="article-title">{{ article.title }}</v-card-title>
 
         <v-card-item>

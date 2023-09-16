@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useSettingStore } from '@/store/setting'
-import { useTitle } from '@vueuse/core'
 import ArticleCard from '@/components/ArticleCard.vue'
 import { api } from '@/api'
 import GiscusCard from '@/components/GiscusCard.vue'
@@ -27,18 +26,18 @@ const getArticleData = async () => {
 getArticleData()
 /// endregion 文章数据
 
-useTitle(`主页 - ${settingStore.settings?.siteTitle ?? '博客'}`)
+document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
 
 </script>
 
 <template>
   <v-container>
-    <v-img class="w-100 mt-3 rounded-lg" style="height: 240px" cover :src="settingStore.settings?.banner"></v-img>
+    <v-img class="w-100 mt-3 rounded-lg" height="20vh" cover :src="settingStore.settings.banner"></v-img>
     <h3 class="mb-3 mt-6">最近更新</h3>
     <v-progress-linear v-show="fetchingArticleData" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
     <v-row>
-      <v-col v-for="a in articleData?.content ?? []" :key="a.id" cols="12" md="4">
+      <v-col v-for="a in articleData?.content ?? []" :key="a.id" cols="12" md="6" lg="4" xl="3">
         <article-card :article="a" />
       </v-col>
       <v-col cols="12" class="mt-2 text-center">

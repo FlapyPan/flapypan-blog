@@ -1,6 +1,5 @@
 <script setup>
-import { useLocalStorage } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { api, API_URL } from '@/api'
 import { MdEditor } from 'md-editor-v3'
 import { useThemeStore } from '@/store/theme'
@@ -22,16 +21,34 @@ const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData.id
 // 编辑的草稿存放在 LocalStorage
 const makeDraft = () => {
   if (!isNewArticle
-    && localStorage.getItem(storageKey)
-    && !window.confirm('读取到上次编辑的内容，是否继续？')) {
+      && localStorage.getItem(storageKey)
+      && !window.confirm('读取到上次编辑的内容，是否继续？')) {
     localStorage.removeItem(storageKey)
   }
-  return useLocalStorage(storageKey, props.articleData ?? {
-    title: '',
-    path: '',
-    cover: '',
-    content: '',
-    tagNames: [],
+  return computed({
+    get: () => {
+      let storageValue = localStorage.getItem(storageKey)
+      if (storageValue == null) {
+        localStorage.setItem(storageKey, JSON.stringify(props.articleData ?? {
+          title: '',
+          path: '',
+          cover: '',
+          content: '',
+          tagNames: [],
+        }))
+        storageValue = localStorage.getItem(storageKey)
+      }
+      return JSON.parse(storageValue)
+    },
+    set: (val) => {
+      localStorage.setItem(storageKey, JSON.stringify(val ?? {
+        title: '',
+        path: '',
+        cover: '',
+        content: '',
+        tagNames: [],
+      }))
+    },
   })
 }
 const draft = makeDraft()
@@ -50,7 +67,7 @@ const getTagList = async () => {
   tagData.value = tags.map((tag) => tag.name)
   // 去除无效标签
   draft.value.tagNames = draft.value.tagNames
-    .filter((tagName) => tagData.value.includes(tagName))
+      .filter((tagName) => tagData.value.includes(tagName))
 }
 getTagList()
 /// endregion 标签数据

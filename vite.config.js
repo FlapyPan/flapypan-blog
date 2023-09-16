@@ -14,6 +14,14 @@ export default defineConfig({
     modulePreload: { polyfill: true },
     chunkSizeWarningLimit: 1024,
     cssCodeSplit: false,
+    rollupOptions: {
+      output: {
+        // 自定义分包逻辑
+        manualChunks: (id) => {
+          if (id.includes('codemirror/legacy-modes')) return 'codemirror-legacy-modes'
+        },
+      },
+    },
   },
   plugins: [
     vue({
@@ -34,6 +42,7 @@ export default defineConfig({
     postcss: {
       plugins: [
         postcssPresetEnv({
+          browsers: ['Chrome >= 87', 'Firefox >= 78', 'Safari >= 14', 'Edge >= 88'],
           features: {
             'nesting-rules': true,
           },

@@ -2,7 +2,6 @@
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSettingStore } from '@/store/setting'
-import { useDateFormat, useTitle } from '@vueuse/core'
 import { api } from '@/api'
 import ArticleReader from '@/components/ArticleReader.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
@@ -63,10 +62,22 @@ watch(path, () => {
 /// endregion 文章数据
 
 /// 格式化时间
-const createDate = computed(() => articleData.value?.createDate)
-const formattedCreateDate = useDateFormat(createDate, 'YYYY-MM-DD HH:mm:ss')
-const updateDate = computed(() => articleData.value?.updateDate)
-const formattedUpdateDate = useDateFormat(updateDate, 'YYYY-MM-DD HH:mm:ss')
+const formatter = new Intl.DateTimeFormat(
+    'zh-CN',
+    {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/ShangHai',
+    },
+)
+const formattedCreateDate = computed(() =>
+    formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
+const formattedUpdateDate = computed(() =>
+    formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
 
 /// region 文章删除
 const deleteDialog = ref(false)
@@ -107,7 +118,7 @@ const onSaveArticle = (newPath) => {
 
 /// 处理网页标题
 const title = computed(() => `${articleData.value?.title ?? '文章'} - ${settingStore.settings?.siteTitle ?? '博客'}`)
-useTitle(title)
+watch(title, (val) => document.title = val)
 
 </script>
 
@@ -127,9 +138,9 @@ useTitle(title)
     <v-container v-else style="max-width: 900px;">
       <v-container>
         <v-img class="text-white align-end rounded-lg"
-               :src="articleData?.cover" cover gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)" height="160px">
+               :src="articleData?.cover" cover height="30vh" gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)">
           <template v-slot:error>
-            <v-img height="100%" width="100%" cover :src="settingStore.settings?.banner"
+            <v-img height="100%" width="100%" cover :src="settingStore.settings.banner"
                    gradient="to top, rgba(0,0,0,0.5), rgba(0,0,0,0.1)"></v-img>
           </template>
           <v-card-title>{{ articleData?.title }}</v-card-title>

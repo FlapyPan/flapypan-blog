@@ -1,9 +1,8 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { useSettingStore } from '@/store/setting'
-import ArticleList from '@/components/ArticleCardList.vue'
+import ArticleCardList from '@/components/ArticleCardList.vue'
 import { api } from '@/api'
-import { useFavicon } from '@vueuse/core'
 import { useThemeStore } from '@/store/theme'
 import SideBar from '@/components/SideBar.vue'
 
@@ -40,8 +39,17 @@ watch(page, searchArticle)
 /// endregion 搜索
 
 /// region 站点图标
-const favicon = computed(() => settingStore.settings.favicon)
-useFavicon(favicon)
+watch(() => settingStore.settings.favicon, (val) => {
+  let favicon = document.querySelector('link[rel="icon"]')
+  if (favicon === null) {
+    favicon = document.createElement('link')
+    favicon.rel = 'icon'
+    favicon.href = val
+    document.head.appendChild($favicon)
+    return
+  }
+  favicon.href = val
+})
 /// endregion 站点图标
 
 </script>
@@ -60,8 +68,8 @@ useFavicon(favicon)
         <v-container>
           <v-text-field ref="searchInput" v-model="keyword" @keydown.enter="searchArticle()"
                         label="搜索标题、分类、标签"></v-text-field>
-          <article-list :article-data="searchData" mdCols="6" :page="page" style="height: 70vh;overflow-y: auto"
-                        @on-page="(p)=>page=p" @on-route="searchDialog=false"></article-list>
+          <article-card-list :article-data="searchData" mdCols="6" :page="page" style="height: 70vh;overflow-y: auto"
+                             @on-page="(p)=>page=p" @on-route="searchDialog=false"></article-card-list>
         </v-container>
       </div>
     </v-dialog>

@@ -4,7 +4,6 @@ import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useThemeStore } from '@/store/theme'
 import { onBeforeRouteLeave } from 'vue-router'
-import sleep from '@/utils/sleep'
 
 const scrollElement = document.documentElement
 const themeStore = useThemeStore()
@@ -26,7 +25,7 @@ onBeforeRouteLeave(async () => {
   if (catalogDrawer.value) {
     // 关闭目录后再跳转，防止出现抖动
     catalogDrawer.value = false
-    await sleep(200)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
   }
   return true
 })

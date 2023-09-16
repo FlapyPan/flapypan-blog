@@ -27,7 +27,7 @@ export const useSettingStore = defineStore('setting', () => {
     giscusCategoryId: '',
   })
   api(`/setting`).then((data) => {
-    settings.value = data
+    if (data) { settings.value = data }
     // 去除加载动画
     document.querySelector('#ld').remove()
   })

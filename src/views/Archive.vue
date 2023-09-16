@@ -1,8 +1,6 @@
 <script setup>
 import { useSettingStore } from '@/store/setting'
 import { ref } from 'vue'
-import { useTitle } from '@vueuse/core'
-import ArticleList from '@/components/ArticleList.vue'
 import { api } from '@/api'
 import colorMap from '@/utils/color-map'
 import router from '@/router'
@@ -56,7 +54,7 @@ const addTag = async () => {
   addTagError.value = null
   addingTag.value = true
   try {
-    await api('/tag', 'POST', {name: newTagName.value})
+    await api('/tag', 'POST', { name: newTagName.value })
     // 添加后刷新数据
     router.go(0)
   } catch (e) {
@@ -68,7 +66,21 @@ const addTag = async () => {
 }
 /// endregion 标签添加
 
-useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
+document.title = `归档 - ${settingStore.settings?.siteTitle ?? '博客'}`
+
+// 格式化时间
+const formatter = new Intl.DateTimeFormat(
+    'zh-CN',
+    {
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'Asia/ShangHai',
+    },
+)
+const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
 </script>
 
@@ -99,7 +111,6 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
         </v-card>
       </v-menu>
     </h3>
-    <v-progress-linear v-show="fetchingTagList" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="tagListError" rounded="lg" :text="tagListError" type="error"></v-alert>
     <div class="flex-wrap d-flex mb-2">
       <template v-for="({name},i) in tagList" :key="name">
@@ -110,9 +121,35 @@ useTitle(`归档 - ${settingStore.settings?.siteTitle ?? '博客'}`)
         </v-btn>
       </template>
     </div>
-    <v-progress-linear v-show="fetchingArticleData" color="primary" indeterminate></v-progress-linear>
+    <v-progress-linear v-show="fetchingTagList || fetchingArticleData" color="primary" indeterminate>
+    </v-progress-linear>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
-    <article-list :article-list="articleData"></article-list>
+    <v-list v-show="articleData?.length > 0" rounded="lg">
+      <template v-for="{year,list} in (articleData ?? [])" :key="year">
+        <v-list-item><h3 class="ml-3 mt-4">{{ year }}</h3></v-list-item>
+        <v-list-item class="ma-3 py-3" rounded="xl" v-for="{title,createDate,path,tags} in list" :to="`/${path}`">
+          <template #title>
+            <v-row dense>
+              <v-col cols="12" sm="10">
+                <v-row dense>
+                  <v-col cols="12" lg="4"><span class="mr-2">{{ title }}</span></v-col>
+                  <v-col align-self="stretch">
+                    <div class="d-flex align-center">
+                      <v-chip class="mr-1" size="small" v-for="tag in (tags ?? [])" :to="`/tag/${tag.name}`"
+                              :color="colorMap(tag.name)">
+                        {{ tag.name }}
+                      </v-chip>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-spacer></v-spacer>
+              <v-col>{{ formatDate(createDate) }}</v-col>
+            </v-row>
+          </template>
+        </v-list-item>
+      </template>
+    </v-list>
   </v-container>
 </template>
 

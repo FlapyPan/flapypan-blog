@@ -1,9 +1,8 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import ArticleList from '@/components/ArticleCardList.vue'
+import ArticleCardList from '@/components/ArticleCardList.vue'
 import { useSettingStore } from '@/store/setting'
-import { useTitle } from '@vueuse/core'
 import { api } from '@/api'
 import colorMap from '@/utils/color-map'
 
@@ -94,7 +93,7 @@ watch(page, fetchArticle)
 /// endregion 切换 tag 时的监听
 
 const title = computed(() => `${tag.value ?? '标签'} - ${settingStore.settings?.siteTitle ?? '博客'}`)
-useTitle(title)
+watch(title, (val) => document.title = val)
 
 </script>
 
@@ -150,7 +149,8 @@ useTitle(title)
     </h2>
     <v-progress-linear v-show="isFetchingArticle" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="fetchArticleError" rounded="lg" :text="fetchArticleError" type="error"></v-alert>
-    <article-list :article-data="articleData" cols="12" md-cols="6" :page="page" @on-page="(p)=>page=p"></article-list>
+    <article-card-list :article-data="articleData" cols="12" md-cols="6" :page="page" @on-page="(p)=>page=p">
+    </article-card-list>
   </v-container>
 </template>
 

@@ -2,7 +2,6 @@
 import { useSettingStore } from '@/store/setting'
 import { computed, ref, watch } from 'vue'
 import { api } from '@/api'
-import { useTitle } from '@vueuse/core'
 
 const settingStore = useSettingStore()
 
@@ -50,7 +49,7 @@ watch(page, () => fetchArticle(false))
 
 const addPath = (article) => {
   if (settingStore.links.find((a) => a.name === article.title)) return
-  settingStore.links.push({name: article.title, url: article.path})
+  settingStore.links.push({ name: article.title, url: article.path })
 }
 
 const savingLinks = ref(false)
@@ -70,17 +69,19 @@ const saveLinks = async () => {
 /// endregion 搜索添加文章
 
 // 格式化时间
-const formatDate = (s) => {
-  const date = new Date(s)
-  const month = `${(date.getMonth() + 1)}`.padStart(2, '0')
-  const day = `${date.getDate()}`.padStart(2, '0')
-  const hours = `${date.getHours()}`.padStart(2, '0')
-  const minutes = `${date.getMinutes()}`.padStart(2, '0')
-  return `${month}-${day} ${hours}:${minutes}`
-}
+const formatter = new Intl.DateTimeFormat(
+    'zh-CN',
+    {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      timeZone: 'Asia/ShangHai',
+    },
+)
+const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
 const title = computed(() => `设置 - ${settingStore.settings?.siteTitle ?? '博客'}`)
-useTitle(title)
+watch(title, (val) => document.title = val)
 
 </script>
 
@@ -88,8 +89,8 @@ useTitle(title)
   <v-container>
     <v-row>
       <v-col cols="12">
-        <v-alert color="primary" text="注意：只有点击对应的保存按钮后才会保存至服务器" type="info"
-                 variant="tonal"></v-alert>
+        <v-alert color="primary" text="注意：只有点击对应的保存按钮后才会保存至服务器" type="info" variant="tonal">
+        </v-alert>
       </v-col>
       <v-col cols="12">
         <h2>博客设置</h2>
@@ -107,8 +108,8 @@ useTitle(title)
         <v-text-field v-model.trim="settingStore.settings.footer" label="站点底部信息"></v-text-field>
       </v-col>
       <v-col cols="12" md="6">
-        <v-text-field type="number" v-model.trim="settingStore.settings.pageSize"
-                      label="分页加载的每页数量"></v-text-field>
+        <v-text-field type="number" v-model.trim="settingStore.settings.pageSize" label="分页加载的每页数量">
+        </v-text-field>
       </v-col>
       <v-col cols="12">
         <h3>个人信息</h3>
@@ -159,20 +160,20 @@ useTitle(title)
         </v-chip>
       </v-col>
       <v-col cols="12">
-        <v-text-field v-model="keyword" @keydown.enter="fetchArticle"
-                      hide-details label="搜索文章" single-line></v-text-field>
+        <v-text-field v-model="keyword" @keydown.enter="fetchArticle" hide-details label="搜索文章" single-line>
+        </v-text-field>
       </v-col>
       <v-col cols="12">
-        <v-list rounded="xl">
+        <v-list v-show="articleData?.content?.length > 0" rounded="xl">
           <v-list-item class="ma-3" rounded="xl" v-for="article in articleData?.content ?? []"
                        @click="addPath(article)">
             <template #prepend>
               <div class="d-flex align-center">
                 <span class="mr-2">{{ article.title }}</span>
-                  <v-chip class="mr-1" size="small" color="primary" v-for="tag in article.tags || []"
-                          :to="`/tag/${tag.name}`">
-                    {{ tag.name }}
-                  </v-chip>
+                <v-chip class="mr-1" size="small" color="primary" v-for="tag in article.tags || []"
+                        :to="`/tag/${tag.name}`">
+                  {{ tag.name }}
+                </v-chip>
               </div>
             </template>
             <template #append>

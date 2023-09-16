@@ -5,7 +5,7 @@ import ArticleCard from '@/components/ArticleCard.vue'
 const props = defineProps({
   articleData: { type: Object },
   page: { type: Number },
-  cols: { default: 12 },
+  cols: { default: '12' },
   mdCols: { default: '6' },
 })
 
