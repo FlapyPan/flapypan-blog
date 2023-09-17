@@ -12,7 +12,7 @@ const router = useRouter()
 const queryKeyword = computed(() => router.currentRoute.value.query['keyword'] ?? '')
 const queryPage = computed({
   get: () => +(router.currentRoute.value.query['page'] ?? 1),
-  set: (page) => router.push(`/search?keyword=${queryKeyword.value}?page=${page}`),
+  set: (page) => router.push(`/search?keyword=${queryKeyword.value}&page=${page}`),
 })
 
 const searchInput = ref(null)
