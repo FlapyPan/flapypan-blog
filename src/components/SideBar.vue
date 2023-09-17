@@ -78,14 +78,23 @@ const logout = () => {
       </v-card>
     </v-dialog>
 
-    <v-list :nav="true" density="compact">
+    <v-list :nav="true" density="comfortable">
 
-      <v-list-item class="py-2" density="comfortable" rounded="xl"
+      <v-list-item class="py-2" density="default" rounded="xl"
                    :prepend-avatar="settingStore.settings?.avatar"
                    :title="settingStore.settings?.name" :subtitle="settingStore.settings?.info"
                    to="/" :active="router.currentRoute.value.name==='Home'"
                    color="primary"
       ></v-list-item>
+
+      <v-list-item to="/search" color="light-blue" rounded="xl">
+        <template v-slot:prepend>
+          <v-avatar color="light-blue" size="30">
+            <v-icon color="white" class="text-body-1">mdi-magnify</v-icon>
+          </v-avatar>
+        </template>
+        搜索
+      </v-list-item>
 
       <v-list-item to="/archive" color="orange" rounded="xl">
         <template v-slot:prepend>
@@ -120,10 +129,10 @@ const logout = () => {
         </template>
         新文章
       </v-list-item>
-      <v-list-item v-if="settingStore.isLogin" to="/setting" color="light-blue"
+      <v-list-item v-if="settingStore.isLogin" to="/setting" color="blue"
                    rounded="xl">
         <template v-slot:prepend>
-          <v-avatar color="light-blue" size="30">
+          <v-avatar color="blue" size="30">
             <v-icon color="white" class="text-body-1">mdi-cog</v-icon>
           </v-avatar>
         </template>

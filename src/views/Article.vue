@@ -37,7 +37,7 @@ const accessCount = ref(0)
 const getAccessCount = async () => {
   clearInterval(accessCountInterval)
   accessCount.value = await api(`/access/article/${articleData.value.id}`)
-  accessCountInterval = setInterval(getAccessCount, 10000)
+  accessCountInterval = setInterval(getAccessCount, 15000)
 }
 onBeforeUnmount(() => clearInterval(accessCountInterval))
 const getArticleData = async () => {

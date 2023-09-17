@@ -1,9 +1,8 @@
 <script setup>
-import { MdCatalog, MdPreview } from 'md-editor-v3'
-import { ref } from 'vue'
-import { useDisplay } from 'vuetify'
 import { useThemeStore } from '@/store/theme'
-import { onBeforeRouteLeave } from 'vue-router'
+import { MdCatalog, MdPreview } from 'md-editor-v3'
+import { onBeforeUnmount, ref } from 'vue'
+import { useDisplay } from 'vuetify'
 
 const scrollElement = document.documentElement
 const themeStore = useThemeStore()
@@ -21,13 +20,8 @@ if (!mobile.value) {
   }, 500)
 }
 
-onBeforeRouteLeave(async () => {
-  if (catalogDrawer.value) {
-    // 关闭目录后再跳转，防止出现抖动
-    catalogDrawer.value = false
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-  }
-  return true
+onBeforeUnmount(() => {
+  catalogDrawer.value = false
 })
 
 </script>

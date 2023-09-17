@@ -1,10 +1,10 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { api } from '@/api'
 import ArticleCardList from '@/components/ArticleCardList.vue'
 import { useSettingStore } from '@/store/setting'
-import { api } from '@/api'
 import colorMap from '@/utils/color-map'
+import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const settingStore = useSettingStore()
@@ -149,7 +149,7 @@ watch(title, (val) => document.title = val)
     </h2>
     <v-progress-linear v-show="isFetchingArticle" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="fetchArticleError" rounded="lg" :text="fetchArticleError" type="error"></v-alert>
-    <article-card-list :article-data="articleData" cols="12" md-cols="6" :page="page" @on-page="(p)=>page=p">
+    <article-card-list :article-data="articleData" pageable :page="page" @on-page="(p)=>page=p">
     </article-card-list>
   </v-container>
 </template>

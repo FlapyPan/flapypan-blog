@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import { useSettingStore } from '@/store/setting'
-import ArticleCard from '@/components/ArticleCard.vue'
 import { api } from '@/api'
+import ArticleCardList from '@/components/ArticleCardList.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
+import { useSettingStore } from '@/store/setting'
+import { ref } from 'vue'
 
 const settingStore = useSettingStore()
 
@@ -36,14 +36,11 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
     <h3 class="mb-3 mt-6">最近更新</h3>
     <v-progress-linear v-show="fetchingArticleData" color="primary" indeterminate></v-progress-linear>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
-    <v-row>
-      <v-col v-for="a in articleData?.content ?? []" :key="a.id" cols="12" md="6" lg="4" xl="3">
-        <article-card :article="a" />
-      </v-col>
-      <v-col cols="12" class="mt-2 text-center">
-        <v-btn to="/archive" color="primary">前往归档查看更多</v-btn>
-      </v-col>
-    </v-row>
+    <article-card-list :article-data="articleData" :pageable="false">
+    </article-card-list>
+    <div v-show="!fetchingArticleData" class="text-center mt-6">
+      <v-btn to="/archive" color="primary">前往归档查看更多</v-btn>
+    </div>
     <giscus-card></giscus-card>
   </v-container>
 </template>
