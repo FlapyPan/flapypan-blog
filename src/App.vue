@@ -2,7 +2,7 @@
 import SideBar from '@/components/SideBar.vue'
 import { useSettingStore } from '@/store/setting'
 import { useThemeStore } from '@/store/theme'
-import { watch } from 'vue'
+import { onMounted, watch } from 'vue'
 
 const settingStore = useSettingStore()
 const themeStore = useThemeStore()
@@ -12,6 +12,9 @@ watch(() => settingStore.settings.favicon, (val) => {
   document.querySelector('link[rel="icon"]').href = val
 })
 /// endregion 站点图标
+
+// 去除加载动画
+onMounted(() => document.querySelector('#ld').remove())
 
 </script>
 

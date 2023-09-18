@@ -1,9 +1,8 @@
 <script setup>
 import { api } from '@/api'
 import ArticleCardList from '@/components/ArticleCardList.vue'
-import GiscusCard from '@/components/GiscusCard.vue'
 import { useSettingStore } from '@/store/setting'
-import { onActivated, ref } from 'vue'
+import { defineAsyncComponent, onActivated, onDeactivated, ref } from 'vue'
 import RefreshButton from '@/components/RefreshButton.vue'
 
 const settingStore = useSettingStore()
@@ -29,6 +28,12 @@ getArticleData()
 
 onActivated(() => window.scrollTo({ top: 0 }))
 
+// 异步加载评论区
+const GiscusCard = defineAsyncComponent(() => import('@/components/GiscusCard.vue'))
+const openComment = ref(false)
+// 离开页面关闭评论区
+onDeactivated(() => openComment.value = false)
+
 document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
 
 </script>
@@ -45,8 +50,9 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
     </article-card-list>
     <div v-show="!fetchingArticleData" class="text-center mt-6">
       <v-btn to="/archive" color="primary">前往归档查看更多</v-btn>
+      <v-btn class="ml-2" v-if="!openComment" @click="openComment=true" color="blue">加载主页评论</v-btn>
     </div>
-    <giscus-card></giscus-card>
+    <giscus-card v-if="openComment"></giscus-card>
   </v-container>
 </template>
 
