@@ -3,7 +3,8 @@ import { api } from '@/api'
 import ArticleCardList from '@/components/ArticleCardList.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
 import { useSettingStore } from '@/store/setting'
-import { ref } from 'vue'
+import { onActivated, ref } from 'vue'
+import RefreshButton from '@/components/RefreshButton.vue'
 
 const settingStore = useSettingStore()
 
@@ -20,11 +21,13 @@ const getArticleData = async () => {
     console.error(e)
     articleDataError.value = e.message
   } finally {
-    fetchingArticleData.value = false
+    setTimeout(() => fetchingArticleData.value = false, 1000)
   }
 }
 getArticleData()
 /// endregion 文章数据
+
+onActivated(() => window.scrollTo({ top: 0 }))
 
 document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
 
@@ -33,8 +36,10 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
 <template>
   <v-container>
     <v-img class="w-100 mt-3 rounded-lg" height="20vh" cover :src="settingStore.settings.banner"></v-img>
-    <h3 class="mb-3 mt-6">最近更新</h3>
-    <v-progress-linear v-show="fetchingArticleData" color="primary" indeterminate></v-progress-linear>
+    <h3 class="mb-3 mt-6 d-flex align-center">
+      最近更新
+      <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="getArticleData()"></refresh-button>
+    </h3>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
     <article-card-list :article-data="articleData" :pageable="false">
     </article-card-list>

@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import { api } from '@/api'
 import colorMap from '@/utils/color-map'
 import router from '@/router'
+import RefreshButton from '@/components/RefreshButton.vue'
 
 const settingStore = useSettingStore()
 
@@ -20,7 +21,7 @@ const getTagList = async () => {
     console.error(e)
     tagListError.value = e.message
   } finally {
-    fetchingTagList.value = false
+    setTimeout(() => fetchingTagList.value = false, 1000)
   }
 }
 getTagList()
@@ -39,7 +40,7 @@ const getArticleData = async () => {
     console.error(e)
     articleDataError.value = e.message
   } finally {
-    fetchingArticleData.value = false
+    setTimeout(() => fetchingArticleData.value = false, 1000)
   }
 }
 getArticleData()
@@ -86,7 +87,12 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
 <template>
   <v-container style="max-width: 1000px">
-    <h2 class="mt-6 mb-3">归档</h2>
+    <h2 class="mt-6 mb-3 d-flex align-center">
+      归档
+      <refresh-button class="ml-1" :loading="fetchingTagList || fetchingArticleData"
+                      @refresh="()=>{getTagList();getArticleData()}">
+      </refresh-button>
+    </h2>
     <h3 class="mt-6 mb-3 d-flex align-center">
       标签
       <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false">
@@ -115,14 +121,12 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
     <div class="flex-wrap d-flex mb-2">
       <template v-for="({name},i) in tagList" :key="name">
         <v-divider v-if="i!==0&&i%20===0" class="my-4" color="info"></v-divider>
-        <v-btn class="mx-1 my-2 text-none" size="small" prepend-icon="mdi-tag"
+        <v-btn class="mx-1 my-2 text-none" size="small" prepend-icon="mdi-tag" rounded="xl"
                variant="tonal" @click:close="" :to="`/tag/${name}`" :color="colorMap(name)">
           {{ name }}
         </v-btn>
       </template>
     </div>
-    <v-progress-linear v-show="fetchingTagList || fetchingArticleData" color="primary" indeterminate>
-    </v-progress-linear>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
     <v-list v-show="articleData?.length > 0" rounded="lg">
       <template v-for="{year,list} in (articleData ?? [])" :key="year">

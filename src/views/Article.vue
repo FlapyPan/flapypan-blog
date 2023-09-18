@@ -6,6 +6,7 @@ import { api } from '@/api'
 import ArticleReader from '@/components/ArticleReader.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
 import colorMap from '@/utils/color-map'
+import RefreshButton from '@/components/RefreshButton.vue'
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() =>
@@ -43,7 +44,6 @@ onBeforeUnmount(() => clearInterval(accessCountInterval))
 const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
-  articleData.value = null
   try {
     articleData.value = await api(`/article/${path.value}`)
     await getAccessCount()
@@ -51,7 +51,7 @@ const getArticleData = async () => {
     console.error(e)
     articleDataError.value = e.message
   } finally {
-    fetchingArticleData.value = false
+    setTimeout(() => fetchingArticleData.value = false, 1000)
   }
 }
 getArticleData()
@@ -145,7 +145,9 @@ watch(title, (val) => document.title = val)
           </template>
           <v-card-title>{{ articleData?.title }}</v-card-title>
         </v-img>
-        <div class="d-flex flex-wrap mt-4" style="gap: 6px">
+        <div class="d-flex flex-wrap mt-4 align-center" style="gap: 6px">
+          <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="getArticleData()">
+          </refresh-button>
           <v-chip v-for="tag in articleData?.tags || []" :to="`/tag/${tag.name}`" :color="colorMap(tag.name)">
             {{ tag.name }}
           </v-chip>
@@ -180,7 +182,6 @@ watch(title, (val) => document.title = val)
           <p class="mx-2 text-body-2">修改: {{ formattedUpdateDate }}</p>
         </div>
       </v-container>
-      <v-progress-linear v-show="fetchingArticleData" class="mt-4" color="primary" indeterminate></v-progress-linear>
       <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
       <article-reader v-show="path!==''" :data="articleData"></article-reader>
       <giscus-card v-if="!fetchingArticleData"></giscus-card>

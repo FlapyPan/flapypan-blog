@@ -26,7 +26,7 @@ const vuetify = createVuetify({
   },
   defaults: {
     VBtn: {
-      rounded: true,
+      rounded: 'lg',
       variant: 'tonal',
     },
     VChip: {
@@ -45,13 +45,13 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          surface: '#f3f6fc',
+          surface: '#f7f7f8',
           primary: colors.green.lighten1,
         },
       },
       dark: {
         colors: {
-          surface: '#2d2f31',
+          surface: '#1e1e20',
           primary: colors.green.lighten1,
         },
       },

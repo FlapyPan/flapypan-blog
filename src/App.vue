@@ -42,7 +42,12 @@ watch(() => settingStore.settings.favicon, (val) => {
     <side-bar></side-bar>
 
     <v-main>
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" :key="$route.name" v-if="$route.meta.keepAlive" />
+        </keep-alive>
+        <component :is="Component" :key="$route.name" v-if="!$route.meta.keepAlive" />
+      </router-view>
       <footer class="text-center pt-2 pb-3 text-body-2 text-medium-emphasis">
         {{ settingStore.settings?.footer }}
       </footer>
