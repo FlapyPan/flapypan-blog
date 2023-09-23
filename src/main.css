@@ -1,7 +1,8 @@
 :root {
-  --fonts-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla" !important;
-  --fonts-proportional: "LXGW WenKai Screen", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, var(--fonts-emoji) !important;
-  --fonts-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace, var(--fonts-proportional) !important;
+  color-scheme: light dark;
+  --fonts-emoji: "Noto Color Emoji", "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji";
+  --fonts-proportional: Tahoma, Helvetica, Arial, "Microsoft Yahei", "STKaiti", sans-serif, var(--fonts-emoji);
+  --fonts-monospace: Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace, var(--fonts-proportional);
 }
 
 html, body, .v-application [class*="text-"] { font-family: var(--fonts-proportional) !important; }

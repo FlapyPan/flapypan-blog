@@ -6,23 +6,16 @@ export const useThemeStore = defineStore('theme', () => {
 
   /// 主题切换
   const theme = useTheme()
-  const storageTheme = computed({
-    get: () => {
-      let storageValue = localStorage.getItem('theme')
-      if (storageValue == null) {
-        localStorage.setItem('theme', 'light')
-        return 'light'
-      }
-      return storageValue
-    },
-    set: (val) => localStorage.setItem('theme', val),
-  })
-  theme.global.name.value = storageTheme.value
   const isDark = computed(() => theme.global.current.value.dark)
+  const mediaQueryList = window.matchMedia?.('(prefers-color-scheme: dark)')
+  if (mediaQueryList.matches) {
+    theme.global.name.value = 'dark'
+  }
+  mediaQueryList?.addEventListener('change', ({ matches }) => {
+    theme.global.name.value = matches ? 'dark' : 'light'
+  })
   const toggleTheme = () => {
-    const nextTheme = isDark.value ? 'light' : 'dark'
-    theme.global.name.value = nextTheme
-    storageTheme.value = nextTheme
+    theme.global.name.value = isDark.value ? 'light' : 'dark'
   }
 
   return { isDark, toggleTheme }
