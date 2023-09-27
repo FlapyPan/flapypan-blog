@@ -1,12 +1,14 @@
 <script setup>
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { onBeforeRouteUpdate, useRouter } from 'vue-router'
 import { useSettingStore } from '@/store/setting'
 import { api } from '@/api'
-import ArticleReader from '@/components/ArticleReader.vue'
 import GiscusCard from '@/components/GiscusCard.vue'
 import colorMap from '@/utils/color-map'
 import RefreshButton from '@/components/RefreshButton.vue'
+import { useDisplay } from 'vuetify'
+import { MdCatalog, MdPreview } from 'md-editor-v3'
+import { useThemeStore } from '@/store/theme'
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() =>
@@ -15,6 +17,7 @@ const ArticleEditor = defineAsyncComponent(() =>
 
 const router = useRouter()
 const settingStore = useSettingStore()
+const themeStore = useThemeStore()
 
 /// region 自动置顶
 const top = () => {
@@ -29,7 +32,16 @@ onMounted(top)
 // 文章路径
 const path = computed(() => router.currentRoute.value?.params['path'] ?? '')
 
+/// region 文章目录开关
+const { mobile } = useDisplay()
+const catalogDrawer = ref(!mobile.value)
+onBeforeUnmount(() => {
+  catalogDrawer.value = false
+})
+/// endregion 文章目录开关
+
 /// region 文章数据
+const scrollElement = document.documentElement
 const fetchingArticleData = ref(false)
 const articleData = ref(null)
 const articleDataError = ref(null)
@@ -106,6 +118,10 @@ const openEdit = () => {
   editData.value = { ...articleData.value, tagNames: articleData.value.tags?.map((tag) => tag.name) ?? [] }
   isEdit.value = true
 }
+onBeforeRouteUpdate(() => {
+  isEdit.value = false
+  return true
+})
 // 保存文章后的回调
 const onSaveArticle = (newPath) => {
   const lastPath = path.value
@@ -183,7 +199,17 @@ watch(title, (val) => document.title = val)
         </div>
       </v-container>
       <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
-      <article-reader v-show="path!==''" :data="articleData"></article-reader>
+      <v-container v-if="articleData?.id > 0" class="markdown px-0">
+        <MdPreview editor-id="read" :modelValue="articleData?.content ?? ''" preview-theme="default"
+                   codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" :noImgZoomIn="false" />
+        <v-navigation-drawer v-model="catalogDrawer" border="none" location="right">
+          <div class="ml-4 my-4">
+            <MdCatalog :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read"
+                       :theme="themeStore.isDark?'dark':'light'" />
+          </div>
+        </v-navigation-drawer>
+        <v-btn class="d-lg-none drawer-btn text-primary" @click="catalogDrawer=true" icon="mdi-menu"></v-btn>
+      </v-container>
       <giscus-card v-if="!fetchingArticleData"></giscus-card>
     </v-container>
   </div>

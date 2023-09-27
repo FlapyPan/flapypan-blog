@@ -1,12 +1,22 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { onDeactivated, ref } from 'vue'
 import { api, API_URL } from '@/api'
 import { MdEditor } from 'md-editor-v3'
 import { useThemeStore } from '@/store/theme'
 import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
 
 const props = defineProps({
-  articleData: { type: Object },
+  articleData: {
+    type: Object,
+    default: () => ({
+      id: 0,
+      title: '',
+      path: '',
+      cover: '',
+      content: '',
+      tagNames: [],
+    }),
+  },
 })
 
 const emits = defineEmits(['submit'])
@@ -19,39 +29,20 @@ const isNewArticle = !(props.articleData?.id > 0)
 /// region 文章编辑持久化
 const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData.id}`
 // 编辑的草稿存放在 LocalStorage
-const makeDraft = () => {
-  if (!isNewArticle
-      && localStorage.getItem(storageKey)
-      && !window.confirm('读取到上次编辑的内容，是否继续？')) {
-    localStorage.removeItem(storageKey)
+const loadDraft = () => {
+  const storageData = localStorage.getItem(storageKey)
+  if (storageData) {
+    if (window.confirm('读取到上次编辑的内容，是否继续？')) {
+      return JSON.parse(storageData)
+    }
   }
-  return computed({
-    get: () => {
-      let storageValue = localStorage.getItem(storageKey)
-      if (storageValue == null) {
-        localStorage.setItem(storageKey, JSON.stringify(props.articleData ?? {
-          title: '',
-          path: '',
-          cover: '',
-          content: '',
-          tagNames: [],
-        }))
-        storageValue = localStorage.getItem(storageKey)
-      }
-      return JSON.parse(storageValue)
-    },
-    set: (val) => {
-      localStorage.setItem(storageKey, JSON.stringify(val ?? {
-        title: '',
-        path: '',
-        cover: '',
-        content: '',
-        tagNames: [],
-      }))
-    },
-  })
+  return props.articleData
 }
-const draft = makeDraft()
+const draft = ref(loadDraft())
+const draftPersistInterval = setInterval(() => {
+  localStorage.setItem(storageKey, JSON.stringify(draft.value))
+}, 1000)
+onDeactivated(() => clearInterval(draftPersistInterval))
 /// endregion 文章编辑持久化
 
 /// region 标签数据
