@@ -216,4 +216,14 @@ watch(title, (val) => document.title = val)
 </template>
 
 <style scoped>
+.markdown :deep(.md-editor) {
+  font-family: var(--fonts-proportional) !important;
+}
+
+.drawer-btn {
+  position: fixed;
+  right: 2rem;
+  bottom: 3rem;
+  z-index: 100;
+}
 </style>
