@@ -2,14 +2,9 @@
 
 基于 Vue 3 开发的一款简单高效的博客系统(前端页面)
 
-**本仓库为前端项目，要配合下列其中之一的后端项目使用**
+**本仓库为前端项目，要配合后端项目使用。请对应版本号，例：前端版本`v1.2.x`则后端也使用`v1.2.x`**
 
-**请对应版本号，例：前端版本`v1.2.x`则后端也使用`v1.2.x`**
-
-| 名称                     | Gitea 地址                                                 | Github 地址                                        |
-|------------------------|----------------------------------------------------------|--------------------------------------------------|
-| flapypan-blog-java(推荐) | <https://git.flapypan.top/FlapyPan/flapypan-blog-java>   | https://github.com/FlapyPan/flapypan-blog-java   |
-| flapypan-blog-kotlin   | <https://git.flapypan.top/FlapyPan/flapypan-blog-kotlin> | https://github.com/FlapyPan/flapypan-blog-kotlin |
+后端项目：[flapypan-blog-spring](https://github.com/FlapyPan/flapypan-blog-spring)
 
 后端部署方法请参考对应仓库的说明
 
