@@ -17,7 +17,7 @@ watch(page, () => emits('onPage', page.value))
 
 <template>
   <v-row>
-    <v-col v-for="a in articleData?.content ?? []" :key="a.id" cols="12" md="6" lg="4" xl="3">
+    <v-col v-for="a in articleData?.content ?? []" :key="a.id" cols="12" sm="6" md="6" lg="4" xl="3">
       <article-card :article="a" @on-route="emits('onRoute')" />
     </v-col>
     <v-col v-if="pageable" cols="12" class="pagination">

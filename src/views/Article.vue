@@ -6,13 +6,12 @@ import { api } from '@/api'
 import GiscusCard from '@/components/GiscusCard.vue'
 import colorMap from '@/utils/color-map'
 import RefreshButton from '@/components/RefreshButton.vue'
-import { useDisplay } from 'vuetify'
-import { MdCatalog, MdPreview } from 'md-editor-v3'
+import { MdPreview } from 'md-editor-v3'
 import { useThemeStore } from '@/store/theme'
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() =>
-    import('@/components/ArticleEditor.vue'),
+  import('@/components/ArticleEditor.vue'),
 )
 
 const router = useRouter()
@@ -32,16 +31,7 @@ onMounted(top)
 // 文章路径
 const path = computed(() => router.currentRoute.value?.params['path'] ?? '')
 
-/// region 文章目录开关
-const { mobile } = useDisplay()
-const catalogDrawer = ref(!mobile.value)
-onBeforeUnmount(() => {
-  catalogDrawer.value = false
-})
-/// endregion 文章目录开关
-
 /// region 文章数据
-const scrollElement = document.documentElement
 const fetchingArticleData = ref(false)
 const articleData = ref(null)
 const articleDataError = ref(null)
@@ -75,21 +65,21 @@ watch(path, () => {
 
 /// 格式化时间
 const formatter = new Intl.DateTimeFormat(
-    'zh-CN',
-    {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZone: 'Asia/ShangHai',
-    },
+  'zh-CN',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZone: 'Asia/ShangHai',
+  },
 )
 const formattedCreateDate = computed(() =>
-    formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
+  formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
 const formattedUpdateDate = computed(() =>
-    formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
+  formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
 
 /// region 文章删除
 const deleteDialog = ref(false)
@@ -202,13 +192,6 @@ watch(title, (val) => document.title = val)
       <v-container v-if="articleData?.id > 0" class="markdown px-0">
         <MdPreview editor-id="read" :modelValue="articleData?.content ?? ''" preview-theme="default"
                    codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" :noImgZoomIn="false" />
-        <v-navigation-drawer v-model="catalogDrawer" border="none" location="right">
-          <div class="ml-4 my-4">
-            <MdCatalog :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read"
-                       :theme="themeStore.isDark?'dark':'light'" />
-          </div>
-        </v-navigation-drawer>
-        <v-btn class="d-lg-none drawer-btn text-primary" @click="catalogDrawer=true" icon="mdi-menu"></v-btn>
       </v-container>
       <giscus-card v-if="!fetchingArticleData"></giscus-card>
     </v-container>

@@ -1,11 +1,10 @@
 <script setup>
-import SideBar from '@/components/SideBar.vue'
 import { useSettingStore } from '@/store/setting'
-import { useThemeStore } from '@/store/theme'
 import { onMounted, watch } from 'vue'
+import AppBar from '@/components/AppBar.vue'
+import SideBar from '@/components/SideBar.vue'
 
 const settingStore = useSettingStore()
-const themeStore = useThemeStore()
 
 /// region 站点图标
 watch(() => settingStore.settings.favicon, (val) => {
@@ -20,30 +19,7 @@ onMounted(() => document.querySelector('#ld').remove())
 
 <template>
   <v-app>
-
-    <v-app-bar class="app-bar align-center" elevation="0">
-      <template #prepend>
-        <v-btn @click="settingStore.sideBarOpened=true" class="d-flex d-lg-none" icon="mdi-menu"></v-btn>
-        <v-app-bar-title class="rounded mr-2 d-none d-sm-flex" v-ripple>
-          <router-link to="/" class="pa-2 text-decoration-none text-high-emphasis">
-            {{ settingStore.settings?.siteTitle }}
-          </router-link>
-        </v-app-bar-title>
-      </template>
-      <template v-slot:append>
-        <v-btn :icon="themeStore.isDark?'mdi-weather-night':'mdi-weather-sunny'"
-               @click="themeStore.toggleTheme()"></v-btn>
-        <a class="text-none v-btn--variant-text" :href="`mailto:${settingStore.settings?.email}`" target="_blank">
-          <v-btn icon="mdi-at"></v-btn>
-        </a>
-        <a class="text-none v-btn--variant-text" href="https://github.com/FlapyPan/flapypan-blog" target="_blank">
-          <v-btn icon="mdi-github"></v-btn>
-        </a>
-      </template>
-    </v-app-bar>
-
-    <side-bar></side-bar>
-
+    <app-bar />
     <v-main>
       <router-view v-slot="{ Component }">
         <keep-alive>
@@ -55,7 +31,7 @@ onMounted(() => document.querySelector('#ld').remove())
         {{ settingStore.settings?.footer }}
       </footer>
     </v-main>
-
+    <side-bar />
   </v-app>
 </template>
 

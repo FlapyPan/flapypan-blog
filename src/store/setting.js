@@ -1,12 +1,10 @@
 import { api } from '@/api'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { useDisplay } from 'vuetify'
 
 export const useSettingStore = defineStore('setting', () => {
 
-  const { mobile } = useDisplay()
-  const sideBarOpened = ref(!mobile.value)
+  const sideBarOpened = ref(false)
 
   const isLogin = ref(!!localStorage.getItem('token'))
   api(`/auth`).then((data) => isLogin.value = !!data)

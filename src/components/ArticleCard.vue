@@ -29,13 +29,14 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
     <v-hover v-slot="{ isHovering, props }">
       <v-card v-bind="props" v-ripple>
 
-        <div class="cover-container">
+        <v-responsive :aspect-ratio="16 / 9" class="cover-container">
           <v-img height="100%" width="100%" :src="article.cover" cover class="cover">
             <template v-slot:error>
               <v-img height="100%" width="100%" cover :src="settingStore.settings.banner"></v-img>
             </template>
           </v-img>
-        </div>
+        </v-responsive>
+
         <v-card-title class="article-title">{{ article.title }}</v-card-title>
 
         <v-card-item>
@@ -65,7 +66,6 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 
 <style scoped>
 .cover-container {
-  height: 160px;
   overflow: hidden;
 }
 
