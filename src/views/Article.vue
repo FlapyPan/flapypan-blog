@@ -11,7 +11,7 @@ import { useThemeStore } from '@/store/theme'
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() =>
-  import('@/components/ArticleEditor.vue'),
+    import('@/components/ArticleEditor.vue'),
 )
 
 const router = useRouter()
@@ -46,7 +46,9 @@ onBeforeUnmount(() => clearInterval(accessCountInterval))
 const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
-  articleData.value.content = null
+  if (articleData.value) {
+    articleData.value.content = null
+  }
   try {
     articleData.value = await api(`/article/${path.value}`)
     await getAccessCount()
@@ -66,21 +68,21 @@ watch(path, () => {
 
 /// 格式化时间
 const formatter = new Intl.DateTimeFormat(
-  'zh-CN',
-  {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZone: 'Asia/ShangHai',
-  },
+    'zh-CN',
+    {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: 'Asia/ShangHai',
+    },
 )
 const formattedCreateDate = computed(() =>
-  formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
+    formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
 const formattedUpdateDate = computed(() =>
-  formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
+    formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
 
 /// region 文章删除
 const deleteDialog = ref(false)
