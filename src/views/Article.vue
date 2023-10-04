@@ -46,6 +46,7 @@ onBeforeUnmount(() => clearInterval(accessCountInterval))
 const getArticleData = async () => {
   articleDataError.value = null
   fetchingArticleData.value = true
+  articleData.value.content = null
   try {
     articleData.value = await api(`/article/${path.value}`)
     await getAccessCount()
