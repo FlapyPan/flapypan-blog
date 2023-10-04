@@ -48,8 +48,8 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
     <v-img height="calc(100vh - 64px)" width="100vw" cover :src="settingStore.settings.banner"
            gradient="to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)">
       <div class="hero text-white">
-        <h1 class="text-h4 mb-6 text-md-h3">{{ settingStore.settings.siteTitle }}</h1>
-        <p class="text-body-1">{{ settingStore.settings.info}}</p>
+        <h1 class="text-h4 text-md-h3">{{ settingStore.settings.siteTitle }}</h1>
+        <p class="text-body-1 my-10">{{ settingStore.settings.info }}</p>
         <div class="down">
           <v-icon class="down-btn" @click="toLatest">mdi-chevron-down</v-icon>
         </div>
@@ -80,7 +80,7 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
   align-items: center;
   justify-content: center;
   position: relative;
-  backdrop-filter: blur(1em);
+  backdrop-filter: blur(4px);
 
   .down {
     position: absolute;
@@ -92,5 +92,4 @@ document.title = `主页 - ${settingStore.settings?.siteTitle ?? '博客'}`
     }
   }
 }
-
 </style>

@@ -27,7 +27,7 @@ onMounted(() => document.querySelector('#ld').remove())
         </keep-alive>
         <component :is="Component" :key="$route.name" v-if="!$route.meta.keepAlive" />
       </router-view>
-      <footer class="text-center pt-2 pb-3 text-body-2 text-medium-emphasis">
+      <footer class="text-center py-8 text-body-2 text-medium-emphasis">
         {{ settingStore.settings?.footer }}
       </footer>
     </v-main>
