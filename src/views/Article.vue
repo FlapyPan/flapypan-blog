@@ -190,8 +190,8 @@ watch(title, (val) => document.title = val)
         </v-dialog>
       </div>
       <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
-      <v-skeleton-loader v-show="fetchingArticleData" class="mt-2" type="article" />
-      <MdPreview v-if="articleData?.id > 0" class="markdown px-0"
+      <v-skeleton-loader v-show="fetchingArticleData" class="mt-6" type="article" />
+      <MdPreview v-if="articleData?.content" class="markdown px-0"
                  editor-id="read" :modelValue="articleData?.content ?? ''" preview-theme="default"
                  codeTheme="gradient" :theme="themeStore.isDark?'dark':'light'" :noImgZoomIn="false" />
       <giscus-card v-if="!fetchingArticleData" />
