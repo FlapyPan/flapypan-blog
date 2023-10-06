@@ -24,11 +24,9 @@
 ## 技术栈
 
 - Vue 3.x
-- Vite
+- Nuxt.js 3
 - Vuetify
-- Pinia
-- Vue Router
-- Vueuse
+- md-editor-v3
 
 ## 启动方法
 
@@ -49,40 +47,41 @@ pnpm i # 安装依赖
 
 ### 开发模式启动
 
-> 请确保后端程序已运行，并且运行在本地`8080`端口，如果不是请修改`vite.confg.js`里的反向代理地址
-
 ```shell
+export BACKEND_API='http://localhost:8080' # 设置变量指定后端地址
 pnpm dev # 运行开发服务器
 ```
 
-### 编译部署
+### 编译运行
 
-编译完成后可以在`dist`目录下可以找到编译产物
+编译完成后可以在`.output`目录下可以找到编译产物
+
+#### 单实例
 
 ```shell
-pnpm build # 打包编译
+pnpm build # 编译
+
+export BACKEND_API='http://localhost:8080' # 设置后端地址
+export PORT=3000 # 设置前端服务端口号
+
+# 运行
+pnpm run start
+# 或
+node .output/server/index.mjs
 ```
 
-注意：因为使用的是 cookie 模式来认证，为了保证安全，禁止了跨域请求。
+#### 负载均衡
 
-前端访问 /api 作为后端，所以请使用 http 代理服务器将 /api 的请求转发到后端。
+```shell
+pnpm build # 编译
 
-caddy v2 参考示例:
+export BACKEND_API='http://localhost:8080' # 设置后端地址
+export PORT=3000 # 设置前端服务端口号
 
-```text
-:80 { # 也可以直接写域名
-        encode zstd gzip
-        root * <前端页面路径>
-        route {
-                # handle_path 去除前缀
-                handle_path /api/* {
-                        reverse_proxy localhost:8180
-                }
-                # 单页面应用
-                try_files {path}.html {path} /
-                file_server
-        }
-}
+# 使用 pm2 运行
+node run pm2 # 默认4个集群实例
+# 或
+pm2 start --name blog-page .output/server/index.mjs -i 4
 ```
 
 ## 评论系统配置(可选)
