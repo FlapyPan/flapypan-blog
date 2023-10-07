@@ -72,16 +72,19 @@ node .output/server/index.mjs
 
 #### 负载均衡
 
+自行修改`ecosystem.config.cjs`的配置
+
 ```shell
 pnpm build # 编译
+```
 
-export BACKEND_API='http://localhost:8080' # 设置后端地址
-export PORT=3000 # 设置前端服务端口号
+使用 pm2 进行管理
 
-# 使用 pm2 运行
-node run pm2 # 默认4个集群实例
-# 或
-pm2 start --name blog-page .output/server/index.mjs -i 4
+```shell
+pnpm eco:start
+pnpm eco:stop
+pnpm eco:reload
+pnpm eco:delete
 ```
 
 ## 评论系统配置(可选)

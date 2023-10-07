@@ -8,18 +8,33 @@
   "scripts": {
     "postinstall": "nuxt prepare",
     "dev": "nuxt dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "build": "nuxt build",
     "start": "node .output/server/index.mjs",
-    "pm2": "pm2 start --name blog-page .output/server/index.mjs -i 4"
+    "eco:start": "pm2 start ecosystem.config.cjs",
+    "eco:stop": "pm2 stop ecosystem.config.cjs",
+    "eco:reload": "pm2 reload ecosystem.config.cjs",
+    "eco:delete": "pm2 delete ecosystem.config.cjs"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "latest",
     "@nuxt/devtools": "latest",
+    "eslint": "^8.51.0",
+    "lint-staged": "^14.0.1",
     "md-editor-v3": "^4.7.0",
     "nuxt": "^3.7.4",
     "postcss-preset-env": "^9.1.4",
+    "simple-git-hooks": "^2.9.0",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.20"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
   }
 }

@@ -1,11 +1,22 @@
 import vuetify from 'vite-plugin-vuetify'
 
+const postcss = {
+  plugins: {
+    'postcss-preset-env': {
+      browsers: ['Chrome >= 87', 'Firefox >= 78', 'Safari >= 14', 'Edge >= 88'],
+      features: {
+        'nesting-rules': true,
+      },
+    },
+  },
+}
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   routeRules: {
-    '/api/**': { proxy: `${import.meta.env['BACKEND_API']}/api/**` },
+    '/api/**': { proxy: `${import.meta.env.BACKEND_API}/api/**` },
   },
   build: {
     transpile: ['vuetify'],
@@ -50,14 +61,5 @@ export default defineNuxtConfig({
     },
   },
   css: ['~/assets/css/main.css'],
-  postcss: {
-    plugins: {
-      'postcss-preset-env': {
-        browsers: ['Chrome >= 87', 'Firefox >= 78', 'Safari >= 14', 'Edge >= 88'],
-        features: {
-          'nesting-rules': true,
-        },
-      },
-    },
-  },
+  postcss,
 })

@@ -3,11 +3,23 @@
  * @type {string[]}
  */
 const colors = [
-  'red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue',
-  'cyan', 'teal', 'green', 'light-green', 'amber', 'orange',
+  'red',
+  'pink',
+  'purple',
+  'deep-purple',
+  'indigo',
+  'blue',
+  'light-blue',
+  'cyan',
+  'teal',
+  'green',
+  'light-green',
+  'amber',
+  'orange',
 ]
 
-/** 映射缓存
+/**
+ * 映射缓存
  *  @type {Map<string, string>}
  */
 const cache = new Map()
@@ -18,9 +30,11 @@ const cache = new Map()
  * @return {string}
  */
 export default (str) => {
-  if (!str) return 'primary'
+  if (!str)
+    return 'primary'
   // 在缓存中查询
-  if (cache.has(str)) return cache.get(str)
+  if (cache.has(str))
+    return cache.get(str)
   // 计算字符串的哈希值
   const len = str.length
   let hash = 0

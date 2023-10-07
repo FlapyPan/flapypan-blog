@@ -6,8 +6,10 @@ const emits = defineEmits(['refresh'])
 </script>
 
 <template>
-  <v-btn size="small" variant="text" color="primary" icon @click="emits('refresh')" :disabled="loading">
-    <v-icon :class="{'animation-rotate':loading}">mdi-refresh</v-icon>
+  <v-btn size="small" variant="text" color="primary" icon :disabled="loading" @click="emits('refresh')">
+    <v-icon :class="{ 'animation-rotate': loading }">
+      mdi-refresh
+    </v-icon>
   </v-btn>
 </template>
 

@@ -1,8 +1,9 @@
 :root {
-  color-scheme: light dark;
   --fonts-emoji: "Noto Color Emoji", "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji";
-  --fonts-proportional: Tahoma, Helvetica, Arial, "Microsoft Yahei", "STKaiti", sans-serif, var(--fonts-emoji);
-  --fonts-monospace: Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace, var(--fonts-proportional);
+  --fonts-proportional: tahoma, helvetica, arial, "Microsoft Yahei", "STKaiti", sans-serif, var(--fonts-emoji);
+  --fonts-monospace: menlo, consolas, monaco, "Liberation Mono", "Lucida Console", monospace, var(--fonts-proportional);
+
+  color-scheme: light dark;
 }
 
 html, body, .v-application [class*="text-"] { font-family: var(--fonts-proportional) !important; }
@@ -19,7 +20,7 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
   z-index: 10000;
 }
 
-#ld:before {
+#ld::before {
   content: "";
   border: 4px solid transparent;
   border-top: 4px solid #66BB6A;
@@ -65,9 +66,9 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
 }
 
 .animation-rotate {
-  animation: Rotate 1s infinite;
+  animation: rotate 1s infinite;
 }
 
-@keyframes Rotate {
+@keyframes rotate {
   to { transform: rotate(360deg); }
 }

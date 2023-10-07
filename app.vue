@@ -23,8 +23,6 @@ settingStore.value.links = {
   ...settingStore.value.links,
   ...linkData,
 }
-
-
 </script>
 
 <template>

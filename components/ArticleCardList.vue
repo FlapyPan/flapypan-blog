@@ -9,7 +9,6 @@ const emits = defineEmits(['onPage', 'onRoute'])
 
 const page = ref(props.page)
 watch(page, () => emits('onPage', page.value))
-
 </script>
 
 <template>
@@ -18,8 +17,7 @@ watch(page, () => emits('onPage', page.value))
       <article-card :article="a" @on-route="emits('onRoute')" />
     </v-col>
     <v-col v-if="pageable" cols="12" class="pagination">
-      <v-pagination size="small" :length="articleData?.totalPages ?? 1" v-model="page" rounded="circle">
-      </v-pagination>
+      <v-pagination v-model="page" size="small" :length="articleData?.totalPages ?? 1" rounded="circle" />
     </v-col>
   </v-row>
 </template>

@@ -3,12 +3,12 @@ import { appendResponseHeader } from 'h3'
 /** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} HttpMethod http 请求方法 */
 
 /**
- * @typedef {Object} ApiOptions
+ * @typedef {object} ApiOptions
  * @property {string|URL} url  请求路径
  * @property {HttpMethod?} method 请求方法
  * @property {any?} payload 请求数据
  * @property {boolean?} jsonPayload payload 是否为 json
- * @property {H3Event?} event
+ * @property {H3Event?} event 事件
  */
 
 /**
@@ -16,17 +16,18 @@ import { appendResponseHeader } from 'h3'
  * @param {ApiOptions} options
  * @return {Promise<*>}
  */
-const api = async (options = {
+async function api(options = {
   url: '',
   method: 'GET',
   payload: null,
   jsonPayload: true,
   event: null,
-}) => {
+}) {
   const { url, method, payload, jsonPayload, event } = options
   const headers = useRequestHeaders(['cookie'])
-  if (jsonPayload) { headers['Content-Type'] = 'application/json' }
-  const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : (void 0)
+  if (jsonPayload)
+    headers['Content-Type'] = 'application/json'
+  const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
   const { _data: { success, code, data }, headers: responseHeaders } = await $fetch.raw(url, {
     baseURL: '/api',
     method,
@@ -38,9 +39,8 @@ const api = async (options = {
   })
   if (event) {
     const cookies = (responseHeaders.get('set-cookie') || '').split(',')
-    for (const cookie of cookies) {
+    for (const cookie of cookies)
       appendResponseHeader(event, 'set-cookie', cookie)
-    }
   }
   if (!success) {
     let e

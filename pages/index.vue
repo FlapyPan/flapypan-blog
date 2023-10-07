@@ -1,11 +1,9 @@
 <script setup>
-import ArticleCardList from '@/components/ArticleCardList.vue'
-import { defineAsyncComponent, onActivated, onDeactivated, ref } from 'vue'
-
 const settingStore = useSettingStore()
 
 const latest = ref(null)
-const toLatest = () => {
+
+function toLatest() {
   window.scrollTo({ top: latest.value.offsetTop - 64, behavior: 'smooth' })
 }
 
@@ -29,34 +27,43 @@ onDeactivated(() => openComment.value = false)
 useHead({
   title: `主页 - ${settingStore.value.settings?.siteTitle ?? '博客'}`,
 })
-
 </script>
 
 <template>
   <div>
-    <v-img height="calc(100vh - 64px)" width="100vw" cover :src="settingStore.settings.banner"
-           gradient="to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)">
+    <v-img
+      height="calc(100vh - 64px)" width="100vw" cover :src="settingStore.settings.banner"
+      gradient="to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)">
       <div class="hero text-white">
-        <h1 class="text-h4 text-md-h3">{{ settingStore.settings.siteTitle }}</h1>
-        <p class="text-body-1 my-10">{{ settingStore.settings.info }}</p>
+        <h1 class="text-h4 text-md-h3">
+          {{ settingStore.settings.siteTitle }}
+        </h1>
+        <p class="text-body-1 my-10">
+          {{ settingStore.settings.info }}
+        </p>
         <div class="down">
-          <v-icon class="down-btn" @click="toLatest">mdi-chevron-down</v-icon>
+          <v-icon class="down-btn" @click="toLatest">
+            mdi-chevron-down
+          </v-icon>
         </div>
       </div>
     </v-img>
     <v-container>
-      <h3 class="mb-3 mt-6 d-flex align-center" ref="latest">
+      <h3 ref="latest" class="mb-3 mt-6 d-flex align-center">
         最近更新
         <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="refresh()" />
       </h3>
-      <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error"></v-alert>
-      <article-card-list :article-data="articleData" :pageable="false">
-      </article-card-list>
+      <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
+      <ArticleCardList :article-data="articleData" :pageable="false" />
       <div v-show="!fetchingArticleData" class="text-center mt-6">
-        <v-btn to="/archive" color="primary">前往归档查看更多</v-btn>
-        <v-btn class="ml-2" v-if="!openComment" @click="openComment=true" color="blue">加载主页评论</v-btn>
+        <v-btn to="/archive" color="primary">
+          前往归档查看更多
+        </v-btn>
+        <v-btn v-if="!openComment" class="ml-2" color="blue" @click="openComment = true">
+          加载主页评论
+        </v-btn>
       </div>
-      <giscus-card v-if="openComment"></giscus-card>
+      <GiscusCard v-if="openComment" />
     </v-container>
   </div>
 </template>
