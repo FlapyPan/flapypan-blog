@@ -1,5 +1,6 @@
 <script setup>
-import MdPreview from 'md-editor-v3'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
 
 const props = defineProps({
@@ -48,9 +49,8 @@ const tagData = ref([])
 async function getTagList() {
   let tags
   try {
-    tags = await api('/tag')
+    tags = await api({ url: '/tag' })
   } catch (e) {
-    console.error(e)
     tags = []
   }
   tagData.value = tags.map((tag) => tag.name)
@@ -93,8 +93,8 @@ async function onUploadImg(files, cb) {
       const compressFile = await compress(file)
       form.append('file', compressFile, compressFile.name)
       // 上传获取路径
-      const path = await api('/upload', 'POST', form, false)
-      res.push(`${API_URL}${path}`)
+      const path = await api({ url: '/upload', method: 'POST', payload: form, jsonPayload: false })
+      res.push(`/api${path}`)
     }
   } catch (e) {
     editorError.value = e.message
@@ -114,7 +114,7 @@ async function saveArticle() {
   saving.value = true
   const method = isNewArticle ? 'POST' : 'PUT'
   try {
-    const path = await api(`/article`, method, draft.value)
+    const path = await api({ url: `/article`, method, payload: draft.value })
     localStorage.removeItem(storageKey)
     // 将文章路径传递给父组件
     emits('submit', path)
@@ -159,7 +159,7 @@ const { isDark } = useDark()
     <v-container v-if="editorError">
       <v-alert rounded="lg" :text="editorError" type="error" />
     </v-container>
-    <MdPreview
+    <MdEditor
       v-model="draft.content" editor-id="edit" preview-theme="default" code-theme="gradient"
       :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />

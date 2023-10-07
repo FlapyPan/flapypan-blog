@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   routeRules: {
-    '/api/**': { proxy: `${import.meta.env.BACKEND_API}/api/**` },
+    '/api/**': { proxy: `${import.meta.env.BACKEND_API}/**` },
   },
   build: {
     transpile: ['vuetify'],

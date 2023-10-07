@@ -10,18 +10,6 @@ const settingStore = useSettingStore()
 
 const { isDark } = useDark()
 
-/// region 自动置顶
-function top() {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: undefined,
-  })
-}
-
-onMounted(top)
-/// endregion 自动置顶
-
 // 文章路径
 const path = computed(() => router.currentRoute.value?.params.path ?? '')
 
@@ -102,7 +90,11 @@ onBeforeRouteUpdate(() => {
 function onSaveArticle(newPath) {
   const lastPath = path.value
   // 如果没有修改路径，直接刷新
-  if (lastPath === newPath) return router.go(0)
+  if (lastPath === newPath) {
+    isEdit.value = false
+    getArticleData()
+    return
+  }
   // 修改了路径就跳转过去
   return router.replace(`/${newPath}`)
 }
@@ -119,17 +111,19 @@ useHead({
 <template>
   <div>
     <div v-if="settingStore.isLogin && isEdit">
-      <v-container>
-        <v-btn variant="text" @click="isEdit = false">
-          <template #prepend>
-            <v-icon class="mt-1">
-              mdi-chevron-left
-            </v-icon>
-          </template>
-          取消
-        </v-btn>
-      </v-container>
-      <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
+      <client-only>
+        <v-container>
+          <v-btn variant="text" @click="isEdit = false">
+            <template #prepend>
+              <v-icon class="mt-1">
+                mdi-chevron-left
+              </v-icon>
+            </template>
+            取消
+          </v-btn>
+        </v-container>
+        <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
+      </client-only>
     </div>
     <v-container v-else class="content">
       <h2 class="text-h4 my-6 text-center">

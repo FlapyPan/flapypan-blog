@@ -25,8 +25,7 @@ async function api(options = {
 }) {
   const { url, method, payload, jsonPayload, event } = options
   const headers = useRequestHeaders(['cookie'])
-  if (jsonPayload)
-    headers['Content-Type'] = 'application/json'
+  if (jsonPayload) headers['Content-Type'] = 'application/json'
   const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
   const { _data: { success, code, data }, headers: responseHeaders } = await $fetch.raw(url, {
     baseURL: '/api',

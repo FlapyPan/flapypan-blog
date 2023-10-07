@@ -33,11 +33,13 @@ const loginError = ref(null)
 
 async function login() {
   isDoLogin.value = true
+  const event = useRequestEvent()
   const { error } = await useAsyncData(`login:${form.username}`, () => api({
-    url: `/api/login`,
+    url: `/auth/login`,
     method: 'POST',
     payload: parseFormData(),
     jsonPayload: false,
+    event,
   }))
   if (error.value) {
     loginError.value = error.value.message
