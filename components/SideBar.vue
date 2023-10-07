@@ -10,7 +10,7 @@ watch(mobile, () => settingStore.value.sideBarOpened = false)
 </script>
 
 <template>
-  <v-navigation-drawer v-if="mobile" v-model="settingStore.sideBarOpened" border="none" location="left">
+  <v-navigation-drawer v-if="mobile" v-model="settingStore.sideBarOpened" border="none" location="left" class="side">
     <v-list :nav="true" density="comfortable">
       <v-list-item to="/" color="light-blue" rounded="xl" :active="router.currentRoute.value.name === 'Home'">
         <template #prepend>
@@ -73,5 +73,8 @@ watch(mobile, () => settingStore.value.sideBarOpened = false)
 </template>
 
 <style scoped>
-
+.side {
+  background-color: rgba(var(--v-theme-background), 0.8);
+  backdrop-filter: saturate(180%) blur(24px);
+}
 </style>

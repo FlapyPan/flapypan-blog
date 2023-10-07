@@ -29,12 +29,14 @@ export default defineNuxtPlugin(({ vueApp }) => {
       themes: {
         light: {
           colors: {
+            background: '#f8fafc',
             surface: '#f7f7f8',
             primary: colors.green.lighten1,
           },
         },
         dark: {
           colors: {
+            background: '#131516',
             surface: '#1e1e20',
             primary: colors.green.lighten1,
           },

@@ -68,9 +68,10 @@ useHead({
 
 <style scoped>
 .hero {
-  height: calc(100vh - 64px);
+  height: 100vh;
   justify-content: center;
   position: relative;
+  top: -64px;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;

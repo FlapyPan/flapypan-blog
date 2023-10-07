@@ -31,7 +31,7 @@ function logout() {
       <login-form @close="loginDialogVisible = false" />
     </v-dialog>
   </client-only>
-  <v-app-bar class="app-bar align-center" elevation="0">
+  <v-app-bar class="app-bar align-center">
     <template #prepend>
       <client-only>
         <v-btn v-if="mobile" icon="mdi-menu" @click="settingStore.sideBarOpened = !settingStore.sideBarOpened"></v-btn>
@@ -129,4 +129,9 @@ function logout() {
 </template>
 
 <style scoped>
+.app-bar {
+  background-color: rgba(var(--v-theme-background), 0.8) !important;
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05) !important;
+}
 </style>
