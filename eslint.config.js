@@ -28,6 +28,7 @@ export default config(
       'vue/operator-linebreak': ['error', 'before'],
       'vue/html-self-closing': ['off'],
       'vue/html-closing-bracket-newline': ['error', { singleline: 'never', multiline: 'never' }],
+      'vue/component-name-in-template-casing': ['off'],
     },
   },
 )

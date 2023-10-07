@@ -33,7 +33,7 @@ settingStore.value.links = {
     <div v-if="loading" id="ld"></div>
     <v-app>
       <app-bar />
-      <v-main>
+      <v-main class="main">
         <NuxtPage />
         <footer class="text-center py-8 text-body-2 text-medium-emphasis" v-text="settingStore.settings?.footer">
         </footer>
@@ -44,3 +44,9 @@ settingStore.value.links = {
     </v-app>
   </NuxtLayout>
 </template>
+
+<style scoped>
+.main {
+  padding-top: 64px;
+}
+</style>

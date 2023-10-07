@@ -1,6 +1,6 @@
 <script setup>
+import MdPreview from 'md-editor-v3'
 import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
-import { useTheme } from 'vuetify'
 
 const props = defineProps({
   articleData: {
@@ -128,8 +128,7 @@ async function saveArticle() {
 
 /// endregion 文章保存
 
-const theme = useTheme()
-const isDark = computed(() => theme.current.value.dark)
+const { isDark } = useDark()
 </script>
 
 <template>
@@ -160,7 +159,7 @@ const isDark = computed(() => theme.current.value.dark)
     <v-container v-if="editorError">
       <v-alert rounded="lg" :text="editorError" type="error" />
     </v-container>
-    <MdEditor
+    <MdPreview
       v-model="draft.content" editor-id="edit" preview-theme="default" code-theme="gradient"
       :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />

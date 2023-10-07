@@ -1,13 +1,12 @@
 <script setup>
-import { useDisplay, useTheme } from 'vuetify'
+import { useDisplay } from 'vuetify'
 
 const route = useRoute()
 const settingStore = useSettingStore()
 const { mobile } = useDisplay()
 
 /// region 主题切换
-const theme = useTheme()
-const isDark = computed(() => theme.current.value.dark)
+const { theme, isDark, toggle: toggleTheme } = useDark()
 onMounted(() => {
   const mediaQueryList = window.matchMedia?.('(prefers-color-scheme: dark)')
   if (mediaQueryList?.matches) theme.global.name.value = 'dark'
@@ -15,11 +14,6 @@ onMounted(() => {
     theme.global.name.value = matches ? 'dark' : 'light'
   })
 })
-
-function toggleTheme() {
-  theme.global.name.value = isDark.value ? 'light' : 'dark'
-}
-
 /// endregion 主题切换
 
 const loginDialogVisible = ref(false)
