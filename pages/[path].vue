@@ -149,9 +149,7 @@ useHead({
         </client-only>
       </div>
       <v-responsive :aspect-ratio="16 / 9" class="rounded-lg my-8">
-        <img
-          class="h-100 w-100 object-cover" :src="articleData?.cover ?? settingStore.settings.banner"
-          :alt="articleData?.title">
+        <img class="h-100 w-100" :src="articleData?.cover ?? settingStore.settings.banner" :alt="articleData?.title">
       </v-responsive>
       <div class="d-flex flex-wrap align-center" style="gap: 6px">
         <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="getArticleData()">

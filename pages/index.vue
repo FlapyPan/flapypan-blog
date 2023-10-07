@@ -31,10 +31,8 @@ useHead({
 
 <template>
   <div>
-    <v-img
-      height="calc(100vh - 64px)" width="100vw" cover :src="settingStore.settings.banner"
-      gradient="to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.4)">
-      <div class="hero text-white">
+    <div class="hero" :style="{ backgroundImage: `url(${settingStore.settings.banner})` }">
+      <div class="w-100 h-100 hero-content position-relative d-flex flex-column justify-center align-center text-white">
         <h1 class="text-h4 text-md-h3">
           {{ settingStore.settings.siteTitle }}
         </h1>
@@ -47,7 +45,7 @@ useHead({
           </v-icon>
         </div>
       </div>
-    </v-img>
+    </div>
     <v-container>
       <h3 ref="latest" class="mb-3 mt-6 d-flex align-center">
         最近更新
@@ -70,13 +68,17 @@ useHead({
 
 <style scoped>
 .hero {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  height: calc(100vh - 64px);
   justify-content: center;
   position: relative;
-  backdrop-filter: blur(4px);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  .hero-content {
+    backdrop-filter: blur(4px) brightness(0.8);
+  }
 
   .down {
     position: absolute;

@@ -59,6 +59,7 @@ export default defineNuxtConfig({
         { type: 'module', src: 'https://unpkg.com/giscus?module' },
       ],
     },
+    pageTransition: { name: 'page', mode: 'out-in' },
   },
   css: ['~/assets/css/main.css'],
   postcss,

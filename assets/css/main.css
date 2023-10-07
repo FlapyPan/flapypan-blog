@@ -10,6 +10,8 @@ html, body, .v-application [class*="text-"] { font-family: var(--fonts-proportio
 
 code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
 
+img { object-fit: cover; }
+
 #ld {
   box-sizing: border-box;
   position: fixed;
@@ -71,4 +73,15 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
 
 @keyframes rotate {
   to { transform: rotate(360deg); }
+}
+
+.page-enter-active,
+.page-leave-active {
+  will-change: opacity;
+  transition: all 0.3s;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
 }
