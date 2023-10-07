@@ -44,24 +44,10 @@ async function addTag() {
 useHead({
   title: `归档 - ${settingStore.value.settings?.siteTitle ?? '博客'}`,
 })
-
-// 格式化时间
-const formatter = new Intl.DateTimeFormat(
-  'zh-CN',
-  {
-    month: 'long',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    timeZone: 'Asia/ShangHai',
-  },
-)
-const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 </script>
 
 <template>
-  <v-container style="max-width: 1200px">
+  <v-container style="max-width: 1000px">
     <h2 class="mt-6 mb-3 d-flex align-center">
       归档
       <refresh-button
@@ -107,41 +93,12 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
       </template>
     </div>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
-    <v-list v-show="articleData?.length > 0" rounded="lg">
-      <template v-for="{ year, list } in (articleData ?? [])" :key="year">
-        <v-list-item>
-          <h3 class="ml-3 mt-4">
-            {{ year }}
-          </h3>
-        </v-list-item>
-        <v-list-item
-          v-for="{ id, title, createDate, path, tags } in list" :key="id" class="ma-3 py-3" rounded="xl"
-          :to="`/${path}`">
-          <template #title>
-            <v-row dense>
-              <v-col cols="12" sm="10">
-                <v-row dense>
-                  <v-col cols="12" lg="4">
-                    <span class="mr-2">{{ title }}</span>
-                  </v-col>
-                  <v-col align-self="stretch">
-                    <div class="d-flex align-center">
-                      <v-chip
-                        v-for="tag in (tags ?? [])" :key="tag.name" class="mr-1" size="small" :to="`/tag/${tag.name}`"
-                        :color="colorMap(tag.name)">
-                        {{ tag.name }}
-                      </v-chip>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-spacer />
-              <v-col>{{ formatDate(createDate) }}</v-col>
-            </v-row>
-          </template>
-        </v-list-item>
-      </template>
-    </v-list>
+    <template v-for="{ year, list } in (articleData ?? [])" :key="year">
+      <h3 class="mt-4 mb-2">
+        {{ year }}
+      </h3>
+      <article-timeline :list="list" />
+    </template>
   </v-container>
 </template>
 

@@ -12,35 +12,6 @@ code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
 
 img { object-fit: cover; }
 
-#ld {
-  box-sizing: border-box;
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-}
-
-#ld::before {
-  content: "";
-  border: 4px solid transparent;
-  border-top: 4px solid #66BB6A;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
-  animation: spin 0.5s linear infinite;
-}
-
-@media (prefers-color-scheme: dark) {
-  #ld { background-color: #121212; }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 .md-editor-catalog-active > span {
   color: rgb(var(--v-theme-primary)) !important;
 }

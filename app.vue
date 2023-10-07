@@ -1,10 +1,4 @@
 <script setup>
-const nuxtApp = useNuxtApp()
-const loading = ref(true)
-nuxtApp.hook('page:finish', () => {
-  loading.value = false
-})
-
 const settingStore = useSettingStore()
 
 const {
@@ -32,7 +26,6 @@ if (process.browser) api({ url: `/auth` }).then((val) => settingStore.value.isLo
     <Link rel="icon" :href="settingStore.settings.favicon" />
   </Head>
   <NuxtLayout>
-    <div v-if="loading" id="ld"></div>
     <v-app>
       <app-bar />
       <v-main class="main">
