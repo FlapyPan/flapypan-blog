@@ -61,9 +61,7 @@ async function login() {
       </v-btn>
       <v-toolbar-title>登录</v-toolbar-title>
     </v-toolbar>
-    <v-card-item v-if="loginError != null">
-      <v-alert rounded="lg" :text="loginError" type="error" />
-    </v-card-item>
+    <error-alert :show="loginError" :text="loginError" />
     <v-card-item class="mb-8">
       <v-form class="pa-4" validate-on="submit lazy" @submit.prevent="login()">
         <v-text-field v-model="form.username" :rules="[usernameRule]" label="用户名" />

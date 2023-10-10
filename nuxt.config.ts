@@ -2,11 +2,12 @@ import vuetify from 'vite-plugin-vuetify'
 
 const postcss = {
   plugins: {
+    'postcss-import': {},
+    'tailwindcss/nesting': 'postcss-nesting',
+    'tailwindcss': {},
     'postcss-preset-env': {
       browsers: ['Chrome >= 87', 'Firefox >= 78', 'Safari >= 14', 'Edge >= 88'],
-      features: {
-        'nesting-rules': true,
-      },
+      features: { 'nesting-rules': false },
     },
   },
 }
@@ -15,6 +16,9 @@ const postcss = {
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
+  modules: [
+    'nuxt-icon',
+  ],
   routeRules: {
     '/api/**': { proxy: `${import.meta.env.BACKEND_API}/**` },
   },
@@ -45,16 +49,7 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://cdn.staticfile.org/vuetify/3.3.20/vuetify.min.css',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://cdn.staticfile.org/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css',
-        },
-      ],
+      link: [],
       script: [
         { type: 'module', src: 'https://unpkg.com/giscus?module' },
       ],

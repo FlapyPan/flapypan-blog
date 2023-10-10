@@ -156,9 +156,7 @@ const { isDark } = useDark()
         </v-row>
       </v-container>
     </v-form>
-    <v-container v-if="editorError">
-      <v-alert rounded="lg" :text="editorError" type="error" />
-    </v-container>
+    <error-alert :show="editorError" :text="editorError" />
     <MdEditor
       v-model="draft.content" editor-id="edit" preview-theme="default" code-theme="gradient"
       :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" @on-upload-img="onUploadImg"

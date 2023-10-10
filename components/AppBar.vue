@@ -1,20 +1,7 @@
 <script setup>
-import { useDisplay } from 'vuetify'
+import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
-const route = useRoute()
 const settingStore = useSettingStore()
-const { mobile } = useDisplay()
-
-/// region 主题切换
-const { theme, isDark, toggle: toggleTheme } = useDark()
-onMounted(() => {
-  const mediaQueryList = window.matchMedia?.('(prefers-color-scheme: dark)')
-  if (mediaQueryList?.matches) theme.global.name.value = 'dark'
-  mediaQueryList?.addEventListener('change', ({ matches }) => {
-    theme.global.name.value = matches ? 'dark' : 'light'
-  })
-})
-/// endregion 主题切换
 
 const loginDialogVisible = ref(false)
 
@@ -31,107 +18,166 @@ function logout() {
       <login-form @close="loginDialogVisible = false" />
     </v-dialog>
   </client-only>
-  <v-app-bar class="app-bar align-center">
-    <template #prepend>
+  <header class="w-full fixed top-0 sm:top-2 z-50">
+    <div class="container h-14 mx-auto px-6 flex items-center bg-blur shadow rounded-none sm:rounded-xl">
+      <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left cursor-pointer">
+        <menu-button
+          as="h1"
+          class="flex items-center rounded-md p-2 hover:text-blue-500 hover:bg-blue-500 hover:bg-opacity-10"
+          :class="{ 'text-blue-500 bg-blue-500 bg-opacity-10': open }">
+          <icon
+            class="transform transition-transform" :class="{ 'rotate-90': open }"
+            :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'" />
+        </menu-button>
+
+        <transition
+          enter-active-class="transition duration-100 ease-out"
+          enter-from-class="transform scale-95 opacity-0"
+          enter-to-class="transform scale-100 opacity-100"
+          leave-active-class="transition duration-75 ease-in"
+          leave-from-class="transform scale-100 opacity-100"
+          leave-to-class="transform scale-95 opacity-0">
+          <menu-items
+            class="absolute w-64 left-0 mt-4 px-2 py-2 origin-top-left rounded-md shadow-lg bg-blur focus:outline-none flex flex-col">
+            <menu-item v-slot="{ active }" class="p-1">
+              <nuxt-link
+                to="/" class="flex items-center rounded-md" title="主页"
+                :class="[$route.name === 'index' || active ? 'bg-blue-500 bg-opacity-10' : '']">
+                <icon name="mingcute:home-1-line" class="mr-2 text-blue-400" />
+                首页
+              </nuxt-link>
+            </menu-item>
+            <menu-item v-slot="{ active }" class="p-1">
+              <nuxt-link
+                to="/archive" class="flex items-center rounded-md" title="归档"
+                :class="[$route.name === 'archive' || active ? 'bg-orange-500 bg-opacity-10' : '']">
+                <icon name="mingcute:archive-line" class="mr-2 text-orange-400" />
+                博客
+              </nuxt-link>
+            </menu-item>
+            <menu-item v-for="{ name, url } in settingStore.links" v-slot="{ active }" :key="url" class="p-1">
+              <nuxt-link
+                class="flex items-center rounded-md" :to="`/${url}`" :title="name"
+                :class="[$route.path === `/${url}` || active ? 'bg-green-500 bg-opacity-10' : '']">
+                <icon name="mingcute:document-line" class="mr-2 text-green-400" />
+                {{ name }}
+              </nuxt-link>
+            </menu-item>
+          </menu-items>
+        </transition>
+      </h-menu>
+
+      <nav class="items-center gap-4 text-sm underline-offset-2 hidden md:flex">
+        <nuxt-link
+          to="/" title="主页"
+          class="flex items-center hover:text-blue-500"
+          :class="{ 'text-blue-500': $route.name === 'index' }">
+          <icon v-if="$route.name === 'index'" name="mingcute:home-1-line" class="mr-1" />
+          首页
+        </nuxt-link>
+        <nuxt-link
+          to="/archive" title="归档"
+          class="flex items-center hover:text-orange-500"
+          :class="{ 'text-orange-500': $route.name === 'archive' }">
+          <icon v-if="$route.name === 'archive'" name="mingcute:archive-line" class="mr-1" />
+          博客
+        </nuxt-link>
+        <nuxt-link
+          to="/guestbook" title="归档"
+          class="flex items-center hover:text-red-500"
+          :class="{ 'text-red-500': $route.name === 'guestbook' }">
+          <icon v-if="$route.name === 'guestbook'" name="mingcute:quill-pen-line" class="mr-1" />
+          留言墙
+        </nuxt-link>
+        <nuxt-link
+          v-for="{ name, url } in settingStore.links" :key="url" :to="`/${url}`" :title="name"
+          class="flex items-center hover:text-green-500"
+          :class="{ 'text-green-500': $route.path === `/${url}` }">
+          <icon v-if="$route.path === `/${url}`" name="mingcute:document-line" class="mr-1" />
+          {{ name }}
+        </nuxt-link>
+      </nav>
+
+      <div class="flex-1"></div>
+
+      <a
+        class="p-2 text-xl items-center hidden sm:flex" :href="`mailto:${settingStore.settings?.email}`"
+        title="邮箱联系我">
+        <icon name="mingcute:at-line" />
+      </a>
+      <a class="p-2 text-xl flex items-center" href="https://github.com/FlapyPan/flapypan-blog" title="查看源码">
+        <icon name="mdi:github" />
+      </a>
       <client-only>
-        <v-btn v-if="mobile" icon="mdi-menu" @click="settingStore.sideBarOpened = !settingStore.sideBarOpened"></v-btn>
+        <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
+          <menu-button
+            as="div"
+            class="flex align-center rounded-md p-2 text-sm hover:text-cyan-500 hover:bg-cyan-500 hover:bg-opacity-10"
+            :class="{ 'text-cyan-500 bg-cyan-500 bg-opacity-10': open }">
+            <img class="w-6 h-6 rounded-full" :src="settingStore.settings?.avatar" alt="头像">
+            <span class="ml-2">{{ settingStore.settings?.name }}</span>
+          </menu-button>
+
+          <transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0">
+            <menu-items
+              class="absolute right-0 mt-4 px-2 py-2 origin-top-right rounded-md shadow-lg bg-blur focus:outline-none">
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <nuxt-link to="/new">
+                  <button
+                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                    :class="[$route.name === 'new' || active ? 'bg-green-500 bg-opacity-10' : '']">
+                    <icon name="mingcute:add-line" class="mr-2 h-5 w-5 text-green-400" />
+                    写新文章
+                  </button>
+                </nuxt-link>
+              </menu-item>
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <nuxt-link to="/setting">
+                  <button
+                    class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                    :class="[$route.name === 'setting' || active ? 'bg-blue-500 bg-opacity-10' : '']">
+                    <icon name="mingcute:settings-1-line" class="mr-2 h-5 w-5 text-blue-400" />
+                    博客设置
+                  </button>
+                </nuxt-link>
+              </menu-item>
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <button
+                  class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                  :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
+                  @click="logout">
+                  <icon name="mingcute:exit-line" class="mr-2 h-5 w-5 text-red-400" />
+                  退出登录
+                </button>
+              </menu-item>
+              <menu-item v-else v-slot="{ active }">
+                <button
+                  class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
+                  :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
+                  @click="loginDialogVisible = true">
+                  <icon name="mingcute:user-1-line" class="mr-2 h-5 w-5 text-violet-400" />
+                  登录
+                </button>
+              </menu-item>
+            </menu-items>
+          </transition>
+        </h-menu>
       </client-only>
-      <v-app-bar-title v-ripple class="rounded mr-2 d-none d-sm-flex">
-        <v-btn :active="false" class="text-none text-h6" to="/">
-          {{ settingStore.settings?.siteTitle }}
-        </v-btn>
-      </v-app-bar-title>
-    </template>
-    <template v-if="!mobile" #title>
-      <v-btn
-        class="text-none" to="/" rounded="xl" :active="route.name === 'index'"
-        :color="route.name === 'index' ? 'light-blue' : ''">
-        主页
-      </v-btn>
-      <v-btn
-        v-for="{ name, url } in settingStore.links" :key="url" class="text-none" :to="`/${url}`"
-        rounded="xl" :color="route.path.startsWith(`/${url}`) ? 'primary' : ''">
-        {{ name }}
-      </v-btn>
-      <v-btn
-        class="text-none" to="/archive" rounded="xl"
-        :color="route.name === 'archive' ? 'orange' : ''">
-        Archive
-      </v-btn>
-    </template>
-    <template #append>
-      <v-btn class="d-none d-sm-flex" icon="mdi-at" :href="`mailto:${settingStore.settings?.email}`"></v-btn>
-      <v-btn class="d-none d-sm-flex" icon="mdi-github" href="https://github.com/FlapyPan/flapypan-blog"></v-btn>
-      <client-only>
-        <v-menu open-on-hover close-on-content-click>
-          <template #activator="{ props }">
-            <v-btn v-bind="props" variant="text">
-              <template #prepend>
-                <v-avatar :image="settingStore.settings?.avatar" size="30" />
-              </template>
-              <span class="text-none">{{ settingStore.settings?.name }}</span>
-              <template #append>
-                <v-icon>mdi-menu-down</v-icon>
-              </template>
-            </v-btn>
-          </template>
-          <v-list elevation="1">
-            <v-list-item v-if="settingStore.isLogin" to="/new" color="primary">
-              <template #prepend>
-                <v-avatar color="primary" size="28">
-                  <v-icon color="white" class="text-body-1">
-                    mdi-plus
-                  </v-icon>
-                </v-avatar>
-              </template>
-              新文章
-            </v-list-item>
-            <v-list-item v-if="settingStore.isLogin" to="/setting" color="blue">
-              <template #prepend>
-                <v-avatar color="blue" size="28">
-                  <v-icon color="white" class="text-body-1">
-                    mdi-cog
-                  </v-icon>
-                </v-avatar>
-              </template>
-              博客设置
-            </v-list-item>
-            <v-list-item v-if="settingStore.isLogin" color="red-lighten-1" @click="logout">
-              <template #prepend>
-                <v-avatar color="red-lighten-1" size="28">
-                  <v-icon color="white" class="text-body-1">
-                    mdi-logout
-                  </v-icon>
-                </v-avatar>
-              </template>
-              退出登录
-            </v-list-item>
-            <v-list-item v-else :active="loginDialogVisible" color="indigo" @click="loginDialogVisible = true">
-              <template #prepend>
-                <v-avatar color="indigo" size="28">
-                  <v-icon color="white" class="text-body-1">
-                    mdi-login
-                  </v-icon>
-                </v-avatar>
-              </template>
-              登录
-            </v-list-item>
-          </v-list>
-        </v-menu>
-        <client-only>
-          <v-btn :icon="isDark ? 'mdi-weather-night' : 'mdi-weather-sunny'" @click="toggleTheme()">
-          </v-btn>
-        </client-only>
-      </client-only>
-      <v-btn to="/search" icon="mdi-magnify"></v-btn>
-    </template>
-  </v-app-bar>
+
+      <nuxt-link
+        class="flex items-center text-xl ml-1 p-2 rounded-lg hover:text-violet-500 hover:bg-violet-500 hover:bg-opacity-10"
+        :class="{ 'text-violet-500 bg-violet-500 bg-opacity-5': $route.name === 'search' }" to="/search" title="搜索">
+        <icon name="mingcute:search-line" />
+      </nuxt-link>
+    </div>
+  </header>
 </template>
 
 <style scoped>
-.app-bar {
-  background-color: rgba(var(--v-theme-background), 0.8) !important;
-  backdrop-filter: saturate(180%) blur(24px);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05) !important;
-}
 </style>

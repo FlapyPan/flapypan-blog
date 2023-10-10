@@ -17,8 +17,7 @@ const theme = computed(() => themeInstance.current.value.dark ? 'noborder_dark' 
 
 <template>
   <client-only>
-    <div v-if="valid" class="pt-8">
-      <v-divider class="my-8" />
+    <div v-if="valid" class="pt-20">
       <giscus-widget
         id="comments"
         :repo="settingStore.settings.giscusRepo"
@@ -26,13 +25,12 @@ const theme = computed(() => themeInstance.current.value.dark ? 'noborder_dark' 
         :category="settingStore.settings.giscusCategory"
         :categoryid="settingStore.settings.giscusCategoryId"
         mapping="pathname"
-        term="Welcome!"
         reactionsenabled="1"
         emitmetadata="0"
         inputposition="top"
         :theme="theme"
         lang="zh-CN"
-        loading="eager" />
+        loading="lazy" />
     </div>
   </client-only>
 </template>
