@@ -29,7 +29,7 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
     class="rounded-xl overflow-hidden transition shadow hover:shadow-lg w-full aspect-video relative bg-white dark:bg-black">
     <client-only :placeholder="coverSrc">
       <img
-        :src="coverSrc" :alt="article.title" class="rounded-xl h-full w-full object-cover transform brightness-90 dark:brightness-75"
+        :src="coverSrc" alt="" class="rounded-xl h-full w-full object-cover transform brightness-90 dark:brightness-75"
         @error.once="onCoverError">
     </client-only>
     <nuxt-link
@@ -48,19 +48,4 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 </template>
 
 <style scoped>
-.cover-container {
-  overflow: hidden;
-
-  .cover {
-    transition: transform .3s;
-  }
-
-  &:hover .cover {
-    transform: scale(1.1);
-  }
-}
-
-.article-title {
-  padding: 0.5rem 1rem;
-}
 </style>

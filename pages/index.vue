@@ -41,9 +41,9 @@ useHead({
     <error-alert :text="articleDataError" :show="articleDataError" />
     <ArticleCardList :article-data="articleData" :pageable="false" />
     <div v-show="!fetchingArticleData" class="text-center mt-6">
-      <nuxt-link to="/archive">
-        <f-btn>查看更多</f-btn>
-      </nuxt-link>
+      <f-btn to="/archive" text>
+        查看更多
+      </f-btn>
     </div>
   </div>
 </template>
