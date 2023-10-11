@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  @apply text-zinc-700 dark:text-zinc-200;
+
   --fonts-emoji: "Noto Color Emoji", "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji";
   --fonts-proportional: tahoma, helvetica, arial, "Microsoft Yahei", "STKaiti", sans-serif, var(--fonts-emoji);
   --fonts-monospace: menlo, consolas, monaco, "Liberation Mono", "Lucida Console", monospace, var(--fonts-proportional);
@@ -44,6 +46,10 @@ img { object-fit: cover; }
 
 .bg-blur {
   @apply border dark:border-gray-900 bg-white bg-opacity-70 backdrop-blur-2xl backdrop-saturate-100 dark:bg-black dark:bg-opacity-80;
+}
+
+.page {
+  @apply py-20;
 }
 
 .animation-rotate {

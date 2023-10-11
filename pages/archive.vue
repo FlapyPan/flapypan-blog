@@ -47,59 +47,66 @@ useHead({
 </script>
 
 <template>
-  <v-container style="max-width: 1000px">
-    <h2 class="mt-6 mb-3 d-flex align-center">
-      归档
-      <refresh-button
-        class="ml-1" :loading="fetchingTagList || fetchingArticleData"
-        @refresh="() => { getTagList();getArticleData() }" />
-    </h2>
-    <h3 class="mt-6 mb-3 d-flex align-center">
-      标签
+  <div class="page">
+    <page-head
+      title="文章归档"
+      sub-title="看看我都水了什么文章。" />
+    <refresh-button
+      :loading="fetchingTagList || fetchingArticleData"
+      @refresh="() => { getTagList();getArticleData() }" />
+    <h3 class="mt-6 mb-3 flex items-center">
+      <span class="text-2xl">
+        标签
+      </span>
       <client-only>
-        <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false">
-          <template #activator="{ props }">
-            <v-btn class="ml-2" v-bind="props" icon="mdi-plus" size="small" variant="text" color="primary" />
-          </template>
+        <template v-if="settingStore.isLogin">
+          <f-dialog v-model="tagEditor" title="添加标签" closable>
+            添加标签
+          </f-dialog>
+          <f-btn class="ml-2" text icon="mingcute-add-line" @click="tagEditor = true">
+            添加
+          </f-btn>
+        </template>
+        <!--        <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false"> -->
+        <!--          <template #activator="{ props }"> -->
+        <!--            <v-btn class="ml-2" v-bind="props" icon="mdi-plus" size="small" variant="text" color="primary" /> -->
+        <!--          </template> -->
 
-          <v-card class="ma-2 pt-2" min-width="300" elevation="2">
-            <v-card-item>
-              <v-text-field v-model="newTagName" label="标签名" />
-            </v-card-item>
-            <v-card-item v-show="addTagError != null">
-              <v-alert rounded="lg" :text="addTagError" type="error" />
-            </v-card-item>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                variant="text" :loading="addingTag" :disabled="newTagName.trim() === ''"
-                @click="addTag">
-                保存
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
+        <!--          <v-card class="ma-2 pt-2" min-width="300" elevation="2"> -->
+        <!--            <v-card-item> -->
+        <!--              <v-text-field v-model="newTagName" label="标签名" /> -->
+        <!--            </v-card-item> -->
+        <!--            <v-card-item v-show="addTagError != null"> -->
+        <!--              <v-alert rounded="lg" :text="addTagError" type="error" /> -->
+        <!--            </v-card-item> -->
+        <!--            <v-card-actions> -->
+        <!--              <v-spacer /> -->
+        <!--              <v-btn -->
+        <!--                variant="text" :loading="addingTag" :disabled="newTagName.trim() === ''" -->
+        <!--                @click="addTag"> -->
+        <!--                保存 -->
+        <!--              </v-btn> -->
+        <!--            </v-card-actions> -->
+        <!--          </v-card> -->
+        <!--        </v-menu> -->
       </client-only>
     </h3>
-    <v-alert v-show="tagListError" rounded="lg" :text="tagListError" type="error" />
-    <div class="flex-wrap d-flex mb-2">
-      <template v-for="({ name }, i) in tagList" :key="name">
-        <v-divider v-if="i !== 0 && i % 20 === 0" class="my-4" color="info" />
-        <v-btn
-          class="mx-1 my-2 text-none" size="small" prepend-icon="mdi-tag" rounded="xl"
-          variant="tonal" :to="`/tag/${name}`" :color="colorMap(name)" @click:close="() => {}">
+    <error-alert :text="tagListError" :show="tagListError" />
+    <div class="flex items-center gap-4 flex-wrap my-6">
+      <template v-for="({ name }) in tagList" :key="name">
+        <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
           {{ name }}
-        </v-btn>
+        </f-btn>
       </template>
     </div>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
     <template v-for="{ year, list } in (articleData ?? [])" :key="year">
-      <h3 class="mt-4 mb-2">
+      <h3 class="mt-4 mb-2 text-2xl">
         {{ year }}
       </h3>
       <article-timeline :list="list" />
     </template>
-  </v-container>
+  </div>
 </template>
 
 <style scoped>

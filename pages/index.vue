@@ -1,8 +1,6 @@
 <script setup>
 const settingStore = useSettingStore()
 
-const latest = ref(null)
-
 /// region 文章数据
 const {
   pending: fetchingArticleData,
@@ -20,7 +18,7 @@ useHead({
 <template>
   <div>
     <section
-      class="h-screen w-full mx-auto flex gap-16 sm:gap-32 lg:gap-64 flex-col-reverse items-center justify-center md:flex-row">
+      class="hero w-full mx-auto flex gap-16 sm:gap-32 lg:gap-64 flex-col-reverse items-center justify-center md:flex-row text-center md:text-left">
       <div>
         <h1
           class="font-serif tracking-wide text-3xl font-bold drop-shadow-lg text-zinc-700 dark:text-zinc-100 sm:text-5xl">
@@ -34,13 +32,15 @@ useHead({
       </div>
       <img class="w-48 h-48 rounded-full shadow-md md:w-64 md:h-64" :src="settingStore.settings?.avatar" alt="头像">
     </section>
-    <h3 ref="latest" class="mb-3 mt-6 d-flex align-center">
+    <h3 class="mb-3 mt-6 flex items-center">
       最近更新
-      <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="refresh()" />
+      <refresh-button class="ml-2" :loading="fetchingArticleData" @refresh="refresh()" />
     </h3>
     <error-alert :text="articleDataError" :show="articleDataError" />
-    <ArticleCardList :article-data="articleData" :pageable="false" />
-    <div v-show="!fetchingArticleData" class="text-center mt-6">
+    <section class="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-6">
+      <article-card v-for="a in articleData?.content ?? []" :key="a.id" :article="a" />
+    </section>
+    <div v-once class="text-center mt-6">
       <f-btn to="/archive" text>
         查看更多
       </f-btn>
@@ -49,4 +49,7 @@ useHead({
 </template>
 
 <style scoped>
+.hero {
+  height: 75vh;
+}
 </style>

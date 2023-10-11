@@ -20,16 +20,16 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
   <ul class="timeline">
     <li v-for="{ id, title, createDate, path, tags } in list" :key="id">
       <span class="mr-2">{{ formatDate(createDate) }}</span>
-      <nuxt-link :to="`/${path}`">
+      <f-btn :to="`/${path}`" text>
         {{ title }}
-      </nuxt-link>
-      <v-spacer />
-      <div class="d-none align-center d-sm-flex">
-        <v-chip
-          v-for="tag in (tags ?? [])" :key="tag.name" class="mr-1" size="small" :to="`/tag/${tag.name}`"
-          :color="colorMap(tag.name)">
-          {{ tag.name }}
-        </v-chip>
+      </f-btn>
+      <div class="flex-1"></div>
+      <div class="hidden sm:flex items-center gap-2">
+        <template v-for="({ name }) in tags" :key="name">
+          <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
+            {{ name }}
+          </f-btn>
+        </template>
       </div>
     </li>
   </ul>
@@ -49,11 +49,12 @@ ul.timeline {
   }
 
   > li::before {
+    @apply border-blue-500 border;
+
     content: "";
     position: absolute;
     left: -1.05rem;
     bottom: 0;
-    border-left: 1px solid rgb(var(--v-theme-primary));
   }
 
   > li:not(:first-child):not(:last-child)::before {
@@ -70,24 +71,16 @@ ul.timeline {
   }
 
   > li::after {
+    @apply bg-blue-500;
+
     content: "";
-    left: -1.28rem;
+    left: -1.25rem;
     top: 50%;
     transform: translateY(-50%);
     height: .5rem;
     width: .5rem;
     border-radius: 50%;
     position: absolute;
-    background-color: rgb(var(--v-theme-primary));
-  }
-
-  > li a {
-    color: currentColor;
-    text-decoration-line: none;
-  }
-
-  > li a:hover {
-    text-decoration-line: underline;
   }
 
 }

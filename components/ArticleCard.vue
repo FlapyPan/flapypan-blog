@@ -26,14 +26,14 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 
 <template>
   <article
-    class="rounded-xl overflow-hidden transition shadow hover:shadow-lg w-full aspect-video relative bg-white dark:bg-black">
-    <client-only :placeholder="coverSrc">
+    class="rounded-xl overflow-hidden transition shadow hover:shadow-lg w-full aspect-video relative">
+    <client-only>
       <img
         :src="coverSrc" alt="" class="rounded-xl h-full w-full object-cover transform brightness-90 dark:brightness-75"
         @error.once="onCoverError">
     </client-only>
     <nuxt-link
-      class="rounded-b-xl  absolute bottom-0 left-0 right-0 h-1/3 bg-white backdrop-blur bg-opacity-70 dark:bg-black dark:bg-opacity-80"
+      class="rounded-b-xl absolute bottom-0 left-0 right-0 h-1/3 bg-white backdrop-blur bg-opacity-70 dark:bg-black dark:bg-opacity-80"
       :to="`/${article.path}`" @click="emits('onRoute')">
       <div class="h-full flex flex-col justify-center pl-4">
         <h3 class="text-lg text-zinc-700 dark:text-zinc-100">
