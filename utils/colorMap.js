@@ -7,7 +7,7 @@ const colors = [
   'pink',
   'purple',
   'deep-purple',
-  'indigo',
+  'primary',
   'blue',
   'light-blue',
   'cyan',

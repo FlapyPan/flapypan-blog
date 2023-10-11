@@ -23,8 +23,8 @@ function logout() {
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left cursor-pointer">
         <menu-button
           as="h1"
-          class="flex items-center rounded-md p-2 hover:text-blue-500 hover:bg-blue-500 hover:bg-opacity-10"
-          :class="{ 'text-blue-500 bg-blue-500 bg-opacity-10': open }">
+          class="flex items-center rounded-md p-2 hover:text-primary-500 hover:bg-primary-500 hover:bg-opacity-10"
+          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }">
           <icon
             class="transform transition-transform" :class="{ 'rotate-90': open }"
             :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'" />
@@ -42,8 +42,8 @@ function logout() {
             <menu-item v-slot="{ active }" class="p-1">
               <nuxt-link
                 to="/" class="flex items-center rounded-md" title="主页"
-                :class="[$route.name === 'index' || active ? 'bg-blue-500 bg-opacity-10' : '']">
-                <icon name="mingcute:home-1-line" class="mr-2 text-blue-400" />
+                :class="[$route.name === 'index' || active ? 'bg-primary-500 bg-opacity-10' : '']">
+                <icon name="mingcute:home-1-line" class="mr-2 text-primary-400" />
                 首页
               </nuxt-link>
             </menu-item>
@@ -58,8 +58,8 @@ function logout() {
             <menu-item v-for="{ name, url } in settingStore.links" v-slot="{ active }" :key="url" class="p-1">
               <nuxt-link
                 class="flex items-center rounded-md" :to="`/${url}`" :title="name"
-                :class="[$route.path === `/${url}` || active ? 'bg-green-500 bg-opacity-10' : '']">
-                <icon name="mingcute:document-line" class="mr-2 text-green-400" />
+                :class="[$route.path === `/${url}` || active ? 'bg-secondary-500 bg-opacity-10' : '']">
+                <icon name="mingcute:document-line" class="mr-2 text-secondary-400" />
                 {{ name }}
               </nuxt-link>
             </menu-item>
@@ -70,8 +70,8 @@ function logout() {
       <nav class="items-center gap-4 text-sm underline-offset-2 hidden md:flex">
         <nuxt-link
           to="/" title="主页"
-          class="flex items-center hover:text-blue-500"
-          :class="{ 'text-blue-500': $route.name === 'index' }">
+          class="flex items-center hover:text-primary-500"
+          :class="{ 'text-primary-500': $route.name === 'index' }">
           <icon v-if="$route.name === 'index'" name="mingcute:home-1-line" class="mr-1" />
           首页
         </nuxt-link>
@@ -91,8 +91,8 @@ function logout() {
         </nuxt-link>
         <nuxt-link
           v-for="{ name, url } in settingStore.links" :key="url" :to="`/${url}`" :title="name"
-          class="flex items-center hover:text-green-500"
-          :class="{ 'text-green-500': $route.path === `/${url}` }">
+          class="flex items-center hover:text-secondary-500"
+          :class="{ 'text-secondary-500': $route.path === `/${url}` }">
           <icon v-if="$route.path === `/${url}`" name="mingcute:document-line" class="mr-1" />
           {{ name }}
         </nuxt-link>
@@ -131,8 +131,8 @@ function logout() {
                 <nuxt-link to="/new">
                   <button
                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                    :class="[$route.name === 'new' || active ? 'bg-green-500 bg-opacity-10' : '']">
-                    <icon name="mingcute:add-line" class="mr-2 h-5 w-5 text-green-400" />
+                    :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']">
+                    <icon name="mingcute:add-line" class="mr-2 h-5 w-5 text-secondary-400" />
                     写新文章
                   </button>
                 </nuxt-link>
@@ -141,8 +141,8 @@ function logout() {
                 <nuxt-link to="/setting">
                   <button
                     class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
-                    :class="[$route.name === 'setting' || active ? 'bg-blue-500 bg-opacity-10' : '']">
-                    <icon name="mingcute:settings-1-line" class="mr-2 h-5 w-5 text-blue-400" />
+                    :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']">
+                    <icon name="mingcute:settings-1-line" class="mr-2 h-5 w-5 text-primary-400" />
                     博客设置
                   </button>
                 </nuxt-link>

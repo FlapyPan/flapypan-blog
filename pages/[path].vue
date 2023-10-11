@@ -8,8 +8,6 @@ const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEdi
 const router = useRouter()
 const settingStore = useSettingStore()
 
-const { isDark } = useDark()
-
 // 文章路径
 const path = computed(() => router.currentRoute.value?.params.path ?? '')
 
@@ -20,17 +18,18 @@ const {
   error: articleDataError,
   refresh: getArticleData,
 } = await useAsyncData(
-    `article:${path.value}`,
-    () => api({ url: `/article/${path.value}` }),
-    { server: true },
+  `article:${path.value}`,
+  () => api({ url: `/article/${path.value}` }),
+  { server: true },
 )
+const coverSrc = ref(articleData.value.cover || settingStore.value.settings.banner)
 
 const {
   data: accessCount,
 } = await useAsyncData(
-    `access:article:${path.value}`,
-    () => api({ url: `/access/article/${articleData.value.id}` }),
-    { server: false },
+  `access:article:${path.value}`,
+  () => api({ url: `/access/article/${articleData.value.id}` }),
+  { server: false },
 )
 
 /// endregion 文章数据
@@ -39,12 +38,11 @@ const {
 const formatter = new Intl.DateTimeFormat(
   'zh-CN',
   {
-    year: 'numeric',
-    month: 'long',
+    year: '2-digit',
+    month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
     timeZone: 'Asia/ShangHai',
   },
 )
@@ -109,97 +107,87 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="page">
     <div v-if="settingStore.isLogin && isEdit">
       <client-only>
-        <v-container>
-          <v-btn variant="text" @click="isEdit = false">
-            <template #prepend>
-              <v-icon class="mt-1">
-                mdi-chevron-left
-              </v-icon>
-            </template>
-            取消
-          </v-btn>
-        </v-container>
+        <v-btn variant="text" @click="isEdit = false">
+          <template #prepend>
+            <v-icon class="mt-1">
+              mdi-chevron-left
+            </v-icon>
+          </template>
+          取消
+        </v-btn>
         <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
       </client-only>
     </div>
-    <v-container v-else class="content">
-      <h2 class="text-h4 my-6 text-center">
-        {{ articleData?.title }}
-      </h2>
-      <div v-show="articleData?.title" class="d-flex flex-wrap justify-center">
-        <client-only>
-          <p v-show="!!accessCount" class="mx-2 text-caption">
-            阅读: {{ accessCount }}
+    <template v-else>
+      <page-head class="mx-auto text-center" :title="articleData?.title">
+        <template #subTitle>
+          <p class="flex items-center justify-center flex-wrap">
+            <span class="mr-2">
+              <icon class="text-lg" name="mingcute:document-line" />
+              创建
+              {{ formattedCreateDate }}
+            </span>
+            <span class="mr-2">
+              <icon class="text-lg" name="mingcute:edit-line" />
+              修改
+              {{ formattedUpdateDate }}
+            </span>
+            <client-only>
+              <span v-show="!!accessCount" class="mr-2">
+                <icon class="text-lg" name="mingcute:book-6-line" />
+                阅读
+                {{ accessCount }}
+              </span>
+            </client-only>
           </p>
-          <div class="date text-caption d-flex flex-wrap justify-center">
-            <p>创建: {{ formattedCreateDate }}</p>
-            <p v-show="formattedCreateDate !== formattedUpdateDate">
-              修改: {{ formattedUpdateDate }}
-            </p>
-          </div>
-        </client-only>
-      </div>
-      <v-responsive :aspect-ratio="16 / 9" class="rounded-lg my-8">
-        <img class="h-100 w-100" :src="articleData?.cover ?? settingStore.settings.banner" :alt="articleData?.title">
-      </v-responsive>
-      <div class="d-flex flex-wrap align-center" style="gap: 6px">
-        <refresh-button class="ml-1" :loading="fetchingArticleData" @refresh="getArticleData()">
+          <p class="mt-4 flex items-center justify-center flex-wrap gap-2">
+            <template v-for="({ name }) in (articleData?.tags || [])" :key="name">
+              <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
+                {{ name }}
+              </f-btn>
+            </template>
+          </p>
+        </template>
+      </page-head>
+      <img class="w-full aspect-video rounded-xl mb-12 max-w-4xl mx-auto" :src="coverSrc" :alt="articleData?.title">
+      <div class="flex flex-wrap items-center gap-4">
+        <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
         </refresh-button>
-        <v-chip
-          v-for="tag in articleData?.tags || []" :key="tag.id" :to="`/tag/${tag.name}`"
-          :color="colorMap(tag.name)">
-          {{ tag.name }}
-        </v-chip>
-        <v-spacer></v-spacer>
-        <v-btn v-if="settingStore.isLogin" color="primary" size="small" variant="text" @click="openEdit">
-          <v-icon>mdi-pencil</v-icon>
+        <span class="flex-1"></span>
+        <f-btn icon="mingcute-edit-line" text @click="openEdit">
           编辑
-        </v-btn>
-        <v-dialog v-if="settingStore.isLogin" v-model="deleteDialog" width="auto">
-          <template #activator="{ props }">
-            <v-btn v-bind="props" color="red" size="small" variant="text">
-              <v-icon>mdi-delete</v-icon>
-              删除
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-text>
-              确认删除此文章 "{{ articleData.title }}" ?
-            </v-card-text>
-            <v-card-item v-show="deleteError">
-              <v-alert rounded="lg" :text="deleteError" type="error"></v-alert>
-            </v-card-item>
-            <v-card-actions>
-              <v-btn color="red-lighten-2" block :loading="deleting" @click="deleteArticle">
+        </f-btn>
+        <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
+          删除
+        </f-btn>
+        <f-dialog v-model="deleteDialog" closable>
+          <p class="mb-4">
+            确认删除此文章 "{{ articleData.title }}" ?
+          </p>
+          <div class="text-right">
+            <f-btn class="mr-4" text @click="deleteArticle">
+              <span class="text-red-500">
                 确认删除
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+              </span>
+            </f-btn>
+            <f-btn text @click="deleteDialog = false">
+              取消
+            </f-btn>
+          </div>
+        </f-dialog>
       </div>
-      <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
+      <error-alert :show="articleDataError" :text="articleDataError" />
       <md-preview
-        v-if="articleData?.content" class="markdown px-0"
+        v-if="articleData?.content" class="mt-6"
         editor-id="read" :model-value="articleData?.content ?? ''" preview-theme="default"
-        code-theme="gradient" :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" />
+        code-theme="gradient" :no-img-zoom-in="false" />
       <giscus-card v-if="!fetchingArticleData" />
-    </v-container>
+    </template>
   </div>
 </template>
 
 <style scoped>
-.markdown {
-  font-family: var(--fonts-proportional) !important;
-}
-
-.content {
-  max-width: 1200px;
-
-  .date {
-    gap: 4px;
-  }
-}
 </style>

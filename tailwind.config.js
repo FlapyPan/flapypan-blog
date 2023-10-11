@@ -1,3 +1,5 @@
+import colors from 'tailwindcss/colors'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -8,7 +10,12 @@ export default {
     './app.vue',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: colors.indigo,
+        secondary: colors.green,
+      },
+    },
   },
   plugins: [],
 }

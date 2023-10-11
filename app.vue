@@ -29,7 +29,7 @@ if (process.browser) api({ url: `/auth` }).then((val) => settingStore.value.isLo
   </Head>
   <NuxtLayout>
     <app-bar />
-    <main class="container px-6 mx-auto">
+    <main class="px-3 sm:px-6 mx-auto">
       <NuxtPage />
       <footer class="text-center mt-16 mb-12 text-sm" v-text="settingStore.settings?.footer">
       </footer>

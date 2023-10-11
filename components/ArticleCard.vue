@@ -8,10 +8,6 @@ const settingStore = useSettingStore()
 
 const coverSrc = ref(props.article.cover || settingStore.value.settings.banner)
 
-function onCoverError() {
-  coverSrc.value = settingStore.value.settings.banner
-}
-
 const formatter = new Intl.DateTimeFormat(
   'zh-CN',
   {
@@ -25,27 +21,28 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 </script>
 
 <template>
-  <article
-    class="rounded-xl overflow-hidden transition shadow hover:shadow-lg w-full aspect-video relative">
-    <client-only>
-      <img
-        :src="coverSrc" alt="" class="rounded-xl h-full w-full object-cover transform brightness-90 dark:brightness-75"
-        @error.once="onCoverError">
-    </client-only>
-    <nuxt-link
-      class="rounded-b-xl absolute bottom-0 left-0 right-0 h-1/3 bg-white backdrop-blur bg-opacity-70 dark:bg-black dark:bg-opacity-80"
-      :to="`/${article.path}`" @click="emits('onRoute')">
-      <div class="h-full flex flex-col justify-center pl-4">
-        <h3 class="text-lg text-zinc-700 dark:text-zinc-100">
-          {{ article.title }}
-        </h3>
-        <div class="text-xs text-zinc-600 dark:text-zinc-400">
-          {{ formattedDate }}
-        </div>
+  <nuxt-link class="article-card group" :to="`/${article.path}`" @click="emits('onRoute')">
+    <img :src="coverSrc" alt="" class="absolute inset-0 -z-10 object-cover">
+    <div class="rounded-b-xl flex flex-col justify-center p-4">
+      <h3 class="text-lg">
+        {{ article.title }}
+      </h3>
+      <div class="text-xs">
+        {{ formattedDate }}
       </div>
-    </nuxt-link>
-  </article>
+    </div>
+    <icon class="mr-4 text-xl transition-transform translate-x-12 group-hover:translate-x-0" name="mingcute:arrow-right-line" />
+  </nuxt-link>
 </template>
 
 <style scoped>
+.article-card {
+  @apply relative rounded-xl overflow-hidden shadow hover:shadow-lg transition flex items-center justify-between;
+
+  &::after {
+    content: "";
+    @apply absolute inset-0 -z-10 bg-zinc-100 bg-opacity-80 dark:bg-zinc-800 dark:bg-opacity-70;
+  }
+
+}
 </style>

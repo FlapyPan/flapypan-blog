@@ -48,14 +48,14 @@ defineProps({
 
     &:not([disabled]) {
       .f-btn-content {
-        @apply bg-gradient-to-r from-cyan-500 to-blue-500 bg-no-repeat transition-all drop-shadow-md;
+        @apply bg-gradient-to-r from-cyan-500 to-primary-500 bg-no-repeat transition-all;
         background-position-y: 100%;
-        background-size: 0 2px;
+        background-size: 0 1.5px;
       }
 
       &:hover {
         .f-btn-content {
-          background-size: 100% 2px;
+          background-size: 100% 1.5px;
         }
       }
     }
@@ -71,7 +71,7 @@ defineProps({
       &:hover::before {
         content: "";
         z-index: -2;
-        @apply absolute bottom-0 w-4 h-4 left-1/2 -translate-x-1/2 bg-blue-400 select-none;
+        @apply absolute bottom-0 w-4 h-4 left-1/2 -translate-x-1/2 bg-primary-400 select-none;
       }
 
       &:hover::after {

@@ -92,7 +92,7 @@ useHead({
       </client-only>
     </h3>
     <error-alert :text="tagListError" :show="tagListError" />
-    <div class="flex items-center gap-4 flex-wrap my-6">
+    <div class="flex items-center gap-4 flex-wrap mt-6">
       <template v-for="({ name }) in tagList" :key="name">
         <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
           {{ name }}
@@ -100,12 +100,14 @@ useHead({
       </template>
     </div>
     <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
-    <template v-for="{ year, list } in (articleData ?? [])" :key="year">
-      <h3 class="mt-4 mb-2 text-2xl">
-        {{ year }}
-      </h3>
-      <article-timeline :list="list" />
-    </template>
+    <div class="mt-12">
+      <template v-for="{ year, list } in (articleData ?? [])" :key="year">
+        <h3 class="mt-4 mb-2 text-2xl">
+          {{ year }}
+        </h3>
+        <article-timeline :list="list" />
+      </template>
+    </div>
   </div>
 </template>
 

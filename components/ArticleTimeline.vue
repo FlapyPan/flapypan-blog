@@ -49,7 +49,7 @@ ul.timeline {
   }
 
   > li::before {
-    @apply border-blue-500 border;
+    @apply border-primary-500 border;
 
     content: "";
     position: absolute;
@@ -71,7 +71,7 @@ ul.timeline {
   }
 
   > li::after {
-    @apply bg-blue-500;
+    @apply bg-primary-500;
 
     content: "";
     left: -1.25rem;

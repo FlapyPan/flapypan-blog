@@ -32,19 +32,21 @@ useHead({
       </div>
       <img class="w-48 h-48 rounded-full shadow-md md:w-64 md:h-64" :src="settingStore.settings?.avatar" alt="头像">
     </section>
-    <h3 class="mb-3 mt-6 flex items-center">
-      最近更新
-      <refresh-button class="ml-2" :loading="fetchingArticleData" @refresh="refresh()" />
-    </h3>
-    <error-alert :text="articleDataError" :show="articleDataError" />
-    <section class="columns-1 md:columns-2 xl:columns-3 gap-6 space-y-6">
-      <article-card v-for="a in articleData?.content ?? []" :key="a.id" :article="a" />
+    <section class="max-w-5xl mx-auto">
+      <h3 class="mb-3 mt-6 flex items-center">
+        最近更新
+        <refresh-button class="ml-2" :loading="fetchingArticleData" @refresh="refresh()" />
+      </h3>
+      <error-alert :text="articleDataError" :show="articleDataError" />
+      <div class="columns-1 md:columns-2 gap-6 space-y-6">
+        <article-card v-for="a in articleData?.content ?? []" :key="a.id" :article="a" />
+      </div>
+      <div v-once class="text-center mt-6">
+        <f-btn to="/archive" text>
+          查看更多
+        </f-btn>
+      </div>
     </section>
-    <div v-once class="text-center mt-6">
-      <f-btn to="/archive" text>
-        查看更多
-      </f-btn>
-    </div>
   </div>
 </template>
 

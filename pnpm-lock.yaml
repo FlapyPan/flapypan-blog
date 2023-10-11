@@ -20,6 +20,9 @@ devDependencies:
   lint-staged:
     specifier: ^14.0.1
     version: 14.0.1
+  marked:
+    specifier: ^9.1.0
+    version: 9.1.0
   md-editor-v3:
     specifier: ^4.7.0
     version: 4.7.0(@codemirror/state@6.2.1)(@codemirror/view@6.21.2)(@lezer/common@1.1.0)(vue@3.3.4)
@@ -5841,6 +5844,12 @@ packages:
       linkify-it: 4.0.1
       mdurl: 1.0.1
       uc.micro: 1.0.6
+    dev: true
+
+  /marked@9.1.0:
+    resolution: {integrity: sha512-VZjm0PM5DMv7WodqOUps3g6Q7dmxs9YGiFUZ7a2majzQTTCgX+6S6NAJHPvOhgFBzYz8s4QZKWWMfZKFmsfOgA==}
+    engines: {node: '>= 16'}
+    hasBin: true
     dev: true
 
   /md-editor-v3@4.7.0(@codemirror/state@6.2.1)(@codemirror/view@6.21.2)(@lezer/common@1.1.0)(vue@3.3.4):

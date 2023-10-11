@@ -3,45 +3,68 @@
 @tailwind utilities;
 
 :root {
-  @apply text-zinc-700 dark:text-zinc-200;
-
-  --fonts-emoji: "Noto Color Emoji", "Segoe UI Emoji", "Twemoji Mozilla", "Apple Color Emoji";
-  --fonts-proportional: tahoma, helvetica, arial, "Microsoft Yahei", "STKaiti", sans-serif, var(--fonts-emoji);
-  --fonts-monospace: menlo, consolas, monaco, "Liberation Mono", "Lucida Console", monospace, var(--fonts-proportional);
-
+  --primary-500: rgb(99, 102, 241);
+  @apply text-zinc-800 dark:text-zinc-200;
   color-scheme: light dark;
 }
 
-html, body, .v-application [class*="text-"] { font-family: var(--fonts-proportional) !important; }
-
-code, kbd, pre, samp { font-family: var(--fonts-monospace) !important; }
-
-img { object-fit: cover; }
-
-.md-editor-catalog-active > span {
-  color: rgb(var(--v-theme-primary)) !important;
+img {
+  @apply object-cover;
 }
 
-.md-editor-catalog-link span:hover {
-  color: rgb(var(--v-theme-primary)) !important;
+.md-editor-catalog-active {
+  > span, span:hover {
+    @apply text-primary-500;
+  }
 }
 
-.md-editor, .md-editor-dark {
-  --md-bk-color: transparent !important;
-}
+.md-editor {
+  --md-bk-color: #fafafa !important;
+  @apply rounded-xl shadow;
 
-.md-editor .default-theme {
-  --md-theme-link-color: rgb(var(--v-theme-primary)) !important;
-  --md-theme-link-hover-color: rgb(var(--v-theme-primary)) !important;
-}
+  &.md-editor-dark {
+    --md-bk-color: #27272A !important;
+  }
 
-.md-editor .default-theme a:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+  .md-editor-preview-wrapper {
+    @apply px-12 pb-12;
+  }
 
-.md-editor .default-theme blockquote {
-  border-left: 5px solid rgb(var(--v-theme-primary)) !important;
+  .default-theme {
+    --md-theme-link-color: var(--primary-500) !important;
+    --md-theme-link-hover-color: var(--primary-500) !important;
+
+    ul {
+      @apply list-disc;
+    }
+
+    ol {
+      @apply list-decimal;
+    }
+
+    img {
+      margin: 0;
+    }
+
+    a {
+      @apply bg-gradient-to-r from-cyan-500 to-primary-500 bg-no-repeat transition-all no-underline transform-gpu;
+      background-position-y: 100%;
+      background-size: 0 1.5px;
+
+      &:hover {
+        background-size: 100% 1.5px;
+      }
+    }
+
+    blockquote {
+      @apply border-l-primary-500;
+    }
+
+    table tbody tr:hover {
+      background: none;
+    }
+  }
+
 }
 
 .bg-blur {
@@ -49,7 +72,11 @@ img { object-fit: cover; }
 }
 
 .page {
-  @apply py-20;
+  @apply py-20 container mx-auto;
+}
+
+.f-input {
+  @apply rounded-xl;
 }
 
 .animation-rotate {
