@@ -18,16 +18,6 @@ function parseFormData() {
   return formData
 }
 
-function usernameRule(value) {
-  if (value?.trim() !== '') return true
-  return '用户名不能为空'
-}
-
-function passwordRule(value) {
-  if (value?.trim() !== '') return true
-  return '密码不能为空'
-}
-
 const isDoLogin = ref(false)
 const loginError = ref(null)
 
@@ -54,23 +44,23 @@ async function login() {
 </script>
 
 <template>
-  <v-card>
-    <v-toolbar color="transparent">
-      <v-btn icon dark @click="emits('close')">
-        <v-icon>mdi-close</v-icon>
-      </v-btn>
-      <v-toolbar-title>登录</v-toolbar-title>
-    </v-toolbar>
+  <form class="bg-blur rounded-xl p-6 flex flex-col gap-6" :disabled="isDoLogin" @submit.prevent.stop>
+    <p class="text-xl ml-2">
+      登录
+    </p>
+    <input v-model="form.username" type="text" name="username" placeholder="用户名" required :disabled="isDoLogin">
+    <input
+      v-model="form.password" type="password" name="password" placeholder="密码" required :disabled="isDoLogin"
+      @keydown.enter="login">
+    <p class="flex items-center justify-end gap-2 pr-2">
+      <input id="login-remember" v-model="form.remember" type="checkbox" name="remember" :disabled="isDoLogin">
+      <label for="login-remember">记住我</label>
+    </p>
+    <f-btn type="submit" :disabled="isDoLogin" @click="login">
+      登录
+    </f-btn>
     <error-alert :show="loginError" :text="loginError" />
-    <v-card-item class="mb-8">
-      <v-form class="pa-4" validate-on="submit lazy" @submit.prevent="login()">
-        <v-text-field v-model="form.username" :rules="[usernameRule]" label="用户名" />
-        <v-text-field v-model="form.password" :rules="[passwordRule]" type="password" label="密码" />
-        <v-checkbox v-model="form.remember" label="在此设备上记住我" />
-        <v-btn color="primary" :loading="isDoLogin" type="submit" block class="mt-2" text="登录" />
-      </v-form>
-    </v-card-item>
-  </v-card>
+  </form>
 </template>
 
 <style scoped>

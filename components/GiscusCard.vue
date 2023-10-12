@@ -30,7 +30,7 @@ const theme = computed(() => themeInstance.current.value.dark ? 'noborder_dark' 
         inputposition="top"
         :theme="theme"
         lang="zh-CN"
-        loading="lazy" />
+        loading="eager" />
     </div>
   </client-only>
 </template>

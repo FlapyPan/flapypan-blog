@@ -112,8 +112,8 @@ function logout() {
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
             as="div"
-            class="flex align-center rounded-md p-2 text-sm hover:text-cyan-500 hover:bg-cyan-500 hover:bg-opacity-10"
-            :class="{ 'text-cyan-500 bg-cyan-500 bg-opacity-10': open }">
+            class="flex align-center rounded-md p-2 text-sm hover:text-primary-500 hover:bg-primary-500 hover:bg-opacity-10"
+            :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }">
             <img class="w-6 h-6 rounded-full" :src="settingStore.settings?.avatar" alt="头像">
             <span class="ml-2">{{ settingStore.settings?.name }}</span>
           </menu-button>
@@ -126,7 +126,7 @@ function logout() {
             leave-from-class="transform scale-100 opacity-100"
             leave-to-class="transform scale-95 opacity-0">
             <menu-items
-              class="absolute right-0 mt-4 px-2 py-2 origin-top-right rounded-md shadow-lg bg-blur focus:outline-none">
+              class="absolute w-32 right-0 mt-4 px-2 py-2 origin-top-right rounded-md shadow-lg bg-blur focus:outline-none">
               <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
                 <nuxt-link to="/new">
                   <button

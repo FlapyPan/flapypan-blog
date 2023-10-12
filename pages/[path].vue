@@ -152,7 +152,7 @@ useHead({
           </p>
         </template>
       </page-head>
-      <img class="w-full aspect-video rounded-xl mb-12 max-w-4xl mx-auto" :src="coverSrc" :alt="articleData?.title">
+      <img class="w-full rounded-xl mb-12 max-w-4xl max-h-96 mx-auto" :src="coverSrc" alt="">
       <div class="flex flex-wrap items-center gap-4">
         <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
         </refresh-button>
@@ -182,7 +182,7 @@ useHead({
       <error-alert :show="articleDataError" :text="articleDataError" />
       <md-preview
         v-if="articleData?.content" class="mt-6"
-        editor-id="read" :model-value="articleData?.content ?? ''" preview-theme="default"
+        editor-id="read" :model-value="articleData?.content" preview-theme="default"
         code-theme="gradient" :no-img-zoom-in="false" />
       <giscus-card v-if="!fetchingArticleData" />
     </template>

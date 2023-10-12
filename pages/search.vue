@@ -22,6 +22,7 @@ const {
   data: searchData,
   pending: isSearching,
   execute: searchArticle,
+  error,
 } = await useAsyncData(
   `search:${queryKeyword.value}`,
   () => api({ url: url.value }),
@@ -51,6 +52,7 @@ onMounted(() => nextTick(() => searchInput.value.focus()))
       <refresh-button :loading="isSearching" @refresh="searchArticle()">
       </refresh-button>
     </page-head>
+    <error-alert :show="error" :text="error" />
     <article-timeline :list="searchData?.content" />
     <nav class="mt-4 flex justify-center items-center gap-4">
       <f-btn :disabled="queryPage <= 0" text @click="queryPage--">

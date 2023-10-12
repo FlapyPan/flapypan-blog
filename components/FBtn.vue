@@ -66,19 +66,7 @@ defineProps({
     bg-opacity-30 bg-white backdrop-blur-2xl backdrop-saturate-100 dark:bg-opacity-20 dark:bg-black;
 
     &:not([disabled]) {
-      @apply hover:shadow-md active:shadow-none;
-
-      &:hover::before {
-        content: "";
-        z-index: -2;
-        @apply absolute bottom-0 w-4 h-4 left-1/2 -translate-x-1/2 bg-primary-400 select-none;
-      }
-
-      &:hover::after {
-        content: "";
-        z-index: -1;
-        @apply absolute inset-0 backdrop-blur-xl select-none;
-      }
+      @apply hover:shadow-md;
     }
 
     .f-btn-content {
