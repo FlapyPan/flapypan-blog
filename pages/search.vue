@@ -8,7 +8,7 @@ const route = useRoute()
 /// region 搜索
 const queryKeyword = computed(() => route.query.keyword ?? '')
 const queryPage = computed({
-  get: () => +(route.query.page ?? 1),
+  get: () => +(route.query.page ?? 0),
   set: (page) => router.push(`/search?keyword=${queryKeyword.value}&page=${page}`),
 })
 
@@ -16,7 +16,7 @@ const searchInput = ref(null)
 const inputValue = ref(queryKeyword.value)
 const replaceQuery = () => router.replace(`/search?keyword=${inputValue.value}`)
 
-const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryPage.value - 1}&size=12`)
+const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryPage.value}&size=12`)
 
 const {
   data: searchData,
@@ -43,18 +43,26 @@ onMounted(() => nextTick(() => searchInput.value.focus()))
 </script>
 
 <template>
-  <v-container style="max-width: 1000px">
-    <h2 class="my-4 d-flex align-center">
-      搜索
-      <refresh-button class="ml-1" :loading="isSearching" @refresh="searchArticle()"></refresh-button>
-    </h2>
-    <v-text-field
-      ref="searchInput" v-model="inputValue" label="搜索标题、分类、标签" variant="outlined"
-      color="light-blue" @keydown.enter="replaceQuery()"></v-text-field>
+  <div class="page">
+    <page-head class="mb-6" title="搜索文章、标签">
+      <input
+        ref="searchInput" v-model="inputValue" class="w-full mb-4" type="text" placeholder="输入关键字回车搜索"
+        @keydown.enter="replaceQuery()">
+      <refresh-button :loading="isSearching" @refresh="searchArticle()">
+      </refresh-button>
+    </page-head>
     <article-timeline :list="searchData?.content" />
-    <v-pagination v-model="queryPage" size="small" :length="searchData?.totalPages ?? 1" rounded="circle">
-    </v-pagination>
-  </v-container>
+    <nav class="mt-4 flex justify-center items-center gap-4">
+      <f-btn :disabled="queryPage <= 0" text @click="queryPage--">
+        <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+        上一页
+      </f-btn>
+      <f-btn :disabled="searchData?.last" text @click="queryPage++">
+        下一页
+        <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+      </f-btn>
+    </nav>
+  </div>
 </template>
 
 <style scoped>
