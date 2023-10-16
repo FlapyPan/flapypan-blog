@@ -12,7 +12,6 @@ const settingStore = useSettingStore()
 const themeStore = useThemeStore()
 const { mobile } = useDisplay()
 
-const loginDialog = ref(false)
 const logout = () => {
   api(`/auth/logout`).finally(() => {
     localStorage.removeItem('token')
@@ -22,7 +21,7 @@ const logout = () => {
 </script>
 
 <template>
-  <login-dialog :opened.sync="loginDialog" />
+  <login-dialog />
   <v-app-bar class="app-bar align-center" elevation="0">
     <template #prepend>
       <v-btn @click="settingStore.sideBarOpened=!settingStore.sideBarOpened" v-if="mobile" icon="mdi-menu"></v-btn>
@@ -82,7 +81,7 @@ const logout = () => {
             </template>
             退出登录
           </v-list-item>
-          <v-list-item v-else @click="loginDialog=true" :active="loginDialog" color="indigo">
+          <v-list-item v-else @click="settingStore.loginDialogOpened=true" :active="settingStore.loginDialogOpened" color="indigo">
             <template v-slot:prepend>
               <v-avatar color="indigo" size="28">
                 <v-icon color="white" class="text-body-1">mdi-login</v-icon>

@@ -3,16 +3,6 @@ import { useSettingStore } from '@/store/setting'
 import { computed, reactive, ref } from 'vue'
 import { api } from '@/api'
 
-const props = defineProps({
-  opened: { type: Boolean },
-})
-const emits = defineEmits(['update:opened'])
-
-const dialogOpened = computed({
-  get: () => props.opened,
-  set: (val) => emits('update:opened', val),
-})
-
 const settingStore = useSettingStore()
 
 /// region 登录
@@ -41,7 +31,7 @@ const login = async () => {
   try {
     await api(`/auth/login`, 'POST', formData, false)
     settingStore.isLogin = true
-    dialogOpened.value = false
+    settingStore.loginDialogOpened = false
   } catch (e) {
     console.error(e)
     loginError.value = e.message
@@ -53,10 +43,10 @@ const login = async () => {
 </script>
 
 <template>
-  <v-dialog v-if="!settingStore.isLogin" v-model="dialogOpened" max-width="500px">
+  <v-dialog v-if="!settingStore.isLogin" v-model="settingStore.loginDialogOpened" max-width="500px">
     <v-card>
       <v-toolbar color="transparent">
-        <v-btn icon dark @click="dialogOpened=false">
+        <v-btn icon dark @click="settingStore.loginDialogOpened=false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>登录</v-toolbar-title>

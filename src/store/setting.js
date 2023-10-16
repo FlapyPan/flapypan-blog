@@ -5,6 +5,7 @@ import { ref } from 'vue'
 export const useSettingStore = defineStore('setting', () => {
 
   const sideBarOpened = ref(false)
+  const loginDialogOpened = ref(false)
 
   const isLogin = ref(!!localStorage.getItem('token'))
   api(`/auth`).then((data) => isLogin.value = !!data)
@@ -33,5 +34,5 @@ export const useSettingStore = defineStore('setting', () => {
   api(`/link`).then(setLinks)
 
 
-  return { sideBarOpened, isLogin, settings, links, setLinks }
+  return { sideBarOpened, loginDialogOpened, isLogin, settings, links, setLinks }
 })
