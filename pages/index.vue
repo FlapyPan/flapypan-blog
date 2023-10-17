@@ -30,7 +30,7 @@ useHead({
           <!--          {{ settingStore.settings.banner }} -->
         </p>
       </div>
-      <img class="w-48 h-48 rounded-full shadow-md md:w-64 md:h-64" :src="settingStore.settings?.avatar" alt="头像">
+      <img class="w-40 h-40 rounded-full shadow-md md:w-64 md:h-64" :src="settingStore.settings?.avatar" alt="头像">
     </section>
     <section class="max-w-5xl mx-auto">
       <h3 class="mb-3 mt-6 flex items-center">

@@ -31,7 +31,7 @@ input {
   }
 
   .md-editor-preview-wrapper {
-    @apply px-12 pb-12;
+    @apply px-4 md:px-12 pb-12;
   }
 
   .default-theme {

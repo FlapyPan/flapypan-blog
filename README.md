@@ -81,10 +81,13 @@ pnpm build # 编译
 使用 pm2 进行管理
 
 ```shell
-pnpm eco:start
-pnpm eco:stop
-pnpm eco:reload
-pnpm eco:delete
+export BACKEND_API='http://localhost:8080' # 设置后端地址
+export PORT=3000 # 设置前端服务端口号
+
+pm2 start ecosystem.config.cjs
+pm2 stop ecosystem.config.cjs
+pm2 restart ecosystem.config.cjs
+pm2 delete ecosystem.config.cjs
 ```
 
 ## 评论系统配置(可选)

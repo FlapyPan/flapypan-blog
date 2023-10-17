@@ -3,14 +3,10 @@ module.exports = {
     {
       name: 'flapypan-blog-page',
       script: './.output/server/index.mjs',
-      instances: 1,
+      instances: 4,
       autorestart: true,
       watch: false,
       max_memory_restart: '256M',
-      env: {
-        PORT: 3300,
-        BACKEND_API: 'http://localhost:8080',
-      },
     },
   ],
 }
