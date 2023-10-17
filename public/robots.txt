@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /api/static/
+Disallow: /guestbook/
+Disallow: /search/
+Disallow: /new/
+Disallow: /setting/

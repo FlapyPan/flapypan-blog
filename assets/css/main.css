@@ -93,7 +93,6 @@ input {
 
 .page-enter-active,
 .page-leave-active {
-  will-change: opacity;
   transition: all 0.3s;
 }
 
