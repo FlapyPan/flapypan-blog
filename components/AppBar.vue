@@ -14,9 +14,11 @@ function logout() {
 
 <template>
   <client-only>
-    <v-dialog v-if="!settingStore.isLogin" v-model="loginDialogVisible" max-width="500px" close-on-back>
-      <login-form @close="loginDialogVisible = false" />
-    </v-dialog>
+    <template v-if="!settingStore.isLogin">
+      <v-dialog v-model="loginDialogVisible" max-width="500px" close-on-back>
+        <login-form @close="loginDialogVisible = false" />
+      </v-dialog>
+    </template>
   </client-only>
   <header class="w-full fixed top-0 sm:top-2 z-50">
     <div class="container h-14 mx-auto px-6 flex items-center bg-blur shadow rounded-none sm:rounded-xl">

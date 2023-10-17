@@ -48,7 +48,7 @@ defineProps({
 
     &:not([disabled]) {
       .f-btn-content {
-        @apply bg-gradient-to-r from-cyan-500 to-primary-500 bg-no-repeat transition-all;
+        @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all;
         background-position-y: 100%;
         background-size: 0 1.5px;
       }

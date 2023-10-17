@@ -51,7 +51,7 @@ input {
     }
 
     a {
-      @apply bg-gradient-to-r from-cyan-500 to-primary-500 bg-no-repeat transition-all no-underline transform-gpu;
+      @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all no-underline transform-gpu;
       background-position-y: 100%;
       background-size: 0 1.5px;
 

@@ -8,15 +8,18 @@ const route = useRoute()
 /// region 搜索
 const queryKeyword = computed(() => route.query.keyword ?? '')
 const queryPage = computed({
-  get: () => +(route.query.page ?? 0),
-  set: (page) => router.push(`/search?keyword=${queryKeyword.value}&page=${page}`),
+  get: () => +(route.query.page ?? 1),
+  set: (val) => {
+    if (val) router.push(`/search?keyword=${queryKeyword.value}&page=${val}`)
+    else router.push(`/search?keyword=${queryKeyword.value}`)
+  },
 })
 
 const searchInput = ref(null)
 const inputValue = ref(queryKeyword.value)
 const replaceQuery = () => router.replace(`/search?keyword=${inputValue.value}`)
 
-const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryPage.value}&size=12`)
+const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryPage.value - 1}&size=${settingStore.value.settings?.pageSize ?? 12}`)
 
 const {
   data: searchData,
@@ -55,7 +58,7 @@ onMounted(() => nextTick(() => searchInput.value.focus()))
     <error-alert :show="error" :text="error" />
     <article-timeline :list="searchData?.content" />
     <nav class="mt-4 flex justify-center items-center gap-4">
-      <f-btn :disabled="queryPage <= 0" text @click="queryPage--">
+      <f-btn :disabled="queryPage <= 1" text @click="queryPage--">
         <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
         上一页
       </f-btn>

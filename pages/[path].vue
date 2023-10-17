@@ -108,8 +108,8 @@ useHead({
 
 <template>
   <div class="page">
-    <div v-if="settingStore.isLogin && isEdit">
-      <client-only>
+    <client-only>
+      <div v-if="settingStore.isLogin && isEdit">
         <v-btn variant="text" @click="isEdit = false">
           <template #prepend>
             <v-icon class="mt-1">
@@ -119,9 +119,9 @@ useHead({
           取消
         </v-btn>
         <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
-      </client-only>
-    </div>
-    <template v-else>
+      </div>
+    </client-only>
+    <template v-if="!isEdit">
       <page-head class="mx-auto text-center" :title="articleData?.title">
         <template #subTitle>
           <p class="flex items-center justify-center flex-wrap">
@@ -136,49 +136,51 @@ useHead({
               {{ formattedUpdateDate }}
             </span>
             <client-only>
-              <span v-show="!!accessCount" class="mr-2">
+              <span class="mr-2">
                 <icon class="text-lg" name="mingcute:book-6-line" />
                 阅读
-                {{ accessCount }}
+                {{ accessCount ?? 0 }}
               </span>
             </client-only>
           </p>
           <p class="mt-4 flex items-center justify-center flex-wrap gap-2">
-            <template v-for="({ name }) in (articleData?.tags || [])" :key="name">
-              <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
-                {{ name }}
-              </f-btn>
-            </template>
+            <f-btn
+              v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
+              icon="mingcute:tag-line" text>
+              {{ name }}
+            </f-btn>
           </p>
         </template>
       </page-head>
       <img class="w-full rounded-xl mb-12 max-w-4xl max-h-96 mx-auto" :src="coverSrc" alt="">
-      <div class="flex flex-wrap items-center gap-4">
-        <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
-        </refresh-button>
-        <span class="flex-1"></span>
-        <f-btn icon="mingcute-edit-line" text @click="openEdit">
-          编辑
-        </f-btn>
-        <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
-          删除
-        </f-btn>
-        <f-dialog v-model="deleteDialog" closable>
-          <p class="mb-4">
-            确认删除此文章 "{{ articleData.title }}" ?
-          </p>
-          <div class="text-right">
-            <f-btn class="mr-4" text @click="deleteArticle">
-              <span class="text-red-500">
-                确认删除
-              </span>
-            </f-btn>
-            <f-btn text @click="deleteDialog = false">
-              取消
-            </f-btn>
-          </div>
-        </f-dialog>
-      </div>
+      <client-only>
+        <div v-if="settingStore.isLogin" class="flex flex-wrap items-center gap-4">
+          <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
+          </refresh-button>
+          <span class="flex-1"></span>
+          <f-btn icon="mingcute-edit-line" text @click="openEdit">
+            编辑
+          </f-btn>
+          <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
+            删除
+          </f-btn>
+          <f-dialog v-model="deleteDialog" closable>
+            <p class="mb-4">
+              确认删除此文章 "{{ articleData.title }}" ?
+            </p>
+            <div class="text-right">
+              <f-btn class="mr-4" text @click="deleteArticle">
+                <span class="text-red-500">
+                  确认删除
+                </span>
+              </f-btn>
+              <f-btn text @click="deleteDialog = false">
+                取消
+              </f-btn>
+            </div>
+          </f-dialog>
+        </div>
+      </client-only>
       <error-alert :show="articleDataError" :text="articleDataError" />
       <md-preview
         v-if="articleData?.content" class="mt-6"

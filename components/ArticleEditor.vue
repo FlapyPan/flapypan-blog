@@ -55,8 +55,7 @@ async function getTagList() {
   }
   tagData.value = tags.map((tag) => tag.name)
   // 去除无效标签
-  draft.value.tagNames = draft.value.tagNames
-    .filter((tagName) => tagData.value.includes(tagName))
+  draft.value.tagNames = draft.value.tagNames.filter((tagName) => tagData.value.includes(tagName))
 }
 
 getTagList()

@@ -1,5 +1,4 @@
 <script setup>
-const router = useRouter()
 const settingStore = useSettingStore()
 
 /// region 标签数据
@@ -21,7 +20,7 @@ const {
 /// endregion 文章列表
 
 /// region 标签添加
-const tagEditor = ref(false)
+const showTagEditor = ref(false)
 const newTagName = ref('')
 const addingTag = ref(false)
 const addTagError = ref(null)
@@ -29,12 +28,17 @@ const addTagError = ref(null)
 async function addTag() {
   addTagError.value = null
   addingTag.value = true
-  const { error } = await useAsyncData(`tag`, () => api({ url: `/article/group-by/year` }))
+  const { error } = await useAsyncData(
+    `tag:add:${newTagName.value}`,
+    () => api({ url: `/tag`, method: 'POST', payload: { name: newTagName.value } }),
+    { server: false },
+  )
   if (error.value) {
     addTagError.value = error.value.message
   } else {
     // 添加后刷新数据
-    router.go(0)
+    await getTagList()
+    showTagEditor.value = false
   }
   addingTag.value = false
 }
@@ -60,35 +64,20 @@ useHead({
       </span>
       <client-only>
         <template v-if="settingStore.isLogin">
-          <f-dialog v-model="tagEditor" title="添加标签" closable>
-            添加标签
-          </f-dialog>
-          <f-btn class="ml-2" text icon="mingcute-add-line" @click="tagEditor = true">
+          <f-btn class="ml-2" text icon="mingcute-add-line" @click="showTagEditor = true">
             添加
           </f-btn>
+          <f-dialog v-model="showTagEditor" title="添加标签" closable>
+            <form class="mt-8 flex flex-col gap-6" @submit.prevent.stop>
+              <input
+                v-model="newTagName" type="text" name="tagName" placeholder="标签名" required :disabled="addingTag">
+              <f-btn type="submit" :disabled="addingTag" @click="addTag()">
+                添加
+              </f-btn>
+              <error-alert :text="addTagError" :show="addTagError" />
+            </form>
+          </f-dialog>
         </template>
-        <!--        <v-menu v-if="settingStore.isLogin" v-model="tagEditor" location="end" :close-on-content-click="false"> -->
-        <!--          <template #activator="{ props }"> -->
-        <!--            <v-btn class="ml-2" v-bind="props" icon="mdi-plus" size="small" variant="text" color="primary" /> -->
-        <!--          </template> -->
-
-        <!--          <v-card class="ma-2 pt-2" min-width="300" elevation="2"> -->
-        <!--            <v-card-item> -->
-        <!--              <v-text-field v-model="newTagName" label="标签名" /> -->
-        <!--            </v-card-item> -->
-        <!--            <v-card-item v-show="addTagError != null"> -->
-        <!--              <v-alert rounded="lg" :text="addTagError" type="error" /> -->
-        <!--            </v-card-item> -->
-        <!--            <v-card-actions> -->
-        <!--              <v-spacer /> -->
-        <!--              <v-btn -->
-        <!--                variant="text" :loading="addingTag" :disabled="newTagName.trim() === ''" -->
-        <!--                @click="addTag"> -->
-        <!--                保存 -->
-        <!--              </v-btn> -->
-        <!--            </v-card-actions> -->
-        <!--          </v-card> -->
-        <!--        </v-menu> -->
       </client-only>
     </h3>
     <error-alert :text="tagListError" :show="tagListError" />
