@@ -93,7 +93,7 @@ async function onUploadImg(files, cb) {
       form.append('file', compressFile, compressFile.name)
       // 上传获取路径
       const path = await api({ url: '/upload', method: 'POST', payload: form, jsonPayload: false })
-      res.push(`/api${path}`)
+      res.push(path)
     }
   } catch (e) {
     editorError.value = e.message

@@ -10,6 +10,8 @@ const postcss = {
   },
 }
 
+const backendApi = import.meta.env.BACKEND_API ?? 'http://localhost:8080'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -17,7 +19,9 @@ export default defineNuxtConfig({
   routeRules: {
     '/new': { ssr: false },
     '/setting': { ssr: false },
-    '/api/**': { proxy: `${import.meta.env.BACKEND_API ?? 'http://localhost:8080'}/**`, cors: true },
+    '/api/**': { proxy: `${backendApi}/api/**` },
+    '/api/static/**': { proxy: `${backendApi}/static/**` },
+    '/static/**': { proxy: `${backendApi}/static/**` },
     '/**': { swr: true },
   },
   modules: [
