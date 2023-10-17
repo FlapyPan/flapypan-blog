@@ -16,6 +16,13 @@ const postcss = {
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
+  routeRules: {
+    '/': { prerender: true },
+    '/new': { ssr: false },
+    '/setting': { ssr: false },
+    '/api/**': { cors: true },
+    '/**': { swr: true },
+  },
   modules: [
     'nuxt-icon',
   ],
