@@ -3,8 +3,6 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const settingStore = useSettingStore()
 
-const loginDialogVisible = ref(false)
-
 function logout() {
   api({ url: `/auth/logout` }).finally(() => {
     location.reload()
@@ -15,8 +13,8 @@ function logout() {
 <template>
   <client-only>
     <template v-if="!settingStore.isLogin">
-      <v-dialog v-model="loginDialogVisible" max-width="500px" close-on-back>
-        <login-form @close="loginDialogVisible = false" />
+      <v-dialog v-model="settingStore.loginDialogVisible" max-width="500px" close-on-back>
+        <login-form @close="settingStore.loginDialogVisible = false" />
       </v-dialog>
     </template>
   </client-only>
@@ -162,7 +160,7 @@ function logout() {
                 <button
                   class="group flex w-full items-center rounded-md px-2 py-2 text-sm"
                   :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
-                  @click="loginDialogVisible = true">
+                  @click="settingStore.loginDialogVisible = true">
                   <icon name="mingcute:user-1-line" class="mr-2 h-5 w-5 text-violet-400" />
                   登录
                 </button>

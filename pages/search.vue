@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 const settingStore = useSettingStore()
-const router = useRouter()
 const route = useRoute()
 
 /// region 搜索
@@ -10,14 +9,14 @@ const queryKeyword = computed(() => route.query.keyword ?? '')
 const queryPage = computed({
   get: () => +(route.query.page ?? 1),
   set: (val) => {
-    if (val) router.push(`/search?keyword=${queryKeyword.value}&page=${val}`)
-    else router.push(`/search?keyword=${queryKeyword.value}`)
+    if (val) navigateTo(`/search?keyword=${queryKeyword.value}&page=${val}`)
+    else navigateTo(`/search?keyword=${queryKeyword.value}`)
   },
 })
 
 const searchInput = ref(null)
 const inputValue = ref(queryKeyword.value)
-const replaceQuery = () => router.replace(`/search?keyword=${inputValue.value}`)
+const replaceQuery = () => navigateTo(`/search?keyword=${inputValue.value}`)
 
 const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryPage.value - 1}&size=${settingStore.value.settings?.pageSize ?? 12}`)
 

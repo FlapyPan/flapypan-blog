@@ -1,7 +1,7 @@
 export function useSettingStore() {
   return useState('setting', () => ({
     isLogin: false,
-    sideBarOpened: false,
+    loginDialogVisible: false,
     links: [],
     settings: {
       siteTitle: 'FlapyPan\'s Blog',

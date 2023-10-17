@@ -6,10 +6,11 @@ import 'md-editor-v3/lib/preview.css'
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.vue'))
 
 const router = useRouter()
+const route = useRoute()
 const settingStore = useSettingStore()
 
 // 文章路径
-const path = computed(() => router.currentRoute.value?.params.path ?? '')
+const path = computed(() => route.params.path ?? '')
 
 /// region 文章数据
 const {
@@ -110,14 +111,9 @@ useHead({
   <div class="page">
     <client-only>
       <div v-if="settingStore.isLogin && isEdit">
-        <v-btn variant="text" @click="isEdit = false">
-          <template #prepend>
-            <v-icon class="mt-1">
-              mdi-chevron-left
-            </v-icon>
-          </template>
+        <f-btn icon="mingcute:left-line" @click="isEdit = false">
           取消
-        </v-btn>
+        </f-btn>
         <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
       </div>
     </client-only>

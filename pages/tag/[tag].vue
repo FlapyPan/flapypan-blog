@@ -10,8 +10,8 @@ const tag = computed(() => route.params.tag ?? '')
 const queryPage = computed({
   get: () => +(route.query.page || 1),
   set: (val) => {
-    if (val) router.push(`/tag/${tag.value}?page=${val}`)
-    else router.push(`/tag/${tag.value}`)
+    if (val) navigateTo(`/tag/${tag.value}?page=${val}`)
+    else navigateTo(`/tag/${tag.value}`)
   },
 })
 const {

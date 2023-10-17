@@ -1,4 +1,5 @@
 <script setup>
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
@@ -16,7 +17,6 @@ const props = defineProps({
     }),
   },
 })
-
 const emits = defineEmits(['submit'])
 
 // 判断是否是新文章
@@ -40,7 +40,7 @@ const draft = ref(loadDraft())
 const draftPersistInterval = setInterval(() => {
   localStorage.setItem(storageKey, JSON.stringify(draft.value))
 }, 1000)
-onDeactivated(() => clearInterval(draftPersistInterval))
+onBeforeUnmount(() => clearInterval(draftPersistInterval))
 /// endregion 文章编辑持久化
 
 /// region 标签数据
@@ -114,11 +114,10 @@ async function saveArticle() {
   const method = isNewArticle ? 'POST' : 'PUT'
   try {
     const path = await api({ url: `/article`, method, payload: draft.value })
-    localStorage.removeItem(storageKey)
+    setTimeout(() => localStorage.removeItem(storageKey), 3000)
     // 将文章路径传递给父组件
     emits('submit', path)
   } catch (e) {
-    console.error(e)
     saveError.value = e.message
   } finally {
     saving.value = false
@@ -131,46 +130,67 @@ const { isDark } = useDark()
 </script>
 
 <template>
-  <div>
-    <v-form>
-      <v-container>
-        <v-alert
-          color="primary" type="info" variant="tonal" class="mb-4"
-          text="编辑的内容会在本机自动保存，编辑完成后点击最下方发布按钮发布" />
-        <v-row dense>
-          <v-col cols="6">
-            <v-text-field v-model="draft.title" label="文章标题" />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field v-model="draft.path" label="访问路径" />
-          </v-col>
-          <v-col cols="6">
-            <v-text-field v-model="draft.cover" label="封面链接" />
-          </v-col>
-          <v-col cols="6">
-            <v-select
-              v-model="draft.tagNames" :items="tagData ?? []" label="标签"
-              variant="underlined" chips multiple />
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
+  <form class="flex flex-col items-center gap-6" @submit.prevent.stop>
+    <p class="text-xs mt-4">
+      编辑的内容会在本机自动保存，编辑完成后点击发布按钮发布
+    </p>
+    <div class="mt-6 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+      <label class="flex flex-wrap items-center gap-4">
+        <span>文章标题</span>
+        <input
+          v-model="draft.title" class="flex-1" type="text" name="title" placeholder="文章标题" required
+          :disabled="saving">
+      </label>
+      <label class="flex flex-wrap items-center gap-4">
+        <span>访问路径</span>
+        <input
+          v-model="draft.path" class="flex-1" type="text" name="path" placeholder="访问路径" required
+          :disabled="saving">
+      </label>
+      <label class="flex flex-wrap items-center gap-4">
+        <span>封面链接</span>
+        <input
+          v-model="draft.cover" class="flex-1" type="text" name="cover" placeholder="封面链接" required
+          :disabled="saving">
+      </label>
+      <label class="flex flex-wrap items-center gap-4">
+        <span>标签(ctrl多选)</span>
+        <Listbox v-model="draft.tagNames" multiple>
+          <div class="relative flex-1">
+            <ListboxButton as="template">
+              <f-btn>
+                {{ draft.tagNames.join(', ') }}
+                <icon class="text-2xl" name="mingcute:selector-vertical-line" />
+              </f-btn>
+            </ListboxButton>
+            <transition
+              leave-active-class="transition duration-100 ease-in"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0">
+              <ListboxOptions class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-blur p-2 shadow-md">
+                <ListboxOption v-for="tag in tagData" :key="tag" v-slot="{ selected }" :value="tag">
+                  <div
+                    class="p-2 rounded-lg mb-1 flex items-center cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900">
+                    <icon v-show="selected" class="text-primary-500 mr-1" name="mingcute:check-line" />
+                    {{ tag }}
+                  </div>
+                </ListboxOption>
+              </ListboxOptions>
+            </transition>
+          </div>
+        </Listbox>
+      </label>
+    </div>
     <error-alert :show="editorError" :text="editorError" />
     <MdEditor
       v-model="draft.content" editor-id="edit" preview-theme="default" code-theme="gradient"
       :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />
-    <v-row class="mt-4">
-      <v-col cols="12" class="px-12">
-        <v-alert v-show="saveError" rounded="lg" :text="saveError" type="error" />
-      </v-col>
-      <v-col cols="12" class="d-flex justify-center">
-        <v-btn class="my-4" width="60%" max-width="500px" color="primary" :loading="saving" @click="saveArticle">
-          发布
-        </v-btn>
-      </v-col>
-    </v-row>
-  </div>
+    <error-alert :show="saveError" :text="saveError" />
+    <f-btn class="w-full max-w-xl" :disabled="saving" @click="saveArticle">
+      保存发布
+    </f-btn>
+  </form>
 </template>
 
 <style scoped>
