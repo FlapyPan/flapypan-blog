@@ -15,7 +15,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   routeRules: {
-    '/': { prerender: true },
     '/new': { ssr: false },
     '/setting': { ssr: false },
     '/api/**': { proxy: `${import.meta.env.BACKEND_API ?? 'http://localhost:8080'}/**`, cors: true },
