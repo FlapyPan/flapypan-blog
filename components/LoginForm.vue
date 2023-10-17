@@ -44,7 +44,7 @@ async function login() {
 </script>
 
 <template>
-  <form class="bg-blur rounded-xl p-6 flex flex-col gap-6" :disabled="isDoLogin" @submit.prevent.stop>
+  <form class="flex flex-col gap-6" :disabled="isDoLogin" @submit.prevent.stop>
     <p class="text-xl ml-2">
       登录
     </p>

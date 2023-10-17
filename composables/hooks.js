@@ -1,11 +1,12 @@
-import { useTheme } from 'vuetify'
-
 export function useDark() {
-  const theme = useTheme()
-  const isDark = computed(() => theme.current.value.dark)
-  const toggle = () => {
-    theme.global.name.value = isDark.value ? 'light' : 'dark'
-  }
+  const isDark = ref(true)
+  onBeforeMount(() => {
+    const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)')
+    isDark.value = mediaQueryList.matches
+    mediaQueryList.addEventListener('change', (event) => {
+      isDark.value = event.matches
+    })
+  })
 
-  return { theme, isDark, toggle }
+  return { isDark }
 }

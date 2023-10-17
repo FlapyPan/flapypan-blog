@@ -25,7 +25,7 @@
 
 - Vue 3.x
 - Nuxt.js 3
-- Vuetify
+- TailwindCSS
 - md-editor-v3
 
 ## 启动方法

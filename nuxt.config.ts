@@ -1,5 +1,3 @@
-import vuetify from 'vite-plugin-vuetify'
-
 const postcss = {
   plugins: {
     'postcss-import': {},
@@ -20,28 +18,16 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/new': { ssr: false },
     '/setting': { ssr: false },
-    '/api/**': { cors: true },
+    '/api/**': { proxy: `${import.meta.env.BACKEND_API ?? 'http://localhost:8080'}/**`, cors: true },
     '/**': { swr: true },
   },
   modules: [
     'nuxt-icon',
   ],
-  routeRules: {
-    '/api/**': { proxy: `${import.meta.env.BACKEND_API}/**` },
-  },
-  build: {
-    transpile: ['vuetify'],
-  },
   vite: {
     build: {
       target: 'modules',
       modulePreload: { polyfill: true },
-    },
-  },
-  hooks: {
-    'vite:extendConfig': (config) => {
-      if (!config.plugins) config.plugins = []
-      config.plugins.push(vuetify({ autoImport: true }))
     },
   },
   vue: {

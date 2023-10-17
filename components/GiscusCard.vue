@@ -1,6 +1,4 @@
 <script setup>
-import { useTheme } from 'vuetify'
-
 const settingStore = useSettingStore()
 // 所有设置，缺一不可
 const valid = computed(() => !!(
@@ -11,8 +9,8 @@ const valid = computed(() => !!(
 ))
 
 // 主题切换
-const themeInstance = useTheme()
-const theme = computed(() => themeInstance.current.value.dark ? 'noborder_dark' : 'noborder_light')
+const { isDark } = useDark()
+const theme = computed(() => isDark.value ? 'noborder_dark' : 'noborder_light')
 </script>
 
 <template>

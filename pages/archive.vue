@@ -88,7 +88,7 @@ useHead({
         </f-btn>
       </template>
     </div>
-    <v-alert v-show="articleDataError" rounded="lg" :text="articleDataError" type="error" />
+    <error-alert :text="articleDataError" :show="articleDataError" />
     <div class="mt-12">
       <template v-for="{ year, list } in (articleData ?? [])" :key="year">
         <h3 class="mt-4 mb-2 text-2xl">

@@ -100,6 +100,8 @@ function onSaveArticle(newPath) {
 
 /// endregion 文章编辑
 
+const { isDark } = useDark()
+
 /// 处理网页标题
 const title = computed(() => `${articleData.value?.title ?? '文章'} - ${settingStore.value.settings?.siteTitle ?? '博客'}`)
 useHead({
@@ -181,7 +183,7 @@ useHead({
       <md-preview
         v-if="articleData?.content" class="mt-6"
         editor-id="read" :model-value="articleData?.content" preview-theme="default"
-        code-theme="gradient" :no-img-zoom-in="false" />
+        code-theme="gradient" :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" />
       <giscus-card v-if="!fetchingArticleData" />
     </template>
   </div>
