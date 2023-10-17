@@ -122,21 +122,21 @@ useHead({
     <template v-if="!isEdit">
       <page-head class="mx-auto text-center" :title="articleData?.title">
         <template #subTitle>
-          <p class="flex items-center justify-center flex-wrap">
-            <span class="mr-2">
-              <icon class="text-lg" name="mingcute:document-line" />
-              创建
+          <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
+            <span class="flex items-center gap-1">
+              <icon name="mingcute:document-line" />
+              <span class="hidden md:inline-block">创建</span>
               {{ formattedCreateDate }}
             </span>
-            <span class="mr-2">
-              <icon class="text-lg" name="mingcute:edit-line" />
-              修改
+            <span class="flex items-center gap-1">
+              <icon name="mingcute:edit-line" />
+              <span class="hidden md:inline-block">修改</span>
               {{ formattedUpdateDate }}
             </span>
             <client-only>
-              <span class="mr-2">
-                <icon class="text-lg" name="mingcute:book-6-line" />
-                阅读
+              <span class="flex items-center gap-1">
+                <icon name="mingcute:book-6-line" />
+                <span class="hidden md:inline-block">阅读</span>
                 {{ accessCount ?? 0 }}
               </span>
             </client-only>
@@ -150,7 +150,7 @@ useHead({
           </p>
         </template>
       </page-head>
-      <img class="w-full rounded-xl mb-12 max-w-4xl max-h-96 mx-auto" :src="coverSrc" alt="">
+      <img class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto" :src="coverSrc" alt="">
       <client-only>
         <div v-if="settingStore.isLogin" class="flex flex-wrap items-center gap-4">
           <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">

@@ -170,7 +170,7 @@ const { isDark } = useDark()
               <ListboxOptions class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-blur p-2 shadow-md">
                 <ListboxOption v-for="tag in tagData" :key="tag" v-slot="{ selected }" :value="tag">
                   <div
-                    class="p-2 rounded-lg mb-1 flex items-center cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-900">
+                    class="p-2 rounded-lg mb-1 flex items-center cursor-pointer sm:hover:bg-primary-50 dark:sm:hover:bg-primary-900">
                     <icon v-show="selected" class="text-primary-500 mr-1" name="mingcute:check-line" />
                     {{ tag }}
                   </div>

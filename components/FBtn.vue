@@ -66,7 +66,7 @@ defineProps({
     bg-opacity-30 bg-white backdrop-blur-2xl backdrop-saturate-100 dark:bg-opacity-20 dark:bg-black;
 
     &:not([disabled]) {
-      @apply hover:shadow-md;
+      @apply sm:hover:shadow-md;
     }
 
     .f-btn-content {
