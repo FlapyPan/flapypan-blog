@@ -12,6 +12,16 @@ function onArticleSubmit(path) {
 onMounted(() => {
   if (!setting.value.isLogin) setting.value.loginDialogVisible = true
 })
+
+const title = `新文章 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const description = `写新文章`
+const meta = {
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useSeoMeta(meta)
 </script>
 
 <template>

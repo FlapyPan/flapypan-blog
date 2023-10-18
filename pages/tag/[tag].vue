@@ -86,10 +86,16 @@ async function deleteTag() {
   }
 }
 
-const title = computed(() => `${tag.value ?? '标签'} - ${settingStore.value.settings?.siteTitle ?? '博客'}`)
-useHead({
+const title = `标签: ${tag.value ?? '标签'} - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const description = `${tag.value ?? '标签'} 下的所有文章`
+const meta = {
   title,
-})
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useServerSeoMeta(meta)
+useSeoMeta(meta)
 </script>
 
 <template>

@@ -34,15 +34,20 @@ const {
   },
 )
 
-const pageTitle = computed(() => `搜索 ${queryKeyword.value} - ${settingStore.settings?.siteTitle ?? '博客'}`)
-useHead({
-  title: pageTitle,
-})
-
 /// endregion 搜索
 
 // 搜索框自动聚焦
 onMounted(() => nextTick(() => searchInput.value.focus()))
+
+const title = computed(() => `搜索 ${queryKeyword.value} - ${settingStore.value.settings?.siteTitle ?? '博客'}`)
+const description = `搜索文章、标签`
+const meta = {
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useSeoMeta(meta)
 </script>
 
 <template>

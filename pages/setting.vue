@@ -83,10 +83,15 @@ const formatter = new Intl.DateTimeFormat(
 )
 const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
-const title = computed(() => `设置 - ${settingStore.value.settings?.siteTitle ?? '博客'}`)
-useHead({
+const title = `设置 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const description = `博客设置`
+const meta = {
   title,
-})
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useSeoMeta(meta)
 </script>
 
 <template>

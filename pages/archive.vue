@@ -45,9 +45,16 @@ async function addTag() {
 
 /// endregion 标签添加
 
-useHead({
-  title: `归档 - ${settingStore.value.settings?.siteTitle ?? '博客'}`,
-})
+const title = `归档 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const description = `我的所有文章`
+const meta = {
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useServerSeoMeta(meta)
+useSeoMeta(meta)
 </script>
 
 <template>

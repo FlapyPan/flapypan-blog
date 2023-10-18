@@ -10,9 +10,16 @@ const {
 } = await useAsyncData('article:latest', () => api({ url: '/article?&sort=updateDate,desc&size=12' }))
 /// endregion 文章数据
 
-useHead({
-  title: `主页 - ${settingStore.value.settings?.siteTitle ?? '博客'}`,
-})
+const title = `首页 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const description = settingStore.value.settings.info ?? ''
+const meta = {
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+}
+useServerSeoMeta(meta)
+useSeoMeta(meta)
 </script>
 
 <template>

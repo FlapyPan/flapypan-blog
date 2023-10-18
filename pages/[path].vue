@@ -103,10 +103,18 @@ function onSaveArticle(newPath) {
 const { isDark } = useDark()
 
 /// 处理网页标题
-const title = computed(() => `${articleData.value?.title ?? '文章'} - ${settingStore.value.settings?.siteTitle ?? '博客'}`)
-useHead({
+const title = `${articleData.value?.title ?? '文章'} - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const meta = {
   title,
-})
+  description: title,
+  ogTitle: title,
+  ogDescription: title,
+  ogImage: coverSrc,
+  articlePublishedTime: formattedCreateDate,
+  articleModifiedTime: formattedUpdateDate,
+}
+useServerSeoMeta(meta)
+useSeoMeta(meta)
 </script>
 
 <template>

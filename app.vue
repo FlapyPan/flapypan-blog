@@ -13,12 +13,14 @@ settingStore.value.settings = {
   ...settingStore.value.settings,
   ...settingData,
 }
-settingStore.value.links = [
-  ...settingStore.value.links,
-  ...linkData,
-]
+settingStore.value.links = linkData ?? []
 
 if (process.browser) api({ url: `/auth` }).then((val) => settingStore.value.isLogin = !!val)
+
+useServerSeoMeta({
+  author: settingStore.value.settings?.name,
+  ogImage: settingStore.value.settings?.banner ?? '/banner.webp',
+})
 </script>
 
 <template>
