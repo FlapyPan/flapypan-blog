@@ -1,5 +1,5 @@
 <script setup>
-const setting = useSettingStore()
+const settingStore = useSettingStore()
 
 /// region 新文章
 function onArticleSubmit(path) {
@@ -10,7 +10,7 @@ function onArticleSubmit(path) {
 /// endregion 新文章
 
 onMounted(() => {
-  if (!setting.value.isLogin) setting.value.loginDialogVisible = true
+  if (!settingStore.value.isLogin) settingStore.value.loginDialogVisible = true
 })
 
 const title = `新文章 - ${settingStore.value.settings.siteTitle ?? '博客'}`
@@ -27,7 +27,7 @@ useSeoMeta(meta)
 <template>
   <div class="page">
     <client-only>
-      <article-editor v-if="setting.isLogin" @submit="onArticleSubmit" />
+      <article-editor v-if="settingStore.isLogin" @submit="onArticleSubmit" />
       <page-head v-else title="请登录" />
     </client-only>
   </div>
