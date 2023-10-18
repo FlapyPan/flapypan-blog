@@ -127,7 +127,7 @@ function logout() {
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
             as="div"
-            class="flex align-center rounded-md p-2 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10"
+            class="flex items-center rounded-md p-2 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10"
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }">
             <img class="w-6 h-6 rounded-full" :src="settingStore.settings?.avatar" alt="头像">
             <span class="ml-2">{{ settingStore.settings?.name }}</span>

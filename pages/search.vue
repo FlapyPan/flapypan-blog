@@ -56,16 +56,7 @@ onMounted(() => nextTick(() => searchInput.value.focus()))
     </page-head>
     <error-alert :show="error" :text="error" />
     <article-timeline :list="searchData?.content" />
-    <nav class="mt-4 flex justify-center items-center gap-4">
-      <f-btn :disabled="queryPage <= 1" text @click="queryPage--">
-        <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
-        上一页
-      </f-btn>
-      <f-btn :disabled="searchData?.last" text @click="queryPage++">
-        下一页
-        <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
-      </f-btn>
-    </nav>
+    <f-page v-model="queryPage" class="mt-4" :page-data="searchData" />
   </div>
 </template>
 

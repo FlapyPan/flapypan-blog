@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/new': { ssr: false },
     '/setting': { ssr: false },
+    '/search': { ssr: false },
     '/api/**': { proxy: `${backendApi}/api/**` },
     '/api/static/**': { proxy: `${backendApi}/static/**` },
     '/static/**': { proxy: `${backendApi}/static/**` },

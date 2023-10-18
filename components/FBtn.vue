@@ -63,7 +63,7 @@ defineProps({
 
   &.f-btn--normal {
     @apply rounded-lg border dark:border-gray-800
-    bg-opacity-30 bg-white backdrop-blur-2xl backdrop-saturate-100 dark:bg-opacity-20 dark:bg-black;
+    bg-opacity-30 bg-white backdrop-blur-xl backdrop-saturate-100 dark:bg-opacity-20 dark:bg-black;
 
     &:not([disabled]) {
       @apply sm:hover:shadow-md;

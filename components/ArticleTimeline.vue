@@ -39,48 +39,31 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 ul.timeline {
 
   > li {
-    list-style: none;
-    position: relative;
-    line-height: 1.6;
-    padding: 8px 0;
-    margin: 0 0 0 1rem;
-    display: flex;
-    align-items: center;
+    @apply list-none relative px-2 flex items-center ml-6 leading-8 md:leading-10;
   }
 
-  > li::before {
-    @apply border-primary-500 border;
+  > li:not(:only-child) {
 
-    content: "";
-    position: absolute;
-    left: -1.05rem;
-    bottom: 0;
-  }
+    &::before {
+      @apply absolute top-0 bottom-0 left-[-0.8rem] border-primary-500 border;
 
-  > li:not(:first-child):not(:last-child)::before {
-    top: 0;
-  }
+      content: "";
+    }
 
-  > li:first-child::before {
-    top: 50%;
-  }
+    &:first-child::before {
+      @apply top-1/2;
+    }
 
-  > li:last-child::before {
-    top: 0;
-    bottom: 50%;
+    &:last-child::before {
+      @apply bottom-1/2;
+    }
+
   }
 
   > li::after {
-    @apply bg-primary-500;
+    @apply bg-primary-500 -left-4 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full absolute;
 
     content: "";
-    left: -1.25rem;
-    top: 50%;
-    transform: translateY(-50%);
-    height: .5rem;
-    width: .5rem;
-    border-radius: 50%;
-    position: absolute;
   }
 
 }
