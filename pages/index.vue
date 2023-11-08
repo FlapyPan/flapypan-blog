@@ -68,7 +68,6 @@ useSeoMeta(meta)
             <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
               <span v-if="accessData?.today">今日访问量：{{ accessData.today }}</span>
               <span v-if="accessData?.all">总访问量：{{ accessData.all }}</span>
-              <span v-if="clientInfo">{{ clientInfo }}</span>
             </p>
             <p class="mt-3 text-xs flex items-center justify-center flex-wrap md:justify-start gap-3">
               <span v-if="clientInfo?.clientHost">IP：{{ clientInfo.clientHost }}</span>
