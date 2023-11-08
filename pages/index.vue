@@ -23,10 +23,7 @@ const {
 } = await useAsyncData(
   `client:info`,
   async () => {
-    const infoText = await api({ url: `/client` })
-    const info = infoText?.split?.(',') ?? []
-    if (info.length < 4) return ''
-    const [clientHost, httpProto, tlsVersion, tlsCipherSuite] = info
+    const { clientHost, httpProto, tlsVersion, tlsCipherSuite } = await api({ url: `/client` })
     return `IP：${clientHost} 协议：${httpProto} TLS版本：${tlsVersion} TLS套件：${tlsCipherSuite}`
   },
   { server: false },
