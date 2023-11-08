@@ -22,10 +22,7 @@ const {
   data: clientInfo,
 } = await useAsyncData(
   `client:info`,
-  async () => {
-    const { clientHost, httpProto, tlsVersion, tlsCipherSuite } = await api({ url: `/client` })
-    return `IP：${clientHost} 协议：${httpProto} TLS版本：${tlsVersion} TLS套件：${tlsCipherSuite}`
-  },
+  () => api({ url: `/client` }),
   { server: false },
 )
 /// endregion 阅读量和其他数据
@@ -72,6 +69,12 @@ useSeoMeta(meta)
               <span v-if="accessData?.today">今日访问量：{{ accessData.today }}</span>
               <span v-if="accessData?.all">总访问量：{{ accessData.all }}</span>
               <span v-if="clientInfo">{{ clientInfo }}</span>
+            </p>
+            <p class="mt-3 text-xs flex items-center justify-center flex-wrap md:justify-start gap-3">
+              <span v-if="clientInfo?.clientHost">IP：{{ clientInfo.clientHost }}</span>
+              <span v-if="clientInfo?.httpProto">协议：{{ clientInfo.httpProto }}</span>
+              <span v-if="clientInfo?.tlsVersion">TLS版本：{{ clientInfo.tlsVersion }}</span>
+              <span v-if="clientInfo?.tlsCipherSuite">TLS套件：{{ clientInfo.tlsCipherSuite }}</span>
             </p>
           </client-only>
         </div>
