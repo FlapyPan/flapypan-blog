@@ -13,6 +13,8 @@ export function useSettingStore() {
       info: '个人博客',
       pageSize: '12',
       footer: 'Copyright',
+      ICP: '',
+      moeICP: '',
       giscusRepo: '',
       giscusRepoId: '',
       giscusCategory: '',

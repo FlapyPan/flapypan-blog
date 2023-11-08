@@ -109,32 +109,45 @@ useSeoMeta(meta)
             <label class="flex flex-wrap items-center gap-4">
               <span>站点标题</span>
               <input
-                v-model="settingStore.settings.siteTitle" class="flex-1" type="text" name="title"
-                placeholder="站点标题" required :disabled="savingSettings">
+                v-model="settingStore.settings.siteTitle" :disabled="savingSettings" class="flex-1" name="title"
+                placeholder="站点标题" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>站点图标链接</span>
               <input
-                v-model="settingStore.settings.favicon" class="flex-1" type="text" name="title"
-                placeholder="站点图标链接" required :disabled="savingSettings">
+                v-model="settingStore.settings.favicon" :disabled="savingSettings" class="flex-1" name="favicon"
+                placeholder="站点图标链接" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>站点底部信息</span>
               <input
-                v-model="settingStore.settings.footer" class="flex-1" type="text" name="title"
-                placeholder="站点底部信息" required :disabled="savingSettings">
+                v-model="settingStore.settings.footer" :disabled="savingSettings" class="flex-1" name="footer"
+                placeholder="站点底部信息" required type="text">
+            </label>
+            <label class="flex flex-wrap items-center gap-4">
+              <span>ICP备案号</span>
+              <input
+                v-model="settingStore.settings.ICP" :disabled="savingSettings" class="flex-1" name="ICP"
+                placeholder="ICP备案号" required type="text">
+            </label>
+            <label class="flex flex-wrap items-center gap-4">
+              <span>萌ICP备案号(仅数字)</span>
+              <input
+                v-model="settingStore.settings.moeICP" :disabled="savingSettings" class="flex-1" name="moeICP"
+                placeholder="萌ICP备案号" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>每页加载数量</span>
               <input
-                v-model.number="settingStore.settings.pageSize" class="flex-1" type="text" name="title"
-                placeholder="每页加载数量" required :disabled="savingSettings">
+                v-model.number="settingStore.settings.pageSize" :disabled="savingSettings" class="flex-1"
+                name="pageSize"
+                placeholder="每页加载数量" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>默认封面链接</span>
               <input
-                v-model="settingStore.settings.banner" class="flex-1" type="text" name="title"
-                placeholder="默认封面链接" required :disabled="savingSettings">
+                v-model="settingStore.settings.banner" :disabled="savingSettings" class="flex-1" name="banner"
+                placeholder="默认封面链接" required type="text">
             </label>
           </div>
           <h3 class="text-lg w-full">
@@ -144,26 +157,26 @@ useSeoMeta(meta)
             <label class="flex flex-wrap items-center gap-4">
               <span>头像链接</span>
               <input
-                v-model="settingStore.settings.avatar" class="flex-1" type="text" name="title"
-                placeholder="头像链接" required :disabled="savingSettings">
+                v-model="settingStore.settings.avatar" :disabled="savingSettings" class="flex-1" name="avatar"
+                placeholder="头像链接" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>作者名</span>
               <input
-                v-model="settingStore.settings.name" class="flex-1" type="text" name="title"
-                placeholder="作者名" required :disabled="savingSettings">
+                v-model="settingStore.settings.name" :disabled="savingSettings" class="flex-1" name="name"
+                placeholder="作者名" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>个人介绍</span>
               <input
-                v-model="settingStore.settings.info" class="flex-1" type="text" name="title"
-                placeholder="个人介绍" required :disabled="savingSettings">
+                v-model="settingStore.settings.info" :disabled="savingSettings" class="flex-1" name="info"
+                placeholder="个人介绍" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>邮箱</span>
               <input
-                v-model="settingStore.settings.email" class="flex-1" type="text" name="title"
-                placeholder="邮箱" required :disabled="savingSettings">
+                v-model="settingStore.settings.email" :disabled="savingSettings" class="flex-1" name="email"
+                placeholder="邮箱" required type="text">
             </label>
           </div>
           <h3 class="text-lg w-full">
@@ -173,30 +186,33 @@ useSeoMeta(meta)
             <label class="flex flex-wrap items-center gap-4">
               <span>giscusRepo</span>
               <input
-                v-model="settingStore.settings.giscusRepo" class="flex-1" type="text" name="title"
-                placeholder="giscusRepo" required :disabled="savingSettings">
+                v-model="settingStore.settings.giscusRepo" :disabled="savingSettings" class="flex-1" name="giscusRepo"
+                placeholder="giscusRepo" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>giscusRepoId</span>
               <input
-                v-model="settingStore.settings.giscusRepoId" class="flex-1" type="text" name="title"
-                placeholder="giscusRepoId" required :disabled="savingSettings">
+                v-model="settingStore.settings.giscusRepoId" :disabled="savingSettings" class="flex-1"
+                name="giscusRepoId"
+                placeholder="giscusRepoId" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>giscusCategory</span>
               <input
-                v-model="settingStore.settings.giscusCategory" class="flex-1" type="text" name="title"
-                placeholder="giscusCategory" required :disabled="savingSettings">
+                v-model="settingStore.settings.giscusCategory" :disabled="savingSettings" class="flex-1"
+                name="giscusCategory"
+                placeholder="giscusCategory" required type="text">
             </label>
             <label class="flex flex-wrap items-center gap-4">
               <span>giscusCategoryId</span>
               <input
-                v-model="settingStore.settings.giscusCategoryId" class="flex-1" type="text" name="title"
-                placeholder="giscusCategoryId" required :disabled="savingSettings">
+                v-model="settingStore.settings.giscusCategoryId" :disabled="savingSettings" class="flex-1"
+                name="giscusCategoryId"
+                placeholder="giscusCategoryId" required type="text">
             </label>
           </div>
           <error-alert :show="saveSettingError" :text="saveSettingError" />
-          <f-btn class="w-full max-w-xl" :disabled="savingSettings" @click="saveSetting()">
+          <f-btn :disabled="savingSettings" class="w-full max-w-xl" @click="saveSetting()">
             保存设置
           </f-btn>
           <h3 class="text-lg w-full">
@@ -211,7 +227,7 @@ useSeoMeta(meta)
             </div>
           </div>
           <input
-            v-model="keyword" class="w-full" type="text" placeholder="输入关键字回车搜索"
+            v-model="keyword" class="w-full" placeholder="输入关键字回车搜索" type="text"
             @keydown.enter="fetchArticle()">
           <error-alert :show="fetchArticleError" :text="fetchArticleError" />
           <ul v-if="articleData?.content?.length > 0" class="w-full">
@@ -232,8 +248,8 @@ useSeoMeta(meta)
               </div>
             </li>
           </ul>
-          <f-page v-model="queryPage" class="mt-4" :page-data="articleData" />
-          <f-btn class="w-full max-w-xl" :disabled="savingLinks" @click="saveLinks()">
+          <f-page v-model="queryPage" :page-data="articleData" class="mt-4" />
+          <f-btn :disabled="savingLinks" class="w-full max-w-xl" @click="saveLinks()">
             保存固定链接
           </f-btn>
         </div>
