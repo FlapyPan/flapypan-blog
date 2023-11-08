@@ -72,7 +72,7 @@ input {
 }
 
 .bg-blur {
-  @apply border dark:border-gray-900 bg-white bg-opacity-70 backdrop-blur-xl dark:bg-black dark:bg-opacity-80;
+  @apply bg-white bg-opacity-70 backdrop-blur-xl dark:bg-black dark:bg-opacity-80;
 }
 
 .page {

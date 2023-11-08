@@ -131,10 +131,7 @@ const { isDark } = useDark()
 
 <template>
   <form class="flex flex-col items-center gap-6" @submit.prevent.stop>
-    <p class="text-xs mt-4">
-      编辑的内容会在本机自动保存，编辑完成后点击发布按钮发布
-    </p>
-    <div class="mt-6 w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
       <label class="flex flex-wrap items-center gap-4">
         <span>文章标题</span>
         <input

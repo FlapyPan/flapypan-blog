@@ -10,7 +10,7 @@ const {
 } = await useAsyncData('article:latest', () => api({ url: '/article?&sort=updateDate,desc&size=12' }))
 /// endregion 文章数据
 
-const title = `首页 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const title = `${settingStore.value.settings.name} - ${settingStore.value.settings.siteTitle ?? '博客'}`
 const description = settingStore.value.settings.info ?? ''
 const meta = {
   title,

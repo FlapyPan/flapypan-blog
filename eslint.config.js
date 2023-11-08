@@ -14,6 +14,7 @@ export default config(
   {
     rules: {
       'style/semi': ['error', 'never'],
+      'style/arrow-parens': ['error', 'always'],
       'arrow-parens': ['error', 'always'],
       'no-new': ['off'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
