@@ -42,7 +42,7 @@ useSeoMeta(meta)
 <template>
   <div>
     <section
-      class="hero w-full mx-auto flex gap-16 sm:gap-32 lg:gap-64 flex-col-reverse items-center justify-center md:flex-row text-center md:text-left">
+      class="hero w-full mx-auto pt-48 md:pt-6 flex gap-16 sm:gap-32 lg:gap-64 flex-col-reverse items-center justify-center md:flex-row text-center md:text-left">
       <div>
         <h1
           class="font-serif tracking-wide text-3xl font-bold drop-shadow-lg text-zinc-700 dark:text-zinc-100 sm:text-5xl">
@@ -64,18 +64,10 @@ useSeoMeta(meta)
               <icon name="mdi:github" />
             </a>
           </p>
-          <client-only>
-            <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
-              <span v-if="accessData?.today">今日访问量：{{ accessData.today }}</span>
-              <span v-if="accessData?.all">总访问量：{{ accessData.all }}</span>
-            </p>
-            <p class="mt-3 text-xs flex items-center justify-center flex-wrap md:justify-start gap-3">
-              <span v-if="clientInfo?.clientHost">IP：{{ clientInfo.clientHost }}</span>
-              <span v-if="clientInfo?.httpProto">协议：{{ clientInfo.httpProto }}</span>
-              <span v-if="clientInfo?.tlsVersion">TLS版本：{{ clientInfo.tlsVersion }}</span>
-              <span v-if="clientInfo?.tlsCipherSuite">TLS套件：{{ clientInfo.tlsCipherSuite }}</span>
-            </p>
-          </client-only>
+          <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
+            <span v-if="accessData?.today">今日访问量：{{ accessData.today }}</span>
+            <span v-if="accessData?.all">总访问量：{{ accessData.all }}</span>
+          </p>
         </div>
       </div>
       <img :src="settingStore.settings?.avatar" alt="头像" class="w-40 h-40 rounded-full shadow-md md:w-64 md:h-64">
@@ -95,6 +87,14 @@ useSeoMeta(meta)
         </f-btn>
       </div>
     </section>
+    <client-only>
+      <section class="text-xs text-zinc-500 mt-12 flex items-center justify-center flex-wrap gap-3">
+        <span v-if="clientInfo?.clientHost">IP：{{ clientInfo.clientHost }}</span>
+        <span v-if="clientInfo?.httpProto">协议：{{ clientInfo.httpProto }}</span>
+        <span v-if="clientInfo?.tlsVersion">TLS版本：{{ clientInfo.tlsVersion }}</span>
+        <span v-if="clientInfo?.tlsCipherSuite">TLS套件：{{ clientInfo.tlsCipherSuite }}</span>
+      </section>
+    </client-only>
   </div>
 </template>
 

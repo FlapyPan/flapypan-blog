@@ -25,6 +25,13 @@ const navLinks = [
     title: '留言墙',
     icon: 'mingcute:quill-pen-line',
   },
+  {
+    routeName: 'activity',
+    to: '/activity',
+    activeColor: { text: 'text-pink-500', hoverText: 'sm:hover:text-pink-500', background: 'bg-pink-500' },
+    title: '活动',
+    icon: 'mingcute:time-line',
+  },
 ]
 
 function logout() {
@@ -43,7 +50,7 @@ function logout() {
     </template>
   </client-only>
   <header class="w-full fixed top-0 z-50 py-2">
-    <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-2">
+    <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
           :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"

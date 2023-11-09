@@ -61,7 +61,7 @@ useSeoMeta(meta)
   <div class="page">
     <page-head
       title="文章归档"
-      sub-title="看看我都水了什么文章。" />
+      sub-title="看看我都水了什么文章" />
     <refresh-button
       :loading="fetchingTagList || fetchingArticleData"
       @refresh="() => { getTagList();getArticleData() }" />

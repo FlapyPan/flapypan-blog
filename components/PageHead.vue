@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="max-w-xl my-8 md:my-16">
+  <section class="mt-6 mb-12 md:mt-8 text-center">
     <h2 class="text-2xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-4xl">
       <template v-if="title">
         {{ title }}

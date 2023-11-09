@@ -13,6 +13,7 @@ export default config(
   },
   {
     rules: {
+      'curly': ['error', 'multi-line'],
       'style/semi': ['error', 'never'],
       'style/arrow-parens': ['error', 'always'],
       'arrow-parens': ['error', 'always'],

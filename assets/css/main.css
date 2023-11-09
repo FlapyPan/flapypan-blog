@@ -76,7 +76,7 @@ input {
 }
 
 .page {
-  @apply py-20 container mx-auto;
+  @apply py-20 container mx-auto max-w-7xl;
 }
 
 .f-input {
