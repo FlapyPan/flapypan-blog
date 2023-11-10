@@ -19,18 +19,18 @@ const navLinks = [
     icon: 'mingcute:archive-line',
   },
   {
-    routeName: 'guestbook',
-    to: '/guestbook',
-    activeColor: { text: 'text-red-500', hoverText: 'sm:hover:text-red-500', background: 'bg-red-500' },
-    title: '留言墙',
-    icon: 'mingcute:quill-pen-line',
-  },
-  {
     routeName: 'activity',
     to: '/activity',
     activeColor: { text: 'text-pink-500', hoverText: 'sm:hover:text-pink-500', background: 'bg-pink-500' },
     title: '活动',
     icon: 'mingcute:time-line',
+  },
+  {
+    routeName: 'guestbook',
+    to: '/guestbook',
+    activeColor: { text: 'text-red-500', hoverText: 'sm:hover:text-red-500', background: 'bg-red-500' },
+    title: '留言墙',
+    icon: 'mingcute:quill-pen-line',
   },
 ]
 

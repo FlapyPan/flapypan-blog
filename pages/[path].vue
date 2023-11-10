@@ -128,7 +128,7 @@ useSeoMeta(meta)
       </div>
     </client-only>
     <template v-if="!isEdit">
-      <page-head class="mx-auto text-center" :title="articleData?.title">
+      <page-head :title="articleData?.title" class="mx-auto text-center">
         <template #subTitle>
           <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
             <span class="flex items-center gap-1">
@@ -158,7 +158,7 @@ useSeoMeta(meta)
           </p>
         </template>
       </page-head>
-      <img class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto" :src="coverSrc" alt="">
+      <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
       <client-only>
         <div v-if="settingStore.isLogin" class="flex flex-wrap items-center gap-4">
           <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
@@ -189,9 +189,27 @@ useSeoMeta(meta)
       </client-only>
       <error-alert :show="articleDataError" :text="articleDataError" />
       <md-preview
-        v-if="articleData?.content" class="mt-6"
-        editor-id="read" :model-value="articleData?.content" preview-theme="default"
-        code-theme="gradient" :theme="isDark ? 'dark' : 'light'" :no-img-zoom-in="false" />
+        v-if="articleData?.content" :model-value="articleData?.content"
+        :no-img-zoom-in="false" :theme="isDark ? 'dark' : 'light'" class="mt-6"
+        code-theme="gradient" editor-id="read" preview-theme="default" />
+      <nav class="my-6 flex justify-center gap-4">
+        <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
+          <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+          上一篇
+        </f-btn>
+        <f-btn v-else disabled text title="没有啦">
+          <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+          上一篇
+        </f-btn>
+        <f-btn v-if="articleData?.next" :to="`/${articleData.next}`" text title="下一篇">
+          下一篇
+          <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+        </f-btn>
+        <f-btn v-else disabled text title="没有啦">
+          下一篇
+          <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+        </f-btn>
+      </nav>
       <giscus-card v-if="!fetchingArticleData" />
     </template>
   </div>
