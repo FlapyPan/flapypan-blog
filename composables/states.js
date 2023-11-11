@@ -11,6 +11,7 @@ export function useSettingStore() {
       name: 'FlapyPan',
       email: 'flapypan@gmail.com',
       info: '个人博客',
+      hitoko: true,
       pageSize: '12',
       footer: 'Copyright',
       ICP: '',

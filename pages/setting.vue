@@ -166,12 +166,21 @@ useSeoMeta(meta)
                 v-model="settingStore.settings.name" :disabled="savingSettings" class="flex-1" name="name"
                 placeholder="作者名" required type="text">
             </label>
-            <label class="flex flex-wrap items-center gap-4">
-              <span>个人介绍</span>
-              <input
-                v-model="settingStore.settings.info" :disabled="savingSettings" class="flex-1" name="info"
-                placeholder="个人介绍" required type="text">
-            </label>
+            <div class="flex items-center gap-4 col-span-2">
+              <label class="flex flex-wrap items-center gap-4 flex-1">
+                <span>站点信息</span>
+                <input
+                  v-model="settingStore.settings.info"
+                  :disabled="settingStore.settings.hitoko || savingSettings" class="flex-1" name="info"
+                  placeholder="站点信息" required type="text">
+              </label>
+              <label class="flex flex-wrap items-center gap-2">
+                <span>随机一言</span>
+                <input
+                  v-model="settingStore.settings.hitoko" :disabled="savingSettings" class="flex-1" name="hitoko"
+                  placeholder="随机一言" required type="checkbox">
+              </label>
+            </div>
             <label class="flex flex-wrap items-center gap-4">
               <span>邮箱</span>
               <input

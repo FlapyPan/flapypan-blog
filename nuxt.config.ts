@@ -23,7 +23,6 @@ export default defineNuxtConfig({
     '/api/**': { proxy: `${backendApi}/api/**` },
     '/api/static/**': { proxy: `${backendApi}/static/**` },
     '/static/**': { proxy: `${backendApi}/static/**` },
-    '/**': { swr: true },
   },
   modules: [
     'nuxt-icon',

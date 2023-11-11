@@ -27,6 +27,25 @@ const {
 )
 /// endregion 阅读量和其他数据
 
+/// region 随机一言
+const hitoko = ref('加载中...')
+
+async function fetchHitokoto(enable) {
+  if (process.browser) {
+    if (!enable) return
+    try {
+      const { hitokoto: text } = await $fetch('https://v1.hitokoto.cn?c=a&c=c&c=d&c=j&c=k')
+      hitoko.value = text
+    } catch (e) {
+      console.error(e)
+      hitoko.value = '加载失败...'
+    }
+  }
+}
+
+watch(() => settingStore.value.settings.hitoko, fetchHitokoto, { immediate: true })
+/// endregion 随机一言
+
 const title = `${settingStore.value.settings.name} - ${settingStore.value.settings.siteTitle ?? '博客'}`
 const description = settingStore.value.settings.info ?? ''
 const meta = {
@@ -49,12 +68,8 @@ useSeoMeta(meta)
           {{ settingStore.settings.siteTitle }}
         </h1>
         <div class="text-zinc-600 dark:text-zinc-400">
-          <p class="mt-12 text-base text-center md:text-left">
-            {{ settingStore.settings.info }}
-            <span class="animate-ping">_</span>
-          </p>
           <p
-            class="text-2xl flex items-center justify-center md:justify-start gap-4 md:gap-2 mt-3">
+            class="text-2xl flex items-center justify-center md:justify-start gap-4 md:gap-2 mt-8">
             <a
               :href="`mailto:${settingStore.settings?.email}`" class="flex items-center"
               title="邮箱联系我">
@@ -64,9 +79,16 @@ useSeoMeta(meta)
               <icon name="mdi:github" />
             </a>
           </p>
+          <p v-if="settingStore.settings.hitoko" class="mt-4 text-base text-center md:text-left">
+            一言：{{ hitoko }}
+          </p>
+          <p v-else class="mt-4 text-base text-center md:text-left">
+            {{ settingStore.settings.info }}
+            <span class="animate-ping">_</span>
+          </p>
           <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
-            <span v-if="accessData?.today">今日访问量：{{ accessData.today }}</span>
-            <span v-if="accessData?.all">总访问量：{{ accessData.all }}</span>
+            <span v-if="accessData?.today">今日阅读量：{{ accessData.today }}</span>
+            <span v-if="accessData?.all">总阅读量：{{ accessData.all }}</span>
           </p>
         </div>
       </div>
