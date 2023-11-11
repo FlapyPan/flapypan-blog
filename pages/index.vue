@@ -70,7 +70,9 @@ useSeoMeta(meta)
           </p>
         </div>
       </div>
-      <img :src="settingStore.settings?.avatar" alt="头像" class="w-32 h-32 rounded-full shadow-md md:w-40 md:h-40 lg:w-52 lg:h-52">
+      <img
+        :src="settingStore.settings?.avatar" alt="头像"
+        class="w-32 h-32 rounded-full shadow-md md:w-40 md:h-40 lg:w-52 lg:h-52">
     </section>
     <section class="max-w-5xl mx-auto mt-24">
       <h3 class="mb-3 mt-6 flex items-center">
@@ -86,6 +88,7 @@ useSeoMeta(meta)
           查看更多
         </f-btn>
       </div>
+      <GiscusCard />
     </section>
     <client-only>
       <section class="text-xs text-zinc-500 mt-12 flex items-center justify-center flex-wrap gap-3">

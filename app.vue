@@ -1,11 +1,7 @@
 <script setup>
 const settingStore = useSettingStore()
 
-const {
-  data: {
-    value: [settingData, linkData],
-  },
-} = await useAsyncData('setting', () => Promise.all([
+const { data: { value: [settingData, linkData] } } = await useAsyncData('setting', () => Promise.all([
   api({ url: '/setting' }),
   api({ url: '/link' }),
 ]))
@@ -24,8 +20,6 @@ useServerSeoMeta({
 </script>
 
 <template>
-  <div class="grid-bg">
-  </div>
   <Head>
     <Link :href="settingStore.settings.favicon" rel="icon" />
   </Head>
@@ -55,7 +49,4 @@ useServerSeoMeta({
 </template>
 
 <style scoped>
-.grid-bg {
-  @apply -z-10 pointer-events-none fixed inset-0 select-none bg-top bg-repeat bg-fixed bg-[url('/grid-black.svg')] dark:bg-[url('/grid.svg')];
-}
 </style>

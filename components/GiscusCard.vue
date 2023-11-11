@@ -16,19 +16,20 @@ const theme = computed(() => isDark.value ? 'noborder_dark' : 'noborder_light')
 <template>
   <client-only>
     <div v-if="valid" class="pt-20">
+      <slot />
       <giscus-widget
         id="comments"
-        :repo="settingStore.settings.giscusRepo"
-        :repoid="settingStore.settings.giscusRepoId"
         :category="settingStore.settings.giscusCategory"
         :categoryid="settingStore.settings.giscusCategoryId"
-        mapping="pathname"
-        reactionsenabled="1"
+        :repo="settingStore.settings.giscusRepo"
+        :repoid="settingStore.settings.giscusRepoId"
+        :theme="theme"
         emitmetadata="0"
         inputposition="top"
-        :theme="theme"
         lang="zh-CN"
-        loading="eager" />
+        loading="eager"
+        mapping="pathname"
+        reactionsenabled="1" />
     </div>
   </client-only>
 </template>

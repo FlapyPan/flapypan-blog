@@ -4,7 +4,7 @@
 
 :root {
   --primary-500: rgb(99, 102, 241);
-  @apply text-zinc-800 dark:text-zinc-200;
+  @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950;
   color-scheme: light dark;
 }
 
@@ -23,7 +23,7 @@ input {
 }
 
 .md-editor {
-  --md-bk-color: #fafafa !important;
+  --md-bk-color: #ffffff !important;
   @apply rounded-xl shadow;
 
   &.md-editor-dark {
@@ -72,7 +72,7 @@ input {
 }
 
 .bg-blur {
-  @apply bg-white bg-opacity-70 backdrop-blur-xl dark:bg-black dark:bg-opacity-80;
+  @apply bg-zinc-50 bg-opacity-70 backdrop-blur-xl dark:bg-zinc-800 dark:bg-opacity-80;
 }
 
 .page {

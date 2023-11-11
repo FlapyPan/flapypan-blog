@@ -25,13 +25,6 @@ const navLinks = [
     title: '活动',
     icon: 'mingcute:time-line',
   },
-  {
-    routeName: 'guestbook',
-    to: '/guestbook',
-    activeColor: { text: 'text-red-500', hoverText: 'sm:hover:text-red-500', background: 'bg-red-500' },
-    title: '留言墙',
-    icon: 'mingcute:quill-pen-line',
-  },
 ]
 
 function logout() {
@@ -114,13 +107,13 @@ function logout() {
         </nuxt-link>
       </nav>
 
-      <div class="flex items-center bg-blur shadow rounded-full px-2 py-1 gap-1">
+      <div class="flex items-center bg-blur shadow rounded-full gap-1">
         <client-only>
           <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
             <menu-button
               :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
               as="div"
-              class="flex items-center rounded-full p-2 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
+              class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
               <img :src="settingStore.settings?.avatar" alt="头像" class="w-5 h-5 rounded-full">
               <span class="ml-2">{{ settingStore.settings?.name }}</span>
             </menu-button>
@@ -167,19 +160,13 @@ function logout() {
                     class="group flex w-full items-center rounded-lg p-2 text-sm"
                     @click="settingStore.loginDialogVisible = true">
                     <icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
-                    登录
+                    管理员登录
                   </button>
                 </menu-item>
               </menu-items>
             </transition>
           </h-menu>
         </client-only>
-        <nuxt-link
-          :class="{ 'text-violet-500 bg-violet-500 bg-opacity-5': $route.name === 'search' }"
-          class="flex items-center text-xl p-2 rounded-full sm:hover:text-violet-500 sm:hover:bg-violet-500 sm:hover:bg-opacity-10"
-          title="搜索" to="/search">
-          <icon name="mingcute:search-line" />
-        </nuxt-link>
       </div>
     </div>
   </header>
