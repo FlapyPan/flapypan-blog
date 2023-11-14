@@ -26,19 +26,15 @@ async function login() {
   loginError.value = null
   const event = useRequestEvent()
   try {
-    const ok = await api({
+    await api({
       url: `/auth/login`,
       method: 'POST',
       payload: parseFormData(),
       jsonPayload: false,
       event,
     })
-    if (ok) {
-      settingStore.value.isLogin = true
-      emits('close')
-    } else {
-      loginError.value = '登陆失败'
-    }
+    settingStore.value.isLogin = true
+    emits('close')
   } catch (e) {
     loginError.value = e.message
   }
