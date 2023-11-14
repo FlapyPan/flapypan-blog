@@ -1,5 +1,4 @@
 import { appendResponseHeader } from 'h3'
-import { useSettingStore } from '~/composables/states.js'
 
 /** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} HttpMethod http 请求方法 */
 
@@ -28,24 +27,28 @@ async function api(options = {
   const headers = useRequestHeaders(['cookie'])
   if (jsonPayload) headers['Content-Type'] = 'application/json'
   const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
-  const { _data: data, headers: responseHeaders, status } = await $fetch.raw(url, {
-    baseURL: '/api',
-    method,
-    headers,
-    mode: 'same-origin',
-    credentials: 'same-origin',
-    redirect: 'follow',
-    body,
-  })
-  if (event) {
-    const cookies = (responseHeaders.get('set-cookie') || '').split(',')
-    for (const cookie of cookies) {
-      appendResponseHeader(event, 'set-cookie', cookie)
+  try {
+    const { _data: data, headers: responseHeaders } = await $fetch.raw(url, {
+      baseURL: '/api',
+      method,
+      headers,
+      mode: 'same-origin',
+      credentials: 'same-origin',
+      redirect: 'follow',
+      body,
+    })
+    if (event) {
+      const cookies = (responseHeaders.get('set-cookie') || '').split(',')
+      for (const cookie of cookies) {
+        appendResponseHeader(event, 'set-cookie', cookie)
+      }
     }
+    return data
+  } catch (e) {
+    const { data, message, status } = e
+    if (status === 401) useSettingStore().value.isLogin = false
+    throw new Error(`${status} ${data || message}`)
   }
-  if (status === 401) useSettingStore().value.isLogin = false
-
-  return data
 }
 
 export default api
