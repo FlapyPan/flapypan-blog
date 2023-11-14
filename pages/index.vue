@@ -13,17 +13,17 @@ const {
 /// region 阅读量和其他数据
 const {
   data: accessData,
-} = await useAsyncData(
+} = await useLazyAsyncData(
   `access:base`,
   () => api({ url: `/access` }),
-  { server: false },
+  { server: false, deep: false },
 )
 const {
   data: clientInfo,
-} = await useAsyncData(
+} = await useLazyAsyncData(
   `client:info`,
   () => api({ url: `/client` }),
-  { server: false },
+  { server: false, deep: false },
 )
 /// endregion 阅读量和其他数据
 
@@ -31,7 +31,7 @@ const {
 const hitoko = ref('加载中...')
 
 async function fetchHitokoto(enable) {
-  if (process.browser) {
+  if (import.meta.browser) {
     if (!enable) return
     try {
       const { hitokoto: text } = await $fetch('https://v1.hitokoto.cn?c=a&c=c&c=d&c=j&c=k')
@@ -79,21 +79,23 @@ useSeoMeta(meta)
               <icon name="mdi:github" />
             </a>
           </p>
-          <p v-if="settingStore.settings.hitoko" class="mt-4 text-base text-center md:text-left">
-            一言：{{ hitoko }}
-          </p>
-          <p v-else class="mt-4 text-base text-center md:text-left">
-            {{ settingStore.settings.info }}
-            <span class="animate-ping">_</span>
-          </p>
-          <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
-            <span v-if="accessData?.today">今日阅读量：{{ accessData.today }}</span>
-            <span v-if="accessData?.all">总阅读量：{{ accessData.all }}</span>
-          </p>
+          <client-only>
+            <p v-if="settingStore.settings.hitoko" class="mt-4 text-sm text-center md:text-left">
+              一言：{{ hitoko }}
+            </p>
+            <p v-else class="mt-4 text-sm text-center md:text-left">
+              {{ settingStore.settings.info }}
+              <span class="animate-ping">_</span>
+            </p>
+            <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
+              <span v-if="accessData?.today">今日阅读量：{{ accessData.today }}</span>
+              <span v-if="accessData?.all">总阅读量：{{ accessData.all }}</span>
+            </p>
+          </client-only>
         </div>
       </div>
       <img
-        :src="settingStore.settings?.avatar" alt="头像"
+        :src="settingStore.settings?.avatar" alt=""
         class="w-32 h-32 rounded-full shadow-md md:w-40 md:h-40 lg:w-52 lg:h-52">
     </section>
     <section class="max-w-5xl mx-auto mt-24">

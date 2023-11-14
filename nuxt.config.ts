@@ -17,9 +17,12 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
   routeRules: {
+    '/activity': { ssr: false },
+    '/archive': { ssr: false },
+    '/tag': { ssr: false },
+    '/tag/**': { ssr: false },
     '/new': { ssr: false },
     '/setting': { ssr: false },
-    '/search': { ssr: false },
     '/api/**': { proxy: `${backendApi}/api/**` },
     '/api/static/**': { proxy: `${backendApi}/static/**` },
     '/static/**': { proxy: `${backendApi}/static/**` },

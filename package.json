@@ -3,7 +3,7 @@
   "description": "FlapyPan Blog Vue",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "type": "module",
   "scripts": {
     "postinstall": "nuxt prepare",
@@ -19,7 +19,7 @@
     "@nuxt/devtools": "latest",
     "eslint": "^8.53.0",
     "lint-staged": "^14.0.1",
-    "md-editor-v3": "^4.8.2",
+    "md-editor-v3": "^4.8.3",
     "nuxt": "^3.8.1",
     "nuxt-icon": "^0.5.0",
     "postcss-preset-env": "^9.3.0",

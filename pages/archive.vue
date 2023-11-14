@@ -62,19 +62,16 @@ const addTagError = ref(null)
 async function addTag() {
   addTagError.value = null
   addingTag.value = true
-  const { error } = await useAsyncData(
-    `tag:add:${newTagName.value}`,
-    () => api({ url: `/tag`, method: 'POST', payload: { name: newTagName.value } }),
-    { server: false },
-  )
-  if (error.value) {
-    addTagError.value = error.value.message
-  } else {
-    // 添加后刷新数据
-    await getTagList()
+  try {
+    await api({ url: `/tag`, method: 'POST', payload: { name: newTagName.value } })
     showTagEditor.value = false
+    // 添加后刷新数据
+    return getTagList()
+  } catch (e) {
+    addTagError.value = e.message
+  } finally {
+    addingTag.value = false
   }
-  addingTag.value = false
 }
 
 /// endregion 标签添加

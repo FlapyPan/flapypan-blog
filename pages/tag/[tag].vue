@@ -1,7 +1,4 @@
 <script setup>
-import { computed } from 'vue'
-
-const router = useRouter()
 const route = useRoute()
 const settingStore = useSettingStore()
 
@@ -10,8 +7,8 @@ const tag = computed(() => route.params.tag ?? '')
 const queryPage = computed({
   get: () => +(route.query.page || 1),
   set: (val) => {
-    if (val) navigateTo(`/tag/${tag.value}?page=${val}`)
-    else navigateTo(`/tag/${tag.value}`)
+    if (val) navigateTo({ path: `/tag/${tag.value}?page=${val}`, replace: true })
+    else navigateTo({ path: `/tag/${tag.value}`, replace: true })
   },
 })
 const {
@@ -51,7 +48,7 @@ async function updateTag() {
       },
     })
     showTagEditor.value = false
-    return router.replace(`/tag/${name}`)
+    return navigateTo({ path: `/tag/${name}`, replace: true })
   } catch (e) {
     updateError.value = e.message
   } finally {
@@ -78,7 +75,7 @@ async function deleteTag() {
         name: editTagName.value.trim(),
       },
     })
-    return router.replace('/archive')
+    return navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     tagDeleteError.value = e.message
   } finally {
@@ -100,33 +97,33 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <page-head class="mb-6" :title="tag">
+    <page-head :title="tag" class="mb-6">
       <template #subTitle>
         <client-only>
           <template v-if="settingStore.isLogin">
-            <f-btn class="mr-2" text icon="mingcute-edit-line" @click="showTagEditor = true">
+            <f-btn class="mr-2" icon="mingcute-edit-line" text @click="showTagEditor = true">
               编辑
             </f-btn>
-            <f-dialog v-model="showTagEditor" title="编辑标签" closable>
+            <f-dialog v-model="showTagEditor" closable title="编辑标签">
               <form class="mt-8 flex flex-col gap-6" @submit.prevent.stop>
                 <input
-                  v-model="editTagName" type="text" name="tagName" placeholder="标签名" required
-                  :disabled="updatingTag">
-                <f-btn type="submit" :disabled="updatingTag" @click="updateTag()">
+                  v-model="editTagName" :disabled="updatingTag" name="tagName" placeholder="标签名" required
+                  type="text">
+                <f-btn :disabled="updatingTag" type="submit" @click="updateTag()">
                   保存
                 </f-btn>
-                <error-alert :text="updateError" :show="updateError" />
+                <error-alert :show="updateError" :text="updateError" />
               </form>
             </f-dialog>
-            <f-btn text icon="mingcute-delete-line" @click="showTagDeleteDialog = true">
+            <f-btn icon="mingcute-delete-line" text @click="showTagDeleteDialog = true">
               删除
             </f-btn>
-            <f-dialog v-model="showTagDeleteDialog" title="确认删除" closable>
+            <f-dialog v-model="showTagDeleteDialog" closable title="确认删除">
               <form class="mt-8 flex flex-col gap-6" @submit.prevent.stop>
-                <f-btn type="submit" :disabled="deletingTag" @click="deleteTag()">
+                <f-btn :disabled="deletingTag" type="submit" @click="deleteTag()">
                   确认
                 </f-btn>
-                <error-alert :text="tagDeleteError" :show="tagDeleteError" />
+                <error-alert :show="tagDeleteError" :text="tagDeleteError" />
               </form>
             </f-dialog>
           </template>
@@ -137,7 +134,7 @@ useSeoMeta(meta)
     </page-head>
     <error-alert :show="fetchDataError" :text="fetchDataError" />
     <article-timeline :list="data?.articleData?.content" />
-    <f-page v-model="queryPage" class="mt-4" :page-data="data?.articleData" />
+    <f-page v-model="queryPage" :page-data="data?.articleData" class="mt-4" />
   </div>
 </template>
 

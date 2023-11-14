@@ -5,7 +5,6 @@ import 'md-editor-v3/lib/preview.css'
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.vue'))
 
-const router = useRouter()
 const route = useRoute()
 const settingStore = useSettingStore()
 
@@ -21,18 +20,8 @@ const {
 } = await useAsyncData(
   `article:${path.value}`,
   () => api({ url: `/article/${path.value}` }),
-  { server: true },
 )
-const coverSrc = ref(articleData.value.cover || settingStore.value.settings.banner)
-
-const {
-  data: accessCount,
-} = await useAsyncData(
-  `access:article:${path.value}`,
-  () => api({ url: `/access/article/${articleData.value.id}` }),
-  { server: false },
-)
-
+const coverSrc = ref(articleData.value?.cover || settingStore.value.settings.banner)
 /// endregion 文章数据
 
 /// 格式化时间
@@ -60,7 +49,7 @@ async function deleteArticle() {
   deleteError.value = null
   try {
     await api({ url: `/article/${articleData.value.id}`, method: 'DELETE' })
-    await router.replace('/archive')
+    await navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     deleteError.value = e.message
   } finally {
@@ -95,7 +84,7 @@ function onSaveArticle(newPath) {
     return
   }
   // 修改了路径就跳转过去
-  return router.replace(`/${newPath}`)
+  return navigateTo({ path: `/${newPath}`, replace: true })
 }
 
 /// endregion 文章编辑
@@ -128,89 +117,93 @@ useSeoMeta(meta)
       </div>
     </client-only>
     <template v-if="!isEdit">
-      <page-head :title="articleData?.title" class="mx-auto text-center">
-        <template #subTitle>
-          <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
-            <span class="flex items-center gap-1">
-              <icon name="mingcute:document-line" />
-              <span class="hidden md:inline-block">创建</span>
-              {{ formattedCreateDate }}
-            </span>
-            <span class="flex items-center gap-1">
-              <icon name="mingcute:edit-line" />
-              <span class="hidden md:inline-block">修改</span>
-              {{ formattedUpdateDate }}
-            </span>
-            <client-only>
+      <error-alert :show="articleDataError" :text="articleDataError" redirect="/" />
+      <template v-if="articleData?.id">
+        <page-head :title="articleData?.title" class="mx-auto text-center">
+          <template v-if="articleData?.id" #subTitle>
+            <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
               <span class="flex items-center gap-1">
-                <icon name="mingcute:book-6-line" />
-                <span class="hidden md:inline-block">阅读</span>
-                {{ accessCount ?? 0 }}
+                <icon name="mingcute:document-line" />
+                <span class="hidden md:inline-block">创建</span>
+                {{ formattedCreateDate }}
               </span>
-            </client-only>
-          </p>
-          <p class="mt-4 flex items-center justify-center flex-wrap gap-2">
-            <f-btn
-              v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
-              icon="mingcute:tag-line" text>
-              {{ name }}
-            </f-btn>
-          </p>
-        </template>
-      </page-head>
-      <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
-      <client-only>
-        <div v-if="settingStore.isLogin" class="flex flex-wrap items-center gap-4">
-          <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
-          </refresh-button>
-          <span class="flex-1"></span>
-          <f-btn icon="mingcute-edit-line" text @click="openEdit">
-            编辑
-          </f-btn>
-          <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
-            删除
-          </f-btn>
-          <f-dialog v-model="deleteDialog" closable>
-            <p class="mb-4">
-              确认删除此文章 "{{ articleData.title }}" ?
-            </p>
-            <div class="text-right">
-              <f-btn class="mr-4" text @click="deleteArticle">
-                <span class="text-red-500">
-                  确认删除
+              <span class="flex items-center gap-1">
+                <icon name="mingcute:edit-line" />
+                <span class="hidden md:inline-block">修改</span>
+                {{ formattedUpdateDate }}
+              </span>
+              <client-only>
+                <span class="flex items-center gap-1">
+                  <icon name="mingcute:book-6-line" />
+                  <span class="hidden md:inline-block">阅读</span>
+                  {{ articleData?.accessCount }}
                 </span>
+              </client-only>
+            </p>
+            <p class="mt-4 flex items-center justify-center flex-wrap gap-2">
+              <f-btn
+                v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
+                icon="mingcute:tag-line" text>
+                {{ name }}
               </f-btn>
-              <f-btn text @click="deleteDialog = false">
-                取消
+            </p>
+          </template>
+        </page-head>
+        <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
+        <client-only>
+          <div class="flex flex-wrap items-center gap-4">
+            <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
+            </refresh-button>
+            <span class="flex-1"></span>
+            <template v-if="settingStore.isLogin">
+              <f-btn icon="mingcute-edit-line" text @click="openEdit">
+                编辑
               </f-btn>
-            </div>
-          </f-dialog>
-        </div>
-      </client-only>
-      <error-alert :show="articleDataError" :text="articleDataError" />
-      <md-preview
-        v-if="articleData?.content" :model-value="articleData?.content"
-        :no-img-zoom-in="false" :theme="isDark ? 'dark' : 'light'" class="mt-6"
-        code-theme="gradient" editor-id="read" preview-theme="default" />
-      <nav class="my-6 flex justify-center gap-4">
-        <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
-          <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
-          上一篇
-        </f-btn>
-        <f-btn v-else disabled text title="没有啦">
-          <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
-          上一篇
-        </f-btn>
-        <f-btn v-if="articleData?.next" :to="`/${articleData.next}`" text title="下一篇">
-          下一篇
-          <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
-        </f-btn>
-        <f-btn v-else disabled text title="没有啦">
-          下一篇
-          <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
-        </f-btn>
-      </nav>
-      <giscus-card v-if="!fetchingArticleData" />
+              <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
+                删除
+              </f-btn>
+              <f-dialog v-model="deleteDialog" closable>
+                <p class="mb-4">
+                  确认删除此文章 "{{ articleData.title }}" ?
+                </p>
+                <div class="text-right">
+                  <f-btn class="mr-4" text @click="deleteArticle">
+                    <span class="text-red-500">
+                      确认删除
+                    </span>
+                  </f-btn>
+                  <f-btn text @click="deleteDialog = false">
+                    取消
+                  </f-btn>
+                </div>
+              </f-dialog>
+            </template>
+          </div>
+        </client-only>
+        <md-preview
+          v-if="articleData?.content" :model-value="articleData?.content"
+          :no-img-zoom-in="false" :theme="isDark ? 'dark' : 'light'" class="mt-6"
+          code-theme="gradient" editor-id="read" preview-theme="default" />
+        <nav class="my-6 flex justify-center gap-4">
+          <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
+            <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+            上一篇
+          </f-btn>
+          <f-btn v-else disabled text title="没有啦">
+            <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+            上一篇
+          </f-btn>
+          <f-btn v-if="articleData?.next" :to="`/${articleData.next}`" text title="下一篇">
+            下一篇
+            <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+          </f-btn>
+          <f-btn v-else disabled text title="没有啦">
+            下一篇
+            <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+          </f-btn>
+        </nav>
+        <giscus-card />
+      </template>
     </template>
   </div>
 </template>

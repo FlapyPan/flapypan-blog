@@ -6,12 +6,11 @@ function onArticleSubmit(path) {
   // 添加完成自动跳转
   navigateTo(`/${path}`)
 }
-
 /// endregion 新文章
 
-onMounted(() => {
-  if (!settingStore.value.isLogin) settingStore.value.loginDialogVisible = true
-})
+if (import.meta.browser) {
+  settingStore.value.loginDialogVisible = !settingStore.value.isLogin
+}
 
 const title = `新文章 - ${settingStore.value.settings.siteTitle ?? '博客'}`
 const description = `写新文章`
@@ -26,10 +25,8 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <client-only>
-      <article-editor v-if="settingStore.isLogin" @submit="onArticleSubmit" />
-      <page-head v-else title="请登录" />
-    </client-only>
+    <article-editor v-if="settingStore.isLogin" @submit="onArticleSubmit" />
+    <page-head v-else title="请登录" />
   </div>
 </template>
 

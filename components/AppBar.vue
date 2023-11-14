@@ -28,20 +28,16 @@ const navLinks = [
 ]
 
 function logout() {
-  api({ url: `/auth/logout` }).finally(() => {
-    location.reload()
-  })
+  api({ url: `/auth/logout` }).finally(() => refreshNuxtData())
 }
 </script>
 
 <template>
-  <client-only>
-    <template v-if="!settingStore.isLogin">
-      <f-dialog v-model="settingStore.loginDialogVisible" closable>
-        <login-form @close="settingStore.loginDialogVisible = false" />
-      </f-dialog>
-    </template>
-  </client-only>
+  <template v-if="!settingStore.isLogin">
+    <f-dialog v-model="settingStore.loginDialogVisible" closable>
+      <login-form @close="settingStore.loginDialogVisible = false" />
+    </f-dialog>
+  </template>
   <header class="w-full fixed top-0 z-50 py-2">
     <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
@@ -108,65 +104,63 @@ function logout() {
       </nav>
 
       <div class="flex items-center bg-blur shadow rounded-full gap-1">
-        <client-only>
-          <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
-            <menu-button
-              :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
-              as="div"
-              class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
-              <img :src="settingStore.settings?.avatar" alt="头像" class="w-5 h-5 rounded-full">
-              <span class="ml-2">{{ settingStore.settings?.name }}</span>
-            </menu-button>
+        <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
+          <menu-button
+            :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
+            as="div"
+            class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
+            <img :src="settingStore.settings?.avatar" alt="头像" class="w-5 h-5 rounded-full">
+            <span class="ml-2">{{ settingStore.settings?.name }}</span>
+          </menu-button>
 
-            <transition
-              enter-active-class="transition duration-100 ease-out"
-              enter-from-class="transform scale-95 opacity-0"
-              enter-to-class="transform scale-100 opacity-100"
-              leave-active-class="transition duration-75 ease-in"
-              leave-from-class="transform scale-100 opacity-100"
-              leave-to-class="transform scale-95 opacity-0">
-              <menu-items
-                class="absolute w-32 right-0 mt-4 p-1 origin-top-right rounded-xl shadow-lg bg-blur focus:outline-none">
-                <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
-                  <button
-                    :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
-                    class="group flex w-full items-center rounded-lg p-2 text-sm"
-                    @click="navigateTo('/new')">
-                    <icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
-                    写新文章
-                  </button>
-                </menu-item>
-                <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
-                  <button
-                    :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
-                    class="group flex w-full items-center rounded-lg p-2 text-sm"
-                    @click="navigateTo('/setting')">
-                    <icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
-                    博客设置
-                  </button>
-                </menu-item>
-                <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
-                  <button
-                    :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
-                    class="group flex w-full items-center roundrounded-lged-full p-2 text-sm"
-                    @click="logout">
-                    <icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
-                    退出登录
-                  </button>
-                </menu-item>
-                <menu-item v-else v-slot="{ active }">
-                  <button
-                    :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
-                    class="group flex w-full items-center rounded-lg p-2 text-sm"
-                    @click="settingStore.loginDialogVisible = true">
-                    <icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
-                    管理员登录
-                  </button>
-                </menu-item>
-              </menu-items>
-            </transition>
-          </h-menu>
-        </client-only>
+          <transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0">
+            <menu-items
+              class="absolute w-32 right-0 mt-4 p-1 origin-top-right rounded-xl shadow-lg bg-blur focus:outline-none">
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <button
+                  :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
+                  class="group flex w-full items-center rounded-lg p-2 text-sm"
+                  @click="navigateTo('/new')">
+                  <icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                  写新文章
+                </button>
+              </menu-item>
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <button
+                  :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
+                  class="group flex w-full items-center rounded-lg p-2 text-sm"
+                  @click="navigateTo('/setting')">
+                  <icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                  博客设置
+                </button>
+              </menu-item>
+              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+                <button
+                  :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
+                  class="group flex w-full items-center rounded-lg p-2 text-sm"
+                  @click="logout">
+                  <icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+                  退出登录
+                </button>
+              </menu-item>
+              <menu-item v-else v-slot="{ active }">
+                <button
+                  :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
+                  class="group flex w-full items-center rounded-lg p-2 text-sm"
+                  @click="settingStore.loginDialogVisible = true">
+                  <icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                  管理员登录
+                </button>
+              </menu-item>
+            </menu-items>
+          </transition>
+        </h-menu>
       </div>
     </div>
   </header>

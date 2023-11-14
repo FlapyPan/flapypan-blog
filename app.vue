@@ -1,17 +1,26 @@
 <script setup>
+defineProps({
+  error: Object,
+})
 const settingStore = useSettingStore()
 
-const { data: { value: [settingData, linkData] } } = await useAsyncData('setting', () => Promise.all([
-  api({ url: '/setting' }),
-  api({ url: '/link' }),
-]))
-settingStore.value.settings = {
-  ...settingStore.value.settings,
-  ...settingData,
-}
-settingStore.value.links = linkData ?? []
+useAsyncData('init', async () => {
+  const settingData = await api({ url: '/setting' })
+  if (settingData) {
+    settingStore.value.settings = {
+      ...settingStore.value.settings,
+      ...settingData,
+    }
+  }
+  return 'ok'
+}, { server: true, deep: false })
 
-if (process.browser) api({ url: `/auth` }).then((val) => settingStore.value.isLogin = !!val)
+if (import.meta.browser) {
+  api({ url: '/link' }).then((linkData) => {
+    if (linkData) settingStore.value.links = linkData
+  })
+  api({ url: `/auth` }).then((auth) => settingStore.value.isLogin = !!auth)
+}
 
 useServerSeoMeta({
   author: settingStore.value.settings?.name,
@@ -24,7 +33,9 @@ useServerSeoMeta({
     <Link :href="settingStore.settings.favicon" rel="icon" />
   </Head>
   <NuxtLayout>
-    <app-bar />
+    <client-only>
+      <app-bar />
+    </client-only>
     <main class="px-3 sm:px-6 mx-auto">
       <NuxtPage />
       <footer class="mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
