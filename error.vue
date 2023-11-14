@@ -19,7 +19,7 @@ useServerSeoMeta({
     <h2 class="text-xl">
       {{ error.statusCode }}
     </h2>
-    <error-alert :text="error.message" :show="true" />
+    <error-alert :show="true" :text="error.message" redirect />
     <dev-only>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />
     </dev-only>

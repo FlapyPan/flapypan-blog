@@ -1,7 +1,7 @@
 <script setup>
 const settingStore = useSettingStore()
 
-const { data: repos } = useAsyncData(
+const { data: repos, error: reposError } = useAsyncData(
   `activity:${settingStore.value.settings.name}:repos`,
   async () => $fetch(`https://api.github.com/users/${settingStore.value.settings.name}/repos`),
 )
@@ -24,6 +24,7 @@ useSeoMeta(meta)
     <h3 class="text-xl mb-6 ml-2">
       Github 仓库
     </h3>
+    <error-alert v-show="reposError" :text="reposError" />
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <a
         v-for="repo in repos" :key="repo.id" :href="repo.html_url"

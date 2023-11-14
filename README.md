@@ -2,7 +2,7 @@
 
 基于 Vue 3 开发的一款简单高效的博客系统(前端页面)
 
-**本仓库为前端项目，要配合后端项目使用。请对应版本号，例：前端版本`v1.4.x`则后端也使用`v1.4.x`**
+**本仓库为前端项目，要配合后端项目使用。请对应版本号，例：前端版本`v1.5.x`则后端也使用`v1.5.x`**
 
 后端项目：[flapypan-blog-spring](https://github.com/FlapyPan/flapypan-blog-spring)
 
@@ -56,8 +56,6 @@ pnpm dev # 运行开发服务器
 
 编译完成后可以在`.output`目录下可以找到编译产物
 
-#### 单实例
-
 ```shell
 pnpm build # 编译
 
@@ -68,26 +66,6 @@ export PORT=3000 # 设置前端服务端口号
 pnpm run start
 # 或
 node .output/server/index.mjs
-```
-
-#### 负载均衡
-
-自行修改`ecosystem.config.cjs`的配置
-
-```shell
-pnpm build # 编译
-```
-
-使用 pm2 进行管理
-
-```shell
-export BACKEND_API='http://localhost:8080' # 设置后端地址
-export PORT=3000 # 设置前端服务端口号
-
-pm2 start ecosystem.config.cjs
-pm2 stop ecosystem.config.cjs
-pm2 restart ecosystem.config.cjs
-pm2 delete ecosystem.config.cjs
 ```
 
 ## 评论系统配置(可选)

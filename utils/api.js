@@ -1,4 +1,5 @@
 import { appendResponseHeader } from 'h3'
+import { useSettingStore } from '~/composables/states.js'
 
 /** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} HttpMethod http 请求方法 */
 
@@ -27,7 +28,7 @@ async function api(options = {
   const headers = useRequestHeaders(['cookie'])
   if (jsonPayload) headers['Content-Type'] = 'application/json'
   const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
-  const { _data: { success, code, data }, headers: responseHeaders } = await $fetch.raw(url, {
+  const { _data: data, headers: responseHeaders, status } = await $fetch.raw(url, {
     baseURL: '/api',
     method,
     headers,
@@ -38,19 +39,12 @@ async function api(options = {
   })
   if (event) {
     const cookies = (responseHeaders.get('set-cookie') || '').split(',')
-    for (const cookie of cookies)
+    for (const cookie of cookies) {
       appendResponseHeader(event, 'set-cookie', cookie)
+    }
   }
-  if (!success) {
-    let e
-    if (code === 401) e = Error(data ?? '请登录')
-    else if (code === 400) e = Error(data ?? '请求格式错误')
-    else if (code === 400) e = Error(data ?? '请求的资源不存在')
-    else if (code === 500) e = Error('服务器内部错误')
-    else e = Error(data ?? '请求错误')
-    console.error(e.message, e)
-    throw e
-  }
+  if (status === 401) useSettingStore().value.isLogin = false
+
   return data
 }
 

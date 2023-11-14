@@ -132,7 +132,7 @@ useSeoMeta(meta)
       <refresh-button :loading="fetchingData" @refresh="fetchData()">
       </refresh-button>
     </page-head>
-    <error-alert :show="fetchDataError" :text="fetchDataError" />
+    <error-alert :show="fetchDataError" :text="fetchDataError" redirect />
     <article-timeline :list="data?.articleData?.content" />
     <f-page v-model="queryPage" :page-data="data?.articleData" class="mt-4" />
   </div>

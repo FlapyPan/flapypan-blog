@@ -2,12 +2,13 @@
 const props = defineProps({
   show: {},
   text: {},
-  redirect: { type: String, default: '/' },
+  redirect: { type: Boolean, default: false },
+  redirectPath: { type: String, default: '/' },
   redirectText: { type: String, default: '返回主页' },
 })
 
 function clear() {
-  clearError({ redirect: props.redirect })
+  clearError({ redirect: props.redirectPath })
 }
 </script>
 

@@ -23,17 +23,22 @@ const loginError = ref(null)
 
 async function login() {
   isDoLogin.value = true
+  loginError.value = null
   const event = useRequestEvent()
   try {
-    await api({
+    const ok = await api({
       url: `/auth/login`,
       method: 'POST',
       payload: parseFormData(),
       jsonPayload: false,
       event,
     })
-    settingStore.value.isLogin = true
-    emits('close')
+    if (ok) {
+      settingStore.value.isLogin = true
+      emits('close')
+    } else {
+      loginError.value = '登陆失败'
+    }
   } catch (e) {
     loginError.value = e.message
   }
@@ -52,14 +57,17 @@ async function login() {
     <input
       v-model="form.password" :disabled="isDoLogin" name="password" placeholder="密码" required type="password"
       @keydown.enter="login">
-    <p class="flex items-center justify-end gap-2 pr-2">
+    <p class="flex items-center gap-2 pr-2">
+      <span v-show="loginError" class="text-xs text-red-500">
+        {{ loginError }}
+      </span>
+      <span class="flex-1"></span>
       <input id="login-remember" v-model="form.remember" :disabled="isDoLogin" name="remember" type="checkbox">
       <label for="login-remember">记住我</label>
     </p>
     <f-btn :disabled="isDoLogin" type="submit" @click="login">
       登录
     </f-btn>
-    <error-alert :show="loginError" :text="loginError" />
   </form>
 </template>
 

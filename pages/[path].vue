@@ -117,7 +117,7 @@ useSeoMeta(meta)
       </div>
     </client-only>
     <template v-if="!isEdit">
-      <error-alert :show="articleDataError" :text="articleDataError" redirect="/" />
+      <error-alert :show="articleDataError" :text="articleDataError" redirect />
       <template v-if="articleData?.id">
         <page-head :title="articleData?.title" class="mx-auto text-center">
           <template v-if="articleData?.id" #subTitle>

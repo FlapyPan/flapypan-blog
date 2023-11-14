@@ -10,7 +10,8 @@ const postcss = {
   },
 }
 
-const backendApi = import.meta.env.BACKEND_API ?? 'http://localhost:8080'
+// eslint-disable-next-line node/prefer-global/process
+const backendApi = process.env.BACKEND_API ?? 'http://localhost:8080'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -48,7 +49,6 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
-      link: [],
       script: [
         { type: 'module', src: 'https://unpkg.com/giscus?module', async: true },
       ],
