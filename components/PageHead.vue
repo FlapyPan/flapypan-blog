@@ -7,7 +7,7 @@ defineProps({
 
 <template>
   <section class="my-6 text-center">
-    <h2 class="text-2xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-3xl">
+    <h2 class="jump-in-400 text-2xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-3xl">
       <template v-if="title">
         {{ title }}
       </template>
@@ -15,7 +15,7 @@ defineProps({
         <slot name="title" />
       </template>
     </h2>
-    <p class="my-2 md:my-4 text-base text-zinc-600 dark:text-zinc-400">
+    <p class="jump-in-500 my-2 md:my-4 text-base text-zinc-600 dark:text-zinc-400">
       <template v-if="subTitle">
         {{ subTitle }}
       </template>
@@ -23,7 +23,9 @@ defineProps({
         <slot name="subTitle" />
       </template>
     </p>
-    <slot />
+    <div class="jump-in-600">
+      <slot />
+    </div>
   </section>
 </template>
 

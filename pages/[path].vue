@@ -122,39 +122,36 @@ useSeoMeta(meta)
       <error-alert :show="articleDataError" :text="articleDataError" redirect />
       <template v-if="articleData?.id">
         <page-head :title="articleData?.title" class="mx-auto text-center">
-          <template v-if="articleData?.id" #subTitle>
-            <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
-              <span class="flex items-center gap-1">
-                <icon name="mingcute:document-line" />
-                <span class="hidden md:inline-block">创建</span>
-                {{ formattedCreateDate }}
-              </span>
-              <span class="flex items-center gap-1">
-                <icon name="mingcute:edit-line" />
-                <span class="hidden md:inline-block">修改</span>
-                {{ formattedUpdateDate }}
-              </span>
-              <client-only>
-                <span class="flex items-center gap-1">
-                  <icon name="mingcute:book-6-line" />
-                  <span class="hidden md:inline-block">阅读</span>
-                  {{ articleData?.accessCount }}
-                </span>
-              </client-only>
-            </p>
-            <p class="mt-4 flex items-center justify-center flex-wrap gap-2">
-              <f-btn
-                v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
-                icon="mingcute:tag-line" text>
-                {{ name }}
-              </f-btn>
-            </p>
-          </template>
         </page-head>
-        <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
+        <p class="jump-in-500 flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
+          <span class="flex items-center gap-1">
+            <icon name="mingcute:document-line" />
+            <span class="hidden md:inline-block">创建</span>
+            {{ formattedCreateDate }}
+          </span>
+          <span class="flex items-center gap-1">
+            <icon name="mingcute:edit-line" />
+            <span class="hidden md:inline-block">修改</span>
+            {{ formattedUpdateDate }}
+          </span>
+          <client-only>
+            <span class="flex items-center gap-1">
+              <icon name="mingcute:book-6-line" />
+              <span class="hidden md:inline-block">阅读</span>
+              {{ articleData?.accessCount }}
+            </span>
+          </client-only>
+        </p>
+        <p class="jump-in-500 my-4 flex items-center justify-center flex-wrap gap-2">
+          <f-btn
+            v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
+            icon="mingcute:tag-line" text>
+            {{ name }}
+          </f-btn>
+        </p>
+        <img :src="coverSrc" alt="" class="jump-in-600 w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
         <client-only>
-          <div class="flex flex-wrap items-center gap-4">
-            <span class="flex-1"></span>
+          <div class="flex flex-wrap items-center gap-4 justify-center">
             <template v-if="settingStore.isLogin">
               <f-btn icon="mingcute-edit-line" text @click="openEdit">
                 编辑
@@ -180,17 +177,18 @@ useSeoMeta(meta)
             </template>
           </div>
         </client-only>
-        <div class="flex mt-6 gap-4">
-          <client-only>
-            <div
-              class="hidden lg:block sticky w-64 p-4 top-0 h-screen overflow-y-auto bg-white rounded-xl">
-              <md-catalog :scroll-element="scrollElement" :theme="isDark ? 'dark' : 'light'" editor-id="read" />
-            </div>
-          </client-only>
+        <div class="flex gap-4">
           <md-preview
             v-if="articleData?.content" :model-value="articleData?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
             :theme="isDark ? 'dark' : 'light'" code-theme="gradient" editor-id="read" preview-theme="default" />
+          <div class="side hidden lg:block sticky w-64 px-4 top-14 overflow-y-auto mt-16">
+            <client-only>
+              <md-catalog
+                :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
+                :theme="isDark ? 'dark' : 'light'" editor-id="read" />
+            </client-only>
+          </div>
         </div>
         <nav class="my-6 flex justify-center gap-4">
           <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
@@ -217,4 +215,7 @@ useSeoMeta(meta)
 </template>
 
 <style scoped>
+.side {
+  height: calc(100vh - 7rem);
+}
 </style>

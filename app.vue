@@ -38,7 +38,7 @@ useServerSeoMeta({
     </client-only>
     <main class="px-3 sm:px-6 mx-auto">
       <NuxtPage />
-      <footer class="mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
+      <footer class="jump-in-700 mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
         <f-btn v-if="settingStore.settings.footer" icon="mingcute:information-line" text>
           {{ settingStore.settings.footer }}
         </f-btn>

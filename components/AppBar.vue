@@ -50,7 +50,7 @@ function logout() {
     <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
-          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'shadow': scrolled, 'bg-blur': scrolled }"
+          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'scrolled': scrolled, 'bg-blur': scrolled }"
           class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
           <icon
             :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
@@ -91,7 +91,7 @@ function logout() {
       </h-menu>
 
       <nav
-        :class="{ 'shadow': scrolled, 'bg-blur': scrolled }"
+        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
         class="items-center gap-4 text-sm underline-offset-2 hidden md:flex rounded-full py-3 px-5">
         <nuxt-link
           v-for="l in navLinks" :key="l.routeName"
@@ -114,7 +114,7 @@ function logout() {
       </nav>
 
       <div
-        :class="{ 'shadow': scrolled, 'bg-blur': scrolled }"
+        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
         class="flex items-center  rounded-full gap-1">
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
@@ -179,4 +179,20 @@ function logout() {
 </template>
 
 <style scoped>
+@keyframes app-bar-jump-in {
+  0% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(15%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.scrolled {
+  @apply shadow;
+  animation: app-bar-jump-in 0.3s;
+}
 </style>

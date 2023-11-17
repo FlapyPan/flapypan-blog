@@ -91,7 +91,7 @@ useSeoMeta(meta)
     <page-head
       sub-title="看看我都水了什么文章"
       title="文章归档" />
-    <div class="flex justify-center">
+    <div class="jump-in-600 flex justify-center">
       <input
         ref="searchInput" v-model="inputValue" autofocus class="w-full max-w-md" placeholder="输入关键字回车搜索"
         type="text" @keydown.enter="replaceQuery()">
@@ -102,7 +102,7 @@ useSeoMeta(meta)
       <f-page v-model="queryPage" :page-data="searchData" class="mt-4" />
     </template>
     <template v-else>
-      <h3 class="my-3 flex items-center">
+      <h3 class="jump-in-600 my-3 flex items-center">
         <span class="text-2xl">
           标签
         </span>
@@ -125,7 +125,7 @@ useSeoMeta(meta)
         </client-only>
       </h3>
       <error-alert :show="tagListError" :text="tagListError" />
-      <div class="flex items-center gap-4 flex-wrap mt-6">
+      <div class="jump-in-600 flex items-center gap-4 flex-wrap mt-6">
         <template v-for="({ name }) in tagList" :key="name">
           <f-btn :to="`/tag/${name}`" icon="mingcute:tag-line" text>
             {{ name }}
@@ -133,7 +133,7 @@ useSeoMeta(meta)
         </template>
       </div>
       <error-alert :show="articleDataError" :text="articleDataError" />
-      <div class="mt-12">
+      <div class="jump-in-700 mt-12">
         <template v-for="{ year, list } in (articleData ?? [])" :key="year">
           <h3 class="my-3 text-2xl">
             {{ year }}
