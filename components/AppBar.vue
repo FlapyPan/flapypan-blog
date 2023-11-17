@@ -3,6 +3,14 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const settingStore = useSettingStore()
 
+const scrolled = ref(false)
+
+if (import.meta.browser) {
+  window.addEventListener('scroll', () => {
+    scrolled.value = document.documentElement.scrollTop > 48
+  }, { passive: true })
+}
+
 const navLinks = [
   {
     routeName: 'index',
@@ -42,8 +50,8 @@ function logout() {
     <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
-          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
-          class="flex items-center rounded-full bg-blur shadow p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
+          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'shadow': scrolled, 'bg-blur': scrolled }"
+          class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
           <icon
             :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
             class="transform transition-transform" />
@@ -82,7 +90,9 @@ function logout() {
         </transition>
       </h-menu>
 
-      <nav class="items-center gap-4 text-sm underline-offset-2 hidden md:flex bg-blur shadow rounded-full py-3 px-5">
+      <nav
+        :class="{ 'shadow': scrolled, 'bg-blur': scrolled }"
+        class="items-center gap-4 text-sm underline-offset-2 hidden md:flex rounded-full py-3 px-5">
         <nuxt-link
           v-for="l in navLinks" :key="l.routeName"
           :class="{ [l.activeColor.text]: $route.name === l.routeName, [`${l.activeColor.hoverText}`]: true }"
@@ -103,7 +113,9 @@ function logout() {
         </nuxt-link>
       </nav>
 
-      <div class="flex items-center bg-blur shadow rounded-full gap-1">
+      <div
+        :class="{ 'shadow': scrolled, 'bg-blur': scrolled }"
+        class="flex items-center  rounded-full gap-1">
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"

@@ -23,7 +23,6 @@ const url = computed(() => `/article?keyword=${queryKeyword.value}&page=${queryP
 const {
   data: searchData,
   pending: isSearching,
-  execute: searchArticle,
   error: searchError,
 } = await useAsyncData(
   `search:${queryKeyword.value}`,
@@ -49,7 +48,6 @@ const {
   pending: fetchingArticleData,
   data: articleData,
   error: articleDataError,
-  execute: getArticleData,
 } = await useAsyncData(`article:yearly`, () => api({ url: `/article/group-by/year` }))
 /// endregion 文章列表
 
@@ -93,12 +91,7 @@ useSeoMeta(meta)
     <page-head
       sub-title="看看我都水了什么文章"
       title="文章归档" />
-    <div class="flex items-center gap-3 flex-wrap justify-center">
-      <refresh-button v-if="queryKeyword" :loading="isSearching" @refresh="searchArticle()">
-      </refresh-button>
-      <refresh-button
-        v-else :loading="fetchingTagList || fetchingArticleData"
-        @refresh="() => { getTagList();getArticleData() }" />
+    <div class="flex justify-center">
       <input
         ref="searchInput" v-model="inputValue" autofocus class="w-full max-w-md" placeholder="输入关键字回车搜索"
         type="text" @keydown.enter="replaceQuery()">
@@ -109,7 +102,7 @@ useSeoMeta(meta)
       <f-page v-model="queryPage" :page-data="searchData" class="mt-4" />
     </template>
     <template v-else>
-      <h3 class="mt-6 mb-3 flex items-center">
+      <h3 class="my-3 flex items-center">
         <span class="text-2xl">
           标签
         </span>
@@ -142,13 +135,16 @@ useSeoMeta(meta)
       <error-alert :show="articleDataError" :text="articleDataError" />
       <div class="mt-12">
         <template v-for="{ year, list } in (articleData ?? [])" :key="year">
-          <h3 class="mt-4 mb-2 text-2xl">
+          <h3 class="my-3 text-2xl">
             {{ year }}
           </h3>
           <article-timeline :list="list" />
         </template>
       </div>
     </template>
+    <p v-show="isSearching || fetchingArticleData || fetchingTagList" class="text-center text-zinc-500 text-sm py-2">
+      加载中...
+    </p>
   </div>
 </template>
 

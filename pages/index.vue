@@ -64,7 +64,7 @@ useSeoMeta(meta)
       class="w-full mx-auto pt-36 flex gap-16 sm:gap-18 lg:gap-52 flex-col-reverse items-center justify-center md:flex-row text-center md:text-left">
       <div>
         <h1
-          class="font-serif tracking-wide text-3xl font-bold drop-shadow-lg text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
+          class="font-serif tracking-wide text-3xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
           {{ settingStore.settings.siteTitle }}
         </h1>
         <div class="text-zinc-600 dark:text-zinc-400">
@@ -96,7 +96,7 @@ useSeoMeta(meta)
       </div>
       <img
         :src="settingStore.settings?.avatar" alt=""
-        class="w-32 h-32 rounded-full shadow-md md:w-40 md:h-40 lg:w-52 lg:h-52">
+        class="w-32 h-32 rounded-full md:w-40 md:h-40 lg:w-52 lg:h-52">
     </section>
     <section class="max-w-5xl mx-auto mt-24">
       <h3 class="mb-3 mt-6 flex items-center">

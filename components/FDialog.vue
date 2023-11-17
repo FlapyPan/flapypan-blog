@@ -40,7 +40,7 @@ function close() {
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-blur p-6 text-left align-middle shadow-xl transition-all">
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-blur p-6 text-left align-middle transition-all">
               <DialogTitle v-if="title" as="h3" class="text-lg font-medium leading-6">
                 {{ title }}
               </DialogTitle>

@@ -1,5 +1,5 @@
 <script setup>
-import { MdPreview } from 'md-editor-v3'
+import { MdCatalog, MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
 
 // 异步的编辑器组件
@@ -11,10 +11,12 @@ const settingStore = useSettingStore()
 // 文章路径
 const path = computed(() => route.params.path ?? '')
 
+const scrollElement = ref(null)
+if (import.meta.browser) scrollElement.value = document.documentElement
+
 /// region 文章数据
 const {
   data: articleData,
-  pending: fetchingArticleData,
   error: articleDataError,
   refresh: getArticleData,
 } = await useAsyncData(
@@ -152,8 +154,6 @@ useSeoMeta(meta)
         <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
         <client-only>
           <div class="flex flex-wrap items-center gap-4">
-            <refresh-button :loading="fetchingArticleData" @refresh="getArticleData()">
-            </refresh-button>
             <span class="flex-1"></span>
             <template v-if="settingStore.isLogin">
               <f-btn icon="mingcute-edit-line" text @click="openEdit">
@@ -180,10 +180,18 @@ useSeoMeta(meta)
             </template>
           </div>
         </client-only>
-        <md-preview
-          v-if="articleData?.content" :model-value="articleData?.content"
-          :no-img-zoom-in="false" :theme="isDark ? 'dark' : 'light'" class="mt-6"
-          code-theme="gradient" editor-id="read" preview-theme="default" />
+        <div class="flex mt-6 gap-4">
+          <client-only>
+            <div
+              class="hidden lg:block sticky w-64 p-4 top-0 h-screen overflow-y-auto bg-white rounded-xl">
+              <md-catalog :scroll-element="scrollElement" :theme="isDark ? 'dark' : 'light'" editor-id="read" />
+            </div>
+          </client-only>
+          <md-preview
+            v-if="articleData?.content" :model-value="articleData?.content"
+            :no-img-zoom-in="false" :scroll-element="scrollElement"
+            :theme="isDark ? 'dark' : 'light'" code-theme="gradient" editor-id="read" preview-theme="default" />
+        </div>
         <nav class="my-6 flex justify-center gap-4">
           <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
             <icon class="mr-1" name="mingcute:arrow-left-circle-line" />

@@ -4,7 +4,7 @@
 
 :root {
   --primary-500: rgb(99, 102, 241);
-  @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-950;
+  @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-900;
   color-scheme: light dark;
 }
 
@@ -13,22 +13,28 @@ img {
 }
 
 input {
-  @apply bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-80 rounded-md py-2 px-3 border;
+  @apply bg-white bg-opacity-70 dark:bg-zinc-800 dark:bg-opacity-80 rounded-md py-2 px-3;
 
   &[disabled] {
     @apply opacity-50 cursor-not-allowed;
   }
 }
 
-.md-editor-catalog-active {
-  > span, span:hover {
-    @apply text-primary-500;
+.md-editor-catalog {
+  @apply text-sm;
+
+  .md-editor-catalog-active span {
+    color: var(--primary-500) !important;
+  }
+
+  .md-editor-catalog-link span:hover {
+    color: var(--primary-500) !important;
   }
 }
 
 .md-editor {
   --md-bk-color: #ffffff !important;
-  @apply rounded-xl shadow;
+  @apply rounded-xl;
 
   &.md-editor-dark {
     --md-bk-color: #27272A !important;
@@ -76,11 +82,11 @@ input {
 }
 
 .bg-blur {
-  @apply bg-zinc-50 bg-opacity-70 backdrop-blur-xl dark:bg-zinc-800 dark:bg-opacity-80;
+  @apply bg-white bg-opacity-70 backdrop-blur-xl dark:bg-zinc-800 dark:bg-opacity-80;
 }
 
 .page {
-  @apply py-20 container mx-auto max-w-7xl;
+  @apply py-16 container mx-auto max-w-7xl;
 }
 
 .f-input {

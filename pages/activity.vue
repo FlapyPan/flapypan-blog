@@ -1,7 +1,7 @@
 <script setup>
 const settingStore = useSettingStore()
 
-const { data: repos, error: reposError } = useAsyncData(
+const { data: repos, error: reposError, pending: fetchingRepos } = useAsyncData(
   `activity:${settingStore.value.settings.name}:repos`,
   async () => $fetch(`https://api.github.com/users/${settingStore.value.settings.name}/repos`),
 )
@@ -28,7 +28,7 @@ useSeoMeta(meta)
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <a
         v-for="repo in repos" :key="repo.id" :href="repo.html_url"
-        class="group flex flex-col gap-2 rounded-xl overflow-hidden shadow sm:hover:shadow-lg transition p-4 bg-zinc-50 dark:bg-zinc-800"
+        class="group flex flex-col gap-2 rounded-xl overflow-hidden transition p-4 bg-white dark:bg-zinc-800"
         target="_blank">
         <p class="text-lg group-hover:underline underline-offset-2">{{ repo.full_name }}</p>
         <p class="text-xs py-2 text-zinc-500">{{ repo.description }}</p>
@@ -53,6 +53,9 @@ useSeoMeta(meta)
         </p>
       </a>
     </div>
+    <p v-show="fetchingRepos" class="text-center text-zinc-500 text-sm py-2">
+      加载中...
+    </p>
   </div>
 </template>
 

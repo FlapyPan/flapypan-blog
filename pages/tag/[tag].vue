@@ -13,7 +13,6 @@ const queryPage = computed({
 })
 const {
   data,
-  execute: fetchData,
   pending: fetchingData,
   error: fetchDataError,
 } = useAsyncData(
@@ -97,7 +96,11 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <page-head :title="tag" class="mb-6">
+    <page-head class="mb-6">
+      <template #title>
+        <icon name="mingcute:tag-line" />
+        {{ tag }}
+      </template>
       <template #subTitle>
         <client-only>
           <template v-if="settingStore.isLogin">
@@ -129,11 +132,12 @@ useSeoMeta(meta)
           </template>
         </client-only>
       </template>
-      <refresh-button :loading="fetchingData" @refresh="fetchData()">
-      </refresh-button>
     </page-head>
     <error-alert :show="fetchDataError" :text="fetchDataError" redirect />
     <article-timeline :list="data?.articleData?.content" />
+    <p v-show="fetchingData" class="text-center text-zinc-500 text-sm py-2">
+      加载中...
+    </p>
     <f-page v-model="queryPage" :page-data="data?.articleData" class="mt-4" />
   </div>
 </template>

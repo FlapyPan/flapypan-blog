@@ -37,7 +37,7 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 
 <style scoped>
 .article-card {
-  @apply relative rounded-xl overflow-hidden shadow sm:hover:shadow-lg transition flex items-center justify-between;
+  @apply relative rounded-xl overflow-hidden transition flex items-center justify-between;
 
   &::after {
     content: "";
