@@ -10,9 +10,6 @@ const postcss = {
   },
 }
 
-// eslint-disable-next-line node/prefer-global/process
-const backendApi = process.env.BACKEND_API ?? 'http://localhost:8080'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -24,13 +21,13 @@ export default defineNuxtConfig({
     '/tag/**': { ssr: false },
     '/new': { ssr: false },
     '/setting': { ssr: false },
-    '/api/**': { proxy: `${backendApi}/api/**` },
-    '/api/static/**': { proxy: `${backendApi}/static/**` },
-    '/static/**': { proxy: `${backendApi}/static/**` },
   },
   modules: [
     'nuxt-icon',
   ],
+  build: {
+    transpile: ['jsonwebtoken'],
+  },
   vite: {
     build: {
       target: 'modules',

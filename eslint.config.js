@@ -18,6 +18,7 @@ export default config(
       'style/arrow-parens': ['error', 'always'],
       'arrow-parens': ['error', 'always'],
       'no-new': ['off'],
+      'node/prefer-global/process': ['off'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'brace-style': ['off'],
       'style/brace-style': ['off'],

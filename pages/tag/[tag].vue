@@ -1,5 +1,6 @@
 <script setup>
 const route = useRoute()
+const auth = useAuth()
 const settingStore = useSettingStore()
 
 /// region 获取 tag 信息
@@ -103,7 +104,7 @@ useSeoMeta(meta)
       </template>
       <template #subTitle>
         <client-only>
-          <template v-if="settingStore.isLogin">
+          <template v-if="auth.state.value.isLogin">
             <f-btn class="mr-2" icon="mingcute-edit-line" text @click="showTagEditor = true">
               编辑
             </f-btn>

@@ -1,5 +1,3 @@
-import { appendResponseHeader } from 'h3'
-
 /** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} HttpMethod http 请求方法 */
 
 /**
@@ -8,7 +6,6 @@ import { appendResponseHeader } from 'h3'
  * @property {HttpMethod?} method 请求方法
  * @property {any?} payload 请求数据
  * @property {boolean?} jsonPayload payload 是否为 json
- * @property {H3Event?} event 事件
  */
 
 /**
@@ -16,19 +13,22 @@ import { appendResponseHeader } from 'h3'
  * @param {ApiOptions} options
  * @return {Promise<*>}
  */
-async function api(options = {
+export default async function api(options = {
   url: '',
   method: 'GET',
   payload: null,
   jsonPayload: true,
-  event: null,
 }) {
-  const { url, method, payload, jsonPayload, event } = options
-  const headers = useRequestHeaders(['cookie'])
+  const { url, method, payload, jsonPayload } = options
+  const headers = {}
+  if (import.meta.browser) {
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token')
+    if (token) headers.Authorization = `Bearer ${token}`
+  }
   if (jsonPayload) headers['Content-Type'] = 'application/json'
   const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
   try {
-    const { _data: data, headers: responseHeaders } = await $fetch.raw(url, {
+    return await $fetch(url, {
       baseURL: '/api',
       method,
       headers,
@@ -37,18 +37,9 @@ async function api(options = {
       redirect: 'follow',
       body,
     })
-    if (event) {
-      const cookies = (responseHeaders.get('set-cookie') || '').split(',')
-      for (const cookie of cookies) {
-        appendResponseHeader(event, 'set-cookie', cookie)
-      }
-    }
-    return data
   } catch (e) {
     const { data, message, status } = e
-    if (status === 401) useSettingStore().value.isLogin = false
-    throw new Error(`${status} ${data || message}`)
+    if (status === 401) useAuth().state.value.isLogin = false
+    throw new Error(`${status} ${data?.message || message}`)
   }
 }
-
-export default api

@@ -6,6 +6,7 @@ import 'md-editor-v3/lib/preview.css'
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.vue'))
 
 const route = useRoute()
+const auth = useAuth()
 const settingStore = useSettingStore()
 
 // 文章路径
@@ -111,7 +112,7 @@ useSeoMeta(meta)
 <template>
   <div class="page">
     <client-only>
-      <div v-if="settingStore.isLogin && isEdit">
+      <div v-if="auth.state.value.isLogin && isEdit">
         <f-btn icon="mingcute:left-line" @click="isEdit = false">
           取消
         </f-btn>
@@ -152,7 +153,7 @@ useSeoMeta(meta)
         <img :src="coverSrc" alt="" class="jump-in-600 w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
         <client-only>
           <div class="flex flex-wrap items-center gap-4 justify-center">
-            <template v-if="settingStore.isLogin">
+            <template v-if="auth.state.value.isLogin">
               <f-btn icon="mingcute-edit-line" text @click="openEdit">
                 编辑
               </f-btn>

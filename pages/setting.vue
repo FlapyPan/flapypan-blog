@@ -1,9 +1,10 @@
 <script setup>
+const auth = useAuth()
 const settingStore = useSettingStore()
 
-onMounted(() => {
-  if (!settingStore.value.isLogin) settingStore.value.loginDialogVisible = true
-})
+if (import.meta.browser) {
+  auth.value.loginDialogVisible = !auth.state.value.isLogin
+}
 
 /// region 博客设置
 const savingSettings = ref(false)
@@ -96,7 +97,7 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <template v-if="settingStore.isLogin">
+    <template v-if="auth.state.value.isLogin">
       <div class="flex flex-col items-center gap-6">
         <p class="text-xs mt-4">
           注意：只有点击对应的保存按钮后才会保存至服务器

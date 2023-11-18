@@ -19,7 +19,7 @@ if (import.meta.browser) {
   api({ url: '/link' }).then((linkData) => {
     if (linkData) settingStore.value.links = linkData
   })
-  api({ url: `/auth` }).then((auth) => settingStore.value.isLogin = !!auth)
+  useAuth().check()
 }
 
 useServerSeoMeta({

@@ -1,7 +1,7 @@
 <script setup>
 const emits = defineEmits(['close'])
 
-const settingStore = useSettingStore()
+const auth = useAuth()
 
 /// region 登录
 const form = reactive({
@@ -9,31 +9,14 @@ const form = reactive({
   password: '',
   remember: false,
 })
-
-function parseFormData() {
-  const formData = new FormData()
-  formData.append('username', form.username)
-  formData.append('password', form.password)
-  formData.append('remember-me', form.remember)
-  return formData
-}
-
 const isDoLogin = ref(false)
 const loginError = ref(null)
 
 async function login() {
   isDoLogin.value = true
   loginError.value = null
-  const event = useRequestEvent()
   try {
-    await api({
-      url: `/auth/login`,
-      method: 'POST',
-      payload: parseFormData(),
-      jsonPayload: false,
-      event,
-    })
-    settingStore.value.isLogin = true
+    await auth.login(form)
     emits('close')
   } catch (e) {
     loginError.value = e.message

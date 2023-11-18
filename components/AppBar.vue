@@ -2,6 +2,7 @@
 import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const settingStore = useSettingStore()
+const auth = useAuth()
 
 const scrolled = ref(false)
 
@@ -34,16 +35,12 @@ const navLinks = [
     icon: 'mingcute:time-line',
   },
 ]
-
-function logout() {
-  api({ url: `/auth/logout` }).finally(() => refreshNuxtData())
-}
 </script>
 
 <template>
-  <template v-if="!settingStore.isLogin">
-    <f-dialog v-model="settingStore.loginDialogVisible" closable>
-      <login-form @close="settingStore.loginDialogVisible = false" />
+  <template v-if="!auth.state.value.isLogin">
+    <f-dialog v-model="auth.state.value.loginDialogVisible" closable>
+      <login-form @close="auth.state.value.loginDialogVisible = false" />
     </f-dialog>
   </template>
   <header class="w-full fixed top-0 z-50 py-2">
@@ -134,7 +131,7 @@ function logout() {
             leave-to-class="transform scale-95 opacity-0">
             <menu-items
               class="absolute w-32 right-0 mt-4 p-1 origin-top-right rounded-xl shadow-lg bg-blur focus:outline-none">
-              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
                 <button
                   :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
@@ -143,7 +140,7 @@ function logout() {
                   写新文章
                 </button>
               </menu-item>
-              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
                 <button
                   :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
@@ -152,11 +149,11 @@ function logout() {
                   博客设置
                 </button>
               </menu-item>
-              <menu-item v-if="settingStore.isLogin" v-slot="{ active }">
+              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
                 <button
                   :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="logout">
+                  @click="auth.logout()">
                   <icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
                   退出登录
                 </button>
@@ -165,7 +162,7 @@ function logout() {
                 <button
                   :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="settingStore.loginDialogVisible = true">
+                  @click="auth.state.value.loginDialogVisible = true">
                   <icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
                   管理员登录
                 </button>

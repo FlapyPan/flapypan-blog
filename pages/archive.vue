@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 const route = useRoute()
+const auth = useAuth()
 const settingStore = useSettingStore()
 
 /// region 搜索
@@ -107,7 +108,7 @@ useSeoMeta(meta)
           标签
         </span>
         <client-only>
-          <template v-if="settingStore.isLogin">
+          <template v-if="auth.state.value.isLogin">
             <f-btn class="ml-2" icon="mingcute-add-line" text @click="showTagEditor = true">
               添加
             </f-btn>
