@@ -5,7 +5,7 @@ import z from 'zod'
 
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
-export const AUTH_SECRET = process.env.NUXT_AUTH_SECRET || crypto.randomUUID()
+export const AUTH_SECRET = process.env.AUTH_SECRET || crypto.randomUUID()
 
 const TOKEN_TYPE = 'Bearer'
 

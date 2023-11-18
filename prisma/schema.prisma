@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title     String
+  path      String
+  cover     String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tagIds    String[] @db.ObjectId
+  tags      Tag[]    @relation(fields: [tagIds], references: [id])
+}
+
+model Access {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ip        String?
+  referrer  String?
+  us        String?
+  articleId String   @db.ObjectId
+  createdAt DateTime @default(now())
+}
+
+model Tag {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name       String
+  articleIds String[]  @db.ObjectId
+  articles   Article[] @relation(fields: [articleIds], references: [id])
+}
+
+model Link {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name String @unique
+  url  String
+}
+
+model Setting {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  key   String @unique
+  value Json?
+}
+
+model Picture {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name  String
+  bytes Bytes
+}

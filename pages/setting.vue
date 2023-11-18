@@ -3,7 +3,7 @@ const auth = useAuth()
 const settingStore = useSettingStore()
 
 if (import.meta.browser) {
-  auth.value.loginDialogVisible = !auth.state.value.isLogin
+  auth.state.value.loginDialogVisible = !auth.state.value.isLogin
 }
 
 /// region 博客设置

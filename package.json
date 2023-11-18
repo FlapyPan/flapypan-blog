@@ -17,6 +17,7 @@
     "@antfu/eslint-config": "latest",
     "@headlessui/vue": "^1.7.16",
     "@nuxt/devtools": "latest",
+    "@prisma/client": "^5.6.0",
     "@types/jsonwebtoken": "^9.0.5",
     "eslint": "^8.53.0",
     "jsonwebtoken": "^9.0.2",

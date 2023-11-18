@@ -10,7 +10,7 @@ function onArticleSubmit(path) {
 /// endregion 新文章
 
 if (import.meta.browser) {
-  auth.value.loginDialogVisible = !auth.state.value.isLogin
+  auth.state.value.loginDialogVisible = !auth.state.value.isLogin
 }
 
 const title = `新文章 - ${settingStore.value.settings.siteTitle ?? '博客'}`
