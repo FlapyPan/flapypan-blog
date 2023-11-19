@@ -24,6 +24,7 @@ export default defineNuxtConfig({
   },
   modules: [
     'nuxt-icon',
+    'nuxt-mongoose',
   ],
   build: {
     transpile: ['jsonwebtoken'],

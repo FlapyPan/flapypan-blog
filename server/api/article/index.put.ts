@@ -3,7 +3,7 @@ import { modifyArticle } from '~/server/data/article'
 
 export default eventHandler(async (event) => {
   const result = z.object({
-    id: z.string().min(1),
+    _id: z.string().min(1),
     title: z.string().min(2, '标题长度2-32').max(32, '标题长度2-32'),
     path: z.string()
       .min(2, '路径长度2-32').max(64, '路径长度2-32')

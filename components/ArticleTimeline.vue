@@ -18,7 +18,7 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
 <template>
   <ul class="timeline">
-    <li v-for="{ id, title, createDate, path, tags } in list" :key="id">
+    <li v-for="{ _id, title, createDate, path, tags } in list" :key="_id">
       <span class="mr-2">{{ formatDate(createDate) }}</span>
       <f-btn :to="`/${path}`" text>
         {{ title }}

@@ -241,7 +241,7 @@ useSeoMeta(meta)
         <error-alert :show="fetchArticleError" :text="fetchArticleError" />
         <ul v-if="articleData?.content?.length > 0" class="w-full">
           <li
-            v-for="article in articleData.content" :key="article.id"
+            v-for="article in articleData.content" :key="article._id"
             class="flex items-center my-1 py-1 px-2 cursor-pointer hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg"
             @click="addPath(article)">
             <span class="mr-2">{{ formatDate(article.createDate) }}</span>

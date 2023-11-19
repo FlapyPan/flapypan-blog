@@ -43,7 +43,7 @@ async function updateTag() {
       url: '/tag',
       method: 'PUT',
       payload: {
-        id: data.value.tagData.id,
+        _id: data.value.tagData._id,
         name: editTagName.value.trim(),
       },
     })
@@ -68,10 +68,10 @@ async function deleteTag() {
   deletingTag.value = true
   try {
     await api({
-      url: `/tag/${data.value.tagData.id}`,
+      url: `/tag/${data.value.tagData._id}`,
       method: 'DELETE',
       payload: {
-        id: data.value.tagData.id,
+        _id: data.value.tagData._id,
         name: editTagName.value.trim(),
       },
     })

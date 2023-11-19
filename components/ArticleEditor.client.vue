@@ -7,7 +7,7 @@ const props = defineProps({
   articleData: {
     type: Object,
     default: () => ({
-      id: 0,
+      _id: 0,
       title: '',
       path: '',
       cover: '',
@@ -19,10 +19,10 @@ const props = defineProps({
 const emits = defineEmits(['submit'])
 
 // 判断是否是新文章
-const isNewArticle = !props.articleData?.id
+const isNewArticle = !props.articleData?._id
 
 /// region 文章编辑持久化
-const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData.id}`
+const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData._id}`
 
 // 编辑的草稿存放在 LocalStorage
 function loadDraft() {
@@ -72,8 +72,8 @@ async function onUploadImg(files, cb) {
       const compressFile = await compress(file)
       form.append('file', compressFile, compressFile.name)
       // 上传获取图片id
-      const id = await api({ url: '/picture', method: 'POST', payload: form, jsonPayload: false })
-      res.push(`/api/picture/${id}`)
+      const _id = await api({ url: '/picture', method: 'POST', payload: form, jsonPayload: false })
+      res.push(`/api/picture/${_id}`)
     }
   } catch (e) {
     editorError.value = e.message

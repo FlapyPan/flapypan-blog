@@ -51,7 +51,7 @@ async function deleteArticle() {
   deleting.value = true
   deleteError.value = null
   try {
-    await api({ url: `/article/${articleData.value.id}`, method: 'DELETE' })
+    await api({ url: `/article/${articleData.value._id}`, method: 'DELETE' })
     await navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     deleteError.value = e.message
@@ -119,7 +119,7 @@ useSeoMeta(meta)
     </div>
     <template v-if="!isEdit">
       <error-alert :show="articleDataError" :text="articleDataError" redirect />
-      <template v-if="articleData?.id">
+      <template v-if="articleData?._id">
         <page-head :title="articleData?.title" class="mx-auto text-center">
         </page-head>
         <p class="jump-in-500 flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">

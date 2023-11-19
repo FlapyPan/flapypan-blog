@@ -27,7 +27,7 @@ useSeoMeta(meta)
     <error-alert v-show="reposError" :text="reposError" />
     <div class="jump-in-600 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <a
-        v-for="repo in repos" :key="repo.id" :href="repo.html_url"
+        v-for="repo in repos" :key="repo._id" :href="repo.html_url"
         class="group flex flex-col gap-2 rounded-xl overflow-hidden transition p-4 bg-white dark:bg-zinc-800"
         target="_blank">
         <p class="text-lg group-hover:underline underline-offset-2">{{ repo.full_name }}</p>

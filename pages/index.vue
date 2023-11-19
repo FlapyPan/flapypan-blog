@@ -105,7 +105,7 @@ useSeoMeta(meta)
       </h3>
       <error-alert :show="articleDataError" :text="articleDataError" />
       <div class="columns-1 md:columns-2 gap-6 space-y-6">
-        <article-card v-for="a in articleData?.content ?? []" :key="a.id" :article="a" />
+        <article-card v-for="a in articleData?.content ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="text-center mt-6">
         <f-btn text to="/archive">

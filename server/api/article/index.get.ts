@@ -1,6 +1,5 @@
-import { getArticlePage } from '~/server/data/article'
+import { getArticleList } from '~/server/data/article'
 
-export default eventHandler(async (event) => {
-  const pageable = getPageable(event, { createdAt: 'desc' })
-  return getArticlePage(pageable)
+export default eventHandler(async () => {
+  return getArticleList()
 })
