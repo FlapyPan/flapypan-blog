@@ -49,6 +49,7 @@ export default defineNuxtConfig({
       ],
       script: [
         { type: 'module', src: 'https://unpkg.com/giscus?module', async: true },
+        { src: 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js', async: true },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },

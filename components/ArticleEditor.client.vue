@@ -1,7 +1,6 @@
 <script setup>
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js'
 
 const props = defineProps({
   articleData: {
