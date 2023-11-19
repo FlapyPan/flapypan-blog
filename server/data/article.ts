@@ -2,8 +2,14 @@ import type { Pageable } from '~/server/utils/page'
 import prisma from '~/server/data/prisma'
 
 const pageSelect = {
+  id: true,
+  title: true,
+  path: true,
+  cover: true,
   content: false,
   tags: true,
+  createdAt: true,
+  updatedAt: true,
 }
 
 export function getArticlePage({ cursor, size, orderBy }: Pageable) {
@@ -18,12 +24,8 @@ export function getArticlePage({ cursor, size, orderBy }: Pageable) {
   return prisma.article.findMany({ select: pageSelect, take: size })
 }
 
-const detailSelect = {
-  tags: true,
-}
-
 export function getArticleByPath(path: string) {
-  return prisma.article.findFirst({ select: detailSelect, where: { path } })
+  return prisma.article.findFirst({ where: { path } })
 }
 
 interface ArticleAddRequest {
@@ -31,17 +33,13 @@ interface ArticleAddRequest {
   path: string
   cover?: string | null
   content: string
-  tagNames?: string[] | null
+  tags: string[]
 }
 
 export function addArticle(article: ArticleAddRequest) {
   return prisma.article.create({
-    data: {
-      title: article.title,
-      path: article.path,
-      cover: article.cover,
-      content: article.content,
-    },
+    data: article,
+    select: pageSelect,
   })
 }
 
@@ -51,18 +49,14 @@ interface ArticleModifyRequest {
   path: string
   cover?: string | null
   content: string
-  tagNames?: string[] | null
+  tags: string[]
 }
 
 export function modifyArticle(article: ArticleModifyRequest) {
   return prisma.article.update({
     where: { id: article.id },
-    data: {
-      ...article,
-      tags: {
-        createMany: article.tagNames?.map((name: string) => ({ name })),
-      },
-    },
+    data: article,
+    select: pageSelect,
   })
 }
 

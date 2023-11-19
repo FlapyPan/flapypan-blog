@@ -3,10 +3,10 @@
   "description": "FlapyPan Blog Vue",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "postinstall": "nuxt prepare",
+    "postinstall": "prisma generate && nuxt prepare",
     "dev": "nuxt dev",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

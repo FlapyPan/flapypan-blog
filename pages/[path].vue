@@ -111,14 +111,12 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <client-only>
-      <div v-if="auth.state.value.isLogin && isEdit">
-        <f-btn icon="mingcute:left-line" @click="isEdit = false">
-          取消
-        </f-btn>
-        <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
-      </div>
-    </client-only>
+    <div v-if="auth.state.value.isLogin && isEdit">
+      <f-btn icon="mingcute:left-line" @click="isEdit = false">
+        取消
+      </f-btn>
+      <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
+    </div>
     <template v-if="!isEdit">
       <error-alert :show="articleDataError" :text="articleDataError" redirect />
       <template v-if="articleData?.id">
@@ -135,13 +133,11 @@ useSeoMeta(meta)
             <span class="hidden md:inline-block">修改</span>
             {{ formattedUpdateDate }}
           </span>
-          <client-only>
-            <span class="flex items-center gap-1">
-              <icon name="mingcute:book-6-line" />
-              <span class="hidden md:inline-block">阅读</span>
-              {{ articleData?.accessCount }}
-            </span>
-          </client-only>
+          <span class="flex items-center gap-1">
+            <icon name="mingcute:book-6-line" />
+            <span class="hidden md:inline-block">阅读</span>
+            {{ articleData?.accessCount }}
+          </span>
         </p>
         <p class="jump-in-500 my-4 flex items-center justify-center flex-wrap gap-2">
           <f-btn

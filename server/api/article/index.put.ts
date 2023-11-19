@@ -10,7 +10,7 @@ export default eventHandler(async (event) => {
       .regex(/^[a-z0-9:@._-]+$/, '路径只允许小写字母,数字,冒号,@,英文点,下划线,分隔符'),
     cover: z.string().nullish(),
     content: z.string(),
-    tagNames: z.string().array().nullish(),
+    tags: z.string().array(),
   }).safeParse(await readBody(event))
   if (!result.success) {
     throw createError({ statusCode: 400, message: result.error.errors[0].message })
