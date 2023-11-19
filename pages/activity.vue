@@ -2,11 +2,11 @@
 const settingStore = useSettingStore()
 
 const { data: repos, error: reposError, pending: fetchingRepos } = useAsyncData(
-  `activity:${settingStore.value.settings.name}:repos`,
-  async () => $fetch(`https://api.github.com/users/${settingStore.value.settings.name}/repos`),
+  `activity:${settingStore.value.name}:repos`,
+  async () => $fetch(`https://api.github.com/users/${settingStore.value.name}/repos`),
 )
 
-const title = `活动 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const title = `活动 - ${settingStore.value.siteTitle ?? '博客'}`
 const description = `看看我最近鼓捣了些什么玩意吧`
 const meta = {
   title,

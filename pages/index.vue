@@ -7,7 +7,7 @@ const {
   data: articleData,
   error: articleDataError,
   refresh,
-} = await useAsyncData('article:latest', () => api({ url: '/article?&sort=updateDate,desc&size=12' }))
+} = await useAsyncData('article:latest', () => api({ url: '/article/recent' }))
 /// endregion 文章数据
 
 /// region 阅读量和其他数据
@@ -43,11 +43,11 @@ async function fetchHitokoto(enable) {
   }
 }
 
-watch(() => settingStore.value.settings.hitoko, fetchHitokoto, { immediate: true })
+watch(() => settingStore.value.hitoko, fetchHitokoto, { immediate: true })
 /// endregion 随机一言
 
-const title = `${settingStore.value.settings.name} - ${settingStore.value.settings.siteTitle ?? '博客'}`
-const description = settingStore.value.settings.info ?? ''
+const title = `${settingStore.value.name} - ${settingStore.value.siteTitle ?? '博客'}`
+const description = settingStore.value.info ?? ''
 const meta = {
   title,
   description,
@@ -65,13 +65,13 @@ useSeoMeta(meta)
       <div>
         <h1
           class="jump-in-400 font-serif tracking-wide text-3xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
-          {{ settingStore.settings.siteTitle }}
+          {{ settingStore.siteTitle }}
         </h1>
         <div class="jump-in-500 text-zinc-600 dark:text-zinc-400">
           <p
             class="text-2xl flex items-center justify-center md:justify-start gap-4 md:gap-2 mt-8">
             <a
-              :href="`mailto:${settingStore.settings?.email}`" class="flex items-center"
+              :href="`mailto:${settingStore.email}`" class="flex items-center"
               title="邮箱联系我">
               <icon name="mingcute:at-line" />
             </a>
@@ -80,11 +80,11 @@ useSeoMeta(meta)
             </a>
           </p>
           <client-only>
-            <p v-if="settingStore.settings.hitoko" class="mt-4 text-sm text-center md:text-left">
+            <p v-if="settingStore.hitoko" class="mt-4 text-sm text-center md:text-left">
               一言：{{ hitoko }}
             </p>
             <p v-else class="mt-4 text-sm text-center md:text-left">
-              {{ settingStore.settings.info }}
+              {{ settingStore.info }}
               <span class="animate-ping">_</span>
             </p>
             <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
@@ -95,7 +95,7 @@ useSeoMeta(meta)
         </div>
       </div>
       <img
-        :src="settingStore.settings?.avatar" alt=""
+        :src="settingStore.avatar" alt=""
         class="jump-in-400 w-32 h-32 rounded-full md:w-40 md:h-40 lg:w-52 lg:h-52">
     </section>
     <section class="jump-in-600 max-w-5xl mx-auto mt-24">
@@ -105,7 +105,7 @@ useSeoMeta(meta)
       </h3>
       <error-alert :show="articleDataError" :text="articleDataError" />
       <div class="columns-1 md:columns-2 gap-6 space-y-6">
-        <article-card v-for="a in articleData?.content ?? []" :key="a._id" :article="a" />
+        <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="text-center mt-6">
         <f-btn text to="/archive">

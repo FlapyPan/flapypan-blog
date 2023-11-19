@@ -13,7 +13,7 @@ if (import.meta.browser) {
   auth.state.value.loginDialogVisible = !auth.state.value.isLogin
 }
 
-const title = `新文章 - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const title = `新文章 - ${settingStore.value.siteTitle ?? '博客'}`
 const description = `写新文章`
 const meta = {
   title,

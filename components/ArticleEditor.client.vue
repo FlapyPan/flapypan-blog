@@ -39,6 +39,10 @@ const draftPersistInterval = setInterval(() => {
   localStorage.setItem(storageKey, JSON.stringify(draft.value))
 }, 1000)
 onBeforeUnmount(() => clearInterval(draftPersistInterval))
+const editTags = computed({
+  get: () => draft.value?.tags?.join(' '),
+  set: (val) => draft.value.tags = [...new Set(val.split(' '))],
+})
 /// endregion 文章编辑持久化
 
 // 编辑器相关错误信息
@@ -112,28 +116,28 @@ const { isDark } = useDark()
 <template>
   <form class="flex flex-col items-center gap-6" @submit.prevent.stop>
     <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-      <label class="flex flex-wrap items-center gap-4">
+      <label class="text-sm flex flex-wrap items-center gap-4">
         <span>文章标题</span>
         <input
           v-model="draft.title" :disabled="saving" class="flex-1" name="title" placeholder="文章标题" required
           type="text">
       </label>
-      <label class="flex flex-wrap items-center gap-4">
+      <label class="text-sm flex flex-wrap items-center gap-4">
         <span>访问路径</span>
         <input
           v-model="draft.path" :disabled="saving" class="flex-1" name="path" placeholder="访问路径" required
           type="text">
       </label>
-      <label class="flex flex-wrap items-center gap-4">
+      <label class="text-sm flex flex-wrap items-center gap-4">
         <span>封面链接</span>
         <input
           v-model="draft.cover" :disabled="saving" class="flex-1" name="cover" placeholder="封面链接" required
           type="text">
       </label>
-      <label class="flex flex-wrap items-center gap-4">
+      <label class="text-sm flex flex-wrap items-center gap-4">
         <span>标签(空格分隔)</span>
         <input
-          v-model="draft.tags" :disabled="saving" class="flex-1" name="tags" placeholder="标签(空格分隔)" required
+          v-model="editTags" :disabled="saving" class="flex-1" name="tags" placeholder="标签(空格分隔)" required
           type="text">
       </label>
     </div>

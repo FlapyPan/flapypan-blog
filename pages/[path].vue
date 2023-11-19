@@ -3,7 +3,7 @@ import { MdCatalog, MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
 
 // 异步的编辑器组件
-const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.vue'))
+const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.client.vue'))
 
 const route = useRoute()
 const auth = useAuth()
@@ -24,7 +24,7 @@ const {
   `article:${path.value}`,
   () => api({ url: `/article/${path.value}` }),
 )
-const coverSrc = ref(articleData.value?.cover || settingStore.value.settings.banner)
+const coverSrc = ref(articleData.value?.article?.cover || settingStore.value.banner)
 /// endregion 文章数据
 
 /// 格式化时间
@@ -39,8 +39,8 @@ const formatter = new Intl.DateTimeFormat(
     timeZone: 'Asia/ShangHai',
   },
 )
-const formattedCreateDate = computed(() => formatter.format(new Date(articleData.value?.createDate ?? Date.now())))
-const formattedUpdateDate = computed(() => formatter.format(new Date(articleData.value?.updateDate ?? Date.now())))
+const formattedcreatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.createdAt ?? Date.now())))
+const formattedupdatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.updatedAt ?? Date.now())))
 
 /// region 文章删除
 const deleteDialog = ref(false)
@@ -51,7 +51,7 @@ async function deleteArticle() {
   deleting.value = true
   deleteError.value = null
   try {
-    await api({ url: `/article/${articleData.value._id}`, method: 'DELETE' })
+    await api({ url: `/article/${articleData.value.article._id}`, method: 'DELETE' })
     await navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     deleteError.value = e.message
@@ -67,8 +67,7 @@ const editData = ref({})
 const isEdit = ref(false)
 
 function openEdit() {
-  // 打开编辑器前处理标签
-  editData.value = { ...articleData.value, tagNames: articleData.value.tags?.map((tag) => tag.name) ?? [] }
+  editData.value = { ...articleData.value.article }
   isEdit.value = true
 }
 
@@ -90,20 +89,27 @@ function onSaveArticle(newPath) {
   return navigateTo({ path: `/${newPath}`, replace: true })
 }
 
+async function changePin(pinned) {
+  const data = await api({ url: `/article/pinned`, method: 'PUT', payload: { _id: articleData.value?.article?._id, pinned } })
+  await refreshNuxtData('pinnedLinks')
+  if (linkData) settingStore.value.links = linkData
+  articleData.value.article.pinned = data.pinned
+}
+
 /// endregion 文章编辑
 
 const { isDark } = useDark()
 
 /// 处理网页标题
-const title = `${articleData.value?.title ?? '文章'} - ${settingStore.value.settings.siteTitle ?? '博客'}`
+const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
 const meta = {
   title,
   description: title,
   ogTitle: title,
   ogDescription: title,
   ogImage: coverSrc,
-  articlePublishedTime: formattedCreateDate,
-  articleModifiedTime: formattedUpdateDate,
+  articlePublishedTime: formattedcreatedAt,
+  articleModifiedTime: formattedupdatedAt,
 }
 useServerSeoMeta(meta)
 useSeoMeta(meta)
@@ -119,19 +125,19 @@ useSeoMeta(meta)
     </div>
     <template v-if="!isEdit">
       <error-alert :show="articleDataError" :text="articleDataError" redirect />
-      <template v-if="articleData?._id">
-        <page-head :title="articleData?.title" class="mx-auto text-center">
+      <template v-if="articleData?.article?._id">
+        <page-head :title="articleData?.article?.title" class="mx-auto text-center">
         </page-head>
         <p class="jump-in-500 flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
           <span class="flex items-center gap-1">
             <icon name="mingcute:document-line" />
             <span class="hidden md:inline-block">创建</span>
-            {{ formattedCreateDate }}
+            {{ formattedcreatedAt }}
           </span>
           <span class="flex items-center gap-1">
             <icon name="mingcute:edit-line" />
             <span class="hidden md:inline-block">修改</span>
-            {{ formattedUpdateDate }}
+            {{ formattedupdatedAt }}
           </span>
           <span class="flex items-center gap-1">
             <icon name="mingcute:book-6-line" />
@@ -141,7 +147,7 @@ useSeoMeta(meta)
         </p>
         <p class="jump-in-500 my-4 flex items-center justify-center flex-wrap gap-2">
           <f-btn
-            v-for="({ name }) in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
+            v-for="name in (articleData?.article?.tags || [])" :key="name" :to="`/tag/${name}`"
             icon="mingcute:tag-line" text>
             {{ name }}
           </f-btn>
@@ -150,15 +156,21 @@ useSeoMeta(meta)
         <client-only>
           <div class="flex flex-wrap items-center gap-4 justify-center">
             <template v-if="auth.state.value.isLogin">
-              <f-btn icon="mingcute-edit-line" text @click="openEdit">
+              <f-btn v-if="articleData?.article?.pinned" icon="mingcute:pin-fill" text @click="changePin(false)">
+                取消固定
+              </f-btn>
+              <f-btn v-else icon="mingcute:pin-line" text @click="changePin(true)">
+                固定
+              </f-btn>
+              <f-btn icon="mingcute:edit-line" text @click="openEdit">
                 编辑
               </f-btn>
-              <f-btn icon="mingcute-delete-2-line" text @click="deleteDialog = true">
+              <f-btn icon="mingcute:delete-2-line" text @click="deleteDialog = true">
                 删除
               </f-btn>
               <f-dialog v-model="deleteDialog" closable>
                 <p class="mb-4">
-                  确认删除此文章 "{{ articleData.title }}" ?
+                  确认删除此文章 "{{ articleData?.article?.title }}" ?
                 </p>
                 <div class="text-right">
                   <f-btn class="mr-4" text @click="deleteArticle">
@@ -176,7 +188,7 @@ useSeoMeta(meta)
         </client-only>
         <div class="flex gap-4">
           <md-preview
-            v-if="articleData?.content" :model-value="articleData?.content"
+            v-if="articleData?.article?.content" :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
             :theme="isDark ? 'dark' : 'light'" code-theme="gradient" editor-id="read" preview-theme="default" />
           <div class="side hidden lg:block sticky w-64 px-4 top-14 overflow-y-auto mt-16">

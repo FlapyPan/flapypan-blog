@@ -1,3 +1,5 @@
+import type { ObjectId } from 'bson'
+
 interface AccessAddRequest {
   ip?: string | null
   referrer?: string | null
@@ -9,7 +11,7 @@ export function addAccess(access: AccessAddRequest) {
   new AccessSchema(access).save()
 }
 
-export function getArticleAccessCount(articleId: string): Promise<number> {
+export function getArticleAccessCount(articleId: string | ObjectId): Promise<number> {
   return AccessSchema.count({ articleId })
 }
 
@@ -20,6 +22,6 @@ export function getTodayAccessCount(): Promise<number> {
   return AccessSchema.count({ createdAt: { $gte: begin, $lte: end } })
 }
 
-export function getTotalAccessCount(): Promise<number> {
+export function getAllAccessCount(): Promise<number> {
   return AccessSchema.count()
 }

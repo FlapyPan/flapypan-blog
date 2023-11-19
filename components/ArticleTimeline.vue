@@ -18,14 +18,14 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
 
 <template>
   <ul class="timeline">
-    <li v-for="{ _id, title, createDate, path, tags } in list" :key="_id">
-      <span class="mr-2">{{ formatDate(createDate) }}</span>
+    <li v-for="{ _id, title, createdAt, path, tags } in list" :key="_id">
+      <span class="mr-2">{{ formatDate(createdAt) }}</span>
       <f-btn :to="`/${path}`" text>
         {{ title }}
       </f-btn>
       <div class="flex-1"></div>
       <div class="hidden sm:flex items-center gap-2">
-        <template v-for="({ name }) in tags" :key="name">
+        <template v-for="name in tags" :key="name">
           <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
             {{ name }}
           </f-btn>

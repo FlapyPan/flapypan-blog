@@ -6,14 +6,14 @@ defineProps({
 const settingStore = useSettingStore()
 
 useServerSeoMeta({
-  author: settingStore.value.settings?.name,
-  ogImage: settingStore.value.settings?.banner ?? '/banner.webp',
+  author: settingStore.value.name,
+  ogImage: settingStore.value.banner ?? '/banner.webp',
 })
 </script>
 
 <template>
   <Head>
-    <Link :href="settingStore.settings.favicon" rel="icon" />
+    <Link :href="settingStore.favicon" rel="icon" />
   </Head>
   <div class="page flex flex-col justify-center items-center gap-6 p-6">
     <h2 class="text-xl">

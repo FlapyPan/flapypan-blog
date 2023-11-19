@@ -5,10 +5,10 @@ defineProps({
 const settingStore = useSettingStore()
 
 useAsyncData('init', async () => {
-  const settingData = await api({ url: '/setting' })
+  const settingData = await api({ url: '/attribute/settings' })
   if (settingData) {
-    settingStore.value.settings = {
-      ...settingStore.value.settings,
+    settingStore.value = {
+      ...settingStore.value,
       ...settingData,
     }
   }
@@ -16,41 +16,38 @@ useAsyncData('init', async () => {
 }, { server: true, deep: false })
 
 if (import.meta.browser) {
-  api({ url: '/link' }).then((linkData) => {
-    if (linkData) settingStore.value.links = linkData
-  })
   useAuth().check()
 }
 
 useServerSeoMeta({
-  author: settingStore.value.settings?.name,
-  ogImage: settingStore.value.settings?.banner ?? '/banner.webp',
+  author: settingStore.value.name,
+  ogImage: settingStore.value.banner ?? '/banner.webp',
 })
 </script>
 
 <template>
   <Head>
-    <Link :href="settingStore.settings.favicon" rel="icon" />
+    <Link :href="settingStore.favicon" rel="icon" />
   </Head>
   <NuxtLayout>
     <app-bar />
     <main class="px-3 sm:px-6 mx-auto">
       <NuxtPage />
       <footer class="jump-in-700 mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
-        <f-btn v-if="settingStore.settings.footer" icon="mingcute:information-line" text>
-          {{ settingStore.settings.footer }}
+        <f-btn v-if="settingStore.footer" icon="mingcute:information-line" text>
+          {{ settingStore.footer }}
         </f-btn>
         <f-btn
-          v-if="settingStore.settings.ICP"
+          v-if="settingStore.ICP"
           href="https://beian.miit.gov.cn" icon="mingcute:shield-shape-line"
           target="https://beian.miit.gov.cn" text>
-          {{ settingStore.settings.ICP }}
+          {{ settingStore.ICP }}
         </f-btn>
         <f-btn
-          v-if="settingStore.settings.moeICP"
-          :href="`https://icp.gov.moe/?keyword=${settingStore.settings.moeICP}`" icon="mingcute:cat-line"
+          v-if="settingStore.moeICP"
+          :href="`https://icp.gov.moe/?keyword=${settingStore.moeICP}`" icon="mingcute:cat-line"
           target="https://beian.miit.gov.cn" text>
-          萌ICP备{{ settingStore.settings.moeICP }}号
+          萌ICP备{{ settingStore.moeICP }}号
         </f-btn>
       </footer>
     </main>

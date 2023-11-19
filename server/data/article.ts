@@ -1,3 +1,5 @@
+import type { ObjectId } from 'bson'
+
 const listSelect = {
   content: 0,
 }
@@ -35,6 +37,24 @@ export function getArticleByPath(path: string) {
   return ArticleSchema.findOne({ path })
 }
 
+export function getArticleListByTag(tag: string) {
+  return ArticleSchema.find({ tags: tag }).sort({ createdAt: -1 })
+}
+
+export function getPinnedArticleList() {
+  return ArticleSchema.find({ pinned: true }).sort({ updatedAt: 1 }).select({ _id: 1, title: 1, path: 1 })
+}
+
+export async function getPreArticlePath(_id: string | ObjectId) {
+  const article = await ArticleSchema.findOne({ _id: { $lt: _id } }).sort({ _id: -1 })
+  return article?.path
+}
+
+export async function getNextArticlePath(_id: string | ObjectId) {
+  const article = await ArticleSchema.findOne({ _id: { $gt: _id } }).sort({ _id: 1 })
+  return article?.path
+}
+
 interface ArticleAddRequest {
   title: string
   path: string
@@ -44,12 +64,12 @@ interface ArticleAddRequest {
 }
 
 export async function addArticle(article: ArticleAddRequest) {
-  const saved = await new ArticleSchema(article).save()
+  const saved = await new ArticleSchema({ ...article, updatedAt: new Date() }).save()
   return { path: saved.path }
 }
 
 interface ArticleModifyRequest {
-  _id: string
+  _id: string | ObjectId
   title: string
   path: string
   cover?: string | null
@@ -58,10 +78,15 @@ interface ArticleModifyRequest {
 }
 
 export async function modifyArticle(article: ArticleModifyRequest) {
-  const saved = await ArticleSchema.findByIdAndUpdate(article._id, article)
+  const saved = await ArticleSchema.findByIdAndUpdate(article._id, { ...article, updatedAt: new Date() })
   return { path: saved?.path }
 }
 
-export function deleteArticle(id: string) {
+export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolean) {
+  await ArticleSchema.updateOne({ _id }, { $set: { pinned, updatedAt: new Date() } })
+  return { pinned }
+}
+
+export function deleteArticle(id: string | ObjectId) {
   return ArticleSchema.deleteOne({ id })
 }

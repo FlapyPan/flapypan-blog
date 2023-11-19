@@ -6,7 +6,7 @@ const emits = defineEmits(['onRoute'])
 
 const settingStore = useSettingStore()
 
-const coverSrc = ref(props.article.cover || settingStore.value.settings.banner)
+const coverSrc = ref(props.article.cover || settingStore.value.banner)
 
 const formatter = new Intl.DateTimeFormat(
   'zh-CN',
@@ -17,7 +17,7 @@ const formatter = new Intl.DateTimeFormat(
     timeZone: 'Asia/ShangHai',
   },
 )
-const formattedDate = computed(() => formatter.format(Date.parse(props.article.updateDate) ?? Date.now()))
+const formattedDate = computed(() => formatter.format(Date.parse(props.article.updatedAt) ?? Date.now()))
 </script>
 
 <template>

@@ -1,5 +1,3 @@
 import { getAllTags } from '~/server/data/article'
 
-export default eventHandler(async () => {
-  return getAllTags()
-})
+export default eventHandler(async () => getAllTags())

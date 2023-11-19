@@ -2,10 +2,10 @@
 const settingStore = useSettingStore()
 // 所有设置，缺一不可
 const valid = computed(() => !!(
-  settingStore.value.settings.giscusRepo?.trim() !== ''
-  && settingStore.value.settings.giscusRepoId?.trim() !== ''
-  && settingStore.value.settings.giscusCategory?.trim() !== ''
-  && settingStore.value.settings.giscusCategoryId?.trim() !== ''
+  settingStore.value.giscusRepo?.trim() !== ''
+  && settingStore.value.giscusRepoId?.trim() !== ''
+  && settingStore.value.giscusCategory?.trim() !== ''
+  && settingStore.value.giscusCategoryId?.trim() !== ''
 ))
 
 // 主题切换
@@ -18,10 +18,10 @@ const theme = computed(() => isDark.value ? 'noborder_dark' : 'noborder_light')
     <slot />
     <giscus-widget
       id="comments"
-      :category="settingStore.settings.giscusCategory"
-      :categoryid="settingStore.settings.giscusCategoryId"
-      :repo="settingStore.settings.giscusRepo"
-      :repoid="settingStore.settings.giscusRepoId"
+      :category="settingStore.giscusCategory"
+      :categoryid="settingStore.giscusCategoryId"
+      :repo="settingStore.giscusRepo"
+      :repoid="settingStore.giscusRepoId"
       :theme="theme"
       emitmetadata="0"
       inputposition="top"

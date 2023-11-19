@@ -10,6 +10,7 @@ export const PictureSchema = defineMongooseModel('Picture', {
     type: Schema.Types.Buffer,
     required: true,
   },
+  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),

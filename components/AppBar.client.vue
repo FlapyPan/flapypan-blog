@@ -4,6 +4,8 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 const settingStore = useSettingStore()
 const auth = useAuth()
 
+const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), { server: false, deep: false })
+
 const scrolled = ref(false)
 
 if (import.meta.browser) {
@@ -100,13 +102,13 @@ const navLinks = [
           {{ l.title }}
         </nuxt-link>
         <nuxt-link
-          v-for="{ name, url } in settingStore.links" :key="url"
-          :class="{ 'text-secondary-500': $route.path === `/${url}` }"
-          :title="name"
-          :to="`/${url}`"
+          v-for="{ _id, title, path } in links" :key="_id"
+          :class="{ 'text-secondary-500': $route.path === `/${path}` }"
+          :title="title"
+          :to="`/${path}`"
           class="flex items-center sm:hover:text-secondary-500">
-          <icon v-if="$route.path === `/${url}`" class="mr-1" name="mingcute:document-line" />
-          {{ name }}
+          <icon v-if="$route.path === `/${path}`" class="mr-1" name="mingcute:document-line" />
+          {{ title }}
         </nuxt-link>
       </nav>
 
@@ -118,8 +120,8 @@ const navLinks = [
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
             as="div"
             class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
-            <img :src="settingStore.settings?.avatar" alt="头像" class="w-5 h-5 rounded-full">
-            <span class="ml-2">{{ settingStore.settings?.name }}</span>
+            <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
+            <span class="ml-2">{{ settingStore.name }}</span>
           </menu-button>
 
           <transition

@@ -1,31 +1,15 @@
-# FlapyPan Blog Vue
+# FlapyPan Blog
 
-基于 Vue 3 开发的一款简单高效的博客系统(前端页面)
+基于 Vue 3 开发的一款简单高效的博客系统
 
-**本仓库为前端项目，要配合后端项目使用。请对应版本号，例：前端版本`v1.5.x`则后端也使用`v1.5.x`**
-
-后端项目：[flapypan-blog-spring](https://github.com/FlapyPan/flapypan-blog-spring)
-
-后端部署方法请参考对应仓库的说明
-
-## 功能列表
-
-- 单用户登录
-- 文章的在线查看、新建、编辑、删除
-- Giscus 评论系统
-- 文章搜索
-- 标签管理
-- 使用 Markdown 渲染，支持 mermaid 流程图和 latex 语法
-- 图片快速上传
-- 亮色、暗色模式切换
-- 文章编辑本地及时保存
-- 其他自定义设置功能
+**自 `2.x` 版本起，不再依赖额外后端，注意：`2.x` 与 `1.x` 的数据并不兼容**
 
 ## 技术栈
 
 - Vue 3.x
 - Nuxt.js 3
 - TailwindCSS
+- MongoDB
 - md-editor-v3
 
 ## 启动方法
@@ -41,14 +25,17 @@
 
 ```shell
 git clone <仓库地址> # 替换成对应的仓库地址
-cd flapypan-blog-vue # 进入对应目录
+cd flapypan-blog # 进入对应目录
 pnpm i # 安装依赖
 ```
+
+### 环境配置
+
+查看 `.env.example` 示例
 
 ### 开发模式启动
 
 ```shell
-export BACKEND_API='http://localhost:8080' # 设置变量指定后端地址
 pnpm dev # 运行开发服务器
 ```
 
@@ -58,10 +45,6 @@ pnpm dev # 运行开发服务器
 
 ```shell
 pnpm build # 编译
-
-export BACKEND_API='http://localhost:8080' # 设置后端地址
-export PORT=3000 # 设置前端服务端口号
-
 # 运行
 pnpm run start
 # 或

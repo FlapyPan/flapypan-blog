@@ -5,7 +5,6 @@ export const ArticleSchema = defineMongooseModel('Article', {
   title: {
     type: Schema.Types.String,
     required: true,
-    unique: true,
   },
   path: {
     type: Schema.Types.String,
@@ -19,13 +18,18 @@ export const ArticleSchema = defineMongooseModel('Article', {
     type: Schema.Types.String,
     required: true,
   },
-  tags: {
-    type: [[Schema.Types.String]],
+  pinned: {
+    type: Schema.Types.Boolean,
   },
+  tags: {
+    type: [Schema.Types.String],
+  },
+  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),
   },
+  // @ts-expect-error 莫名其妙的错误
   updatedAt: {
     type: Schema.Types.Date,
     default: () => new Date(),

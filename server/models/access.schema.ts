@@ -15,6 +15,7 @@ export const AccessSchema = defineMongooseModel('Access', {
     type: Schema.Types.ObjectId,
     required: true,
   },
+  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),
