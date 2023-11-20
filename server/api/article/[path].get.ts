@@ -1,5 +1,5 @@
 import { getArticleByPath, getNextArticlePath, getPreArticlePath } from '~/server/data/article'
-import { getArticleAccessCount } from '~/server/data/access'
+import { addAccess, getArticleAccessCount } from '~/server/data/access'
 
 export default eventHandler(async (event) => {
   const path = event.context.params?.path
@@ -10,6 +10,12 @@ export default eventHandler(async (event) => {
   if (!article) {
     throw createError({ statusCode: 404, message: '不存在的文章' })
   }
+  addAccess({
+    ip: getRequestIP(event),
+    referrer: getHeader(event, 'Referer'),
+    ua: getHeader(event, 'User-Agent'),
+    articleId: article._id,
+  })
   const [accessCount, pre, next] = await Promise.all([
     getArticleAccessCount(article._id),
     getPreArticlePath(article._id),

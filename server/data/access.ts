@@ -4,7 +4,7 @@ interface AccessAddRequest {
   ip?: string | null
   referrer?: string | null
   ua?: string | null
-  articleId: string
+  articleId: string | ObjectId
 }
 
 export function addAccess(access: AccessAddRequest) {
