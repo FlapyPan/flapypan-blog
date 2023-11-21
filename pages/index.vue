@@ -18,13 +18,6 @@ const {
   () => api({ url: `/access` }),
   { server: false, deep: false },
 )
-const {
-  data: clientInfo,
-} = await useLazyAsyncData(
-  `client:info`,
-  () => api({ url: `/client` }),
-  { server: false, deep: false },
-)
 /// endregion 阅读量和其他数据
 
 /// region 随机一言
@@ -114,14 +107,6 @@ useSeoMeta(meta)
       </div>
       <GiscusCard />
     </section>
-    <client-only>
-      <section class="text-xs text-zinc-500 mt-12 flex items-center justify-center flex-wrap gap-3">
-        <span v-if="clientInfo?.clientHost">IP：{{ clientInfo.clientHost }}</span>
-        <span v-if="clientInfo?.httpProto">协议：{{ clientInfo.httpProto }}</span>
-        <span v-if="clientInfo?.tlsVersion">TLS版本：{{ clientInfo.tlsVersion }}</span>
-        <span v-if="clientInfo?.tlsCipherSuite">TLS套件：{{ clientInfo.tlsCipherSuite }}</span>
-      </section>
-    </client-only>
   </div>
 </template>
 

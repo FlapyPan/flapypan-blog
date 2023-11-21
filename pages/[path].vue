@@ -92,7 +92,7 @@ function onSaveArticle(newPath) {
 async function changePin(pinned) {
   const data = await api({ url: `/article/pinned`, method: 'PUT', payload: { _id: articleData.value?.article?._id, pinned } })
   await refreshNuxtData('pinnedLinks')
-  if (linkData) settingStore.value.links = linkData
+  if (data) settingStore.value.links = data
   articleData.value.article.pinned = data.pinned
 }
 

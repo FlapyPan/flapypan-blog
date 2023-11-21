@@ -78,8 +78,8 @@ interface ArticleModifyRequest {
 }
 
 export async function modifyArticle(article: ArticleModifyRequest) {
-  const saved = await ArticleSchema.findByIdAndUpdate(article._id, { ...article, updatedAt: new Date() })
-  return { path: saved?.path }
+  await ArticleSchema.findByIdAndUpdate(article._id, { ...article, updatedAt: new Date() })
+  return { path: article.path }
 }
 
 export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolean) {
@@ -87,6 +87,6 @@ export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolea
   return { pinned }
 }
 
-export function deleteArticle(id: string | ObjectId) {
-  return ArticleSchema.deleteOne({ id })
+export async function deleteArticle(id: string | ObjectId) {
+  await ArticleSchema.deleteOne({ id })
 }

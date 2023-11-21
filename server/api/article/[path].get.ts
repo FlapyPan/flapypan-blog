@@ -11,7 +11,7 @@ export default eventHandler(async (event) => {
     throw createError({ statusCode: 404, message: '不存在的文章' })
   }
   addAccess({
-    ip: getRequestIP(event),
+    ip: getRealIP(event),
     referrer: getHeader(event, 'Referer'),
     ua: getHeader(event, 'User-Agent'),
     articleId: article._id,
