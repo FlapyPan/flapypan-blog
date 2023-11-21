@@ -4,16 +4,13 @@ defineProps({
 })
 const settingStore = useSettingStore()
 
-useAsyncData('init', async () => {
-  const settingData = await api({ url: '/attribute/settings' })
-  if (settingData) {
-    settingStore.value = {
-      ...settingStore.value,
-      ...settingData,
-    }
+const settingData = await api({ url: '/attribute/settings' })
+if (settingData) {
+  settingStore.value = {
+    ...settingStore.value,
+    ...settingData,
   }
-  return 'ok'
-}, { server: true, deep: false })
+}
 
 if (import.meta.browser) {
   useAuth().check()
@@ -33,7 +30,7 @@ useServerSeoMeta({
     <app-bar />
     <main class="px-3 sm:px-6 mx-auto">
       <NuxtPage />
-      <footer class="jump-in-700 mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
+      <footer class="mt-16 mb-12 text-sm flex flex-wrap items-center gap-3 justify-center">
         <f-btn v-if="settingStore.footer" icon="mingcute:information-line" text>
           {{ settingStore.footer }}
         </f-btn>

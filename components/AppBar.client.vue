@@ -4,10 +4,7 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 const settingStore = useSettingStore()
 const auth = useAuth()
 
-const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), {
-  server: false,
-  deep: false,
-})
+const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), { server: false })
 
 const scrolled = ref(false)
 

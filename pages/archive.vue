@@ -34,11 +34,11 @@ useSeoMeta(meta)
     <page-head
       sub-title="看看我都水了什么文章"
       title="文章归档" />
-    <h3 class="jump-in-600 text-2xl my-3 flex items-center">
+    <h3 class="text-2xl my-3 flex items-center">
       标签
     </h3>
     <error-alert :show="tagListError" :text="tagListError" />
-    <div class="jump-in-600 flex items-center gap-4 flex-wrap my-6">
+    <div class="flex items-center gap-4 flex-wrap my-6">
       <template v-for="name in tagList" :key="name">
         <f-btn :to="`/tag/${name}`" icon="mingcute:tag-line" text>
           {{ name }}
@@ -46,7 +46,7 @@ useSeoMeta(meta)
       </template>
     </div>
     <error-alert :show="articleDataError" :text="articleDataError" />
-    <div class="jump-in-700 my-12">
+    <div class="my-12">
       <template v-for="{ year, list } in (articleData ?? [])" :key="year">
         <h3 class="my-3 text-2xl">
           {{ year }}

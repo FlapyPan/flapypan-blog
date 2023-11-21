@@ -1,4 +1,6 @@
 <script setup>
+import 'giscus'
+
 const settingStore = useSettingStore()
 // 所有设置，缺一不可
 const valid = computed(() => !!(

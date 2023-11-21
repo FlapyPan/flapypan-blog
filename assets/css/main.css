@@ -37,11 +37,11 @@ input {
 }
 
 .md-editor {
-  --md-bk-color: none !important;
+  --md-bk-color: rgb(250, 250, 250) !important;
   @apply rounded-xl;
 
   &.md-editor-dark {
-    --md-bk-color: none !important;
+    --md-bk-color: rgb(24, 24, 27) !important;
   }
 
   .md-editor-preview-wrapper {
@@ -105,28 +105,6 @@ input {
   to { transform: rotate(360deg); }
 }
 
-.jump-in-400 {
-  animation: jump-in 0.4s;
-}
-
-.jump-in-500 {
-  animation: jump-in 0.5s;
-}
-
-.jump-in-600 {
-  animation: jump-in 0.6s;
-}
-
-.jump-in-700 {
-  animation: jump-in 0.7s;
-}
-
-@keyframes jump-in {
-  from {
-    @apply transform-gpu translate-y-28 opacity-10;
-  }
-}
-
 .page-enter-active {
   transition: all 0.3s;
 }
@@ -137,5 +115,5 @@ input {
 
 .page-enter-from,
 .page-leave-to {
-  @apply transform-gpu translate-y-28 opacity-10;
+  @apply transform-gpu translate-y-12 opacity-10;
 }

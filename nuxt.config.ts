@@ -47,10 +47,6 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
-      script: [
-        { type: 'module', src: 'https://unpkg.com/giscus?module', async: true },
-        { src: 'https://cdn.staticfile.org/compressorjs/1.2.1/compressor.min.js', async: true },
-      ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },

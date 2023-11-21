@@ -21,11 +21,11 @@ useSeoMeta(meta)
 <template v-once>
   <div class="page">
     <page-head v-once :sub-title="description" title="最近活动" />
-    <h3 class="jump-in-600 text-xl mb-6 ml-2">
+    <h3 class="text-xl mb-6 ml-2">
       Github 仓库
     </h3>
     <error-alert v-show="reposError" :text="reposError" />
-    <div class="jump-in-600 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <a
         v-for="repo in repos" :key="repo._id" :href="repo.html_url"
         class="group flex flex-col gap-2 rounded-xl overflow-hidden transition p-4 bg-white dark:bg-zinc-800"

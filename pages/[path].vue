@@ -128,7 +128,7 @@ useSeoMeta(meta)
       <template v-if="articleData?.article?._id">
         <page-head :title="articleData?.article?.title" class="mx-auto text-center">
         </page-head>
-        <p class="jump-in-500 flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
+        <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
           <span class="flex items-center gap-1">
             <icon name="mingcute:document-line" />
             <span class="hidden md:inline-block">创建</span>
@@ -145,14 +145,14 @@ useSeoMeta(meta)
             {{ articleData?.accessCount }}
           </span>
         </p>
-        <p class="jump-in-500 my-4 flex items-center justify-center flex-wrap gap-2">
+        <p class="my-4 flex items-center justify-center flex-wrap gap-2">
           <f-btn
             v-for="name in (articleData?.article?.tags || [])" :key="name" :to="`/tag/${name}`"
             icon="mingcute:tag-line" text>
             {{ name }}
           </f-btn>
         </p>
-        <img :src="coverSrc" alt="" class="jump-in-600 w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
+        <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
         <client-only>
           <div class="flex flex-wrap items-center gap-4 justify-center">
             <template v-if="auth.state.value.isLogin">
