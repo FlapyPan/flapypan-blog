@@ -14,6 +14,8 @@ export function getArticleList() {
 
 export function getArticleYearly() {
   return ArticleSchema.aggregate([
+    // 按照创建时间倒叙
+    { $sort: { createdAt: -1 } },
     // 按照年份分组
     { $group: { _id: { $year: '$createdAt' }, list: { $push: '$$ROOT' } } },
     // 根据年份从大到小排列
