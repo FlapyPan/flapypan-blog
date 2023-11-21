@@ -4,7 +4,10 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 const settingStore = useSettingStore()
 const auth = useAuth()
 
-const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), { server: false, deep: false })
+const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), {
+  server: false,
+  deep: false,
+})
 
 const scrolled = ref(false)
 
@@ -76,13 +79,13 @@ const navLinks = [
               </button>
             </menu-item>
             <menu-item
-              v-for="{ name, url } in settingStore.links" :key="url" v-slot="{ active }">
+              v-for="{ _id, title, path } in links" :key="_id" v-slot="{ active }">
               <button
-                :class="[$route.path === `/${url}` || active ? 'bg-secondary-500 bg-opacity-10' : '']" :title="name"
+                :class="[$route.path === `/${path}` || active ? 'bg-secondary-500 bg-opacity-10' : '']" :title="title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
-                @click="navigateTo(`/${url}`)">
+                @click="navigateTo(`/${path}`)">
                 <icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
-                {{ name }}
+                {{ title }}
               </button>
             </menu-item>
           </menu-items>
