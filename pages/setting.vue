@@ -60,28 +60,19 @@ useSeoMeta(meta)
               placeholder="站点图标链接" required type="text">
           </label>
           <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>站点底部信息</span>
-            <input
-              v-model="settingStore.footer" :disabled="savingSettings" class="flex-1" name="footer"
-              placeholder="站点底部信息" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>ICP备案号</span>
-            <input
-              v-model="settingStore.ICP" :disabled="savingSettings" class="flex-1" name="ICP"
-              placeholder="ICP备案号" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>萌ICP备案号(仅数字)</span>
-            <input
-              v-model="settingStore.moeICP" :disabled="savingSettings" class="flex-1" name="moeICP"
-              placeholder="萌ICP备案号" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
             <span>默认封面链接</span>
             <input
               v-model="settingStore.banner" :disabled="savingSettings" class="flex-1" name="banner"
               placeholder="默认封面链接" required type="text">
+          </label>
+        </div>
+        <div class="w-full">
+          <label class="text-sm flex flex-col gap-4">
+            <span>站点底部信息（支持Markdown）</span>
+            <textarea
+              v-model="settingStore.footer"
+              :disabled="savingSettings" class="p-2" name="footer"
+              placeholder="站点底部信息" required type="text"></textarea>
           </label>
         </div>
         <h3 class="text-lg w-full">
@@ -163,7 +154,3 @@ useSeoMeta(meta)
     <page-head v-else title="请登录" />
   </div>
 </template>
-
-<style scoped>
-
-</style>

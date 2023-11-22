@@ -47,6 +47,21 @@ input {
     @apply px-3 md:px-6 sm:px-12 pb-12;
   }
 
+  &#footer {
+    #footer-preview-wrapper {
+      @apply p-0;
+    }
+
+    .default-theme {
+      --md-theme-link-color: inherit !important;
+      --md-theme-link-hover-color: inherit !important;
+    }
+
+    .md-editor-preview {
+      @apply text-sm;
+    }
+  }
+
   .default-theme {
     --md-theme-link-color: var(--primary-500) !important;
     --md-theme-link-hover-color: var(--primary-500) !important;
@@ -61,16 +76,6 @@ input {
 
     img {
       margin: 0;
-    }
-
-    a {
-      @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all no-underline transform-gpu;
-      background-position-y: 100%;
-      background-size: 0 1.5px;
-
-      &:hover {
-        background-size: 100% 1.5px;
-      }
     }
 
     blockquote {
