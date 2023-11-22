@@ -11,8 +11,8 @@ const valid = computed(() => !!(
 ))
 
 // 主题切换
-const { isDark } = useDark()
-const theme = computed(() => isDark.value ? 'noborder_dark' : 'noborder_light')
+const colorMode = useColorMode()
+const theme = computed(() => `noborder_${colorMode.value}`)
 </script>
 
 <template>

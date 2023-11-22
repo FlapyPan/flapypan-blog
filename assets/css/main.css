@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+body {
   --primary-500: rgb(99, 102, 241);
   @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-900;
-  color-scheme: light dark;
 }
 
 img {

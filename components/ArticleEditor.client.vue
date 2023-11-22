@@ -109,8 +109,6 @@ async function saveArticle() {
 }
 
 /// endregion 文章保存
-
-const { isDark } = useDark()
 </script>
 
 <template>
@@ -143,7 +141,7 @@ const { isDark } = useDark()
     </div>
     <error-alert :show="editorError" :text="editorError" />
     <MdEditor
-      v-model="draft.content" :no-img-zoom-in="false" :theme="isDark ? 'dark' : 'light'" code-theme="gradient"
+      v-model="draft.content" :no-img-zoom-in="false" :theme="$colorMode.value" code-theme="gradient"
       editor-id="edit" preview-theme="default" @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />
     <error-alert :show="saveError" :text="saveError" />

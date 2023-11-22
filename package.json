@@ -3,7 +3,7 @@
   "description": "FlapyPan Blog",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "type": "module",
   "scripts": {
     "postinstall": "nuxt prepare",
@@ -17,6 +17,7 @@
     "@antfu/eslint-config": "latest",
     "@headlessui/vue": "^1.7.16",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/color-mode": "^3.3.2",
     "@types/jsonwebtoken": "^9.0.5",
     "compressorjs": "^1.2.1",
     "eslint": "^8.53.0",

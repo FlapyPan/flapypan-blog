@@ -37,6 +37,12 @@ const navLinks = [
     icon: 'mingcute:time-line',
   },
 ]
+
+const colorModeCircle = {
+  system: 'light',
+  light: 'dark',
+  dark: 'system',
+}
 </script>
 
 <template>
@@ -46,7 +52,7 @@ const navLinks = [
     </f-dialog>
   </template>
   <header class="w-full fixed top-0 z-50 py-2">
-    <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-between md:justify-center gap-3">
+    <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-center gap-2 md:gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
           :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'scrolled': scrolled, 'bg-blur': scrolled }"
@@ -111,6 +117,29 @@ const navLinks = [
           {{ title }}
         </nuxt-link>
       </nav>
+
+      <button
+        title="切换配色模式"
+        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
+        class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer"
+        @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
+        <template v-if="$colorMode.preference === 'system'">
+          <span class="flex md:hidden">
+            <icon class="flex md:hidden" name="mingcute:cellphone-line" />
+          </span>
+          <span class="hidden md:flex">
+            <icon class="hidden md:flex" name="mingcute:computer-line" />
+          </span>
+        </template>
+        <template v-else-if="$colorMode.preference === 'light'">
+          <icon name="mingcute:sun-line" />
+        </template>
+        <template v-else-if="$colorMode.preference === 'dark'">
+          <icon name="mingcute:moon-line" />
+        </template>
+      </button>
+
+      <div class="flex-1 flex md:hidden"></div>
 
       <div
         :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"

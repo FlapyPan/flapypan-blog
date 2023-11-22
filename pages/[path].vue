@@ -98,8 +98,6 @@ async function changePin(pinned) {
 
 /// endregion 文章编辑
 
-const { isDark } = useDark()
-
 /// 处理网页标题
 const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
 const meta = {
@@ -190,12 +188,12 @@ useSeoMeta(meta)
           <md-preview
             v-if="articleData?.article?.content" :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
-            :theme="isDark ? 'dark' : 'light'" code-theme="gradient" editor-id="read" preview-theme="default" />
+            :theme="$colorMode.value" code-theme="gradient" editor-id="read" preview-theme="default" />
           <div class="side hidden lg:block sticky w-64 px-4 top-14 overflow-y-auto mt-16">
             <client-only>
               <md-catalog
                 :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
-                :theme="isDark ? 'dark' : 'light'" editor-id="read" />
+                :theme="$colorMode.value" editor-id="read" />
             </client-only>
           </div>
         </div>

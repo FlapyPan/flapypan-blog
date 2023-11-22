@@ -14,6 +14,9 @@ devDependencies:
   '@nuxt/devtools':
     specifier: latest
     version: 1.0.2(nuxt@3.8.1)(vite@4.5.0)
+  '@nuxtjs/color-mode':
+    specifier: ^3.3.2
+    version: 3.3.2
   '@types/jsonwebtoken':
     specifier: ^9.0.5
     version: 9.0.5

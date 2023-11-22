@@ -23,9 +23,16 @@ export default defineNuxtConfig({
     '/setting': { ssr: false },
   },
   modules: [
+    '@nuxtjs/color-mode',
     'nuxt-icon',
     'nuxt-mongoose',
   ],
+  colorMode: {
+    preference: 'system',
+    fallback: 'light',
+    classPrefix: '',
+    classSuffix: '',
+  },
   build: {
     transpile: ['jsonwebtoken'],
   },
