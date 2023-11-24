@@ -102,8 +102,12 @@ async function changePin(pinned) {
 
 /// endregion 文章编辑
 
+// 处理 md-editor-v3 组件监听主题切换缓存问题
 const colorMode = useColorMode()
-const themeMode = computed(() => colorMode.value === 'light' ? 'light' : 'dark')
+const themeMode = ref(colorMode.value)
+watch(() => colorMode.value, (val) => themeMode.value = val, { immediate: true })
+if (import.meta.browser) themeMode.value = ''
+onMounted(() => themeMode.value = colorMode.value)
 
 /// 处理网页标题
 const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
