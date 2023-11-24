@@ -6,7 +6,7 @@
   --md-border-hover-color: #b9b9b9;
   --md-border-active-color: #999;
   --md-modal-mask: #00000073;
-  @apply rounded-xl flex flex-col overflow-hidden bg-zinc-50 dark:bg-zinc-900;
+  @apply w-full rounded-xl flex flex-col overflow-hidden bg-zinc-50 dark:bg-zinc-900;
   height: 65vh;
   border: 1px solid var(--md-border-color);
   color: var(--md-color);
@@ -37,6 +37,10 @@
 }
 
 .md-editor {
+
+  .md-editor-content .md-editor-preview-wrapper {
+    @apply flex-1;
+  }
 
   article {
     @apply prose prose-zinc dark:prose-invert max-w-4xl;
@@ -388,7 +392,7 @@
   position: absolute;
   width: 2px;
   height: 100%;
-  @apply bg-zinc-50 dark:bg-zinc-900;
+  @apply bg-zinc-200 dark:bg-zinc-700;
   z-index: 1;
   cursor: col-resize;
 }
