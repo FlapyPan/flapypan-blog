@@ -1,6 +1,5 @@
 <script setup>
 import { MdCatalog, MdPreview } from 'md-editor-v3'
-import 'md-editor-v3/lib/preview.css'
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.client.vue'))
@@ -102,13 +101,6 @@ async function changePin(pinned) {
 
 /// endregion 文章编辑
 
-// 处理 md-editor-v3 组件监听主题切换缓存问题
-const colorMode = useColorMode()
-const themeMode = ref(colorMode.value)
-watch(() => colorMode.value, (val) => themeMode.value = val, { immediate: true })
-if (import.meta.browser) themeMode.value = ''
-onMounted(() => themeMode.value = colorMode.value)
-
 /// 处理网页标题
 const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
 const meta = {
@@ -195,16 +187,15 @@ useSeoMeta(meta)
             </template>
           </div>
         </client-only>
-        <div v-if="articleData?.article?._id" class="flex gap-4">
+        <div v-if="articleData?.article?._id" class="flex gap-4 justify-center mt-8">
           <md-preview
             :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
-            :theme="themeMode" code-theme="gradient" editor-id="read" preview-theme="default" />
-          <div class="side hidden lg:block sticky w-64 px-4 top-14 overflow-y-auto mt-16">
+            code-theme="gradient" editor-id="read" preview-theme="default" />
+          <div class="side hidden lg:block sticky w-64 px-4 top-20 overflow-y-auto mt-16">
             <client-only>
               <md-catalog
-                :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
-                :theme="themeMode" editor-id="read" />
+                :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read" />
             </client-only>
           </div>
         </div>
@@ -234,6 +225,6 @@ useSeoMeta(meta)
 
 <style scoped>
 .side {
-  height: calc(100vh - 7rem);
+  height: calc(100vh - 8rem);
 }
 </style>

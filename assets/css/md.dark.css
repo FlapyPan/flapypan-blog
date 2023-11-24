@@ -1,0 +1,97 @@
+.dark .md-editor {
+  --md-color: #999;
+  --md-hover-color: #bbb;
+  --md-bk-hover-color: #1b1a1a;
+  --md-border-color: #2d2d2d;
+  --md-border-hover-color: #636262;
+  --md-border-active-color: #777;
+  --md-modal-mask: #00000073;
+
+  .md-editor-admonition-note {
+    --md-admonition-color: #1262e7;
+    --md-admonition-bg-color: #021d4c;
+  }
+
+  .md-editor-admonition-abstract {
+    --md-admonition-color: #058dc9;
+    --md-admonition-bg-color: #002433;
+  }
+
+  .md-editor-admonition-info {
+    --md-admonition-color: #999;
+    --md-admonition-bg-color: #212121;
+  }
+
+  .md-editor-admonition-tip {
+    --md-admonition-color: #888;
+    --md-admonition-bg-color: #191818;
+  }
+
+  .md-editor-admonition-success {
+    --md-admonition-color: #00c551;
+    --md-admonition-bg-color: #003014;
+  }
+
+  .md-editor-admonition-question {
+    --md-admonition-color: #cd9a00;
+    --md-admonition-bg-color: #311d00;
+  }
+
+  .md-editor-admonition-warning {
+    --md-admonition-color: #ed8500;
+    --md-admonition-bg-color: #3c2200;
+  }
+
+  .md-editor-admonition-failure {
+    --md-admonition-color: #d5125f;
+    --md-admonition-bg-color: #3f0000;
+  }
+
+  .md-editor-admonition-danger {
+    --md-admonition-color: #d80505;
+    --md-admonition-bg-color: #390000;
+  }
+
+  .md-editor-admonition-bug {
+    --md-admonition-color: #da0d54;
+    --md-admonition-bg-color: #390013;
+  }
+
+  .md-editor-admonition-example {
+    --md-admonition-color: #7443ff;
+    --md-admonition-bg-color: #140045;
+  }
+
+  .md-editor-admonition-quote {
+    --md-admonition-color: #9e9e9e;
+    --md-admonition-bg-color: #2b2b2b;
+  }
+
+  .md-editor-admonition-hint {
+    --md-admonition-color: #00ae9e;
+    --md-admonition-bg-color: #00423b;
+  }
+
+  .md-editor-admonition-caution {
+    --md-admonition-color: #db8609;
+    --md-admonition-bg-color: #573300;
+  }
+
+  .md-editor-admonition-error {
+    --md-admonition-color: #df1a1a;
+    --md-admonition-bg-color: #440000;
+  }
+
+  .md-editor-admonition-attention {
+    --md-admonition-color: #0f8bc7;
+    --md-admonition-bg-color: #00354d;
+  }
+
+  .md-editor-table-shape-col-default {
+    background-color: #222;
+  }
+
+  .md-editor-table-shape-col-include {
+    background-color: #555;
+  }
+}
