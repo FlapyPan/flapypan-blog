@@ -90,13 +90,20 @@ function onSaveArticle(newPath) {
 }
 
 async function changePin(pinned) {
-  const data = await api({ url: `/article/pinned`, method: 'PUT', payload: { _id: articleData.value?.article?._id, pinned } })
+  const data = await api({
+    url: `/article/pinned`,
+    method: 'PUT',
+    payload: { _id: articleData.value?.article?._id, pinned },
+  })
   await refreshNuxtData('pinnedLinks')
   if (data) settingStore.value.links = data
   articleData.value.article.pinned = data.pinned
 }
 
 /// endregion 文章编辑
+
+const colorMode = useColorMode()
+const themeMode = computed(() => colorMode.value === 'light' ? 'light' : 'dark')
 
 /// 处理网页标题
 const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
@@ -184,16 +191,16 @@ useSeoMeta(meta)
             </template>
           </div>
         </client-only>
-        <div class="flex gap-4">
+        <div v-if="articleData?.article?._id" class="flex gap-4">
           <md-preview
-            v-if="articleData?.article?.content" :model-value="articleData?.article?.content"
+            :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
-            :theme="$colorMode.value" code-theme="gradient" editor-id="read" preview-theme="default" />
+            :theme="themeMode" code-theme="gradient" editor-id="read" preview-theme="default" />
           <div class="side hidden lg:block sticky w-64 px-4 top-14 overflow-y-auto mt-16">
             <client-only>
               <md-catalog
                 :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
-                :theme="$colorMode.value" editor-id="read" />
+                :theme="themeMode" editor-id="read" />
             </client-only>
           </div>
         </div>
