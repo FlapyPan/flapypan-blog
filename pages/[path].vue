@@ -187,11 +187,11 @@ useSeoMeta(meta)
             </template>
           </div>
         </client-only>
-        <div v-if="articleData?.article?._id" class="flex gap-4 justify-center mt-8">
+        <div class="flex gap-4 justify-center mt-8">
           <md-preview
-            :model-value="articleData?.article?.content"
+            v-if="articleData?.article?._id" :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
-            code-theme="gradient" editor-id="read" preview-theme="default" />
+            code-theme="gradient" editor-id="read" preview-theme="default" class="flex-1" />
           <div class="side hidden lg:block sticky w-64 px-4 top-20 overflow-y-auto mt-16">
             <client-only>
               <md-catalog
@@ -226,5 +226,9 @@ useSeoMeta(meta)
 <style scoped>
 .side {
   height: calc(100vh - 8rem);
+
+  :deep(.md-editor-catalog) {
+    @apply h-full;
+  }
 }
 </style>

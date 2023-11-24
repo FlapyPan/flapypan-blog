@@ -41,12 +41,47 @@
   article {
     @apply prose prose-zinc dark:prose-invert max-w-4xl;
 
+    p code:not([language]) {
+      @apply bg-primary-500 bg-opacity-10 text-primary-500 font-normal px-1 py-0.5 rounded;
 
-    pre {
-      .copy-button {
+      &::before, &::after {
         @apply hidden;
+        content: "";
       }
     }
+
+    pre {
+      @apply w-full relative p-1 pt-6;
+
+      .copy-button {
+        @apply absolute cursor-pointer text-xs right-4 top-3 z-10;
+
+        .md-editor-icon {
+          @apply fill-current block h-5 overflow-hidden w-5;
+        }
+      }
+
+      code[language] {
+        @apply block w-full p-3 overflow-x-auto;
+
+        &::before {
+          @apply text-xs absolute left-4 top-3 z-10 text-zinc-500;
+          content: attr(language);
+        }
+      }
+    }
+
+    blockquote {
+      @apply not-italic;
+    }
+
+    blockquote p:first-of-type {
+      &::before, &::after {
+        @apply hidden;
+        content: "";
+      }
+    }
+
   }
 
   &#footer {
@@ -840,7 +875,7 @@
 }
 
 .md-editor-preview-wrapper {
-  @apply overflow-auto p-4 w-fit;
+  @apply overflow-auto p-4;
 }
 
 .md-editor [data-show="false"] {
