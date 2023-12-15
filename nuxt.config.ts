@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     '/tag/**': { ssr: false },
     '/new': { ssr: false },
     '/setting': { ssr: false },
+    '/api/picture/**': { cache: { maxAge: 31536000, headersOnly: true } },
   },
   modules: [
     '@nuxtjs/color-mode',
