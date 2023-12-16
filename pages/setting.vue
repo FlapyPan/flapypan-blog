@@ -28,6 +28,15 @@ async function saveSetting() {
 
 /// endregion 博客设置
 
+/// region daemon 设置
+const token = ref('')
+
+function getToken() {
+  token.value = sessionStorage.getItem('token') || localStorage.getItem('token')
+}
+
+/// endregion daemon 设置
+
 const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`
 const description = `博客设置`
 const meta = {
@@ -149,6 +158,12 @@ useSeoMeta(meta)
         <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
           保存设置
         </f-btn>
+        <h3 class="text-lg w-full">
+          Daemon token
+        </h3>
+        <textarea
+          v-model="token" class="p-2 w-full" name="token" placeholder="点击显示token" readonly type="text"
+          @blur="token = ''" @focus="getToken"></textarea>
       </div>
     </template>
     <page-head v-else title="请登录" />
