@@ -14,8 +14,8 @@ export const statusHooks = createHooks<StatusHooks>()
 
 function defaultAuthorStatusData(): AuthorStatusData {
   return {
-    state: null,
-    active: null,
+    state: '',
+    active: 0,
   }
 }
 

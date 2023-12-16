@@ -151,13 +151,13 @@ const colorModeCircle = {
           <menu-button
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
             as="div"
-            class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
+            class="flex items-center rounded-full px-4 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
             <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
-            <div v-if="state" class="flex ml-2 text-xs gap-1">
+            <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
               <span>{{ settingStore.name }}</span>
-              <span v-show="state" class="text-zinc-500" title="我的实时状态">{{ state }}</span>
+              <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
             </div>
-            <span v-else class="ml-2">{{ settingStore.name }}</span>
+            <span v-else class="ml-2 py-3">{{ settingStore.name }}</span>
           </menu-button>
 
           <transition
