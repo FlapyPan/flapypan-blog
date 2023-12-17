@@ -28,7 +28,18 @@ export const statusDataHolder = {
     if (this._data.state !== data.state) {
       await statusHooks.callHook('authorStatus:get', data)
     }
+    clearInterval(this.intervalId)
+    if (data.active) {
+      setInterval(() => this.resetData(), 600000)
+    }
     this._data = data
+  },
+  intervalId: 0,
+  async resetData() {
+    const lastActive = this._data.active
+    if (lastActive && Date.now() - lastActive > 1800000) {
+      await this.set(defaultAuthorStatusData())
+    }
   },
 }
 
