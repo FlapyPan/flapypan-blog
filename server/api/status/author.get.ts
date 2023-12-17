@@ -13,7 +13,9 @@ export default eventHandler(async (event) => {
   // 第一次连接直接发送
   hook(statusDataHolder.get())
   // 注册事件
-  statusHooks.hook('authorStatus:get', hook)
+  const unregisterHook = statusHooks.hook('authorStatus:get', hook)
   // 保持连接打开
   event._handled = true
+  // 连接关闭后取消注册 hook
+  event.node.res.on('close', unregisterHook)
 })
