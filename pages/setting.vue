@@ -123,37 +123,19 @@ useSeoMeta(meta)
           </label>
         </div>
         <h3 class="text-lg w-full">
-          Giscus 设置
+          活动设置
         </h3>
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
           <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>giscusRepo</span>
+            <span>wakatime</span>
             <input
-              v-model="settingStore.giscusRepo" :disabled="savingSettings" class="flex-1" name="giscusRepo"
-              placeholder="giscusRepo" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>giscusRepoId</span>
-            <input
-              v-model="settingStore.giscusRepoId" :disabled="savingSettings" class="flex-1"
-              name="giscusRepoId"
-              placeholder="giscusRepoId" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>giscusCategory</span>
-            <input
-              v-model="settingStore.giscusCategory" :disabled="savingSettings" class="flex-1"
-              name="giscusCategory"
-              placeholder="giscusCategory" required type="text">
-          </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
-            <span>giscusCategoryId</span>
-            <input
-              v-model="settingStore.giscusCategoryId" :disabled="savingSettings" class="flex-1"
-              name="giscusCategoryId"
-              placeholder="giscusCategoryId" required type="text">
+              v-model="settingStore.wakatime" :disabled="savingSettings" class="flex-1" name="wakatime"
+              placeholder="wakatime" required type="text">
           </label>
         </div>
+        <h3 class="text-lg w-full">
+          Giscus 设置
+        </h3>
         <error-alert :show="saveSettingError" :text="saveSettingError" />
         <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
           保存设置
