@@ -28,6 +28,15 @@ async function saveSetting() {
 
 /// endregion 博客设置
 
+/// region daemon 设置
+const token = ref('')
+
+function getToken() {
+  token.value = sessionStorage.getItem('token') || localStorage.getItem('token')
+}
+
+/// endregion daemon 设置
+
 const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`
 const description = `博客设置`
 const meta = {
@@ -114,6 +123,17 @@ useSeoMeta(meta)
           </label>
         </div>
         <h3 class="text-lg w-full">
+          活动设置
+        </h3>
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+          <label class="text-sm flex flex-wrap items-center gap-4">
+            <span>wakatime</span>
+            <input
+              v-model="settingStore.wakatime" :disabled="savingSettings" class="flex-1" name="wakatime"
+              placeholder="wakatime" required type="text">
+          </label>
+        </div>
+        <h3 class="text-lg w-full">
           Giscus 设置
         </h3>
         <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -149,6 +169,12 @@ useSeoMeta(meta)
         <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
           保存设置
         </f-btn>
+        <h3 class="text-lg w-full">
+          Daemon token
+        </h3>
+        <textarea
+          v-model="token" class="p-2 w-full" name="token" placeholder="点击显示token" readonly type="text"
+          @blur="token = ''" @focus="getToken"></textarea>
       </div>
     </template>
     <page-head v-else title="请登录" />

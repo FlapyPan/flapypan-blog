@@ -9,6 +9,7 @@ export function useSettingStore() {
     info: '个人博客',
     hitoko: true,
     footer: 'Copyright',
+    wakatime: '',
     giscusRepo: '',
     giscusRepoId: '',
     giscusCategory: '',

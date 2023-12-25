@@ -8,10 +8,15 @@ const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/p
 
 const scrolled = ref(false)
 
+const state = ref('')
 if (import.meta.browser) {
   window.addEventListener('scroll', () => {
     scrolled.value = document.documentElement.scrollTop > 48
   }, { passive: true })
+  const eventSource = new EventSource('/api/status/author')
+  eventSource.addEventListener('message', (event) => {
+    state.value = event.data
+  })
 }
 
 const navLinks = [
@@ -119,9 +124,9 @@ const colorModeCircle = {
       </nav>
 
       <button
-        title="切换配色模式"
         :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
         class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer"
+        title="切换配色模式"
         @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
         <template v-if="$colorMode.preference === 'system'">
           <span class="flex md:hidden">
@@ -141,16 +146,18 @@ const colorModeCircle = {
 
       <div class="flex-1 flex md:hidden"></div>
 
-      <div
-        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
-        class="flex items-center  rounded-full gap-1">
+      <div :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }" class="flex items-center rounded-full gap-1">
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
             as="div"
-            class="flex items-center rounded-full px-4 py-3 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
+            class="flex items-center rounded-full px-4 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
             <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
-            <span class="ml-2">{{ settingStore.name }}</span>
+            <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
+              <span>{{ settingStore.name }}</span>
+              <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
+            </div>
+            <span v-else class="ml-2 py-3">{{ settingStore.name }}</span>
           </menu-button>
 
           <transition
@@ -161,7 +168,7 @@ const colorModeCircle = {
             leave-from-class="transform scale-100 opacity-100"
             leave-to-class="transform scale-95 opacity-0">
             <menu-items
-              class="absolute w-32 right-0 mt-4 p-1 origin-top-right rounded-xl shadow-lg bg-blur focus:outline-none">
+              class="absolute w-32 left-0 mt-4 p-1 origin-top-left rounded-xl shadow-lg bg-blur focus:outline-none">
               <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
                 <button
                   :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"

@@ -21,6 +21,9 @@ useSeoMeta(meta)
 <template v-once>
   <div class="page">
     <page-head v-once :sub-title="description" title="最近活动" />
+    <figure v-if="settingStore.wakatime" class="max-w-3xl mx-auto mb-6">
+      <embed :src="settingStore.wakatime" />
+    </figure>
     <h3 class="text-xl mb-6 ml-2">
       Github 仓库
     </h3>
