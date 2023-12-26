@@ -125,7 +125,7 @@ const colorModeCircle = {
 
       <button
         :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
-        class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer"
+        class="flex items-center rounded-full p-3 sm:hover:text-primary-500 cursor-pointer"
         title="切换配色模式"
         @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
         <template v-if="$colorMode.preference === 'system'">
@@ -151,7 +151,7 @@ const colorModeCircle = {
           <menu-button
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
             as="div"
-            class="flex items-center rounded-full px-4 text-sm sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10">
+            class="flex items-center rounded-full px-4 text-sm sm:hover:text-primary-500">
             <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
             <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
               <span>{{ settingStore.name }}</span>
