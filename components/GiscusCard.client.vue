@@ -18,7 +18,7 @@ const theme = computed(() => `noborder_${colorMode.value}`)
 <template>
   <div id="giscus" class="pt-20">
     <slot />
-    <template v-if="!valid">
+    <template v-if="valid">
       <giscus-widget
         id="comments"
         :category="settingStore.giscusCategory"
