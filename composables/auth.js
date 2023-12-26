@@ -4,14 +4,10 @@ export function useAuth() {
     loginDialogVisible: false,
   }))
 
-  const check = async () => {
-    try {
-      await api({ url: `/auth/user` })
-      state.value.isLogin = true
-    } catch (e) {
-      state.value.isLogin = false
-      throw e
-    }
+  const check = () => {
+    api({ url: `/auth/user` })
+      .then(() => state.value.isLogin = true)
+      .catch(() => state.value.isLogin = false)
   }
 
   const login = async ({ username, password, remember }) => {

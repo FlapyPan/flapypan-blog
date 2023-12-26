@@ -1,16 +1,12 @@
 <script setup>
-defineProps({
-  error: Object,
-})
 const settingStore = useSettingStore()
 
-const settingData = await api({ url: '/attribute/settings' })
-if (settingData) {
-  settingStore.value = {
-    ...settingStore.value,
-    ...settingData,
+await callOnce(async () => {
+  const settingData = await api({ url: '/attribute/settings' })
+  if (settingData) {
+    Object.assign(settingStore.value, settingData)
   }
-}
+})
 
 if (import.meta.browser) {
   useAuth().check()
