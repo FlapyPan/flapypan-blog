@@ -16,21 +16,26 @@ const theme = computed(() => `noborder_${colorMode.value}`)
 </script>
 
 <template>
-  <div v-if="valid" class="pt-20">
+  <div id="giscus" class="pt-20">
     <slot />
-    <giscus-widget
-      id="comments"
-      :category="settingStore.giscusCategory"
-      :categoryid="settingStore.giscusCategoryId"
-      :repo="settingStore.giscusRepo"
-      :repoid="settingStore.giscusRepoId"
-      :theme="theme"
-      emitmetadata="0"
-      inputposition="top"
-      lang="zh-CN"
-      loading="eager"
-      mapping="pathname"
-      reactionsenabled="1" />
+    <template v-if="!valid">
+      <giscus-widget
+        id="comments"
+        :category="settingStore.giscusCategory"
+        :categoryid="settingStore.giscusCategoryId"
+        :repo="settingStore.giscusRepo"
+        :repoid="settingStore.giscusRepoId"
+        :theme="theme"
+        emitmetadata="0"
+        inputposition="top"
+        lang="zh-CN"
+        loading="eager"
+        mapping="pathname"
+        reactionsenabled="1" />
+    </template>
+    <template v-else>
+      <p class="text-center text-zinc-500 text-xs cursor-not-allowed">未启用评论区</p>
+    </template>
   </div>
 </template>
 

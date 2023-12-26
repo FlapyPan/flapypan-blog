@@ -101,6 +101,21 @@ async function changePin(pinned) {
 
 /// endregion 文章编辑
 
+function toTop() {
+  document.documentElement.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
+
+function toComments() {
+  const top = document.querySelector('#giscus')?.offsetTop ?? 0
+  document.documentElement.scrollTo({
+    top,
+    behavior: 'smooth',
+  })
+}
+
 /// 处理网页标题
 const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
 const meta = {
@@ -154,44 +169,11 @@ useSeoMeta(meta)
           </f-btn>
         </p>
         <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
-        <client-only>
-          <div class="flex flex-wrap items-center gap-4 justify-center">
-            <template v-if="auth.state.value.isLogin">
-              <f-btn v-if="articleData?.article?.pinned" icon="mingcute:pin-fill" text @click="changePin(false)">
-                取消固定
-              </f-btn>
-              <f-btn v-else icon="mingcute:pin-line" text @click="changePin(true)">
-                固定
-              </f-btn>
-              <f-btn icon="mingcute:edit-line" text @click="openEdit">
-                编辑
-              </f-btn>
-              <f-btn icon="mingcute:delete-2-line" text @click="deleteDialog = true">
-                删除
-              </f-btn>
-              <f-dialog v-model="deleteDialog" closable>
-                <p class="mb-4">
-                  确认删除此文章 "{{ articleData?.article?.title }}" ?
-                </p>
-                <div class="text-right">
-                  <f-btn class="mr-4" text @click="deleteArticle">
-                    <span class="text-red-500">
-                      确认删除
-                    </span>
-                  </f-btn>
-                  <f-btn text @click="deleteDialog = false">
-                    取消
-                  </f-btn>
-                </div>
-              </f-dialog>
-            </template>
-          </div>
-        </client-only>
         <div class="flex gap-4 justify-center mt-8">
           <md-preview
             v-if="articleData?.article?._id" :model-value="articleData?.article?.content"
             :no-img-zoom-in="false" :scroll-element="scrollElement"
-            code-theme="gradient" editor-id="read" preview-theme="default" class="flex-1" />
+            class="flex-1" code-theme="gradient" editor-id="read" preview-theme="default" />
           <div class="side hidden lg:block sticky w-64 px-4 top-20 overflow-y-auto mt-16">
             <client-only>
               <md-catalog
@@ -217,6 +199,46 @@ useSeoMeta(meta)
             <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
           </f-btn>
         </nav>
+        <client-only>
+          <div class="z-10 fixed bottom-12 right-4 md:right-12 flex flex-col gap-2">
+            <button class="float-btn bg-blur" title="回到顶部" @click="toTop()">
+              <icon name="mingcute:arrows-up-line" />
+            </button>
+            <button class="float-btn bg-blur" title="评论区" @click="toComments()">
+              <icon name="mingcute:comment-line" />
+            </button>
+            <template v-if="auth.state.value.isLogin">
+              <button v-if="articleData?.article?.pinned" class="float-btn bg-blur text-primary-500" title="取消固定"
+                      @click="changePin(false)">
+                <icon name="mingcute:pin-fill" />
+              </button>
+              <button v-else class="float-btn bg-blur" title="固定" @click="changePin(true)">
+                <icon name="mingcute:pin-line" />
+              </button>
+              <button class="float-btn bg-blur" title="编辑" @click="openEdit">
+                <icon name="mingcute:edit-line" />
+              </button>
+              <button class="float-btn bg-blur" title="删除" @click="deleteDialog = true">
+                <icon name="mingcute:delete-2-line" />
+              </button>
+              <f-dialog v-model="deleteDialog" closable>
+                <p class="mb-4">
+                  确认删除此文章 "{{ articleData?.article?.title }}" ?
+                </p>
+                <div class="text-right">
+                  <f-btn class="mr-4" text @click="deleteArticle">
+                    <span class="text-red-500">
+                      确认删除
+                    </span>
+                  </f-btn>
+                  <f-btn text @click="deleteDialog = false">
+                    取消
+                  </f-btn>
+                </div>
+              </f-dialog>
+            </template>
+          </div>
+        </client-only>
         <giscus-card />
       </template>
     </template>
@@ -230,5 +252,9 @@ useSeoMeta(meta)
   :deep(.md-editor-catalog) {
     @apply h-full;
   }
+}
+
+.float-btn {
+  @apply rounded-full h-10 w-10 flex items-center justify-center shadow sm:hover:text-primary-500;
 }
 </style>
