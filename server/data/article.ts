@@ -89,6 +89,6 @@ export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolea
   return { pinned }
 }
 
-export async function deleteArticle(id: string | ObjectId) {
-  await ArticleSchema.deleteOne({ id })
+export async function deleteArticle(_id: string | ObjectId) {
+  await ArticleSchema.deleteOne({ _id })
 }

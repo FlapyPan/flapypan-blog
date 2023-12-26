@@ -50,7 +50,9 @@ async function deleteArticle() {
   deleting.value = true
   deleteError.value = null
   try {
-    await api({ url: `/article/${articleData.value.article._id}`, method: 'DELETE' })
+    // await api({ url: `/article/${articleData.value.article._id}`, method: 'DELETE' })
+    // DELETE /api/article/[_id] 方法报 404 的临时解决方案
+    await api({ url: `/article/delete/${articleData.value.article._id}` })
     await navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     deleteError.value = e.message
