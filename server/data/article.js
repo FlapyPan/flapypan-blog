@@ -1,5 +1,3 @@
-import type { ObjectId } from 'bson'
-
 const listSelect = {
   content: 0,
 }
@@ -35,11 +33,17 @@ export function getAllTags() {
   return ArticleSchema.distinct('tags')
 }
 
-export function getArticleByPath(path: string) {
+/**
+ * @param {string} path
+ */
+export function getArticleByPath(path) {
   return ArticleSchema.findOne({ path })
 }
 
-export function getArticleListByTag(tag: string) {
+/**
+ * @param {string} tag
+ */
+export function getArticleListByTag(tag) {
   return ArticleSchema.find({ tags: tag }).sort({ createdAt: -1 })
 }
 
@@ -47,48 +51,64 @@ export function getPinnedArticleList() {
   return ArticleSchema.find({ pinned: true }).sort({ updatedAt: 1 }).select({ _id: 1, title: 1, path: 1 })
 }
 
-export async function getPreArticlePath(_id: string | ObjectId) {
+/**
+ * @param {string|ObjectId} _id
+ */
+export async function getPreArticlePath(_id) {
   const article = await ArticleSchema.findOne({ _id: { $lt: _id } }).sort({ _id: -1 })
   return article?.path
 }
 
-export async function getNextArticlePath(_id: string | ObjectId) {
+/**
+ * @param {string|ObjectId} _id
+ */
+export async function getNextArticlePath(_id) {
   const article = await ArticleSchema.findOne({ _id: { $gt: _id } }).sort({ _id: 1 })
   return article?.path
 }
 
-interface ArticleAddRequest {
-  title: string
-  path: string
-  cover?: string | null
-  content: string
-  tags: string[]
-}
+/**
+ * @typedef {Object} ArticleAddRequest
+ * @property {string} title
+ * @property {string} path
+ * @property {string} [cover]
+ * @property {string} content
+ * @property {string[]} tags
+ */
 
-export async function addArticle(article: ArticleAddRequest) {
+/**
+ * @param {ArticleAddRequest} article
+ * @return {Promise<{path}>}
+ */
+export async function addArticle(article) {
   const saved = await new ArticleSchema({ ...article, updatedAt: new Date() }).save()
   return { path: saved.path }
 }
 
-interface ArticleModifyRequest {
-  _id: string | ObjectId
-  title: string
-  path: string
-  cover?: string | null
-  content: string
-  tags: string[]
-}
 
-export async function modifyArticle(article: ArticleModifyRequest) {
+/**
+ * @param {ArticleAddRequest} article
+ * @return {Promise<{path}>}
+ */
+export async function modifyArticle(article) {
   await ArticleSchema.findByIdAndUpdate(article._id, { ...article, updatedAt: new Date() })
   return { path: article.path }
 }
 
-export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolean) {
+/**
+ * @param {string|ObjectId} _id
+ * @param {boolean} pinned
+ * @return {Promise<{pinned: boolean}>}
+ */
+export async function modifyArticlePinned(_id, pinned) {
   await ArticleSchema.updateOne({ _id }, { $set: { pinned, updatedAt: new Date() } })
   return { pinned }
 }
 
-export async function deleteArticle(_id: string | ObjectId) {
+/**
+ * @param {string|ObjectId} _id
+ * @return {Promise<void>}
+ */
+export async function deleteArticle(_id) {
   await ArticleSchema.deleteOne({ _id })
 }

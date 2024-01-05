@@ -1,15 +1,24 @@
 import { AttributeSchema } from '~/server/models/attribute.schema'
 
-export function getAttr(key: string) {
+/**
+ * @param {string} key
+ * @return {*}
+ */
+export function getAttr(key) {
   return AttributeSchema.findOne({ key })
 }
 
-export async function setAttr(key: string, value: any) {
+/**
+ * @param {string} key
+ * @param {*} value
+ * @return {Promise<*>}
+ */
+export async function setAttr(key, value) {
   if ((await AttributeSchema.count({ key })) > 0) {
     await AttributeSchema.findOneAndUpdate({ key }, { $set: { value } })
   } else {
     const attr = new AttributeSchema()
-    attr.key = key as any
+    attr.key = key
     attr.value = value
     await attr.save()
   }

@@ -1,18 +1,17 @@
 import { createHooks } from 'hookable'
 
-export interface AuthorStatusData {
-  state: string | null | undefined
-  active: number | null | undefined
-}
+/**
+ * @typedef {Object} AuthorStatusData
+ * @property {string} [state]
+ * @property {number} [active]
+ */
 
-export interface StatusHooks {
-  'authorStatus:get': (data: AuthorStatusData) => any | void
-  'authorStatus:set': (data: AuthorStatusData) => any | void
-}
+export const statusHooks = createHooks()
 
-export const statusHooks = createHooks<StatusHooks>()
-
-function defaultAuthorStatusData(): AuthorStatusData {
+/**
+ * @return {AuthorStatusData}
+ */
+function defaultAuthorStatusData() {
   return {
     state: '',
     active: 0,
@@ -21,10 +20,17 @@ function defaultAuthorStatusData(): AuthorStatusData {
 
 export const statusDataHolder = {
   _data: defaultAuthorStatusData(),
-  get(): AuthorStatusData {
+  /**
+   * @return {AuthorStatusData}
+   */
+  get() {
     return this._data
   },
-  async set(data: AuthorStatusData) {
+  /**
+   * @param {AuthorStatusData} data
+   * @return {Promise<void>}
+   */
+  async set(data) {
     if (this._data.state !== data.state) {
       await statusHooks.callHook('authorStatus:get', data)
     }
@@ -43,6 +49,12 @@ export const statusDataHolder = {
   },
 }
 
-statusHooks.hook('authorStatus:set', (data) => {
-  return statusDataHolder.set(data)
-})
+statusHooks.hook(
+  'authorStatus:set',
+  /**
+   * @param {AuthorStatusData} data
+   */
+  (data) => {
+    return statusDataHolder.set(data)
+  },
+)

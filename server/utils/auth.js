@@ -1,7 +1,10 @@
 import crypto from 'node:crypto'
-import type { H3Event } from 'h3'
 import { sign, verify } from 'jsonwebtoken'
 import z from 'zod'
+
+/**
+ * @typedef {import('jsonwebtoken').JwtPayload} JwtPayload
+ */
 
 export const ADMIN_USERNAME = process.env.ADMIN_USERNAME
 export const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
@@ -9,15 +12,21 @@ export const AUTH_SECRET = process.env.AUTH_SECRET || crypto.randomUUID()
 
 const TOKEN_TYPE = 'Bearer'
 
-function extractToken(authHeaderValue: string) {
+/**
+ * @param {string} authHeaderValue
+ * @return {string}
+ */
+function extractToken(authHeaderValue) {
   const [, token] = authHeaderValue.split(`${TOKEN_TYPE} `)
   return token
 }
 
 /**
  * 登录获取token
+ * @param {H3Event} event
+ * @return {Promise<string>}
  */
-export async function login(event: H3Event) {
+export async function login(event) {
   if (!ADMIN_USERNAME || !ADMIN_PASSWORD) {
     throw createError({ statusCode: 500, message: '用户名或密码未设置' })
   }
@@ -38,8 +47,10 @@ export async function login(event: H3Event) {
 
 /**
  * 获取登录信息
+ * @param {H3Event} event
+ * @return {JwtPayload|string}
  */
-export function auth(event: H3Event) {
+export function auth(event) {
   const authHeaderValue = getRequestHeader(event, 'Authorization')
   if (!authHeaderValue) {
     throw createError({ statusCode: 403, message: '无token' })

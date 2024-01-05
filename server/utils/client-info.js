@@ -1,5 +1,3 @@
-import type { H3Event } from 'h3'
-
 const IP_HEADERS = [
   'X-Forwarded-For',
   'Proxy-Client-IP',
@@ -8,7 +6,11 @@ const IP_HEADERS = [
   'HTTP_X_FORWARDED_FOR',
 ]
 
-export function getRealIP(event: H3Event) {
+/**
+ * @param {H3Event} event
+ * @return {string}
+ */
+export function getRealIP(event) {
   for (const header of IP_HEADERS) {
     const ip = getHeader(event, header)
     if (ip) return ip

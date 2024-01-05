@@ -24,12 +24,10 @@ export const ArticleSchema = defineMongooseModel('Article', {
   tags: {
     type: [Schema.Types.String],
   },
-  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),
   },
-  // @ts-expect-error 莫名其妙的错误
   updatedAt: {
     type: Schema.Types.Date,
     default: () => new Date(),

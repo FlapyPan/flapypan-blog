@@ -19,6 +19,7 @@
     "@types/jsonwebtoken": "^9.0.5",
     "compressorjs": "^1.2.1",
     "giscus": "^1.4.0",
+    "hookable": "^5.5.3",
     "jsonwebtoken": "^9.0.2",
     "md-editor-v3": "^4.9.0",
     "nuxt": "^3.9.0",
