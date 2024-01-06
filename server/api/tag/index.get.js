@@ -1,3 +1,3 @@
-import { getAllTags } from '~/server/data/article'
-
-export default eventHandler(getAllTags)
+export default eventHandler(() => {
+  return ArticleSchema.distinct('tags')
+})

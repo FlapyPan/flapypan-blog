@@ -1,5 +1,4 @@
 import z from 'zod'
-import { addArticle } from '~/server/data/article'
 
 export default eventHandler(async (event) => {
   const result = z.object({
@@ -15,5 +14,6 @@ export default eventHandler(async (event) => {
   if (!result.success) {
     throw createError({ statusCode: 400, message: result.error.errors[0].message })
   }
-  return addArticle(result.data)
+  const { path } = await new ArticleSchema({ ...result.data, updatedAt: new Date() }).save()
+  return path
 })

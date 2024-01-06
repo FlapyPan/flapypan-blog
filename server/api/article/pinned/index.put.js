@@ -1,5 +1,4 @@
 import z from 'zod'
-import { modifyArticlePinned } from '~/server/data/article'
 
 export default eventHandler(async (event) => {
   const result = z.object({
@@ -9,5 +8,6 @@ export default eventHandler(async (event) => {
   if (!result.success) {
     throw createError({ statusCode: 400, message: result.error.errors[0].message })
   }
-  return modifyArticlePinned(result.data._id, result.data.pinned)
+  const { _id, pinned } = result.data
+  return ArticleSchema.updateOne({ _id }, { $set: { pinned } })
 })

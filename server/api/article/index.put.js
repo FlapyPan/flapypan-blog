@@ -1,5 +1,4 @@
 import z from 'zod'
-import { modifyArticle } from '~/server/data/article'
 
 export default eventHandler(async (event) => {
   const result = z.object({
@@ -16,5 +15,7 @@ export default eventHandler(async (event) => {
   if (!result.success) {
     throw createError({ statusCode: 400, message: result.error.errors[0].message })
   }
-  return modifyArticle(result.data)
+  const data = result.data
+  const { path } = await ArticleSchema.findByIdAndUpdate(data._id, { ...data, updatedAt: new Date() })
+  return path
 })

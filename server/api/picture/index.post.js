@@ -1,4 +1,4 @@
-import { addPicture } from '~/server/data/picture'
+import { randomUUID } from 'node:crypto'
 
 export default eventHandler(async (event) => {
   const files = await readMultipartFormData(event)
@@ -9,5 +9,9 @@ export default eventHandler(async (event) => {
   if (!file.type?.startsWith('image/')) {
     throw createError({ statusCode: 400, message: '请上传图片文件' })
   }
-  return addPicture(file)
+  const { _id } = await new PictureSchema({
+    bytes: file.data,
+    name: file.filename ?? randomUUID(),
+  }).save()
+  return _id
 })
