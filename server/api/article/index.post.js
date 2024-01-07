@@ -15,5 +15,5 @@ export default eventHandler(async (event) => {
     throw createError({ statusCode: 400, message: result.error.errors[0].message })
   }
   const { path } = await new ArticleSchema({ ...result.data, updatedAt: new Date() }).save()
-  return path
+  return { path }
 })

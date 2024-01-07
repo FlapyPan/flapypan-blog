@@ -17,5 +17,5 @@ export default eventHandler(async (event) => {
   }
   const data = result.data
   const { path } = await ArticleSchema.findByIdAndUpdate(data._id, { ...data, updatedAt: new Date() })
-  return path
+  return { path }
 })

@@ -83,8 +83,7 @@ function onSaveArticle(newPath) {
   // 如果没有修改路径，直接刷新
   if (lastPath === newPath) {
     isEdit.value = false
-    getArticleData()
-    return
+    return getArticleData()
   }
   // 修改了路径就跳转过去
   return navigateTo({ path: `/${newPath}`, replace: true })
