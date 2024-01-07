@@ -1,9 +1,21 @@
 # FlapyPan Blog
 
 > [!WARNING]
-> 自 `2.x` 版本起，不再依赖额外后端，`2.x` 与 `1.x` 的数据并不兼容
+> 本项目已终止开发和维护（2024年1月7日）
 
 基于 Vue 3 开发的一款简单高效的博客系统
+
+## 预览
+
+![](./docs/sample-01.jpg)
+
+![](./docs/sample-02.jpg)
+
+![](./docs/sample-03.jpg)
+
+![](./docs/sample-04.jpg)
+
+![](./docs/sample-05.jpg)
 
 ## 技术栈
 
