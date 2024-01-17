@@ -42,12 +42,12 @@ export async function login(event: H3Event): Promise<string> {
  * 获取登录信息
  */
 export function auth(event: H3Event): ContextUser {
-  const authHeaderValue = ensure(getRequestHeader(event, 'Authorization'), '无token', 403)
+  const authHeaderValue = ensure(getRequestHeader(event, 'Authorization'), '无token', 401)
   const [, extractedToken] = authHeaderValue.split(`${TOKEN_TYPE} `)
   try {
     return verify(extractedToken, AUTH_SECRET) as ContextUser
   } catch (e) {
     console.error(e)
-    throw createError({ statusCode: 403, message: 'token无效' })
+    throw createError({ statusCode: 401, message: 'token无效' })
   }
 }

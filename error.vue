@@ -19,7 +19,13 @@ useServerSeoMeta({
     <h2 class="text-xl">
       {{ error.statusCode }}
     </h2>
-    <error-alert :show="true" :text="error.message" redirect />
+    <div
+      class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
+      <icon class="text-lg" name="mingcute:close-circle-line" />
+      <span class="text-sm">{{ error.message }}</span>
+      <span class="flex-1"></span>
+      <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
+    </div>
     <dev-only>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />
     </dev-only>

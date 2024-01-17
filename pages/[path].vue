@@ -142,7 +142,13 @@ useSeoMeta(meta)
       <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
     </div>
     <template v-if="!isEdit">
-      <error-alert :show="articleDataError" :text="articleDataError" redirect />
+      <div v-if="articleDataError"
+           class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
+        <icon class="text-lg" name="mingcute:close-circle-line" />
+        <span class="text-sm">{{ articleDataError }}</span>
+        <span class="flex-1"></span>
+        <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
+      </div>
       <template v-if="articleData?.article?._id">
         <page-head :title="articleData?.article?.title" class="mx-auto text-center">
         </page-head>

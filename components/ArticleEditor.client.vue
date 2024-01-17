@@ -1,6 +1,7 @@
 <script setup>
 import Compressor from 'compressorjs'
 import { MdEditor } from 'md-editor-v3'
+import { useToast } from 'vue-toastification'
 
 const props = defineProps({
   articleData: {
@@ -16,6 +17,8 @@ const props = defineProps({
   },
 })
 const emits = defineEmits(['submit'])
+
+const toast = useToast()
 
 // 判断是否是新文章
 const isNewArticle = !props.articleData?._id
@@ -44,9 +47,7 @@ const editTags = computed({
 })
 /// endregion 文章编辑持久化
 
-// 编辑器相关错误信息
-const editorError = ref(null)
-const catchEditorError = ({ message }) => editorError.value = message
+const catchEditorError = ({ message }) => toast.error(message)
 
 /// region 图片上传
 // 图片压缩
@@ -67,21 +68,17 @@ async function compress(file) {
   })
 }
 
+async function uploadImg(file) {
+  const form = new FormData()
+  const compressFile = await compress(file)
+  form.append('file', compressFile, compressFile.name)
+  // 上传获取图片id
+  const _id = await api({ url: '/picture', method: 'POST', payload: form, jsonPayload: false })
+  return `/api/picture/${_id}`
+}
+
 async function onUploadImg(files, cb) {
-  const res = []
-  try {
-    for (const file of files) {
-      const form = new FormData()
-      const compressFile = await compress(file)
-      form.append('file', compressFile, compressFile.name)
-      // 上传获取图片id
-      const _id = await api({ url: '/picture', method: 'POST', payload: form, jsonPayload: false })
-      res.push(`/api/picture/${_id}`)
-    }
-  } catch (e) {
-    editorError.value = e.message
-    console.error(e)
-  }
+  const res = await Promise.all(files.map(uploadImg))
   cb(res)
 }
 
@@ -89,10 +86,8 @@ async function onUploadImg(files, cb) {
 
 /// region 文章保存
 const saving = ref(false)
-const saveError = ref(null)
 
 async function saveArticle() {
-  saveError.value = null
   saving.value = true
   const method = isNewArticle ? 'POST' : 'PUT'
   try {
@@ -100,8 +95,6 @@ async function saveArticle() {
     setTimeout(() => localStorage.removeItem(storageKey), 3000)
     // 将文章路径传递给父组件
     emits('submit', path)
-  } catch (e) {
-    saveError.value = e.message
   } finally {
     saving.value = false
   }
@@ -138,12 +131,10 @@ async function saveArticle() {
           type="text">
       </label>
     </div>
-    <error-alert :show="editorError" :text="editorError" />
     <MdEditor
       v-model="draft.content" :no-img-zoom-in="false" :theme="$colorMode.value" code-theme="gradient"
       editor-id="edit" preview-theme="default" @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />
-    <error-alert :show="saveError" :text="saveError" />
     <f-btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle">
       保存发布
     </f-btn>

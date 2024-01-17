@@ -7,7 +7,6 @@ const tag = computed(() => route.params.tag ?? '')
 const {
   data: articleData,
   pending: fetchingData,
-  error: fetchDataError,
 } = useAsyncData(
   `tag:${tag.value}`,
   async () => api({ url: `/article/tag/${tag.value}` }),
@@ -35,7 +34,6 @@ useSeoMeta(meta)
         {{ tag }}
       </template>
     </page-head>
-    <error-alert :show="fetchDataError" :text="fetchDataError" redirect />
     <article-timeline :list="articleData" />
     <p v-show="fetchingData" class="text-center text-zinc-500 text-sm py-2">
       加载中...

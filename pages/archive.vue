@@ -5,7 +5,6 @@ const settingStore = useSettingStore()
 const {
   pending: fetchingTagList,
   data: tagList,
-  error: tagListError,
 } = await useAsyncData(`tag`, () => api({ url: `/tag` }))
 /// endregion 标签数据
 
@@ -13,7 +12,6 @@ const {
 const {
   pending: fetchingArticleData,
   data: articleData,
-  error: articleDataError,
 } = await useAsyncData(`article:yearly`, () => api({ url: `/article/yearly` }))
 /// endregion 文章列表
 
@@ -37,7 +35,6 @@ useSeoMeta(meta)
     <h3 class="text-2xl my-3 flex items-center">
       标签
     </h3>
-    <error-alert :show="tagListError" :text="tagListError" />
     <div class="flex items-center gap-4 flex-wrap my-6">
       <template v-for="name in tagList" :key="name">
         <f-btn :to="`/tag/${name}`" icon="mingcute:tag-line" text>
@@ -45,7 +42,6 @@ useSeoMeta(meta)
         </f-btn>
       </template>
     </div>
-    <error-alert :show="articleDataError" :text="articleDataError" />
     <div class="my-12">
       <template v-for="{ year, list } in (articleData ?? [])" :key="year">
         <h3 class="my-3 text-2xl">

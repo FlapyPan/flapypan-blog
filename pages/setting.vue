@@ -8,10 +8,8 @@ if (import.meta.browser) {
 
 /// region 博客设置
 const savingSettings = ref(false)
-const saveSettingError = ref(null)
 
 async function saveSetting() {
-  saveSettingError.value = null
   savingSettings.value = true
   try {
     const data = await api({ url: '/attribute/settings', method: 'POST', payload: settingStore.value })
@@ -19,8 +17,6 @@ async function saveSetting() {
       ...settingStore.value,
       ...data,
     }
-  } catch (e) {
-    saveSettingError.value = e.message
   } finally {
     savingSettings.value = false
   }
@@ -165,7 +161,6 @@ useSeoMeta(meta)
               placeholder="giscusCategoryId" required type="text">
           </label>
         </div>
-        <error-alert :show="saveSettingError" :text="saveSettingError" />
         <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
           保存设置
         </f-btn>

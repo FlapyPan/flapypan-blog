@@ -63,6 +63,7 @@ export default defineNuxtConfig({
     '~/assets/css/github-languages-colors.css',
     '~/assets/css/md.css',
     '~/assets/css/md.dark.css',
+    'vue-toastification/dist/index.css',
   ],
   postcss,
 })

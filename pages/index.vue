@@ -5,7 +5,6 @@ const settingStore = useSettingStore()
 const {
   pending: fetchingArticleData,
   data: articleData,
-  error: articleDataError,
   refresh,
 } = await useAsyncData('article:latest', () => api({ url: '/article/recent' }))
 /// endregion 文章数据
@@ -96,7 +95,6 @@ useSeoMeta(meta)
         最近更新
         <refresh-button :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
       </h3>
-      <error-alert :show="articleDataError" :text="articleDataError" />
       <div class="columns-1 md:columns-2 gap-6 space-y-6">
         <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
