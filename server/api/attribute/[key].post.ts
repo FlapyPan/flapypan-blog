@@ -1,10 +1,8 @@
 import { setAttr } from '~/server/data/attribute'
+import z from 'zod'
 
 export default eventHandler(async (event) => {
-  const key = event.context.params?.key
-  if (!key) {
-    throw createError({ statusCode: 404, message: '不存在的key' })
-  }
+  const { key } = readParams(event, { key: z.string() })
   const body = await readBody(event)
   const attr = await setAttr(key, body)
   return attr?.value

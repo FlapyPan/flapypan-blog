@@ -12,7 +12,7 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "@headlessui/vue": "^1.7.16",
+    "@headlessui/vue": "^1.7.17",
     "@nuxt/devtools": "latest",
     "@nuxtjs/color-mode": "^3.3.2",
     "@tailwindcss/typography": "^0.5.10",
@@ -20,13 +20,13 @@
     "compressorjs": "^1.2.1",
     "giscus": "^1.4.0",
     "jsonwebtoken": "^9.0.2",
-    "md-editor-v3": "^4.9.0",
-    "nuxt": "^3.9.0",
-    "nuxt-icon": "^0.6.7",
+    "md-editor-v3": "^4.10.0",
+    "nuxt": "^3.9.2",
+    "nuxt-icon": "^0.6.8",
     "nuxt-mongoose": "^1.0.3",
     "postcss-preset-env": "^9.3.0",
-    "tailwindcss": "^3.4.0",
-    "vue": "^3.3.13",
+    "tailwindcss": "^3.4.1",
+    "vue": "^3.4.14",
     "vue-router": "^4.2.5",
     "zod": "^3.22.4"
   }

@@ -1,7 +1,18 @@
 import { Schema } from 'mongoose'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
-export const ArticleSchema = defineMongooseModel('Article', {
+export interface IArticle {
+  title: string
+  path: string
+  cover?: string
+  content: string
+  pinned?: boolean
+  tags: string[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
   title: {
     type: Schema.Types.String,
     required: true,
@@ -23,13 +34,12 @@ export const ArticleSchema = defineMongooseModel('Article', {
   },
   tags: {
     type: [Schema.Types.String],
+    default: () => [],
   },
-  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),
   },
-  // @ts-expect-error 莫名其妙的错误
   updatedAt: {
     type: Schema.Types.Date,
     default: () => new Date(),

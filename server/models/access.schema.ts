@@ -1,7 +1,15 @@
-import { Schema } from 'mongoose'
+import { Schema, type Types } from 'mongoose'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
-export const AccessSchema = defineMongooseModel('Access', {
+export interface IAccess {
+  ip?: string
+  referrer?: string
+  ua?: string
+  articleId: Types.ObjectId
+  createdAt: Date
+}
+
+export const AccessSchema = defineMongooseModel<IAccess>('Access', {
   ip: {
     type: Schema.Types.String,
   },
@@ -15,7 +23,6 @@ export const AccessSchema = defineMongooseModel('Access', {
     type: Schema.Types.ObjectId,
     required: true,
   },
-  // @ts-expect-error 莫名其妙的错误
   createdAt: {
     type: Schema.Types.Date,
     default: () => new Date(),

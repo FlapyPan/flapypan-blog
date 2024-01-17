@@ -1,13 +1,7 @@
 import { getPicture } from '~/server/data/picture'
+import z from 'zod'
 
 export default eventHandler(async (event) => {
-  const _id = event.context.params?._id
-  if (!_id) {
-    throw createError({ statusCode: 404, message: '不存在的图片' })
-  }
-  const buffer = await getPicture(_id)
-  if (!buffer) {
-    throw createError({ statusCode: 404, message: '不存在的图片' })
-  }
-  return buffer
+  const { _id } = readParams(event, { _id: z.string() })
+  return ensure(await getPicture(_id), '不存在的图片', 404)
 })

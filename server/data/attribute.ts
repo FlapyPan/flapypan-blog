@@ -1,5 +1,3 @@
-import { AttributeSchema } from '~/server/models/attribute.schema'
-
 export function getAttr(key: string) {
   return AttributeSchema.findOne({ key })
 }
@@ -9,7 +7,7 @@ export async function setAttr(key: string, value: any) {
     await AttributeSchema.findOneAndUpdate({ key }, { $set: { value } })
   } else {
     const attr = new AttributeSchema()
-    attr.key = key as any
+    attr.key = key
     attr.value = value
     await attr.save()
   }

@@ -1,7 +1,12 @@
 import { Schema } from 'mongoose'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
-export const AttributeSchema = defineMongooseModel('Attribute', {
+export interface IAttribute {
+  key: string
+  value?: any
+}
+
+export const AttributeSchema = defineMongooseModel<IAttribute>('Attribute', {
   key: {
     type: Schema.Types.String,
     required: true,
