@@ -1,8 +1,7 @@
-import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
+import Toast, { POSITION } from 'vue-toastification'
 
 export default defineNuxtPlugin(({ vueApp }) => {
-  const options: PluginOptions = {
+  vueApp.use(Toast, {
     position: POSITION.BOTTOM_CENTER,
-  }
-  vueApp.use(Toast, options)
+  })
 })
