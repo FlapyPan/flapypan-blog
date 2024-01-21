@@ -9,16 +9,6 @@ const {
 } = await useAsyncData('article:latest', () => api({ url: '/article/recent' }))
 /// endregion 文章数据
 
-/// region 阅读量和其他数据
-const {
-  data: accessData,
-} = await useLazyAsyncData(
-  `access:base`,
-  () => api({ url: `/access` }),
-  { server: false, deep: false },
-)
-/// endregion 阅读量和其他数据
-
 /// region 随机一言
 const hitoko = ref('加载中...')
 
@@ -79,16 +69,10 @@ useSeoMeta(meta)
               {{ settingStore.info }}
               <span class="animate-ping">_</span>
             </p>
-            <p class="mt-4 text-xs flex items-center justify-center md:justify-start gap-3">
-              <span v-if="accessData?.today">今日阅读量：{{ accessData.today }}</span>
-              <span v-if="accessData?.all">总阅读量：{{ accessData.all }}</span>
-            </p>
           </client-only>
         </div>
       </div>
-      <img
-        :src="settingStore.avatar" alt=""
-        class="w-32 h-32 rounded-full md:w-40 md:h-40 lg:w-52 lg:h-52">
+      <img :src="settingStore.avatar" alt="" class="w-32 h-32 rounded-full md:w-40 md:h-40 lg:w-52 lg:h-52">
     </section>
     <section class="max-w-5xl mx-auto mt-24">
       <h3 class="mb-3 mt-6 flex items-center">

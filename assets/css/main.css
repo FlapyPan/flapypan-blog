@@ -67,6 +67,10 @@ html.dark {
   .md-editor-preview {
     --md-theme-link-color: var(--primary-500);
     --md-theme-link-hover-color: var(--primary-500);
+
+    blockquote {
+      @apply border-l-primary-500;
+    }
   }
 }
 

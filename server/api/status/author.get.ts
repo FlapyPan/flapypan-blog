@@ -1,4 +1,5 @@
 import type { AuthorStatusData } from '~/server/utils/status'
+import { addAccess } from '~/server/data/access'
 
 export default eventHandler(async (event) => {
   // 启用 SSE
@@ -10,6 +11,11 @@ export default eventHandler(async (event) => {
     event.node.res.write(`id: ${data.active}\n`)
     event.node.res.write(`data: ${data.state}\n\n`)
   }
+  addAccess({
+    ip: getRealIP(event),
+    referrer: getHeader(event, 'Referer'),
+    ua: getHeader(event, 'User-Agent'),
+  })
   // 第一次连接直接发送
   hook(statusDataHolder.get())
   // 注册事件

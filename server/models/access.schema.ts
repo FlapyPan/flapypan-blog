@@ -5,7 +5,7 @@ export interface IAccess {
   ip?: string
   referrer?: string
   ua?: string
-  articleId: Types.ObjectId
+  articleId?: Types.ObjectId
   createdAt: Date
 }
 
@@ -21,7 +21,6 @@ export const AccessSchema = defineMongooseModel<IAccess>('Access', {
   },
   articleId: {
     type: Schema.Types.ObjectId,
-    required: true,
   },
   createdAt: {
     type: Schema.Types.Date,
