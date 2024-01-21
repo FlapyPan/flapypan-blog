@@ -3,7 +3,7 @@ export function getAttr(key: string) {
 }
 
 export async function setAttr(key: string, value: any) {
-  if ((await AttributeSchema.count({ key })) > 0) {
+  if ((await AttributeSchema.countDocuments({ key })) > 0) {
     await AttributeSchema.findOneAndUpdate({ key }, { $set: { value } })
   } else {
     const attr = new AttributeSchema()

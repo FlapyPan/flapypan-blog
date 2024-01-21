@@ -59,11 +59,10 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
   },
   css: [
-    '~/assets/css/main.css',
-    '~/assets/css/github-languages-colors.css',
-    '~/assets/css/md.css',
-    '~/assets/css/md.dark.css',
+    'md-editor-v3/lib/style.css',
     'vue-toastification/dist/index.css',
+    '~/assets/css/github-languages-colors.css',
+    '~/assets/css/main.css',
   ],
   postcss,
 })

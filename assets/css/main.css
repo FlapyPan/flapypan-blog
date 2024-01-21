@@ -51,3 +51,30 @@ input {
 .page-leave-to {
   @apply transform-gpu translate-y-12 opacity-10;
 }
+
+html, .themed-scrollbar {
+  @apply scrollbar scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-rounded-full
+  scrollbar-thumb-primary-200 scrollbar-track-primary-50 dark:scrollbar-thumb-primary-900 dark:scrollbar-track-primary-950;
+}
+
+html.dark {
+  @apply scrollbar-thumb-primary-900 scrollbar-track-primary-950;
+}
+
+.md-editor {
+  @apply bg-zinc-50 dark:bg-zinc-900;
+
+  .md-editor-preview {
+    --md-theme-link-color: var(--primary-500);
+    --md-theme-link-hover-color: var(--primary-500);
+  }
+}
+
+.md-editor-catalog-link > span {
+  @apply text-sm;
+}
+
+.md-editor-catalog-link > span:hover,
+.md-editor-catalog-active > span {
+  @apply text-primary-500;
+}

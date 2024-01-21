@@ -38,8 +38,8 @@ const formatter = new Intl.DateTimeFormat(
     timeZone: 'Asia/ShangHai',
   },
 )
-const formattedcreatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.createdAt ?? Date.now())))
-const formattedupdatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.updatedAt ?? Date.now())))
+const formattedCreatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.createdAt ?? Date.now())))
+const formattedUpdatedAt = computed(() => formatter.format(new Date(articleData.value?.article?.updatedAt ?? Date.now())))
 
 /// region 文章删除
 const deleteDialog = ref(false)
@@ -126,8 +126,8 @@ const meta = {
   ogTitle: title,
   ogDescription: title,
   ogImage: coverSrc,
-  articlePublishedTime: formattedcreatedAt,
-  articleModifiedTime: formattedupdatedAt,
+  articlePublishedTime: formattedCreatedAt,
+  articleModifiedTime: formattedUpdatedAt,
 }
 useServerSeoMeta(meta)
 useSeoMeta(meta)
@@ -135,121 +135,124 @@ useSeoMeta(meta)
 
 <template>
   <div class="page">
-    <div v-if="auth.state.value.isLogin && isEdit">
-      <f-btn icon="mingcute:left-line" @click="isEdit = false">
-        取消
-      </f-btn>
-      <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
-    </div>
-    <template v-if="!isEdit">
-      <div v-if="articleDataError"
-           class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
-        <icon class="text-lg" name="mingcute:close-circle-line" />
-        <span class="text-sm">{{ articleDataError }}</span>
-        <span class="flex-1"></span>
-        <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
+    <ClientOnly>
+      <div v-if="auth.state.value.isLogin && isEdit">
+        <f-btn icon="mingcute:left-line" @click="isEdit = false">
+          取消
+        </f-btn>
+        <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
       </div>
-      <template v-if="articleData?.article?._id">
-        <page-head :title="articleData?.article?.title" class="mx-auto text-center">
-        </page-head>
-        <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
+      <template v-if="!isEdit">
+        <div v-if="articleDataError"
+             class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
+          <icon class="text-lg" name="mingcute:close-circle-line" />
+          <span class="text-sm">{{ articleDataError }}</span>
+          <span class="flex-1"></span>
+          <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
+        </div>
+        <template v-if="articleData?.article?._id">
+          <page-head :title="articleData?.article?.title" class="mx-auto text-center">
+          </page-head>
+          <p class="flex items-center justify-center flex-wrap text-xs md:text-sm gap-2">
           <span class="flex items-center gap-1">
             <icon name="mingcute:document-line" />
             <span class="hidden md:inline-block">创建</span>
-            {{ formattedcreatedAt }}
+            {{ formattedCreatedAt }}
           </span>
-          <span class="flex items-center gap-1">
+            <span class="flex items-center gap-1">
             <icon name="mingcute:edit-line" />
             <span class="hidden md:inline-block">修改</span>
-            {{ formattedupdatedAt }}
+            {{ formattedUpdatedAt }}
           </span>
-          <span class="flex items-center gap-1">
+            <span class="flex items-center gap-1">
             <icon name="mingcute:book-6-line" />
             <span class="hidden md:inline-block">阅读</span>
             {{ articleData?.accessCount }}
           </span>
-        </p>
-        <p class="my-4 flex items-center justify-center flex-wrap gap-2">
-          <f-btn
-            v-for="name in (articleData?.article?.tags || [])" :key="name" :to="`/tag/${name}`"
-            icon="mingcute:tag-line" text>
-            {{ name }}
-          </f-btn>
-        </p>
-        <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
-        <div class="flex gap-4 justify-center mt-8">
-          <md-preview
-            v-if="articleData?.article?._id" :model-value="articleData?.article?.content"
-            :no-img-zoom-in="false" :scroll-element="scrollElement"
-            class="flex-1" code-theme="gradient" editor-id="read" preview-theme="default" />
-          <div class="side hidden lg:block sticky w-64 px-4 top-20 overflow-y-auto mt-16">
-            <client-only>
-              <md-catalog
-                :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read" />
-            </client-only>
+          </p>
+          <p class="my-4 flex items-center justify-center flex-wrap gap-2">
+            <f-btn
+              v-for="name in (articleData?.article?.tags || [])" :key="name" :to="`/tag/${name}`"
+              icon="mingcute:tag-line" text>
+              {{ name }}
+            </f-btn>
+          </p>
+          <img :src="coverSrc" alt="" class="w-full rounded-xl mb-6 md:mb-12 max-w-4xl max-h-96 mx-auto">
+          <div class="flex gap-4 justify-center mt-8">
+            <md-preview
+              v-if="articleData?.article?._id" :model-value="articleData?.article?.content"
+              :no-img-zoom-in="false" :scroll-element="scrollElement" :theme="$colorMode.value"
+              class="flex-1" code-theme="gradient" editor-id="read" preview-theme="default" />
+            <div
+              class="side hidden lg:block sticky w-64 px-4 top-20 mt-16 themed-scrollbar overflow-y-auto">
+              <client-only>
+                <md-catalog
+                  :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read" />
+              </client-only>
+            </div>
           </div>
-        </div>
-        <nav class="my-6 flex justify-center gap-4">
-          <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
-            <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
-            上一篇
-          </f-btn>
-          <f-btn v-else disabled text title="没有啦">
-            <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
-            上一篇
-          </f-btn>
-          <f-btn v-if="articleData?.next" :to="`/${articleData.next}`" text title="下一篇">
-            下一篇
-            <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
-          </f-btn>
-          <f-btn v-else disabled text title="没有啦">
-            下一篇
-            <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
-          </f-btn>
-        </nav>
-        <client-only>
-          <div class="z-10 fixed bottom-12 right-4 md:right-12 flex flex-col gap-2">
-            <button class="float-btn bg-blur" title="回到顶部" @click="toTop()">
-              <icon name="mingcute:arrows-up-line" />
-            </button>
-            <button class="float-btn bg-blur" title="评论区" @click="toComments()">
-              <icon name="mingcute:comment-line" />
-            </button>
-            <template v-if="auth.state.value.isLogin">
-              <button v-if="articleData?.article?.pinned" class="float-btn bg-blur text-primary-500" title="取消固定"
-                      @click="changePin(false)">
-                <icon name="mingcute:pin-fill" />
+          <nav class="my-6 flex justify-center gap-4">
+            <f-btn v-if="articleData?.pre" :to="`/${articleData.pre}`" text title="上一篇">
+              <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+              上一篇
+            </f-btn>
+            <f-btn v-else disabled text title="没有啦">
+              <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+              上一篇
+            </f-btn>
+            <f-btn v-if="articleData?.next" :to="`/${articleData.next}`" text title="下一篇">
+              下一篇
+              <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+            </f-btn>
+            <f-btn v-else disabled text title="没有啦">
+              下一篇
+              <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+            </f-btn>
+          </nav>
+          <client-only>
+            <div class="z-10 fixed bottom-12 right-4 md:right-12 flex flex-col gap-2">
+              <button class="float-btn bg-blur" title="回到顶部" @click="toTop()">
+                <icon name="mingcute:arrows-up-line" />
               </button>
-              <button v-else class="float-btn bg-blur" title="固定" @click="changePin(true)">
-                <icon name="mingcute:pin-line" />
+              <button class="float-btn bg-blur" title="评论区" @click="toComments()">
+                <icon name="mingcute:comment-line" />
               </button>
-              <button class="float-btn bg-blur" title="编辑" @click="openEdit">
-                <icon name="mingcute:edit-line" />
-              </button>
-              <button class="float-btn bg-blur" title="删除" @click="deleteDialog = true">
-                <icon name="mingcute:delete-2-line" />
-              </button>
-              <f-dialog v-model="deleteDialog" closable>
-                <p class="mb-4">
-                  确认删除此文章 "{{ articleData?.article?.title }}" ?
-                </p>
-                <div class="text-right">
-                  <f-btn class="mr-4" text @click="deleteArticle">
+              <template v-if="auth.state.value.isLogin">
+                <button v-if="articleData?.article?.pinned" class="float-btn bg-blur text-primary-500" title="取消固定"
+                        @click="changePin(false)">
+                  <icon name="mingcute:pin-fill" />
+                </button>
+                <button v-else class="float-btn bg-blur" title="固定" @click="changePin(true)">
+                  <icon name="mingcute:pin-line" />
+                </button>
+                <button class="float-btn bg-blur" title="编辑" @click="openEdit">
+                  <icon name="mingcute:edit-line" />
+                </button>
+                <button class="float-btn bg-blur" title="删除" @click="deleteDialog = true">
+                  <icon name="mingcute:delete-2-line" />
+                </button>
+                <f-dialog v-model="deleteDialog" closable>
+                  <p class="mb-4">
+                    确认删除此文章 "{{ articleData?.article?.title }}" ?
+                  </p>
+                  <div class="text-right">
+                    <f-btn class="mr-4" text @click="deleteArticle">
                     <span class="text-red-500">
                       确认删除
                     </span>
-                  </f-btn>
-                  <f-btn text @click="deleteDialog = false">
-                    取消
-                  </f-btn>
-                </div>
-              </f-dialog>
-            </template>
-          </div>
-        </client-only>
-        <giscus-card />
+                    </f-btn>
+                    <f-btn text @click="deleteDialog = false">
+                      取消
+                    </f-btn>
+                  </div>
+                </f-dialog>
+              </template>
+            </div>
+          </client-only>
+          <giscus-card />
+        </template>
       </template>
-    </template>
+    </ClientOnly>
   </div>
 </template>
 

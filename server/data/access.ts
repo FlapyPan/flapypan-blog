@@ -12,16 +12,16 @@ export function addAccess(access: AccessAddRequest) {
 }
 
 export function getArticleAccessCount(articleId: string | ObjectId): Promise<number> {
-  return AccessSchema.count({ articleId })
+  return AccessSchema.countDocuments({ articleId })
 }
 
 export function getTodayAccessCount(): Promise<number> {
   const begin = new Date()
   begin.setHours(0, 0, 0, 0)
   const end = new Date()
-  return AccessSchema.count({ createdAt: { $gte: begin, $lte: end } })
+  return AccessSchema.countDocuments({ createdAt: { $gte: begin, $lte: end } })
 }
 
 export function getAllAccessCount(): Promise<number> {
-  return AccessSchema.count()
+  return AccessSchema.countDocuments()
 }
