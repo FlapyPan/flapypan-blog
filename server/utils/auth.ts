@@ -51,3 +51,12 @@ export function auth(event: H3Event): ContextUser {
     throw createError({ statusCode: 401, message: 'token无效' })
   }
 }
+
+export function isLogin(event: H3Event): boolean {
+  try {
+    auth(event)
+    return true
+  } catch (_) {
+    return false
+  }
+}

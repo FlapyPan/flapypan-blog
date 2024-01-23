@@ -4,7 +4,7 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 const settingStore = useSettingStore()
 const auth = useAuth()
 
-const { data: links } = useAsyncData('pinnedLinks', () => api({ url: '/article/pinned' }), { server: false })
+const { data: links } = useAsyncData('pinnedLinks', () => api('/article/pinned'), { server: false })
 
 const scrolled = ref(false)
 
@@ -60,7 +60,7 @@ const colorModeCircle = {
     <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-center gap-2 md:gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
-          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'scrolled': scrolled, 'bg-blur': scrolled }"
+          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'shadow bg-blur': scrolled }"
           class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
           <icon
             :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
@@ -101,7 +101,7 @@ const colorModeCircle = {
       </h-menu>
 
       <nav
-        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
+        :class="{ 'shadow bg-blur': scrolled }"
         class="items-center gap-4 text-sm underline-offset-2 hidden md:flex rounded-full py-3 px-5">
         <nuxt-link
           v-for="l in navLinks" :key="l.routeName"
@@ -124,7 +124,7 @@ const colorModeCircle = {
       </nav>
 
       <button
-        :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }"
+        :class="{ 'shadow bg-blur': scrolled }"
         class="flex items-center rounded-full p-3 sm:hover:text-primary-500 cursor-pointer"
         title="切换配色模式"
         @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
@@ -146,7 +146,7 @@ const colorModeCircle = {
 
       <div class="flex-1 flex md:hidden"></div>
 
-      <div :class="{ 'scrolled': scrolled, 'bg-blur': scrolled }" class="flex items-center rounded-full gap-1">
+      <div :class="{ 'shadow bg-blur': scrolled }" class="flex items-center rounded-full gap-1">
         <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
           <menu-button
             :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
@@ -168,7 +168,7 @@ const colorModeCircle = {
             leave-from-class="transform scale-100 opacity-100"
             leave-to-class="transform scale-95 opacity-0">
             <menu-items
-              class="absolute w-32 left-0 mt-4 p-1 origin-top-left rounded-xl shadow-lg bg-blur focus:outline-none">
+              class="absolute w-32 right-0 mt-4 p-1 origin-top-right shadow-lg bg-blur rounded-xl focus:outline-none">
               <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
                 <button
                   :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
@@ -214,20 +214,4 @@ const colorModeCircle = {
 </template>
 
 <style scoped>
-@keyframes app-bar-jump-in {
-  0% {
-    transform: translateY(-100%);
-  }
-  50% {
-    transform: translateY(15%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-.scrolled {
-  @apply shadow;
-  animation: app-bar-jump-in 0.3s;
-}
 </style>

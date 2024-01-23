@@ -6,7 +6,7 @@ const {
   pending: fetchingArticleData,
   data: articleData,
   refresh,
-} = await useAsyncData('article:latest', () => api({ url: '/article/recent' }))
+} = await useAsyncData('article:latest', () => api('/article/recent'))
 /// endregion 文章数据
 
 /// region 随机一言
@@ -79,7 +79,7 @@ useSeoMeta(meta)
         最近更新
         <refresh-button :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
       </h3>
-      <div class="columns-1 md:columns-2 gap-6 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="text-center mt-6">

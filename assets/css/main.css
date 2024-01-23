@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  @apply overflow-x-hidden;
+}
+
 body {
   --primary-500: rgb(99, 102, 241);
   @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-900;
@@ -11,16 +15,20 @@ img {
   @apply object-cover;
 }
 
-input {
-  @apply bg-white bg-opacity-70 dark:bg-zinc-800 dark:bg-opacity-80 rounded-md py-2 px-3;
+input, textarea {
+  @apply bg-white bg-opacity-70 dark:bg-zinc-800 dark:bg-opacity-80 rounded-md py-2 px-3 transition-colors;
 
   &[disabled] {
-    @apply opacity-50 cursor-not-allowed;
+    @apply opacity-30 cursor-not-allowed;
+  }
+
+  &:focus {
+    @apply outline-none bg-opacity-50 dark:bg-opacity-50 bg-primary-50 dark:bg-primary-950;
   }
 }
 
 .bg-blur {
-  @apply bg-white bg-opacity-70 backdrop-blur-xl dark:bg-zinc-800 dark:bg-opacity-80;
+  @apply bg-white bg-opacity-60 backdrop-blur dark:bg-zinc-800 dark:bg-opacity-70;
 }
 
 .page {
@@ -39,17 +47,17 @@ input {
   to { transform: rotate(360deg); }
 }
 
-.page-enter-active {
-  transition: all 0.3s;
+.page-leave-active {
+  @apply transform-gpu transition-all duration-300;
 }
 
-.page-leave-active {
-  transition: all 0.2s;
+.page-enter-active{
+  @apply transform-gpu transition-all duration-500;
 }
 
 .page-enter-from,
 .page-leave-to {
-  @apply transform-gpu translate-y-12 opacity-10;
+  @apply blur-xl scale-x-150 opacity-0 origin-top;
 }
 
 html, .themed-scrollbar {

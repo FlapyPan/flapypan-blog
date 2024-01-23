@@ -12,11 +12,8 @@ const savingSettings = ref(false)
 async function saveSetting() {
   savingSettings.value = true
   try {
-    const data = await api({ url: '/attribute/settings', method: 'POST', payload: settingStore.value })
-    settingStore.value = {
-      ...settingStore.value,
-      ...data,
-    }
+    const data = await api('/attribute/settings', 'POST', settingStore.value)
+    settingStore.value = { ...settingStore.value, ...data }
   } finally {
     savingSettings.value = false
   }

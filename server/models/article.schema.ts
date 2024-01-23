@@ -24,6 +24,7 @@ export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
   },
   cover: {
     type: Schema.Types.String,
+    default: '/banner.webp',
   },
   content: {
     type: Schema.Types.String,
@@ -31,6 +32,7 @@ export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
   },
   pinned: {
     type: Schema.Types.Boolean,
+    default: false,
   },
   tags: {
     type: [Schema.Types.String],

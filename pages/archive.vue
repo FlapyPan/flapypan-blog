@@ -5,14 +5,31 @@ const settingStore = useSettingStore()
 const {
   pending: fetchingTagList,
   data: tagList,
-} = await useAsyncData(`tag`, () => api({ url: `/tag` }))
+} = await useAsyncData(`tag`, () => api(`/tag`))
 /// endregion 标签数据
 
 /// region 文章列表
 const {
   pending: fetchingArticleData,
   data: articleData,
-} = await useAsyncData(`article:yearly`, () => api({ url: `/article/yearly` }))
+} = await useAsyncData(
+  `article:yearly`,
+  () => api(`/article`).then((articleList) => {
+    const data = []
+    let i = -1
+    let lastYear = 0
+    for (const article of articleList) {
+      const year = new Date(article.createdAt).getFullYear()
+      if (year !== lastYear) {
+        data.push({ year, list: [] })
+        i += 1
+      }
+      lastYear = year
+      data[i].list.push(article)
+    }
+    return data
+  }),
+)
 /// endregion 文章列表
 
 const title = `归档 - ${settingStore.value.siteTitle ?? '博客'}`

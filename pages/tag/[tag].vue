@@ -9,7 +9,7 @@ const {
   pending: fetchingData,
 } = useAsyncData(
   `tag:${tag.value}`,
-  async () => api({ url: `/article/tag/${tag.value}` }),
+  () => api(`/article/tag/${tag.value}`),
   { watch: [tag] },
 )
 /// endregion 获取 tag 信息

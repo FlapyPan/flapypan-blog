@@ -5,17 +5,13 @@ export function useAuth() {
   }))
 
   const check = () => {
-    api({ url: `/auth/user` })
+    api(`/auth/user`)
       .then(() => state.value.isLogin = true)
       .catch(() => state.value.isLogin = false)
   }
 
   const login = async ({ username, password, remember }) => {
-    const { token } = await api({
-      url: `/auth/login`,
-      method: 'POST',
-      payload: { username, password },
-    })
+    const { token } = await api(`/auth/login`, 'POST', { username, password })
     if (token && import.meta.browser) {
       if (remember) localStorage.setItem('token', token)
       else sessionStorage.setItem('token', token)
@@ -28,7 +24,7 @@ export function useAuth() {
 
   const logout = async () => {
     try {
-      await api({ url: `/auth/logout`, method: 'POST' })
+      await api(`/auth/logout`, 'POST')
     } finally {
       state.value.isLogin = false
       sessionStorage.removeItem('token')

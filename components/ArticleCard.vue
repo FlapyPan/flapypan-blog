@@ -22,7 +22,7 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 
 <template>
   <nuxt-link class="article-card group" :to="`/${article.path}`" @click="emits('onRoute')">
-    <img :src="coverSrc" alt="" class="absolute inset-0 -z-10 object-cover">
+    <img :src="coverSrc" alt="" class="absolute inset-0 -z-10 object-cover object-center">
     <div class="rounded-b-xl flex flex-col justify-center p-4">
       <h3 class="text-lg">
         {{ article.title }}
@@ -41,7 +41,7 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
 
   &::after {
     content: "";
-    @apply absolute inset-0 -z-10 bg-zinc-100 bg-opacity-80 dark:bg-zinc-800 dark:bg-opacity-70;
+    @apply absolute inset-0 -z-10 bg-zinc-100 bg-opacity-60 dark:bg-zinc-800 dark:bg-opacity-50;
   }
 
 }

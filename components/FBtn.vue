@@ -62,11 +62,14 @@ defineProps({
   }
 
   &.f-btn--normal {
-    @apply rounded-lg
-    bg-opacity-30 bg-white backdrop-blur-xl backdrop-saturate-100 dark:bg-opacity-20 dark:bg-zinc-800;
+    @apply rounded-lg bg-opacity-30 bg-zinc-300 dark:bg-zinc-800;
 
     .f-btn-content {
       @apply px-2 py-2;
+    }
+
+    &:hover {
+      @apply bg-primary-100 dark:bg-primary-950;
     }
 
   }

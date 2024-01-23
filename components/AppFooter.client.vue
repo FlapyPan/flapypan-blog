@@ -8,7 +8,7 @@ const {
   data: accessData,
 } = await useLazyAsyncData(
   `access:base`,
-  () => api({ url: `/access` }),
+  () => api(`/access`),
   { server: false, deep: false },
 )
 /// endregion 访问量和其他数据

@@ -1,5 +1,4 @@
 <script setup>
-import Compressor from 'compressorjs'
 import { MdEditor } from 'md-editor-v3'
 import { useToast } from 'vue-toastification'
 
@@ -50,30 +49,12 @@ const editTags = computed({
 const catchEditorError = ({ message }) => toast.error(message)
 
 /// region 图片上传
-// 图片压缩
-async function compress(file) {
-  return new Promise((resolve, reject) => {
-    if (file.type === 'image/gif') {
-      // Compressor.js 目前不支持 gif 压缩，暂时跳过
-      resolve(file)
-      return
-    }
-    new Compressor(file, {
-      quality: 0.6, // 压缩率，针对 jpg 和 webp
-      maxWidth: 1920, // 最大宽度
-      maxHeight: 1080, // 最大高度
-      success: resolve,
-      error: reject,
-    })
-  })
-}
 
 async function uploadImg(file) {
   const form = new FormData()
-  const compressFile = await compress(file)
-  form.append('file', compressFile, compressFile.name)
+  form.append('file', file, file.name)
   // 上传获取图片id
-  const _id = await api({ url: '/picture', method: 'POST', payload: form, jsonPayload: false })
+  const _id = await api('/picture', 'POST', form, false)
   return `/api/picture/${_id}`
 }
 
@@ -91,7 +72,7 @@ async function saveArticle() {
   saving.value = true
   const method = isNewArticle ? 'POST' : 'PUT'
   try {
-    const { path } = await api({ url: `/article`, method, payload: draft.value })
+    const { path } = await api(`/article`, method, draft.value)
     setTimeout(() => localStorage.removeItem(storageKey), 3000)
     // 将文章路径传递给父组件
     emits('submit', path)

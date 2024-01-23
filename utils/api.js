@@ -1,29 +1,16 @@
-/** @typedef {'GET' | 'POST' | 'PUT' | 'DELETE'} HttpMethod http 请求方法 */
-
 import { useToast } from 'vue-toastification'
-
-/**
- * @typedef {object} ApiOptions
- * @property {string|URL} url  请求路径
- * @property {HttpMethod?} method 请求方法
- * @property {any?} payload 请求数据
- * @property {boolean?} jsonPayload payload 是否为 json
- */
 
 const toast = useToast()
 
 /**
- * 封装的 fetch api, 请求和响应全部使用 json
- * @param {ApiOptions} options
+ *
+ * @param {string|URL} url  请求路径
+ * @param {'GET' | 'POST' | 'PUT' | 'DELETE'} [method] 请求方法
+ * @param {any} [payload] 请求数据
+ * @param {boolean} [jsonPayload] payload 是否为 json
  * @return {Promise<*>}
  */
-export default async function api(options = {
-  url: '',
-  method: 'GET',
-  payload: null,
-  jsonPayload: true,
-}) {
-  const { url, method, payload, jsonPayload } = options
+export default async function api(url, method = 'GET', payload = null, jsonPayload = true) {
   const headers = {}
   if (import.meta.browser) {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token')
@@ -43,7 +30,6 @@ export default async function api(options = {
     })
   } catch (e) {
     const { data, message, status } = e
-    console.dir(e)
     if (status === 401) {
       useAuth().state.value.isLogin = false
     } else if (import.meta.browser) {

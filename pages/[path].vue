@@ -21,7 +21,7 @@ const {
   refresh: getArticleData,
 } = await useAsyncData(
   `article:${path.value}`,
-  () => api({ url: `/article/${path.value}` }),
+  () => api(`/article/${path.value}`),
 )
 const coverSrc = ref(articleData.value?.article?.cover || settingStore.value.banner)
 /// endregion 文章数据
@@ -50,9 +50,9 @@ async function deleteArticle() {
   deleting.value = true
   deleteError.value = null
   try {
-    // await api({ url: `/article/${articleData.value.article._id}`, method: 'DELETE' })
+    // await api(`/article/${articleData.value.article._id}`, 'DELETE')
     // DELETE /api/article/[_id] 方法报 404 的临时解决方案
-    await api({ url: `/article/delete/${articleData.value.article._id}` })
+    await api(`/article/delete/${articleData.value.article._id}`)
     await navigateTo({ path: '/archive', replace: true })
   } catch (e) {
     deleteError.value = e.message
@@ -91,14 +91,9 @@ function onSaveArticle(newPath) {
 }
 
 async function changePin(pinned) {
-  const data = await api({
-    url: `/article/pinned`,
-    method: 'PUT',
-    payload: { _id: articleData.value?.article?._id, pinned },
-  })
+  await api(`/article`, 'PUT', { _id: articleData.value?.article?._id, pinned })
   await refreshNuxtData('pinnedLinks')
-  if (data) settingStore.value.links = data
-  articleData.value.article.pinned = data.pinned
+  articleData.value.article.pinned = pinned
 }
 
 /// endregion 文章编辑

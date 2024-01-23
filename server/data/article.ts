@@ -72,21 +72,18 @@ export async function addArticle(article: ArticleAddRequest) {
 
 interface ArticleModifyRequest {
   _id: string | ObjectId
-  title: string
-  path: string
+  title?: string | null
+  path?: string | null
   cover?: string | null
-  content: string
-  tags: string[]
+  content?: string | null
+  tags?: string[] | null
 }
 
 export async function modifyArticle(article: ArticleModifyRequest) {
-  await ArticleSchema.findByIdAndUpdate(article._id, { ...article, updatedAt: new Date() })
+  const newData: any = { ...article }
+  if (newData.content) newData.updatedAt = new Date()
+  await ArticleSchema.findByIdAndUpdate(article._id, newData)
   return { path: article.path }
-}
-
-export async function modifyArticlePinned(_id: string | ObjectId, pinned: boolean) {
-  await ArticleSchema.updateOne({ _id }, { $set: { pinned, updatedAt: new Date() } })
-  return { pinned }
 }
 
 export async function deleteArticle(_id: string | ObjectId) {
