@@ -1,5 +1,5 @@
 <script setup>
-import { MdCatalog, MdPreview } from 'md-editor-v3'
+import { MdCatalog, MdPreview } from 'md-editor-v3';
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.client.vue'))
@@ -114,12 +114,14 @@ function toComments() {
 }
 
 /// 处理网页标题
-const title = `${articleData.value?.article?.title ?? '文章'} - ${settingStore.value.siteTitle ?? '博客'}`
+const siteTitle = settingStore.value.siteTitle ?? '博客';
+const title = `${articleData.value?.article?.title ?? '文章'} - ${siteTitle}`;
+const description = articleData.value?.article?.content?.substring(0, 200).replace(/(\n[\s\t]*\r*\n)/g, ' ');
 const meta = {
   title,
-  description: title,
+  description,
   ogTitle: title,
-  ogDescription: title,
+  ogDescription: description,
   ogImage: coverSrc,
   articlePublishedTime: formattedCreatedAt,
   articleModifiedTime: formattedUpdatedAt,
