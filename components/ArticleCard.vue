@@ -31,7 +31,7 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
         {{ formattedDate }}
       </div>
     </div>
-    <icon class="mr-4 text-xl transition-transform translate-x-12 group-hover:translate-x-0" name="mingcute:arrow-right-line" />
+    <Icon class="mr-4 text-xl transition-transform translate-x-12 group-hover:translate-x-0" name="mingcute:arrow-right-line" />
   </nuxt-link>
 </template>
 

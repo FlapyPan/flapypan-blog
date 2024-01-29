@@ -13,19 +13,19 @@ defineProps({
   <button draggable="false" :disabled="disabled" class="f-btn" :class="[text ? 'f-btn--text' : 'f-btn--normal']">
     <template v-if="to !== ''">
       <nuxt-link :to="to" class="f-btn-content">
-        <icon v-if="icon !== ''" class="mr-1" :name="icon" />
+        <Icon v-if="icon" class="mr-1" :name="icon" />
         <slot />
       </nuxt-link>
     </template>
     <template v-else-if="href !== ''">
       <a :href="href" :target="target" class="f-btn-content">
-        <icon v-if="icon !== ''" class="mr-1" :name="icon" />
+        <Icon v-if="icon" class="mr-1" :name="icon" />
         <slot />
       </a>
     </template>
     <template v-else>
       <span class="f-btn-content">
-        <icon v-if="icon !== ''" class="mr-1" :name="icon" />
+        <Icon v-if="icon" class="mr-1" :name="icon" />
         <slot />
       </span>
     </template>

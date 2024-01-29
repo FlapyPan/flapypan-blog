@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html, body {
-  @apply overflow-x-hidden;
+  @apply w-full overflow-x-clip;
 }
 
 body {
@@ -51,7 +51,7 @@ input, textarea {
   @apply transform-gpu transition-all duration-300;
 }
 
-.page-enter-active{
+.page-enter-active {
   @apply transform-gpu transition-all duration-500;
 }
 

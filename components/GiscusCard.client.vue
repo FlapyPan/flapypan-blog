@@ -16,7 +16,7 @@ const theme = computed(() => `noborder_${colorMode.value}`)
 </script>
 
 <template>
-  <div id="giscus" class="pt-20">
+  <div id="giscus" class="pt-20 print:hidden">
     <slot />
     <template v-if="valid">
       <giscus-widget

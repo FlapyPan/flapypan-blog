@@ -26,7 +26,7 @@ const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
       <div class="flex-1"></div>
       <div class="hidden sm:flex items-center gap-2">
         <template v-for="name in tags" :key="name">
-          <f-btn icon="mingcute:tag-line" :to="`/tag/${name}`" text>
+          <f-btn icon="mingcute:hashtag-line" :to="`/tag/${name}`" text>
             {{ name }}
           </f-btn>
         </template>

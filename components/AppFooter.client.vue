@@ -15,7 +15,7 @@ const {
 </script>
 
 <template>
-  <footer class="max-w-3xl mx-auto text-center pb-12">
+  <footer class="max-w-3xl mx-auto text-center pb-12 print:hidden">
     <md-preview
       v-if="settingStore.footer" :model-value="settingStore.footer"
       :no-img-zoom-in="true" :scroll-element="null"

@@ -56,13 +56,13 @@ const colorModeCircle = {
       <login-form @close="auth.state.value.loginDialogVisible = false" />
     </f-dialog>
   </template>
-  <header class="w-full fixed top-0 z-50 py-2">
+  <header class="w-full fixed top-0 z-50 py-2 print:hidden">
     <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-center gap-2 md:gap-3">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
           :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'shadow bg-blur': scrolled }"
           class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
-          <icon
+          <Icon
             :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
             class="transform transition-transform" />
         </menu-button>
@@ -82,7 +82,7 @@ const colorModeCircle = {
                 :title="l.title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateTo(l.to)">
-                <icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
+                <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
                 {{ l.title }}
               </button>
             </menu-item>
@@ -92,7 +92,7 @@ const colorModeCircle = {
                 :class="[$route.path === `/${path}` || active ? 'bg-secondary-500 bg-opacity-10' : '']" :title="title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateTo(`/${path}`)">
-                <icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
+                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
                 {{ title }}
               </button>
             </menu-item>
@@ -109,7 +109,7 @@ const colorModeCircle = {
           :title="l.title"
           :to="l.to"
           class="flex items-center">
-          <icon v-if="$route.name === l.routeName" :name="l.icon" class="mr-1" />
+          <Icon v-if="$route.name === l.routeName" :name="l.icon" class="mr-1" />
           {{ l.title }}
         </nuxt-link>
         <nuxt-link
@@ -118,7 +118,7 @@ const colorModeCircle = {
           :title="title"
           :to="`/${path}`"
           class="flex items-center sm:hover:text-secondary-500">
-          <icon v-if="$route.path === `/${path}`" class="mr-1" name="mingcute:document-line" />
+          <Icon v-if="$route.path === `/${path}`" class="mr-1" name="mingcute:document-line" />
           {{ title }}
         </nuxt-link>
       </nav>
@@ -130,17 +130,17 @@ const colorModeCircle = {
         @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
         <template v-if="$colorMode.preference === 'system'">
           <span class="flex md:hidden">
-            <icon class="flex md:hidden" name="mingcute:cellphone-line" />
+            <Icon class="flex md:hidden" name="mingcute:cellphone-line" />
           </span>
           <span class="hidden md:flex">
-            <icon class="hidden md:flex" name="mingcute:computer-line" />
+            <Icon class="hidden md:flex" name="mingcute:computer-line" />
           </span>
         </template>
         <template v-else-if="$colorMode.preference === 'light'">
-          <icon name="mingcute:sun-line" />
+          <Icon name="mingcute:sun-line" />
         </template>
         <template v-else-if="$colorMode.preference === 'dark'">
-          <icon name="mingcute:moon-line" />
+          <Icon name="mingcute:moon-line" />
         </template>
       </button>
 
@@ -174,7 +174,7 @@ const colorModeCircle = {
                   :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
                   @click="navigateTo('/new')">
-                  <icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                  <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
                   写新文章
                 </button>
               </menu-item>
@@ -183,7 +183,7 @@ const colorModeCircle = {
                   :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
                   @click="navigateTo('/setting')">
-                  <icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                  <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
                   博客设置
                 </button>
               </menu-item>
@@ -192,7 +192,7 @@ const colorModeCircle = {
                   :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
                   @click="auth.logout()">
-                  <icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+                  <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
                   退出登录
                 </button>
               </menu-item>
@@ -201,7 +201,7 @@ const colorModeCircle = {
                   :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm"
                   @click="auth.state.value.loginDialogVisible = true">
-                  <icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                  <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
                   管理员登录
                 </button>
               </menu-item>

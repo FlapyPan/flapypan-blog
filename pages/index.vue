@@ -55,10 +55,10 @@ useSeoMeta(meta)
             <a
               :href="`mailto:${settingStore.email}`" class="flex items-center"
               title="邮箱联系我">
-              <icon name="mingcute:at-line" />
+              <Icon name="mingcute:at-line" />
             </a>
             <a :href="`https://github.com/${settingStore.name}`" class="flex items-center" title="github">
-              <icon name="mdi:github" />
+              <Icon name="mdi:github" />
             </a>
           </p>
           <client-only>
@@ -83,7 +83,7 @@ useSeoMeta(meta)
         <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="text-center mt-6">
-        <f-btn text to="/archive">
+        <f-btn text to="/archive" icon="mingcute:more-2-line">
           查看更多
         </f-btn>
       </div>

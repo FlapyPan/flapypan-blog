@@ -54,7 +54,7 @@ useSeoMeta(meta)
     </h3>
     <div class="flex items-center gap-4 flex-wrap my-6">
       <template v-for="name in tagList" :key="name">
-        <f-btn :to="`/tag/${name}`" icon="mingcute:tag-line" text>
+        <f-btn :to="`/tag/${name}`" icon="mingcute:hashtag-line" text>
           {{ name }}
         </f-btn>
       </template>

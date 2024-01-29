@@ -38,20 +38,20 @@ useSeoMeta(meta)
         <p class="text-sm flex items-center gap-4">
           <span v-if="repo.language" class="flex items-center">
             <span class="text-zinc-500 flex items-center">
-              <icon :class="`lang-${repo.language}`" class="text-base mr-1" name="mingcute:round-fill"></icon>
+              <Icon :class="`lang-${repo.language}`" class="text-base mr-1" name="mingcute:round-fill"></icon>
             </span>
             {{ repo.language }}
           </span>
           <span v-if="repo.stargazers_count >= 0" class="flex items-center">
-            <icon class="text-base text-zinc-500 mr-1" name="mingcute:star-line" />
+            <Icon class="text-base text-zinc-500 mr-1" name="mingcute:star-line" />
             {{ repo.stargazers_count }}
           </span>
           <span v-if="repo.forks >= 0" class="flex items-center">
-            <icon class="text-base text-zinc-500 mr-1" name="mingcute:git-merge-line" />
+            <Icon class="text-base text-zinc-500 mr-1" name="mingcute:git-merge-line" />
             {{ repo.forks }}
           </span>
           <span class="flex-1"></span>
-          <icon class="text-base text-zinc-500" name="mdi:github" />
+          <Icon class="text-base text-zinc-500" name="mdi:github" />
         </p>
       </a>
     </div>

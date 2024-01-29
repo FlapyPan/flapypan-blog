@@ -7,7 +7,7 @@ const emits = defineEmits(['refresh'])
 
 <template>
   <f-btn :disabled="loading" @click="emits('refresh')">
-    <icon :class="{ 'animation-rotate': loading }" name="mingcute:refresh-1-line" />
+    <Icon :class="{ 'animation-rotate': loading }" name="mingcute:refresh-1-line" />
   </f-btn>
 </template>
 

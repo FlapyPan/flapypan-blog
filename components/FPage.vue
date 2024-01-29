@@ -14,12 +14,12 @@ const page = computed({
 <template>
   <nav v-show="pageData.numberOfElements" class="flex justify-center items-center gap-4">
     <f-btn :disabled="page <= 1" text @click="page -= 1">
-      <icon class="mr-1" name="mingcute:arrow-left-circle-line" />
+      <Icon class="mr-1" name="mingcute:arrow-left-circle-line" />
       上一页
     </f-btn>
     <f-btn :disabled="pageData.last" text @click="page += 1">
       下一页
-      <icon class="ml-1" name="mingcute:arrow-right-circle-line" />
+      <Icon class="ml-1" name="mingcute:arrow-right-circle-line" />
     </f-btn>
   </nav>
 </template>
