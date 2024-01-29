@@ -114,7 +114,11 @@ function toComments() {
 }
 
 function print() {
-  window.print();
+  try {
+    document.execCommand('print', false, null);
+  } catch {
+    window.print();
+  }
 }
 
 /// 处理网页标题
