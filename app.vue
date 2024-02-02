@@ -1,21 +1,16 @@
 <script setup>
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
 await callOnce(async () => {
-  const settingData = await api('/attribute/settings')
+  const settingData = await api('/attribute/settings');
   if (settingData) {
-    Object.assign(settingStore.value, settingData)
+    Object.assign(settingStore.value, settingData);
   }
-})
+});
 
 if (import.meta.browser) {
-  useAuth().check()
+  useAuth().check();
 }
-
-useServerSeoMeta({
-  author: settingStore.value.name,
-  ogImage: settingStore.value.banner ?? '/banner.webp',
-})
 </script>
 
 <template>

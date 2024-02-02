@@ -32,18 +32,22 @@ export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
   },
   pinned: {
     type: Schema.Types.Boolean,
+    index: true,
     default: false,
   },
   tags: {
     type: [Schema.Types.String],
+    index: true,
     default: () => [],
   },
   createdAt: {
     type: Schema.Types.Date,
+    index: true,
     default: () => new Date(),
   },
   updatedAt: {
     type: Schema.Types.Date,
+    index: true,
     default: () => new Date(),
   },
 })

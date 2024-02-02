@@ -10,7 +10,7 @@ const {
 } = useAsyncData(
   `tag:${tag.value}`,
   () => api(`/article/tag/${tag.value}`),
-  { watch: [tag] },
+  { deep: false, watch: [tag] },
 );
 /// endregion 获取 tag 信息
 

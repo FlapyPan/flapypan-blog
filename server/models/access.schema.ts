@@ -21,9 +21,11 @@ export const AccessSchema = defineMongooseModel<IAccess>('Access', {
   },
   articleId: {
     type: Schema.Types.ObjectId,
+    index: true,
   },
   createdAt: {
     type: Schema.Types.Date,
+    index: true,
     default: () => new Date(),
   },
 })

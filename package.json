@@ -3,7 +3,7 @@
   "description": "FlapyPan Blog",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "type": "module",
   "scripts": {
     "postinstall": "nuxt prepare",

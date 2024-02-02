@@ -1,27 +1,27 @@
 <script setup>
-const emits = defineEmits(['close'])
+const emits = defineEmits(['close']);
 
-const auth = useAuth()
+const auth = useAuth();
 
 /// region 登录
 const form = reactive({
   username: '',
   password: '',
   remember: false,
-})
-const isDoLogin = ref(false)
-const loginError = ref(null)
+});
+const isDoLogin = shallowRef(false);
+const loginError = shallowRef(null);
 
 async function login() {
-  isDoLogin.value = true
-  loginError.value = null
+  isDoLogin.value = true;
+  loginError.value = null;
   try {
-    await auth.login(form)
-    emits('close')
+    await auth.login(form);
+    emits('close');
   } catch (e) {
-    loginError.value = e.message
+    loginError.value = e.message;
   }
-  isDoLogin.value = false
+  isDoLogin.value = false;
 }
 
 /// endregion 登录

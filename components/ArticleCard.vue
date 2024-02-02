@@ -1,23 +1,14 @@
 <script setup>
 const props = defineProps({
   article: {},
-})
-const emits = defineEmits(['onRoute'])
+});
+const emits = defineEmits(['onRoute']);
 
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
-const coverSrc = ref(props.article.cover || settingStore.value.banner)
+const coverSrc = shallowRef(props.article.cover || settingStore.value.banner);
 
-const formatter = new Intl.DateTimeFormat(
-  'zh-CN',
-  {
-    year: '2-digit',
-    month: '2-digit',
-    day: '2-digit',
-    timeZone: 'Asia/ShangHai',
-  },
-)
-const formattedDate = computed(() => formatter.format(Date.parse(props.article.updatedAt) ?? Date.now()))
+const formattedDate = useDateTimeFormat(props.article.updatedAt);
 </script>
 
 <template>
@@ -31,7 +22,8 @@ const formattedDate = computed(() => formatter.format(Date.parse(props.article.u
         {{ formattedDate }}
       </div>
     </div>
-    <Icon class="mr-4 text-xl transition-transform translate-x-12 group-hover:translate-x-0" name="mingcute:arrow-right-line" />
+    <Icon class="mr-4 text-xl transition-transform translate-x-12 group-hover:translate-x-0"
+          name="mingcute:arrow-right-line" />
   </nuxt-link>
 </template>
 

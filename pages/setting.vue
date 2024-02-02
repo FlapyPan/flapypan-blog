@@ -1,44 +1,44 @@
 <script setup>
-const auth = useAuth()
-const settingStore = useSettingStore()
+const auth = useAuth();
+const settingStore = useSettingStore();
 
 if (import.meta.browser) {
-  auth.state.value.loginDialogVisible = !auth.state.value.isLogin
+  auth.state.value.loginDialogVisible = !auth.state.value.isLogin;
 }
 
 /// region 博客设置
-const savingSettings = ref(false)
+const savingSettings = shallowRef(false);
 
 async function saveSetting() {
-  savingSettings.value = true
+  savingSettings.value = true;
   try {
-    const data = await api('/attribute/settings', 'POST', settingStore.value)
-    settingStore.value = { ...settingStore.value, ...data }
+    const data = await api('/attribute/settings', 'POST', settingStore.value);
+    settingStore.value = { ...settingStore.value, ...data };
   } finally {
-    savingSettings.value = false
+    savingSettings.value = false;
   }
 }
 
 /// endregion 博客设置
 
 /// region daemon 设置
-const token = ref('')
+const token = shallowRef('');
 
 function getToken() {
-  token.value = sessionStorage.getItem('token') || localStorage.getItem('token')
+  token.value = sessionStorage.getItem('token') || localStorage.getItem('token');
 }
 
 /// endregion daemon 设置
 
-const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`
-const description = `博客设置`
+const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`;
+const description = `博客设置`;
 const meta = {
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-}
-useSeoMeta(meta)
+};
+useSeoMeta(meta);
 </script>
 
 <template>

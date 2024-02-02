@@ -1,23 +1,29 @@
 <script setup>
-import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 
-const settingStore = useSettingStore()
-const auth = useAuth()
+const settingStore = useSettingStore();
+const auth = useAuth();
 
-const { data: links } = useAsyncData('pinnedLinks', () => api('/article/pinned'), { server: false })
+const { data: links } = useAsyncData(
+  'pinnedLinks',
+  () => api('/article/pinned'),
+  { deep: false },
+);
 
-const scrolled = ref(false)
-
-const state = ref('')
-if (import.meta.browser) {
+const scrolled = shallowRef(false);
+onMounted(() => {
   window.addEventListener('scroll', () => {
-    scrolled.value = document.documentElement.scrollTop > 48
-  }, { passive: true })
-  const eventSource = new EventSource('/api/status/author')
+    scrolled.value = document.documentElement.scrollTop > 48;
+  }, { passive: true });
+});
+
+const state = shallowRef('');
+onMounted(() => {
+  const eventSource = new EventSource('/api/status/author');
   eventSource.addEventListener('message', (event) => {
-    state.value = event.data
-  })
-}
+    state.value = event.data;
+  });
+});
 
 const navLinks = [
   {
@@ -41,13 +47,13 @@ const navLinks = [
     title: '活动',
     icon: 'mingcute:time-line',
   },
-]
+];
 
 const colorModeCircle = {
   system: 'light',
   light: 'dark',
   dark: 'system',
-}
+};
 </script>
 
 <template>

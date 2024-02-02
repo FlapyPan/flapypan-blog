@@ -1,21 +1,22 @@
 <script setup>
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
 const { data: repos, pending: fetchingRepos } = useAsyncData(
   `activity:${settingStore.value.name}:repos`,
   async () => $fetch(`https://api.github.com/users/${settingStore.value.name}/repos`),
-)
+  { deep: false },
+);
 
-const title = `活动 - ${settingStore.value.siteTitle ?? '博客'}`
-const description = `看看我最近鼓捣了些什么玩意吧`
+const title = `活动 - ${settingStore.value.siteTitle ?? '博客'}`;
+const description = `看看我最近鼓捣了些什么玩意吧`;
 const meta = {
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-}
-useServerSeoMeta(meta)
-useSeoMeta(meta)
+};
+useServerSeoMeta(meta);
+useSeoMeta(meta);
 </script>
 
 <template v-once>

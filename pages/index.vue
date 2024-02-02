@@ -1,43 +1,47 @@
 <script setup>
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
 /// region 文章数据
 const {
   pending: fetchingArticleData,
   data: articleData,
   refresh,
-} = await useAsyncData('article:latest', () => api('/article/recent'))
+} = await useAsyncData(
+  'article:latest',
+  () => api('/article/recent'),
+  { deep: false },
+);
 /// endregion 文章数据
 
 /// region 随机一言
-const hitoko = ref('加载中...')
+const hitoko = shallowRef('加载中...');
 
 async function fetchHitokoto(enable) {
   if (import.meta.browser) {
-    if (!enable) return
+    if (!enable) return;
     try {
-      const { hitokoto: text } = await $fetch('https://v1.hitokoto.cn?c=a&c=c&c=d&c=j&c=k')
-      hitoko.value = text
+      const { hitokoto: text } = await $fetch('https://v1.hitokoto.cn?c=a&c=c&c=d&c=j&c=k');
+      hitoko.value = text;
     } catch (e) {
-      console.error(e)
-      hitoko.value = '加载失败...'
+      console.error(e);
+      hitoko.value = '加载失败...';
     }
   }
 }
 
-watch(() => settingStore.value.hitoko, fetchHitokoto, { immediate: true })
+watch(() => settingStore.value.hitoko, fetchHitokoto, { immediate: true });
 /// endregion 随机一言
 
-const title = `${settingStore.value.name} - ${settingStore.value.siteTitle ?? '博客'}`
-const description = settingStore.value.info ?? ''
+const title = `${settingStore.value.name} - ${settingStore.value.siteTitle ?? '博客'}`;
+const description = settingStore.value.info ?? '';
 const meta = {
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-}
-useServerSeoMeta(meta)
-useSeoMeta(meta)
+};
+useServerSeoMeta(meta);
+useSeoMeta(meta);
 </script>
 
 <template>

@@ -1,25 +1,13 @@
 <script setup>
 defineProps({
   list: { type: Array, default: () => [] },
-})
-
-// 格式化时间
-const formatter = new Intl.DateTimeFormat(
-  'zh-CN',
-  {
-    month: '2-digit',
-    day: '2-digit',
-    hour12: false,
-    timeZone: 'Asia/ShangHai',
-  },
-)
-const formatDate = (s) => formatter.format(Date.parse(s) ?? Date.now())
+});
 </script>
 
 <template>
   <ul class="timeline">
     <li v-for="{ _id, title, createdAt, path, tags } in list" :key="_id">
-      <span class="mr-2">{{ formatDate(createdAt) }}</span>
+      <span class="mr-2">{{ dateFormat(createdAt) }}</span>
       <f-btn :to="`/${path}`" text>
         {{ title }}
       </f-btn>

@@ -1,7 +1,7 @@
 <script setup>
-import { MdPreview } from 'md-editor-v3'
+import { MdPreview } from 'md-editor-v3';
 
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
 /// region 访问量和其他数据
 const {
@@ -10,7 +10,7 @@ const {
   `access:base`,
   () => api(`/access`),
   { server: false, deep: false },
-)
+);
 /// endregion 访问量和其他数据
 </script>
 
