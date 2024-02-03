@@ -11,11 +11,11 @@ const { data: links } = useAsyncData(
 );
 
 const scrolled = shallowRef(false);
-onMounted(() => {
-  window.addEventListener('scroll', () => {
-    scrolled.value = document.documentElement.scrollTop > 48;
-  }, { passive: true });
-});
+function checkScrolled() {
+  requestAnimationFrame(checkScrolled);
+  scrolled.value = document.documentElement.scrollTop > 64 || document.body.scrollTop > 64;
+}
+onMounted(checkScrolled);
 
 const state = shallowRef('');
 onMounted(() => {
@@ -62,12 +62,15 @@ const colorModeCircle = {
       <login-form @close="auth.state.value.loginDialogVisible = false" />
     </f-dialog>
   </template>
-  <header class="w-full fixed top-0 z-50 py-2 print:hidden">
-    <div class="container h-12 mx-auto px-3 md:px-6 flex items-center justify-center gap-2 md:gap-3">
+  <div class="w-full fixed z-40 top-0 h-10 rounded-b-lg print:hidden" :class="{ 'bg-blur': scrolled }"></div>
+  <header
+    class="w-full fixed z-50 top-0 px-3 md:px-6 rounded-b-lg transition-shadow print:hidden"
+    :class="{ 'shadow': scrolled }">
+    <div class="container mx-auto flex items-center gap-2 transition-all"
+         :class="`${scrolled ? 'h-10 max-w-5xl' : 'h-16 max-w-7xl'}`">
       <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
         <menu-button
-          :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open, 'shadow bg-blur': scrolled }"
-          class="flex items-center rounded-full p-3 sm:hover:text-primary-500 sm:hover:bg-primary-500 sm:hover:bg-opacity-10 cursor-pointer">
+          :class="{ 'text-primary-500': open }" class="flex items-center p-3 sm:hover:text-primary-500 cursor-pointer">
           <Icon
             :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
             class="transform transition-transform" />
@@ -81,7 +84,7 @@ const colorModeCircle = {
           leave-from-class="transform scale-100 opacity-100"
           leave-to-class="transform scale-95 opacity-0">
           <menu-items
-            class="absolute w-48 left-0 mt-4 p-1 origin-top-left shadow-lg bg-blur rounded-xl focus:outline-none">
+            class="absolute w-48 left-0 mt-1 p-1 origin-top-left shadow-lg bg-blur rounded-xl focus:outline-none">
             <menu-item v-for="l in navLinks" :key="l.routeName" v-slot="{ active }">
               <button
                 :class="[$route.name === l.routeName || active ? `${l.activeColor.background} bg-opacity-10` : '']"
@@ -106,9 +109,7 @@ const colorModeCircle = {
         </transition>
       </h-menu>
 
-      <nav
-        :class="{ 'shadow bg-blur': scrolled }"
-        class="items-center gap-4 text-sm underline-offset-2 hidden md:flex rounded-full py-3 px-5">
+      <nav class="items-center gap-4 text-sm underline-offset-2 hidden md:flex py-3 px-5">
         <nuxt-link
           v-for="l in navLinks" :key="l.routeName"
           :class="{ [l.activeColor.text]: $route.name === l.routeName, [`${l.activeColor.hoverText}`]: true }"
@@ -129,11 +130,70 @@ const colorModeCircle = {
         </nuxt-link>
       </nav>
 
-      <button
-        :class="{ 'shadow bg-blur': scrolled }"
-        class="flex items-center rounded-full p-3 sm:hover:text-primary-500 cursor-pointer"
-        title="切换配色模式"
-        @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
+      <div class="flex-1"></div>
+
+      <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
+        <menu-button
+          :class="{ 'text-primary-500': open }"
+          class="flex items-center px-4 text-sm sm:hover:text-primary-500">
+          <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
+          <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
+            <span>{{ settingStore.name }}</span>
+            <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
+          </div>
+          <span v-else class="ml-2 py-3">{{ settingStore.name }}</span>
+        </menu-button>
+        <transition
+          enter-active-class="transition duration-100 ease-out"
+          enter-from-class="transform scale-95 opacity-0"
+          enter-to-class="transform scale-100 opacity-100"
+          leave-active-class="transition duration-75 ease-in"
+          leave-from-class="transform scale-100 opacity-100"
+          leave-to-class="transform scale-95 opacity-0">
+          <menu-items
+            class="absolute w-32 right-0 mt-1 p-1 origin-top-right shadow-lg bg-blur z-10 rounded-xl focus:outline-none">
+            <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
+              <button
+                :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm"
+                @click="navigateTo('/new')">
+                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                写新文章
+              </button>
+            </menu-item>
+            <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
+              <button
+                :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm"
+                @click="navigateTo('/setting')">
+                <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                博客设置
+              </button>
+            </menu-item>
+            <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
+              <button
+                :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm"
+                @click="auth.logout()">
+                <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+                退出登录
+              </button>
+            </menu-item>
+            <menu-item v-else v-slot="{ active }">
+              <button
+                :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm"
+                @click="auth.state.value.loginDialogVisible = true">
+                <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                管理员登录
+              </button>
+            </menu-item>
+          </menu-items>
+        </transition>
+      </h-menu>
+
+      <button class="flex items-center p-3 sm:hover:text-primary-500 cursor-pointer"
+              title="切换配色模式" @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
         <template v-if="$colorMode.preference === 'system'">
           <span class="flex md:hidden">
             <Icon class="flex md:hidden" name="mingcute:cellphone-line" />
@@ -149,72 +209,6 @@ const colorModeCircle = {
           <Icon name="mingcute:moon-line" />
         </template>
       </button>
-
-      <div class="flex-1 flex md:hidden"></div>
-
-      <div :class="{ 'shadow bg-blur': scrolled }" class="flex items-center rounded-full gap-1">
-        <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
-          <menu-button
-            :class="{ 'text-primary-500 bg-primary-500 bg-opacity-10': open }"
-            as="div"
-            class="flex items-center rounded-full px-4 text-sm sm:hover:text-primary-500">
-            <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
-            <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
-              <span>{{ settingStore.name }}</span>
-              <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
-            </div>
-            <span v-else class="ml-2 py-3">{{ settingStore.name }}</span>
-          </menu-button>
-
-          <transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0">
-            <menu-items
-              class="absolute w-32 right-0 mt-4 p-1 origin-top-right shadow-lg bg-blur rounded-xl focus:outline-none">
-              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
-                <button
-                  :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="navigateTo('/new')">
-                  <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
-                  写新文章
-                </button>
-              </menu-item>
-              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
-                <button
-                  :class="[$route.name === 'setting' || active ? 'bg-primary-500 bg-opacity-10' : '']"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="navigateTo('/setting')">
-                  <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
-                  博客设置
-                </button>
-              </menu-item>
-              <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
-                <button
-                  :class="[active ? 'bg-red-500 bg-opacity-10' : '']"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="auth.logout()">
-                  <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
-                  退出登录
-                </button>
-              </menu-item>
-              <menu-item v-else v-slot="{ active }">
-                <button
-                  :class="[active ? 'bg-violet-500 bg-opacity-10' : '']"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm"
-                  @click="auth.state.value.loginDialogVisible = true">
-                  <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
-                  管理员登录
-                </button>
-              </menu-item>
-            </menu-items>
-          </transition>
-        </h-menu>
-      </div>
     </div>
   </header>
 </template>

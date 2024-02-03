@@ -28,7 +28,7 @@ input, textarea {
 }
 
 .bg-blur {
-  @apply bg-white bg-opacity-60 backdrop-blur dark:bg-zinc-800 dark:bg-opacity-70;
+  @apply bg-white bg-opacity-70 backdrop-blur-lg dark:bg-zinc-800 dark:bg-opacity-80;
 }
 
 .page {
