@@ -1,6 +1,9 @@
 <script setup>
+import { useToast } from 'vue-toastification';
+
 const auth = useAuth();
 const settingStore = useSettingStore();
+const toast = useToast();
 
 if (import.meta.browser) {
   auth.state.value.loginDialogVisible = !auth.state.value.isLogin;
@@ -14,12 +17,12 @@ async function saveSetting() {
   try {
     const data = await api('/attribute/settings', 'POST', settingStore.value);
     settingStore.value = { ...settingStore.value, ...data };
+    toast.success('设置保存成功');
   } finally {
     savingSettings.value = false;
   }
 }
-
-/// endregion 博客设置
+/// endregion
 
 /// region daemon 设置
 const token = shallowRef('');
@@ -27,8 +30,43 @@ const token = shallowRef('');
 function getToken() {
   token.value = sessionStorage.getItem('token') || localStorage.getItem('token');
 }
+/// endregion
 
-/// endregion daemon 设置
+/// region 自定义样式
+const { data: customStyleValue } = useAsyncData(
+  'customStyle',
+  () => api('/attribute/custom-style'),
+  { deep: false },
+);
+const savingCustomStyle = shallowRef(false);
+async function saveCustomStyle() {
+  savingCustomStyle.value = true;
+  try {
+    await api('/attribute/custom-style', 'POST', customStyleValue.value);
+    toast.success('自定义样式保存成功，刷新页面生效');
+  } finally {
+    savingCustomStyle.value = false;
+  }
+}
+/// endregion
+
+/// region 自定义 js
+const { data: customScriptValue } = useAsyncData(
+  'customScript',
+  () => api('/attribute/custom-script'),
+  { deep: false },
+);
+const savingCustomScript = shallowRef(false);
+async function saveCustomScript() {
+  savingCustomScript.value = true;
+  try {
+    await api('/attribute/custom-script', 'POST', customScriptValue.value);
+    toast.success('自定义脚本保存成功，刷新页面生效');
+  } finally {
+    savingCustomScript.value = false;
+  }
+}
+/// endregion
 
 const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`;
 const description = `博客设置`;
@@ -160,6 +198,22 @@ useSeoMeta(meta);
         </div>
         <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
           保存设置
+        </f-btn>
+        <h3 class="text-lg w-full">
+          自定义样式
+        </h3>
+        <textarea v-model="customStyleValue" class="p-2 w-full" name="customStyle" placeholder="添加自定义样式"
+                  type="text"></textarea>
+        <f-btn :disabled="savingCustomStyle" class="w-full my-8 max-w-xl" @click="saveCustomStyle()">
+          保存自定义样式
+        </f-btn>
+        <h3 class="text-lg w-full">
+          自定义脚本
+        </h3>
+        <textarea v-model="customScriptValue" class="p-2 w-full" name="customScript" placeholder="添加自定义脚本"
+                  type="text"></textarea>
+        <f-btn :disabled="savingCustomScript" class="w-full my-8 max-w-xl" @click="saveCustomScript()">
+          保存自定义脚本
         </f-btn>
         <h3 class="text-lg w-full">
           Daemon token

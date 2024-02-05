@@ -1,7 +1,3 @@
-import { useToast } from 'vue-toastification'
-
-const toast = useToast()
-
 /**
  *
  * @param {string|URL} url  请求路径
@@ -11,13 +7,13 @@ const toast = useToast()
  * @return {Promise<*>}
  */
 export default async function api(url, method = 'GET', payload = null, jsonPayload = true) {
-  const headers = {}
+  const headers = {};
   if (import.meta.browser) {
-    const token = sessionStorage.getItem('token') || localStorage.getItem('token')
-    if (token) headers.Authorization = `Bearer ${token}`
+    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (token) headers.Authorization = `Bearer ${token}`;
   }
-  if (jsonPayload) headers['Content-Type'] = 'application/json'
-  const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined
+  if (jsonPayload) headers['Content-Type'] = 'application/json';
+  const body = payload ? (jsonPayload ? JSON.stringify(payload) : payload) : undefined;
   try {
     return await $fetch(url, {
       baseURL: '/api',
@@ -27,14 +23,16 @@ export default async function api(url, method = 'GET', payload = null, jsonPaylo
       credentials: 'same-origin',
       redirect: 'follow',
       body,
-    })
+    });
   } catch (e) {
-    const { data, message, status } = e
+    const { data, message, status } = e;
     if (status === 401) {
-      useAuth().state.value.isLogin = false
+      useAuth().state.value.isLogin = false;
     } else if (import.meta.browser) {
-      toast.error(data?.message || message)
+      import('vue-toastification').then(({ toast }) => {
+        toast.error(data?.message || message);
+      });
     }
-    throw new Error(`${status} ${data?.message || message}`)
+    throw new Error(`${status} ${data?.message || message}`);
   }
 }
