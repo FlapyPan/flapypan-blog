@@ -5,54 +5,26 @@ defineProps({
 </script>
 
 <template>
-  <ul class="timeline">
-    <li v-for="{ _id, title, createdAt, path, tags } in list" :key="_id">
-      <span class="mr-2">{{ dateFormat(createdAt) }}</span>
-      <f-btn :to="`/${path}`" text>
+  <ul>
+    <li
+      v-for="{ _id, title, createdAt, path, tags } in list"
+      :key="_id"
+      class="relative flex items-center py-2">
+      <span class="mr-1 text-xs text-zinc-500">{{ dateFormat(createdAt) }}</span>
+      <f-btn :to="`/${path}`" icon="mingcute:document-line" text>
         {{ title }}
       </f-btn>
       <div class="flex-1"></div>
-      <div class="hidden sm:flex items-center gap-2">
-        <template v-for="name in tags" :key="name">
-          <f-btn icon="mingcute:hashtag-line" :to="`/tag/${name}`" text>
-            {{ name }}
-          </f-btn>
-        </template>
+      <div class="hidden items-center gap-2 sm:flex">
+        <f-btn
+          v-for="name in tags"
+          :key="name"
+          :to="`/tag/${name}`"
+          icon="mingcute:hashtag-line"
+          text>
+          {{ name }}
+        </f-btn>
       </div>
     </li>
   </ul>
 </template>
-
-<style scoped>
-ul.timeline {
-
-  > li {
-    @apply list-none relative px-2 flex items-center ml-6 leading-8 md:leading-10;
-  }
-
-  > li:not(:only-child) {
-
-    &::before {
-      @apply absolute top-0 bottom-0 left-[-0.8rem] border-primary-500 border;
-
-      content: "";
-    }
-
-    &:first-child::before {
-      @apply top-1/2;
-    }
-
-    &:last-child::before {
-      @apply bottom-1/2;
-    }
-
-  }
-
-  > li::after {
-    @apply bg-primary-500 -left-4 top-1/2 transform -translate-y-1/2 h-2 w-2 rounded-full absolute;
-
-    content: "";
-  }
-
-}
-</style>

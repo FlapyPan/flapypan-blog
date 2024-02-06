@@ -1,26 +1,26 @@
 <script setup>
 defineProps({
   error: Object,
-})
+});
 
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 
 useServerSeoMeta({
   author: settingStore.value.name,
   ogImage: settingStore.value.banner ?? '/banner.webp',
-})
+});
 </script>
 
 <template>
   <Head>
     <Link :href="settingStore.favicon" rel="icon" />
   </Head>
-  <div class="page flex flex-col justify-center items-center gap-6 p-6">
+  <div class="page flex flex-col items-center justify-center gap-6 p-6">
     <h2 class="text-xl">
       {{ error.statusCode }}
     </h2>
     <div
-      class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
+      class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-zinc-50 dark:bg-red-700">
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ error.message }}</span>
       <span class="flex-1"></span>
@@ -31,7 +31,3 @@ useServerSeoMeta({
     </dev-only>
   </div>
 </template>
-
-<style scoped>
-
-</style>

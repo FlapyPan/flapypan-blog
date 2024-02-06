@@ -83,144 +83,215 @@ useSeoMeta(meta);
   <div class="page">
     <template v-if="auth.state.value.isLogin">
       <div class="flex flex-col items-center gap-6">
-        <h3 class="text-lg w-full">
-          基础信息设置
-        </h3>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <label class="text-sm flex flex-wrap items-center gap-4">
+        <h3 class="w-full text-lg">基础信息设置</h3>
+        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点标题</span>
             <input
-              v-model="settingStore.siteTitle" :disabled="savingSettings" class="flex-1" name="title"
-              placeholder="站点标题" required type="text">
+              v-model="settingStore.siteTitle"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="title"
+              placeholder="站点标题"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点图标链接</span>
             <input
-              v-model="settingStore.favicon" :disabled="savingSettings" class="flex-1" name="favicon"
-              placeholder="站点图标链接" required type="text">
+              v-model="settingStore.favicon"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="favicon"
+              placeholder="站点图标链接"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>默认封面链接</span>
             <input
-              v-model="settingStore.banner" :disabled="savingSettings" class="flex-1" name="banner"
-              placeholder="默认封面链接" required type="text">
+              v-model="settingStore.banner"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="banner"
+              placeholder="默认封面链接"
+              required
+              type="text" />
           </label>
         </div>
         <div class="w-full">
-          <label class="text-sm flex flex-col gap-4">
-            <span>站点底部信息（支持Markdown）</span>
+          <label class="flex flex-col gap-4 text-sm">
+            <span>站点底部信息</span>
             <textarea
               v-model="settingStore.footer"
-              :disabled="savingSettings" class="p-2" name="footer"
-              placeholder="站点底部信息" required type="text"></textarea>
+              :disabled="savingSettings"
+              class="p-2"
+              name="footer"
+              placeholder="站点底部信息"
+              required
+              type="text"></textarea>
           </label>
         </div>
-        <h3 class="text-lg w-full">
-          个人信息设置
-        </h3>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <label class="text-sm flex flex-wrap items-center gap-4">
+        <h3 class="w-full text-lg">个人信息设置</h3>
+        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>头像链接</span>
             <input
-              v-model="settingStore.avatar" :disabled="savingSettings" class="flex-1" name="avatar"
-              placeholder="头像链接" required type="text">
+              v-model="settingStore.avatar"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="avatar"
+              placeholder="头像链接"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>作者名</span>
             <input
-              v-model="settingStore.name" :disabled="savingSettings" class="flex-1" name="name"
-              placeholder="作者名" required type="text">
+              v-model="settingStore.name"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="name"
+              placeholder="作者名"
+              required
+              type="text" />
           </label>
-          <div class="flex items-center gap-4 col-span-2">
-            <label class="text-sm flex flex-wrap items-center gap-4 flex-1">
+          <div class="col-span-2 flex items-center gap-4">
+            <label class="flex flex-1 flex-wrap items-center gap-4 text-sm">
               <span>站点信息</span>
               <input
                 v-model="settingStore.info"
-                :disabled="settingStore.hitoko || savingSettings" class="flex-1" name="info"
-                placeholder="站点信息" required type="text">
+                :disabled="settingStore.hitoko || savingSettings"
+                class="flex-1"
+                name="info"
+                placeholder="站点信息"
+                required
+                type="text" />
             </label>
-            <label class="text-sm flex flex-wrap items-center gap-2">
+            <label class="flex flex-wrap items-center gap-2 text-sm">
               <span>随机一言</span>
               <input
-                v-model="settingStore.hitoko" :disabled="savingSettings" class="flex-1" name="hitoko"
-                placeholder="随机一言" required type="checkbox">
+                v-model="settingStore.hitoko"
+                :disabled="savingSettings"
+                class="flex-1"
+                name="hitoko"
+                placeholder="随机一言"
+                required
+                type="checkbox" />
             </label>
           </div>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>邮箱</span>
             <input
-              v-model="settingStore.email" :disabled="savingSettings" class="flex-1" name="email"
-              placeholder="邮箱" required type="text">
+              v-model="settingStore.email"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="email"
+              placeholder="邮箱"
+              required
+              type="text" />
           </label>
         </div>
-        <h3 class="text-lg w-full">
-          活动设置
-        </h3>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <label class="text-sm flex flex-wrap items-center gap-4">
+        <h3 class="w-full text-lg">活动设置</h3>
+        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>wakatime</span>
             <input
-              v-model="settingStore.wakatime" :disabled="savingSettings" class="flex-1" name="wakatime"
-              placeholder="wakatime" required type="text">
+              v-model="settingStore.wakatime"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="wakatime"
+              placeholder="wakatime"
+              required
+              type="text" />
           </label>
         </div>
-        <h3 class="text-lg w-full">
-          Giscus 设置
-        </h3>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-          <label class="text-sm flex flex-wrap items-center gap-4">
+        <h3 class="w-full text-lg">Giscus 设置</h3>
+        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepo</span>
             <input
-              v-model="settingStore.giscusRepo" :disabled="savingSettings" class="flex-1" name="giscusRepo"
-              placeholder="giscusRepo" required type="text">
+              v-model="settingStore.giscusRepo"
+              :disabled="savingSettings"
+              class="flex-1"
+              name="giscusRepo"
+              placeholder="giscusRepo"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepoId</span>
             <input
-              v-model="settingStore.giscusRepoId" :disabled="savingSettings" class="flex-1"
+              v-model="settingStore.giscusRepoId"
+              :disabled="savingSettings"
+              class="flex-1"
               name="giscusRepoId"
-              placeholder="giscusRepoId" required type="text">
+              placeholder="giscusRepoId"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategory</span>
             <input
-              v-model="settingStore.giscusCategory" :disabled="savingSettings" class="flex-1"
+              v-model="settingStore.giscusCategory"
+              :disabled="savingSettings"
+              class="flex-1"
               name="giscusCategory"
-              placeholder="giscusCategory" required type="text">
+              placeholder="giscusCategory"
+              required
+              type="text" />
           </label>
-          <label class="text-sm flex flex-wrap items-center gap-4">
+          <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategoryId</span>
             <input
-              v-model="settingStore.giscusCategoryId" :disabled="savingSettings" class="flex-1"
+              v-model="settingStore.giscusCategoryId"
+              :disabled="savingSettings"
+              class="flex-1"
               name="giscusCategoryId"
-              placeholder="giscusCategoryId" required type="text">
+              placeholder="giscusCategoryId"
+              required
+              type="text" />
           </label>
         </div>
-        <f-btn :disabled="savingSettings" class="w-full my-8 max-w-xl" @click="saveSetting()">
+        <f-btn :disabled="savingSettings" class="my-8 w-full max-w-xl" @click="saveSetting()">
           保存设置
         </f-btn>
-        <h3 class="text-lg w-full">
-          自定义样式
-        </h3>
-        <textarea v-model="customStyleValue" class="p-2 w-full" name="customStyle" placeholder="添加自定义样式"
-                  type="text"></textarea>
-        <f-btn :disabled="savingCustomStyle" class="w-full my-8 max-w-xl" @click="saveCustomStyle()">
+        <h3 class="w-full text-lg">自定义样式</h3>
+        <textarea
+          v-model="customStyleValue"
+          class="w-full p-2"
+          name="customStyle"
+          placeholder="添加自定义样式"
+          type="text"></textarea>
+        <f-btn
+          :disabled="savingCustomStyle"
+          class="my-8 w-full max-w-xl"
+          @click="saveCustomStyle()">
           保存自定义样式
         </f-btn>
-        <h3 class="text-lg w-full">
-          自定义脚本
-        </h3>
-        <textarea v-model="customScriptValue" class="p-2 w-full" name="customScript" placeholder="添加自定义脚本"
-                  type="text"></textarea>
-        <f-btn :disabled="savingCustomScript" class="w-full my-8 max-w-xl" @click="saveCustomScript()">
+        <h3 class="w-full text-lg">自定义脚本</h3>
+        <textarea
+          v-model="customScriptValue"
+          class="w-full p-2"
+          name="customScript"
+          placeholder="添加自定义脚本"
+          type="text"></textarea>
+        <f-btn
+          :disabled="savingCustomScript"
+          class="my-8 w-full max-w-xl"
+          @click="saveCustomScript()">
           保存自定义脚本
         </f-btn>
-        <h3 class="text-lg w-full">
-          Daemon token
-        </h3>
+        <h3 class="w-full text-lg">Daemon token</h3>
         <textarea
-          v-model="token" class="p-2 w-full" name="token" placeholder="点击显示token" readonly type="text"
-          @blur="token = ''" @focus="getToken"></textarea>
+          v-model="token"
+          class="w-full p-2"
+          name="token"
+          placeholder="点击显示token"
+          readonly
+          type="text"
+          @blur="token = ''"
+          @focus="getToken"></textarea>
       </div>
     </template>
     <page-head v-else title="请登录" />

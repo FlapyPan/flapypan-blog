@@ -1,15 +1,3 @@
-const postcss = {
-  plugins: {
-    'postcss-import': {},
-    'tailwindcss/nesting': 'postcss-nesting',
-    'tailwindcss': {},
-    'postcss-preset-env': {
-      browsers: ['Chrome >= 87', 'Firefox >= 78', 'Safari >= 14', 'Edge >= 88'],
-      features: { 'nesting-rules': false },
-    },
-  },
-}
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -23,11 +11,7 @@ export default defineNuxtConfig({
     '/setting': { ssr: false },
     '/api/picture/**': { cache: { maxAge: 31536000, headersOnly: true } },
   },
-  modules: [
-    '@nuxtjs/color-mode',
-    'nuxt-icon',
-    'nuxt-mongoose',
-  ],
+  modules: ['@nuxtjs/color-mode', 'nuxt-icon', 'nuxt-mongoose'],
   colorMode: {
     preference: 'system',
     fallback: 'light',
@@ -39,7 +23,6 @@ export default defineNuxtConfig({
   },
   vite: {
     build: {
-      target: 'modules',
       modulePreload: { polyfill: true },
     },
   },
@@ -58,11 +41,15 @@ export default defineNuxtConfig({
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },
-  css: [
-    'md-editor-v3/lib/style.css',
-    'vue-toastification/dist/index.css',
-    '~/assets/css/github-languages-colors.css',
-    '~/assets/css/main.css',
-  ],
-  postcss,
-})
+  css: ['vue-toastification/dist/index.css', '~/assets/css/main.css'],
+  postcss: {
+    plugins: {
+      'postcss-import': {},
+      'tailwindcss/nesting': 'postcss-nesting',
+      'tailwindcss': {},
+      'postcss-preset-env': {
+        features: { 'nesting-rules': false },
+      },
+    },
+  },
+});

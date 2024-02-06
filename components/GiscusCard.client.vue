@@ -1,18 +1,21 @@
 <script setup>
-import 'giscus'
+import 'giscus';
 
-const settingStore = useSettingStore()
+const settingStore = useSettingStore();
 // 所有设置，缺一不可
-const valid = computed(() => !!(
-  settingStore.value.giscusRepo?.trim() !== ''
-  && settingStore.value.giscusRepoId?.trim() !== ''
-  && settingStore.value.giscusCategory?.trim() !== ''
-  && settingStore.value.giscusCategoryId?.trim() !== ''
-))
+const valid = computed(
+  () =>
+    !!(
+      settingStore.value.giscusRepo?.trim() !== '' &&
+      settingStore.value.giscusRepoId?.trim() !== '' &&
+      settingStore.value.giscusCategory?.trim() !== '' &&
+      settingStore.value.giscusCategoryId?.trim() !== ''
+    ),
+);
 
 // 主题切换
-const colorMode = useColorMode()
-const theme = computed(() => `noborder_${colorMode.value}`)
+const colorMode = useColorMode();
+const theme = computed(() => `noborder_${colorMode.value}`);
 </script>
 
 <template>
@@ -34,11 +37,7 @@ const theme = computed(() => `noborder_${colorMode.value}`)
         reactionsenabled="1" />
     </template>
     <template v-else>
-      <p class="text-center text-zinc-500 text-xs cursor-not-allowed">未启用评论区</p>
+      <p class="cursor-not-allowed text-center text-xs text-zinc-500">未启用评论区</p>
     </template>
   </div>
 </template>
-
-<style scoped>
-
-</style>

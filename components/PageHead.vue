@@ -2,7 +2,7 @@
 defineProps({
   title: { type: String, default: '' },
   subTitle: { type: String, default: '' },
-})
+});
 </script>
 
 <template>
@@ -15,7 +15,7 @@ defineProps({
         <slot name="title" />
       </template>
     </h2>
-    <p class="my-2 md:my-4 text-base text-zinc-600 dark:text-zinc-400">
+    <p class="my-2 text-base text-zinc-600 dark:text-zinc-400 md:my-4">
       <template v-if="subTitle">
         {{ subTitle }}
       </template>
@@ -28,7 +28,3 @@ defineProps({
     </div>
   </section>
 </template>
-
-<style scoped>
-
-</style>

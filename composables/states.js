@@ -14,5 +14,5 @@ export function useSettingStore() {
     giscusRepoId: '',
     giscusCategory: '',
     giscusCategoryId: '',
-  }))
+  }));
 }

@@ -1,5 +1,5 @@
-import colors from 'tailwindcss/colors'
-import scrollbar from 'tailwind-scrollbar'
+import colors from 'tailwindcss/colors';
+import scrollbar from 'tailwind-scrollbar';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -20,4 +20,4 @@ export default {
     },
   },
   plugins: [scrollbar({ nocompatible: true })],
-}
+};

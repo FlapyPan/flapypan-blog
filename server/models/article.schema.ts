@@ -1,15 +1,15 @@
-import { Schema } from 'mongoose'
-import { defineMongooseModel } from '#nuxt/mongoose'
+import { Schema } from 'mongoose';
+import { defineMongooseModel } from '#nuxt/mongoose';
 
 export interface IArticle {
-  title: string
-  path: string
-  cover?: string
-  content: string
-  pinned?: boolean
-  tags: string[]
-  createdAt: Date
-  updatedAt: Date
+  title: string;
+  path: string;
+  cover?: string;
+  content: string;
+  pinned?: boolean;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
@@ -50,4 +50,4 @@ export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
     index: true,
     default: () => new Date(),
   },
-})
+});

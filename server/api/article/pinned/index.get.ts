@@ -1,3 +1,3 @@
-import { getPinnedArticleList } from '~/server/data/article'
+import { getPinnedArticleList } from '~/server/data/article';
 
-export default eventHandler(async () => getPinnedArticleList())
+export default eventHandler(async () => getPinnedArticleList());

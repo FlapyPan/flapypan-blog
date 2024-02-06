@@ -1,5 +1,5 @@
-import { getArticleList } from '~/server/data/article'
+import { getArticleList } from '~/server/data/article';
 
 export default eventHandler(async () => {
-  return getArticleList()
-})
+  return getArticleList();
+});

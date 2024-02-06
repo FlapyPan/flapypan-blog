@@ -6,26 +6,30 @@ defineProps({
   target: { type: String, default: '_self' },
   text: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
-})
+});
 </script>
 
 <template>
-  <button draggable="false" :disabled="disabled" class="f-btn" :class="[text ? 'f-btn--text' : 'f-btn--normal']">
+  <button
+    :class="[text ? 'f-btn--text' : 'f-btn--normal']"
+    :disabled="disabled"
+    class="f-btn"
+    draggable="false">
     <template v-if="to !== ''">
       <nuxt-link :to="to" class="f-btn-content">
-        <Icon v-if="icon" class="mr-1" :name="icon" />
+        <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </nuxt-link>
     </template>
     <template v-else-if="href !== ''">
       <a :href="href" :target="target" class="f-btn-content">
-        <Icon v-if="icon" class="mr-1" :name="icon" />
+        <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </a>
     </template>
     <template v-else>
       <span class="f-btn-content">
-        <Icon v-if="icon" class="mr-1" :name="icon" />
+        <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </span>
     </template>
@@ -34,18 +38,13 @@ defineProps({
 
 <style scoped>
 .f-btn {
-  @apply text-current inline-block text-sm relative overflow-hidden disabled:cursor-not-allowed disabled:opacity-60;
-
-  &:not([disabled]) {
-    @apply transform-gpu transition;
-  }
+  @apply relative inline-block transform-gpu overflow-hidden text-sm text-current transition disabled:cursor-not-allowed disabled:opacity-60;
 
   .f-btn-content {
     @apply flex items-center justify-center;
   }
 
   &.f-btn--text {
-
     &:not([disabled]) {
       .f-btn-content {
         @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all;
@@ -62,7 +61,7 @@ defineProps({
   }
 
   &.f-btn--normal {
-    @apply rounded-lg bg-opacity-30 bg-zinc-300 dark:bg-zinc-800;
+    @apply rounded-lg bg-zinc-300 bg-opacity-30 dark:bg-zinc-800;
 
     .f-btn-content {
       @apply px-2 py-2;
@@ -71,8 +70,6 @@ defineProps({
     &:hover {
       @apply bg-primary-100 dark:bg-primary-950;
     }
-
   }
-
 }
 </style>

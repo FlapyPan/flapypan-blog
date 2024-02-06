@@ -1,12 +1,12 @@
-import { Schema, type Types } from 'mongoose'
-import { defineMongooseModel } from '#nuxt/mongoose'
+import { Schema, type Types } from 'mongoose';
+import { defineMongooseModel } from '#nuxt/mongoose';
 
 export interface IAccess {
-  ip?: string
-  referrer?: string
-  ua?: string
-  articleId?: Types.ObjectId
-  createdAt: Date
+  ip?: string;
+  referrer?: string;
+  ua?: string;
+  articleId?: Types.ObjectId;
+  createdAt: Date;
 }
 
 export const AccessSchema = defineMongooseModel<IAccess>('Access', {
@@ -28,4 +28,4 @@ export const AccessSchema = defineMongooseModel<IAccess>('Access', {
     index: true,
     default: () => new Date(),
   },
-})
+});

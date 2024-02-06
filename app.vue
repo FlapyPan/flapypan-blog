@@ -35,12 +35,9 @@ if (import.meta.browser) {
   </Head>
   <NuxtLayout>
     <app-bar />
-    <main class="px-3 sm:px-6 mx-auto">
+    <main class="mx-auto px-3 sm:px-6">
       <NuxtPage />
     </main>
     <app-footer />
   </NuxtLayout>
 </template>
-
-<style scoped>
-</style>

@@ -1,10 +1,10 @@
-import { Schema } from 'mongoose'
-import { defineMongooseModel } from '#nuxt/mongoose'
+import { Schema } from 'mongoose';
+import { defineMongooseModel } from '#nuxt/mongoose';
 
 export interface IPicture {
-  name: string
-  bytes: Buffer
-  createdAt: Date
+  name: string;
+  bytes: Buffer;
+  createdAt: Date;
 }
 
 export const PictureSchema = defineMongooseModel<IPicture>('Picture', {
@@ -20,4 +20,4 @@ export const PictureSchema = defineMongooseModel<IPicture>('Picture', {
     type: Schema.Types.Date,
     default: () => new Date(),
   },
-})
+});

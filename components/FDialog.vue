@@ -1,17 +1,17 @@
 <script setup>
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   title: { type: String, default: '' },
   closable: { type: Boolean, default: false },
-})
+});
 
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue']);
 
 function close() {
-  if (!props.closable) return
-  emits('update:modelValue', false)
+  if (!props.closable) return;
+  emits('update:modelValue', false);
 }
 </script>
 
@@ -40,7 +40,7 @@ function close() {
             leave-from="opacity-100 scale-100"
             leave-to="opacity-0 scale-95">
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-blur p-6 text-left align-middle transition-all">
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-50 p-6 text-left align-middle transition-all dark:bg-zinc-900">
               <DialogTitle v-if="title" as="h3" class="text-lg font-medium leading-6">
                 {{ title }}
               </DialogTitle>
@@ -54,7 +54,3 @@ function close() {
     </Dialog>
   </TransitionRoot>
 </template>
-
-<style scoped>
-
-</style>

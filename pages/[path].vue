@@ -1,5 +1,6 @@
 <script setup>
 import { MdCatalog, MdPreview } from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
 
 // 异步的编辑器组件
 const ArticleEditor = defineAsyncComponent(() => import('@/components/ArticleEditor.client.vue'));
@@ -19,12 +20,10 @@ const {
   data: articleData,
   error: articleDataError,
   refresh: getArticleData,
-} = await useAsyncData(
-  `article:${path.value}`,
-  () => api(`/article/${path.value}`),
-  { deep: false, watch: [path] },
-);
-const coverSrc = computed(() => articleData.value?.cover || settingStore.value.banner);
+} = await useAsyncData(`article:${path.value}`, () => api(`/article/${path.value}`), {
+  deep: false,
+  watch: [path],
+});
 /// endregion 文章数据
 
 /// 格式化时间
@@ -117,7 +116,6 @@ const meta = {
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: coverSrc,
   articlePublishedTime: formattedCreatedAt,
   articleModifiedTime: formattedUpdatedAt,
 };
@@ -129,102 +127,123 @@ useSeoMeta(meta);
   <div class="page">
     <ClientOnly>
       <div v-if="auth.state.value.isLogin && isEdit">
-        <f-btn icon="mingcute:left-line" @click="isEdit = false">
-          取消
-        </f-btn>
+        <f-btn icon="mingcute:left-line" @click="isEdit = false"> 取消</f-btn>
         <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
       </div>
       <template v-if="!isEdit">
-        <div v-if="articleDataError"
-             class="px-6 py-3 bg-red-400 dark:bg-red-700 text-zinc-50 gap-2 flex flex-wrap items-center rounded-lg">
+        <div
+          v-if="articleDataError"
+          class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-zinc-50 dark:bg-red-700">
           <Icon class="text-lg" name="mingcute:close-circle-line" />
           <span class="text-sm">{{ articleDataError }}</span>
           <span class="flex-1"></span>
           <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
         </div>
         <template v-if="articleData?._id">
-          <div class="relative aspect-video max-w-4xl mx-auto mt-4 mb-16">
-            <img :src="coverSrc" alt=""
-                 class="z-0 absolute h-full w-full object-cover filter blur rounded-xl opacity-80">
-            <img :src="coverSrc" alt="" class="z-10 absolute h-full w-full object-cover rounded-xl">
-          </div>
-          <div class="my-4 flex items-center justify-center flex-wrap gap-2 text-zinc-500">
+          <page-head :title="articleData?.title" class="mx-auto text-center"></page-head>
+          <div class="my-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
             <div class="flex items-center gap-1">
               <Icon name="mingcute:document-line" />
-              <span class="hidden md:inline-block print:inline-block text-sm">创建</span>
+              <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
               <span class="text-sm">{{ formattedCreatedAt }}</span>
             </div>
             <div class="flex items-center gap-1 text-sm">
               <Icon name="mingcute:edit-line" />
-              <span class="hidden md:inline-block print:inline-block text-sm">修改</span>
+              <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
               <span class="text-sm">{{ formattedUpdatedAt }}</span>
             </div>
           </div>
-          <page-head :title="articleData?.title" class="mx-auto text-center">
-          </page-head>
-          <div class="my-4 flex items-center justify-center flex-wrap gap-2">
-            <div class="flex items-center gap-1 print:hidden ml-3">
+          <div class="my-4 flex flex-wrap items-center justify-center gap-2">
+            <div class="ml-3 flex items-center gap-1 print:hidden">
               <Icon name="mingcute:book-6-line" />
               <span class="text-sm">{{ articleData?.accessCount }}</span>
-              <span class="hidden md:inline-block text-sm">次访问</span>
+              <span class="hidden text-sm md:inline-block">次访问</span>
             </div>
             <f-btn
-              v-for="name in (articleData?.tags || [])" :key="name" :to="`/tag/${name}`"
-              icon="mingcute:hashtag-line" text>
+              v-for="name in articleData?.tags || []"
+              :key="name"
+              :to="`/tag/${name}`"
+              icon="mingcute:hashtag-line"
+              text>
               {{ name }}
             </f-btn>
           </div>
-          <div class="flex gap-4 justify-center">
+          <div class="flex justify-center gap-4">
             <md-preview
-              v-if="articleData?._id" :model-value="articleData?.content"
-              :no-img-zoom-in="false" :scroll-element="scrollElement" :theme="$colorMode.value"
-              class="flex-1" code-theme="gradient" editor-id="read" preview-theme="default" />
+              v-if="articleData?._id"
+              :model-value="articleData?.content"
+              :no-img-zoom-in="false"
+              :scroll-element="scrollElement"
+              :theme="$colorMode.value"
+              class="flex-1"
+              code-theme="gradient"
+              editor-id="read"
+              preview-theme="default" />
             <div
-              class="side hidden lg:block sticky w-64 px-4 top-20 mt-16 themed-scrollbar overflow-y-auto">
+              class="side themed-scrollbar sticky top-20 hidden w-64 overflow-y-auto px-4 lg:block">
               <client-only>
                 <md-catalog
-                  :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60" editor-id="read" />
+                  :offset-top="180"
+                  :scroll-element="scrollElement"
+                  :scroll-element-offset-top="60"
+                  editor-id="read" />
               </client-only>
             </div>
           </div>
           <client-only>
-            <div class="z-10 fixed bottom-12 right-4 md:right-12 flex flex-col gap-2 print:hidden">
-              <button class="float-btn bg-blur" title="回到顶部" @click="toTop()">
+            <div class="fixed bottom-12 right-4 z-10 flex flex-col gap-2 md:right-12 print:hidden">
+              <button
+                class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                title="回到顶部"
+                @click="toTop()">
                 <Icon name="mingcute:arrows-up-line" />
               </button>
-              <button class="float-btn bg-blur" title="评论区" @click="toComments()">
+              <button
+                class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                title="评论区"
+                @click="toComments()">
                 <Icon name="mingcute:comment-line" />
               </button>
-              <button class="float-btn bg-blur" title="打印当前文档" @click="print()">
+              <button
+                class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                title="打印当前文档"
+                @click="print()">
                 <Icon name="mingcute:print-line" />
               </button>
               <template v-if="auth.state.value.isLogin">
-                <button v-if="articleData?.pinned" class="float-btn bg-blur text-primary-500" title="取消固定"
-                        @click="changePin(false)">
+                <button
+                  v-if="articleData?.pinned"
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                  title="取消固定"
+                  @click="changePin(false)">
                   <Icon name="mingcute:pin-fill" />
                 </button>
-                <button v-else class="float-btn bg-blur" title="固定" @click="changePin(true)">
+                <button
+                  v-else
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                  title="固定"
+                  @click="changePin(true)">
                   <Icon name="mingcute:pin-line" />
                 </button>
-                <button class="float-btn bg-blur" title="编辑" @click="openEdit">
+                <button
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                  title="编辑"
+                  @click="openEdit">
                   <Icon name="mingcute:edit-line" />
                 </button>
-                <button class="float-btn bg-blur" title="删除" @click="deleteDialog = true">
+                <button
+                  class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
+                  title="删除"
+                  @click="deleteDialog = true">
                   <Icon name="mingcute:delete-2-line" />
                 </button>
                 <f-dialog v-model="deleteDialog" closable>
-                  <p class="mb-4">
-                    确认删除此文章 "{{ articleData?.title }}" ?
-                  </p>
+                  <p class="mb-4">确认删除此文章 "{{ articleData?.title }}" ?</p>
                   <div class="text-right">
                     <f-btn class="mr-4" text @click="deleteArticle">
-                    <span class="text-red-500">
-                      确认删除
-                    </span>
+                      <span class="text-red-500"> 确认删除 </span>
                     </f-btn>
-                    <f-btn text @click="deleteDialog = false">
-                      取消
-                    </f-btn>
+                    <f-btn text @click="deleteDialog = false"> 取消</f-btn>
                   </div>
                 </f-dialog>
               </template>
@@ -244,9 +263,5 @@ useSeoMeta(meta);
   :deep(.md-editor-catalog) {
     @apply h-full;
   }
-}
-
-.float-btn {
-  @apply rounded-full h-10 w-10 flex items-center justify-center shadow sm:hover:text-primary-500;
 }
 </style>

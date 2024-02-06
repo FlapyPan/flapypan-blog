@@ -4,10 +4,7 @@ const settingStore = useSettingStore();
 
 /// region 获取 tag 信息
 const tag = computed(() => route.params.tag ?? '');
-const {
-  data: articleData,
-  pending: fetchingData,
-} = useAsyncData(
+const { data: articleData, pending: fetchingData } = useAsyncData(
   `tag:${tag.value}`,
   () => api(`/article/tag/${tag.value}`),
   { deep: false, watch: [tag] },
@@ -37,12 +34,6 @@ useSeoMeta(meta);
       </template>
     </page-head>
     <article-timeline :list="articleData" />
-    <p v-show="fetchingData" class="text-center text-zinc-500 text-sm py-2">
-      加载中...
-    </p>
+    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
   </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -1,9 +1,9 @@
-import { Schema } from 'mongoose'
-import { defineMongooseModel } from '#nuxt/mongoose'
+import { Schema } from 'mongoose';
+import { defineMongooseModel } from '#nuxt/mongoose';
 
 export interface IAttribute {
-  key: string
-  value?: any
+  key: string;
+  value?: any;
 }
 
 export const AttributeSchema = defineMongooseModel<IAttribute>('Attribute', {
@@ -15,4 +15,4 @@ export const AttributeSchema = defineMongooseModel<IAttribute>('Attribute', {
   value: {
     type: Schema.Types.Mixed,
   },
-})
+});

@@ -2,37 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
   @apply w-full overflow-x-clip;
 }
 
 body {
   --primary-500: rgb(99, 102, 241);
-  @apply text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-zinc-900;
+  @apply bg-zinc-50 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200;
 }
 
 img {
   @apply object-cover;
 }
 
-input, textarea {
-  @apply bg-white bg-opacity-70 dark:bg-zinc-800 dark:bg-opacity-80 rounded-md py-2 px-3 transition-colors;
+input,
+textarea {
+  @apply rounded-md bg-white bg-opacity-70 px-3 py-2 transition-colors dark:bg-zinc-800 dark:bg-opacity-80;
 
   &[disabled] {
-    @apply opacity-30 cursor-not-allowed;
+    @apply cursor-not-allowed opacity-30;
   }
 
   &:focus {
-    @apply outline-none bg-opacity-50 dark:bg-opacity-50 bg-primary-50 dark:bg-primary-950;
+    @apply bg-primary-50 bg-opacity-50 outline-none dark:bg-primary-950 dark:bg-opacity-50;
   }
 }
 
-.bg-blur {
-  @apply bg-white bg-opacity-70 backdrop-blur-lg dark:bg-zinc-800 dark:bg-opacity-80;
-}
-
 .page {
-  @apply py-16 container mx-auto max-w-7xl;
+  @apply container mx-auto max-w-6xl py-16;
 }
 
 .f-input {
@@ -44,7 +42,9 @@ input, textarea {
 }
 
 @keyframes rotate {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .page-leave-active {
@@ -57,19 +57,20 @@ input, textarea {
 
 .page-enter-from,
 .page-leave-to {
-  @apply blur-xl scale-x-150 opacity-0 origin-top;
+  @apply origin-top scale-x-150 opacity-0 blur-xl;
 }
 
-html, .themed-scrollbar {
-  @apply scrollbar scrollbar-w-2 scrollbar-thumb-rounded-full scrollbar-track-rounded-full
-  scrollbar-thumb-primary-200 scrollbar-track-primary-50 dark:scrollbar-thumb-primary-900 dark:scrollbar-track-primary-950;
+html,
+.themed-scrollbar {
+  @apply scrollbar scrollbar-track-primary-50 scrollbar-thumb-primary-200 scrollbar-track-rounded-full
+  scrollbar-thumb-rounded-full scrollbar-w-2 dark:scrollbar-track-primary-950 dark:scrollbar-thumb-primary-900;
 }
 
 html.dark {
-  @apply scrollbar-thumb-primary-900 scrollbar-track-primary-950;
+  @apply scrollbar-track-primary-950 scrollbar-thumb-primary-900;
 }
 
-.md-editor {
+:is(#read, #edit).md-editor {
   @apply bg-zinc-50 dark:bg-zinc-900;
 
   .md-editor-preview {

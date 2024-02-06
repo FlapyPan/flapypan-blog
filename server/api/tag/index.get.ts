@@ -1,3 +1,3 @@
-import { getAllTags } from '~/server/data/article'
+import { getAllTags } from '~/server/data/article';
 
-export default eventHandler(async () => getAllTags())
+export default eventHandler(async () => getAllTags());

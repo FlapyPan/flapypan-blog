@@ -9,26 +9,55 @@
     "postinstall": "nuxt prepare",
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs",
+    "format": "prettier . \"**/*.{js,ts,json,css,vue}\" --write "
   },
-  "devDependencies": {
+  "dependencies": {
     "@headlessui/vue": "^1.7.18",
-    "@nuxt/devtools": "latest",
     "@nuxtjs/color-mode": "^3.3.2",
-    "@types/jsonwebtoken": "^9.0.5",
     "giscus": "^1.4.0",
     "jsonwebtoken": "^9.0.2",
     "md-editor-v3": "^4.11.2",
     "nuxt": "^3.10.0",
     "nuxt-icon": "^0.6.8",
     "nuxt-mongoose": "^1.0.5",
-    "postcss-preset-env": "^9.3.0",
     "sharp": "^0.33.2",
-    "tailwind-scrollbar": "^3.0.5",
-    "tailwindcss": "^3.4.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5",
     "vue-toastification": "2.0.0-rc.5",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/jsonwebtoken": "^9.0.5",
+    "postcss-preset-env": "^9.3.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "tailwind-scrollbar": "^3.0.5",
+    "tailwindcss": "^3.4.1"
+  },
+  "browserslist": [
+    "Chrome >= 87",
+    "Firefox >= 78",
+    "Safari >= 14",
+    "Edge >= 88"
+  ],
+  "prettier": {
+    "semi": true,
+    "tabWidth": 2,
+    "useTabs": false,
+    "printWidth": 100,
+    "endOfLine": "auto",
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "bracketSameLine": true,
+    "quoteProps": "consistent",
+    "singleAttributePerLine": false,
+    "vueIndentScriptAndStyle": false,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }

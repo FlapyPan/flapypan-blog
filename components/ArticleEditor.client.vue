@@ -42,7 +42,7 @@ const draftPersistInterval = setInterval(() => {
 onBeforeUnmount(() => clearInterval(draftPersistInterval));
 const editTags = computed({
   get: () => draft.value?.tags?.join(' '),
-  set: (val) => draft.value.tags = [...new Set(val.split(' '))],
+  set: (val) => (draft.value.tags = [...new Set(val.split(' '))]),
 });
 /// endregion 文章编辑持久化
 
@@ -86,41 +86,61 @@ async function saveArticle() {
 
 <template>
   <form class="flex flex-col items-center gap-6" @submit.prevent.stop>
-    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-      <label class="text-sm flex flex-wrap items-center gap-4">
+    <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
+      <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>文章标题</span>
         <input
-          v-model="draft.title" :disabled="saving" class="flex-1" name="title" placeholder="文章标题" required
-          type="text">
+          v-model="draft.title"
+          :disabled="saving"
+          class="flex-1"
+          name="title"
+          placeholder="文章标题"
+          required
+          type="text" />
       </label>
-      <label class="text-sm flex flex-wrap items-center gap-4">
+      <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>访问路径</span>
         <input
-          v-model="draft.path" :disabled="saving" class="flex-1" name="path" placeholder="访问路径" required
-          type="text">
+          v-model="draft.path"
+          :disabled="saving"
+          class="flex-1"
+          name="path"
+          placeholder="访问路径"
+          required
+          type="text" />
       </label>
-      <label class="text-sm flex flex-wrap items-center gap-4">
+      <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>封面链接</span>
         <input
-          v-model="draft.cover" :disabled="saving" class="flex-1" name="cover" placeholder="封面链接" required
-          type="text">
+          v-model="draft.cover"
+          :disabled="saving"
+          class="flex-1"
+          name="cover"
+          placeholder="封面链接"
+          required
+          type="text" />
       </label>
-      <label class="text-sm flex flex-wrap items-center gap-4">
+      <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>标签(空格分隔)</span>
         <input
-          v-model="editTags" :disabled="saving" class="flex-1" name="tags" placeholder="标签(空格分隔)" required
-          type="text">
+          v-model="editTags"
+          :disabled="saving"
+          class="flex-1"
+          name="tags"
+          placeholder="标签(空格分隔)"
+          required
+          type="text" />
       </label>
     </div>
     <MdEditor
-      v-model="draft.content" :no-img-zoom-in="false" :theme="$colorMode.value" code-theme="gradient"
-      editor-id="edit" preview-theme="default" @on-upload-img="onUploadImg"
+      v-model="draft.content"
+      :no-img-zoom-in="false"
+      :theme="$colorMode.value"
+      code-theme="gradient"
+      editor-id="edit"
+      preview-theme="default"
+      @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />
-    <f-btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle">
-      保存发布
-    </f-btn>
+    <f-btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle"> 保存发布 </f-btn>
   </form>
 </template>
-
-<style scoped>
-</style>

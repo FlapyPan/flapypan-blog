@@ -26,7 +26,9 @@ export function getArticleListByTag(tag: string) {
 }
 
 export function getPinnedArticleList() {
-  return ArticleSchema.find({ pinned: true }).sort({ updatedAt: 1 }).select({ _id: 1, title: 1, path: 1 });
+  return ArticleSchema.find({ pinned: true })
+    .sort({ updatedAt: 1 })
+    .select({ _id: 1, title: 1, path: 1 });
 }
 
 interface ArticleAddRequest {

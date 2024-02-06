@@ -4,11 +4,7 @@ import { Menu as HMenu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 const settingStore = useSettingStore();
 const auth = useAuth();
 
-const { data: links } = useAsyncData(
-  'pinnedLinks',
-  () => api('/article/pinned'),
-  { deep: false },
-);
+const { data: links } = useAsyncData('pinnedLinks', () => api('/article/pinned'), { deep: false });
 
 const scrolled = shallowRef(false);
 function checkScrolled() {
@@ -29,21 +25,33 @@ const navLinks = [
   {
     routeName: 'index',
     to: '/',
-    activeColor: { text: 'text-primary-500', hoverText: 'sm:hover:text-primary-500', background: 'bg-primary-500' },
+    activeColor: {
+      text: 'text-primary-500',
+      hoverText: 'sm:hover:text-primary-500',
+      background: 'bg-primary-500',
+    },
     title: '首页',
     icon: 'mingcute:home-1-line',
   },
   {
     routeName: 'archive',
     to: '/archive',
-    activeColor: { text: 'text-orange-500', hoverText: 'sm:hover:text-orange-500', background: 'bg-orange-500' },
+    activeColor: {
+      text: 'text-orange-500',
+      hoverText: 'sm:hover:text-orange-500',
+      background: 'bg-orange-500',
+    },
     title: '博客',
     icon: 'mingcute:archive-line',
   },
   {
     routeName: 'activity',
     to: '/activity',
-    activeColor: { text: 'text-pink-500', hoverText: 'sm:hover:text-pink-500', background: 'bg-pink-500' },
+    activeColor: {
+      text: 'text-pink-500',
+      hoverText: 'sm:hover:text-pink-500',
+      background: 'bg-pink-500',
+    },
     title: '活动',
     icon: 'mingcute:time-line',
   },
@@ -62,17 +70,19 @@ const colorModeCircle = {
       <login-form @close="auth.state.value.loginDialogVisible = false" />
     </f-dialog>
   </template>
-  <div class="w-full fixed z-40 top-0 h-10 rounded-b-lg print:hidden" :class="{ 'bg-blur': scrolled }"></div>
   <header
-    class="w-full fixed z-50 top-0 px-3 md:px-6 rounded-b-lg transition-shadow print:hidden"
-    :class="{ 'shadow': scrolled }">
-    <div class="container mx-auto flex items-center gap-2 transition-all"
-         :class="`${scrolled ? 'h-10 max-w-5xl' : 'h-16 max-w-7xl'}`">
-      <h-menu v-slot="{ open }" as="div" class="relative inline-block md:hidden text-left">
+    :class="{ shadow: scrolled }"
+    class="fixed top-0 z-50 w-full bg-zinc-50 px-3 transition-shadow dark:bg-zinc-900 md:px-6 print:hidden">
+    <div
+      :class="`${scrolled ? 'h-10' : 'h-16'}`"
+      class="container mx-auto flex max-w-6xl items-center gap-2 transition-all">
+      <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left md:hidden">
         <menu-button
-          :class="{ 'text-primary-500': open }" class="flex items-center p-3 sm:hover:text-primary-500 cursor-pointer">
+          :class="{ 'text-primary-500': open }"
+          class="flex cursor-pointer items-center p-3 sm:hover:text-primary-500">
           <Icon
-            :class="{ 'rotate-90': open }" :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
+            :class="{ 'rotate-90': open }"
+            :name="open ? 'mingcute:close-line' : 'mingcute:menu-line'"
             class="transform transition-transform" />
         </menu-button>
 
@@ -84,10 +94,14 @@ const colorModeCircle = {
           leave-from-class="transform scale-100 opacity-100"
           leave-to-class="transform scale-95 opacity-0">
           <menu-items
-            class="absolute w-48 left-0 mt-1 p-1 origin-top-left shadow-lg bg-blur rounded-xl focus:outline-none">
+            class="absolute left-0 mt-1 w-48 origin-top-left rounded-xl bg-zinc-50 p-1 shadow-lg focus:outline-none dark:bg-zinc-900">
             <menu-item v-for="l in navLinks" :key="l.routeName" v-slot="{ active }">
               <button
-                :class="[$route.name === l.routeName || active ? `${l.activeColor.background} bg-opacity-10` : '']"
+                :class="[
+                  $route.name === l.routeName || active
+                    ? `${l.activeColor.background} bg-opacity-10`
+                    : '',
+                ]"
                 :title="l.title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateTo(l.to)">
@@ -95,10 +109,12 @@ const colorModeCircle = {
                 {{ l.title }}
               </button>
             </menu-item>
-            <menu-item
-              v-for="{ _id, title, path } in links" :key="_id" v-slot="{ active }">
+            <menu-item v-for="{ _id, title, path } in links" :key="_id" v-slot="{ active }">
               <button
-                :class="[$route.path === `/${path}` || active ? 'bg-secondary-500 bg-opacity-10' : '']" :title="title"
+                :class="[
+                  $route.path === `/${path}` || active ? 'bg-secondary-500 bg-opacity-10' : '',
+                ]"
+                :title="title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateTo(`/${path}`)">
                 <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
@@ -109,10 +125,14 @@ const colorModeCircle = {
         </transition>
       </h-menu>
 
-      <nav class="items-center gap-4 text-sm underline-offset-2 hidden md:flex py-3 px-5">
+      <nav class="hidden items-center gap-4 px-5 py-3 text-sm underline-offset-2 md:flex">
         <nuxt-link
-          v-for="l in navLinks" :key="l.routeName"
-          :class="{ [l.activeColor.text]: $route.name === l.routeName, [`${l.activeColor.hoverText}`]: true }"
+          v-for="l in navLinks"
+          :key="l.routeName"
+          :class="{
+            [l.activeColor.text]: $route.name === l.routeName,
+            [`${l.activeColor.hoverText}`]: true,
+          }"
           :title="l.title"
           :to="l.to"
           class="flex items-center">
@@ -120,7 +140,8 @@ const colorModeCircle = {
           {{ l.title }}
         </nuxt-link>
         <nuxt-link
-          v-for="{ _id, title, path } in links" :key="_id"
+          v-for="{ _id, title, path } in links"
+          :key="_id"
           :class="{ 'text-secondary-500': $route.path === `/${path}` }"
           :title="title"
           :to="`/${path}`"
@@ -132,12 +153,12 @@ const colorModeCircle = {
 
       <div class="flex-1"></div>
 
-      <h-menu v-slot="{ open }" as="div" class="relative inline-block text-left cursor-pointer">
+      <h-menu v-slot="{ open }" as="div" class="relative inline-block cursor-pointer text-left">
         <menu-button
           :class="{ 'text-primary-500': open }"
           class="flex items-center px-4 text-sm sm:hover:text-primary-500">
-          <img :src="settingStore.avatar" alt="" class="w-5 h-5 rounded-full">
-          <div v-if="state" class="flex flex-col ml-2 text-xs py-1">
+          <img :src="settingStore.avatar" alt="" class="h-5 w-5 rounded-full" />
+          <div v-if="state" class="ml-2 flex flex-col py-1 text-xs">
             <span>{{ settingStore.name }}</span>
             <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
           </div>
@@ -151,7 +172,7 @@ const colorModeCircle = {
           leave-from-class="transform scale-100 opacity-100"
           leave-to-class="transform scale-95 opacity-0">
           <menu-items
-            class="absolute w-32 right-0 mt-1 p-1 origin-top-right shadow-lg bg-blur z-10 rounded-xl focus:outline-none">
+            class="absolute right-0 z-10 mt-1 w-32 origin-top-right rounded-xl bg-zinc-50 p-1 shadow-lg focus:outline-none dark:bg-zinc-900">
             <menu-item v-if="auth.state.value.isLogin" v-slot="{ active }">
               <button
                 :class="[$route.name === 'new' || active ? 'bg-secondary-500 bg-opacity-10' : '']"
@@ -192,8 +213,10 @@ const colorModeCircle = {
         </transition>
       </h-menu>
 
-      <button class="flex items-center p-3 sm:hover:text-primary-500 cursor-pointer"
-              title="切换配色模式" @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
+      <button
+        class="flex cursor-pointer items-center p-3 sm:hover:text-primary-500"
+        title="切换配色模式"
+        @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
         <template v-if="$colorMode.preference === 'system'">
           <span class="flex md:hidden">
             <Icon class="flex md:hidden" name="mingcute:cellphone-line" />
@@ -212,6 +235,3 @@ const colorModeCircle = {
     </div>
   </header>
 </template>
-
-<style scoped>
-</style>

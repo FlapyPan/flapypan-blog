@@ -1,8 +1,8 @@
 <script setup>
 defineProps({
   loading: { type: Boolean },
-})
-const emits = defineEmits(['refresh'])
+});
+const emits = defineEmits(['refresh']);
 </script>
 
 <template>
@@ -10,6 +10,3 @@ const emits = defineEmits(['refresh'])
     <Icon :class="{ 'animation-rotate': loading }" name="mingcute:refresh-1-line" />
   </f-btn>
 </template>
-
-<style scoped>
-</style>

@@ -6,11 +6,7 @@ const {
   pending: fetchingArticleData,
   data: articleData,
   refresh,
-} = await useAsyncData(
-  'article:latest',
-  () => api('/article/recent'),
-  { deep: false },
-);
+} = await useAsyncData('article:latest', () => api('/article/recent'), { deep: false });
 /// endregion 文章数据
 
 /// region 随机一言
@@ -45,56 +41,54 @@ useSeoMeta(meta);
 </script>
 
 <template>
-  <div>
+  <div class="page">
     <section
-      class="w-full mx-auto pt-36 flex gap-16 sm:gap-18 lg:gap-52 flex-col-reverse items-center justify-center md:flex-row text-center md:text-left">
+      class="sm:gap-18 flex w-full flex-col-reverse items-center justify-center gap-16 pt-36 text-center md:flex-row md:text-left lg:gap-52">
       <div>
         <h1
-          class="font-serif tracking-wide text-3xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
+          class="font-serif text-3xl font-bold tracking-wide text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
           {{ settingStore.siteTitle }}
         </h1>
         <div class="text-zinc-600 dark:text-zinc-400">
-          <p
-            class="text-2xl flex items-center justify-center md:justify-start gap-4 md:gap-2 mt-8">
-            <a
-              :href="`mailto:${settingStore.email}`" class="flex items-center"
-              title="邮箱联系我">
+          <p class="mt-8 flex items-center justify-center gap-4 text-2xl md:justify-start md:gap-2">
+            <a :href="`mailto:${settingStore.email}`" class="flex items-center" title="邮箱联系我">
               <Icon name="mingcute:at-line" />
             </a>
-            <a :href="`https://github.com/${settingStore.name}`" class="flex items-center" title="github">
+            <a
+              :href="`https://github.com/${settingStore.name}`"
+              class="flex items-center"
+              title="github">
               <Icon name="mdi:github" />
             </a>
           </p>
           <client-only>
-            <p v-if="settingStore.hitoko" class="mt-4 text-sm text-center md:text-left">
+            <p v-if="settingStore.hitoko" class="mt-4 text-center text-sm md:text-left">
               一言：{{ hitoko }}
             </p>
-            <p v-else class="mt-4 text-sm text-center md:text-left">
+            <p v-else class="mt-4 text-center text-sm md:text-left">
               {{ settingStore.info }}
               <span class="animate-ping">_</span>
             </p>
           </client-only>
         </div>
       </div>
-      <img :src="settingStore.avatar" alt="" class="w-32 h-32 rounded-full md:w-40 md:h-40 lg:w-52 lg:h-52">
+      <img
+        :src="settingStore.avatar"
+        alt=""
+        class="h-32 w-32 rounded-full md:h-40 md:w-40 lg:h-52 lg:w-52" />
     </section>
-    <section class="max-w-5xl mx-auto mt-24">
+    <section class="mt-24">
       <h3 class="mb-3 mt-6 flex items-center">
         最近更新
         <refresh-button :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
       </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
         <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
-      <div v-once class="text-center mt-6">
-        <f-btn text to="/archive" icon="mingcute:more-2-line">
-          查看更多
-        </f-btn>
+      <div v-once class="mt-6 text-center">
+        <f-btn icon="mingcute:more-2-line" text to="/archive"> 查看更多 </f-btn>
       </div>
       <GiscusCard />
     </section>
   </div>
 </template>
-
-<style scoped>
-</style>

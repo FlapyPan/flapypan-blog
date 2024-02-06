@@ -1,3 +1,3 @@
-import { getRecentArticleList } from '~/server/data/article'
+import { getRecentArticleList } from '~/server/data/article';
 
-export default eventHandler(async () => getRecentArticleList())
+export default eventHandler(async () => getRecentArticleList());
