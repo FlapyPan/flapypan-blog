@@ -41,7 +41,6 @@ export const sparkAI = {
   },
   async sendConversation(text: Array<SparkAIConversation>): Promise<string> {
     const appId = ensure(process.env.SPARK_APP_ID, '未设置SPARK_APP_ID', 500);
-    const domain = ensure(process.env.SPARK_CHAT_DOMAIN, '未设置SPARK_CHAT_DOMAIN', 500);
     const url = this._getWebsocketUrl();
     const ws = new WebSocket(url);
     const data = JSON.stringify({
@@ -51,7 +50,7 @@ export const sparkAI = {
     });
     ws.onopen = () => ws.send(data);
     return await new Promise<string>((resolve, reject) => {
-      const timeout = setTimeout(() => reject('请求超时'), 30000);
+      const timeout = setTimeout(() => reject(Error('请求超时')), 10000);
       let lastSeq = -1;
       const buffer: string[] = [];
       ws.onmessage = ({ data }) => {
@@ -60,7 +59,7 @@ export const sparkAI = {
           payload: { choices },
         } = JSON.parse(data.toString()) as SparkAIResult;
         if (header.code !== 0) {
-          reject(header.message);
+          reject(Error(header.message));
           return;
         }
         if (choices.seq > lastSeq && choices.text.length > 0) {
