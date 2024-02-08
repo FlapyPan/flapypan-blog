@@ -6,6 +6,7 @@ export interface IArticle {
   path: string;
   cover?: string;
   content: string;
+  summary?: string;
   pinned?: boolean;
   tags: string[];
   createdAt: Date;
@@ -29,6 +30,9 @@ export const ArticleSchema = defineMongooseModel<IArticle>('Article', {
   content: {
     type: Schema.Types.String,
     required: true,
+  },
+  summary: {
+    type: Schema.Types.String,
   },
   pinned: {
     type: Schema.Types.Boolean,

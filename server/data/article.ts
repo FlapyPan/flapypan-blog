@@ -2,6 +2,7 @@ import type { ObjectId } from 'bson';
 
 const listSelect = {
   content: 0,
+  summary: 0,
 };
 
 export function getRecentArticleList() {
@@ -15,6 +16,10 @@ export function getArticleList() {
 export async function getAllTags() {
   const tags = await ArticleSchema.distinct('tags');
   return tags.filter((tag) => !!tag);
+}
+
+export function getArticleById(_id: string | ObjectId) {
+  return ArticleSchema.findById(_id);
 }
 
 export function getArticleByPath(path: string) {
@@ -50,6 +55,7 @@ interface ArticleModifyRequest {
   path?: string | null;
   cover?: string | null;
   content?: string | null;
+  summary?: string | null;
   tags?: string[] | null;
 }
 

@@ -24,11 +24,12 @@ const {
   deep: false,
   watch: [path],
 });
-/// endregion 文章数据
 
-/// 格式化时间
+// 格式化时间
 const formattedCreatedAt = useDateTimeFormat(articleData.value?.createdAt);
 const formattedUpdatedAt = useDateTimeFormat(articleData.value?.updatedAt);
+
+/// endregion
 
 /// region 文章删除
 const deleteDialog = shallowRef(false);
@@ -50,7 +51,7 @@ async function deleteArticle() {
   }
 }
 
-/// endregion 文章删除
+/// endregion
 
 /// region 文章编辑
 const editData = shallowRef({});
@@ -85,7 +86,24 @@ async function changePin(pinned) {
   await getArticleData();
 }
 
-/// endregion 文章编辑
+/// endregion
+
+/// region 文章摘要生成
+
+const summaryLoading = shallowRef(false);
+async function summary() {
+  summaryLoading.value = true;
+  try {
+    await api(`/ai/summary`, 'POST', { _id: articleData.value._id });
+    await getArticleData();
+  } finally {
+    summaryLoading.value = false;
+  }
+}
+
+/// endregion
+
+/// region 浮动按钮
 
 function toTop() {
   document.documentElement.scrollTo({
@@ -107,10 +125,15 @@ function print() {
   window.print();
 }
 
-/// 处理网页标题
+/// endregion
+
+/// region 处理 seo
+
 const siteTitle = settingStore.value.siteTitle ?? '博客';
 const title = `${articleData.value?.title ?? '文章'} - ${siteTitle}`;
-const description = articleData.value?.content?.substring(0, 200).replace(/(\n[\s\t]*\r*\n)/g, ' ');
+const description =
+  articleData.value?.summary ??
+  articleData.value?.content?.substring(0, 200).replace(/(\n[\s\t]*\r*\n)/g, ' ');
 const meta = {
   title,
   description,
@@ -121,6 +144,8 @@ const meta = {
 };
 useServerSeoMeta(meta);
 useSeoMeta(meta);
+
+/// endregion
 </script>
 
 <template>
@@ -167,6 +192,30 @@ useSeoMeta(meta);
               text>
               {{ name }}
             </f-btn>
+          </div>
+          <div
+            v-if="articleData.summary || auth.state.value.isLogin"
+            class="mx-auto my-6 max-w-xl rounded-xl bg-zinc-100 p-3 text-zinc-500 dark:bg-zinc-950">
+            <p class="text-xs leading-relaxed">
+              <span class="font-bold">
+                <Icon name="mingcute:notebook-line" />
+                AI摘要：
+              </span>
+              {{ articleData.summary ?? '无' }}
+            </p>
+            <p class="mt-3 flex items-center justify-between text-xs">
+              <f-btn v-if="auth.state.value.isLogin" :disabled="summaryLoading" @click="summary">
+                {{ summaryLoading ? '生成中...' : '生成摘要' }}
+              </f-btn>
+              <span v-else></span>
+              <span>
+                由
+                <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
+                  讯飞星火认知大模型
+                </a>
+                生成
+              </span>
+            </p>
           </div>
           <div class="flex justify-center gap-4">
             <md-preview

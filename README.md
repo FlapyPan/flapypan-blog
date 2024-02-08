@@ -57,3 +57,9 @@ node .output/server/index.mjs
 参考 Giscus [官方教程](https://giscus.app/zh-CN)
 
 获取到对应的 `repo` `repoid` `category` `categoryid` 后，登录博客后台填入相应的位置保存即可
+
+## 配置 AI 摘要生成(可选)
+
+前往[讯飞开放平台](https://console.xfyun.cn/services/bm35)获取 API 配置(仅支持 V3.5 模型)
+
+参考`.env.example`配置环境变量
