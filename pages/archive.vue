@@ -1,4 +1,6 @@
 <script setup>
+import { useSettingStore } from '~/store';
+
 const settingStore = useSettingStore();
 
 /// region 标签数据
@@ -30,7 +32,7 @@ const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
 );
 /// endregion 文章列表
 
-const title = `归档 - ${settingStore.value.siteTitle ?? '博客'}`;
+const title = `归档 - ${settingStore.setting.siteTitle ?? '博客'}`;
 const description = `我的所有文章`;
 const meta = {
   title,
@@ -48,9 +50,9 @@ useSeoMeta(meta);
     <h3 class="my-3 flex items-center text-2xl">标签</h3>
     <div class="my-6 flex flex-wrap items-center gap-4">
       <template v-for="name in tagList" :key="name">
-        <f-btn :to="`/tag/${name}`" icon="mingcute:hashtag-line" text>
+        <Btn :to="`/tag/${name}`" icon="mingcute:hashtag-line" text>
           {{ name }}
-        </f-btn>
+        </Btn>
       </template>
     </div>
     <div class="my-12">

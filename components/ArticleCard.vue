@@ -1,4 +1,6 @@
 <script setup>
+import { useSettingStore } from '~/store';
+
 const props = defineProps({
   article: {},
 });
@@ -6,7 +8,7 @@ const emits = defineEmits(['onRoute']);
 
 const settingStore = useSettingStore();
 
-const coverSrc = shallowRef(props.article.cover || settingStore.value.banner);
+const coverSrc = shallowRef(props.article.cover || settingStore.setting.banner);
 
 const formattedDate = useDateTimeFormat(props.article.updatedAt);
 </script>

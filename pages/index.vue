@@ -1,4 +1,6 @@
 <script setup>
+import { useSettingStore } from '~/store';
+
 const settingStore = useSettingStore();
 
 /// region 文章数据
@@ -25,11 +27,11 @@ async function fetchHitokoto(enable) {
   }
 }
 
-watch(() => settingStore.value.hitoko, fetchHitokoto, { immediate: true });
+watch(() => settingStore.setting.hitoko, fetchHitokoto, { immediate: true });
 /// endregion 随机一言
 
-const title = `${settingStore.value.name} - ${settingStore.value.siteTitle ?? '博客'}`;
-const description = settingStore.value.info ?? '';
+const title = `${settingStore.setting.name} - ${settingStore.setting.siteTitle ?? '博客'}`;
+const description = settingStore.setting.info ?? '';
 const meta = {
   title,
   description,
@@ -47,33 +49,36 @@ useSeoMeta(meta);
       <div>
         <h1
           class="font-serif text-3xl font-bold tracking-wide text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
-          {{ settingStore.siteTitle }}
+          {{ settingStore.setting.siteTitle }}
         </h1>
         <div class="text-zinc-600 dark:text-zinc-400">
           <p class="mt-8 flex items-center justify-center gap-4 text-2xl md:justify-start md:gap-2">
-            <a :href="`mailto:${settingStore.email}`" class="flex items-center" title="邮箱联系我">
+            <a
+              :href="`mailto:${settingStore.setting.email}`"
+              class="flex items-center"
+              title="邮箱联系我">
               <Icon name="mingcute:at-line" />
             </a>
             <a
-              :href="`https://github.com/${settingStore.name}`"
+              :href="`https://github.com/${settingStore.setting.name}`"
               class="flex items-center"
               title="github">
               <Icon name="mdi:github" />
             </a>
           </p>
           <client-only>
-            <p v-if="settingStore.hitoko" class="mt-4 text-center text-sm md:text-left">
+            <p v-if="settingStore.setting.hitoko" class="mt-4 text-center text-sm md:text-left">
               一言：{{ hitoko }}
             </p>
             <p v-else class="mt-4 text-center text-sm md:text-left">
-              {{ settingStore.info }}
+              {{ settingStore.setting.info }}
               <span class="animate-ping">_</span>
             </p>
           </client-only>
         </div>
       </div>
       <img
-        :src="settingStore.avatar"
+        :src="settingStore.setting.avatar"
         alt=""
         class="h-32 w-32 rounded-full md:h-40 md:w-40 lg:h-52 lg:w-52" />
     </section>
@@ -86,7 +91,7 @@ useSeoMeta(meta);
         <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="mt-6 text-center">
-        <f-btn icon="mingcute:more-2-line" text to="/archive"> 查看更多 </f-btn>
+        <Btn icon="mingcute:more-2-line" text to="/archive"> 查看更多 </Btn>
       </div>
       <GiscusCard />
     </section>

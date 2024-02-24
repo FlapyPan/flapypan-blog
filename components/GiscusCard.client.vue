@@ -1,4 +1,5 @@
 <script setup>
+import { useSettingStore } from '~/store';
 import 'giscus';
 
 const settingStore = useSettingStore();
@@ -6,10 +7,10 @@ const settingStore = useSettingStore();
 const valid = computed(
   () =>
     !!(
-      settingStore.value.giscusRepo?.trim() !== '' &&
-      settingStore.value.giscusRepoId?.trim() !== '' &&
-      settingStore.value.giscusCategory?.trim() !== '' &&
-      settingStore.value.giscusCategoryId?.trim() !== ''
+      settingStore.setting.giscusRepo?.trim() !== '' &&
+      settingStore.setting.giscusRepoId?.trim() !== '' &&
+      settingStore.setting.giscusCategory?.trim() !== '' &&
+      settingStore.setting.giscusCategoryId?.trim() !== ''
     ),
 );
 
@@ -24,10 +25,10 @@ const theme = computed(() => `noborder_${colorMode.value}`);
     <template v-if="valid">
       <giscus-widget
         id="comments"
-        :category="settingStore.giscusCategory"
-        :categoryid="settingStore.giscusCategoryId"
-        :repo="settingStore.giscusRepo"
-        :repoid="settingStore.giscusRepoId"
+        :category="settingStore.setting.giscusCategory"
+        :categoryid="settingStore.setting.giscusCategoryId"
+        :repo="settingStore.setting.giscusRepo"
+        :repoid="settingStore.setting.giscusRepoId"
         :theme="theme"
         emitmetadata="0"
         inputposition="top"

@@ -1,7 +1,9 @@
 <script setup>
+import { useAuthStore } from '~/store';
+
 const emits = defineEmits(['close']);
 
-const auth = useAuth();
+const auth = useAuthStore();
 
 /// region 登录
 const form = reactive({
@@ -58,6 +60,6 @@ async function login() {
         type="checkbox" />
       <label for="login-remember">记住我</label>
     </p>
-    <f-btn :disabled="isDoLogin" type="submit" @click="login"> 登录 </f-btn>
+    <Btn :disabled="isDoLogin" type="submit" @click="login"> 登录 </Btn>
   </form>
 </template>

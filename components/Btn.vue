@@ -11,24 +11,24 @@ defineProps({
 
 <template>
   <button
-    :class="[text ? 'f-btn--text' : 'f-btn--normal']"
+    :class="[text ? 'Btn--text' : 'Btn--normal']"
     :disabled="disabled"
-    class="f-btn"
+    class="Btn"
     draggable="false">
     <template v-if="to !== ''">
-      <nuxt-link :to="to" class="f-btn-content">
+      <nuxt-link :to="to" class="Btn-content">
         <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </nuxt-link>
     </template>
     <template v-else-if="href !== ''">
-      <a :href="href" :target="target" class="f-btn-content">
+      <a :href="href" :target="target" class="Btn-content">
         <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </a>
     </template>
     <template v-else>
-      <span class="f-btn-content">
+      <span class="Btn-content">
         <Icon v-if="icon" :name="icon" class="mr-1" />
         <slot />
       </span>
@@ -37,33 +37,33 @@ defineProps({
 </template>
 
 <style scoped>
-.f-btn {
+.Btn {
   @apply relative inline-block transform-gpu overflow-hidden text-sm text-current transition disabled:cursor-not-allowed disabled:opacity-60;
 
-  .f-btn-content {
+  .Btn-content {
     @apply flex items-center justify-center;
   }
 
-  &.f-btn--text {
+  &.Btn--text {
     &:not([disabled]) {
-      .f-btn-content {
+      .Btn-content {
         @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all;
         background-position-y: 100%;
         background-size: 0 1.5px;
       }
 
       &:hover {
-        .f-btn-content {
+        .Btn-content {
           background-size: 100% 1.5px;
         }
       }
     }
   }
 
-  &.f-btn--normal {
+  &.Btn--normal {
     @apply rounded-lg bg-zinc-300 bg-opacity-30 dark:bg-zinc-800;
 
-    .f-btn-content {
+    .Btn-content {
       @apply px-2 py-2;
     }
 

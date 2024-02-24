@@ -1,13 +1,10 @@
 <script setup>
+import { useAuthStore, useSettingStore } from '~/store';
 import { useToast } from 'vue-toastification';
 
-const auth = useAuth();
+const auth = useAuthStore();
 const settingStore = useSettingStore();
 const toast = useToast();
-
-if (import.meta.browser) {
-  auth.state.value.loginDialogVisible = !auth.state.value.isLogin;
-}
 
 /// region 博客设置
 const savingSettings = shallowRef(false);
@@ -15,8 +12,7 @@ const savingSettings = shallowRef(false);
 async function saveSetting() {
   savingSettings.value = true;
   try {
-    const data = await api('/attribute/settings', 'POST', settingStore.value);
-    settingStore.value = { ...settingStore.value, ...data };
+    await settingStore.save();
     toast.success('设置保存成功');
   } finally {
     savingSettings.value = false;
@@ -33,10 +29,10 @@ function getToken() {
 /// endregion
 
 /// region 自定义样式
-const { data: customStyleValue } = useAsyncData(
+const { data: customStyleValue, execute: fetchCustomStyle } = useLazyAsyncData(
   'customStyle',
   () => api('/attribute/custom-style'),
-  { deep: false },
+  { deep: false, immediate: false },
 );
 const savingCustomStyle = shallowRef(false);
 async function saveCustomStyle() {
@@ -51,10 +47,10 @@ async function saveCustomStyle() {
 /// endregion
 
 /// region 自定义 js
-const { data: customScriptValue } = useAsyncData(
+const { data: customScriptValue, execute: fetchCustomScript } = useLazyAsyncData(
   'customScript',
   () => api('/attribute/custom-script'),
-  { deep: false },
+  { deep: false, immediate: false },
 );
 const savingCustomScript = shallowRef(false);
 async function saveCustomScript() {
@@ -68,7 +64,7 @@ async function saveCustomScript() {
 }
 /// endregion
 
-const title = `设置 - ${settingStore.value.siteTitle ?? '博客'}`;
+const title = `设置 - ${settingStore.setting.siteTitle ?? '博客'}`;
 const description = `博客设置`;
 const meta = {
   title,
@@ -81,14 +77,14 @@ useSeoMeta(meta);
 
 <template>
   <div class="page">
-    <template v-if="auth.state.value.isLogin">
+    <template v-if="auth.isLogin">
       <div class="flex flex-col items-center gap-6">
         <h3 class="w-full text-lg">基础信息设置</h3>
         <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点标题</span>
             <input
-              v-model="settingStore.siteTitle"
+              v-model="settingStore.setting.siteTitle"
               :disabled="savingSettings"
               class="flex-1"
               name="title"
@@ -99,7 +95,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点图标链接</span>
             <input
-              v-model="settingStore.favicon"
+              v-model="settingStore.setting.favicon"
               :disabled="savingSettings"
               class="flex-1"
               name="favicon"
@@ -110,7 +106,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>默认封面链接</span>
             <input
-              v-model="settingStore.banner"
+              v-model="settingStore.setting.banner"
               :disabled="savingSettings"
               class="flex-1"
               name="banner"
@@ -123,7 +119,7 @@ useSeoMeta(meta);
           <label class="flex flex-col gap-4 text-sm">
             <span>站点底部信息</span>
             <textarea
-              v-model="settingStore.footer"
+              v-model="settingStore.setting.footer"
               :disabled="savingSettings"
               class="p-2"
               name="footer"
@@ -137,7 +133,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>头像链接</span>
             <input
-              v-model="settingStore.avatar"
+              v-model="settingStore.setting.avatar"
               :disabled="savingSettings"
               class="flex-1"
               name="avatar"
@@ -148,7 +144,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>作者名</span>
             <input
-              v-model="settingStore.name"
+              v-model="settingStore.setting.name"
               :disabled="savingSettings"
               class="flex-1"
               name="name"
@@ -160,8 +156,8 @@ useSeoMeta(meta);
             <label class="flex flex-1 flex-wrap items-center gap-4 text-sm">
               <span>站点信息</span>
               <input
-                v-model="settingStore.info"
-                :disabled="settingStore.hitoko || savingSettings"
+                v-model="settingStore.setting.info"
+                :disabled="settingStore.setting.hitoko || savingSettings"
                 class="flex-1"
                 name="info"
                 placeholder="站点信息"
@@ -171,7 +167,7 @@ useSeoMeta(meta);
             <label class="flex flex-wrap items-center gap-2 text-sm">
               <span>随机一言</span>
               <input
-                v-model="settingStore.hitoko"
+                v-model="settingStore.setting.hitoko"
                 :disabled="savingSettings"
                 class="flex-1"
                 name="hitoko"
@@ -183,7 +179,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>邮箱</span>
             <input
-              v-model="settingStore.email"
+              v-model="settingStore.setting.email"
               :disabled="savingSettings"
               class="flex-1"
               name="email"
@@ -197,7 +193,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>wakatime</span>
             <input
-              v-model="settingStore.wakatime"
+              v-model="settingStore.setting.wakatime"
               :disabled="savingSettings"
               class="flex-1"
               name="wakatime"
@@ -211,7 +207,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepo</span>
             <input
-              v-model="settingStore.giscusRepo"
+              v-model="settingStore.setting.giscusRepo"
               :disabled="savingSettings"
               class="flex-1"
               name="giscusRepo"
@@ -222,7 +218,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepoId</span>
             <input
-              v-model="settingStore.giscusRepoId"
+              v-model="settingStore.setting.giscusRepoId"
               :disabled="savingSettings"
               class="flex-1"
               name="giscusRepoId"
@@ -233,7 +229,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategory</span>
             <input
-              v-model="settingStore.giscusCategory"
+              v-model="settingStore.setting.giscusCategory"
               :disabled="savingSettings"
               class="flex-1"
               name="giscusCategory"
@@ -244,7 +240,7 @@ useSeoMeta(meta);
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategoryId</span>
             <input
-              v-model="settingStore.giscusCategoryId"
+              v-model="settingStore.setting.giscusCategoryId"
               :disabled="savingSettings"
               class="flex-1"
               name="giscusCategoryId"
@@ -253,40 +249,41 @@ useSeoMeta(meta);
               type="text" />
           </label>
         </div>
-        <f-btn :disabled="savingSettings" class="my-8 w-full max-w-xl" @click="saveSetting()">
+        <Btn :disabled="savingSettings" class="my-8 w-full max-w-xl" @click="saveSetting()">
           保存设置
-        </f-btn>
+        </Btn>
         <h3 class="w-full text-lg">自定义样式</h3>
         <textarea
           v-model="customStyleValue"
           class="w-full p-2"
+          rows="6"
           name="customStyle"
           placeholder="添加自定义样式"
-          type="text"></textarea>
-        <f-btn
-          :disabled="savingCustomStyle"
-          class="my-8 w-full max-w-xl"
-          @click="saveCustomStyle()">
+          type="text"
+          @focus.once="fetchCustomStyle"></textarea>
+        <Btn :disabled="savingCustomStyle" class="my-8 w-full max-w-xl" @click="saveCustomStyle()">
           保存自定义样式
-        </f-btn>
+        </Btn>
         <h3 class="w-full text-lg">自定义脚本</h3>
         <textarea
           v-model="customScriptValue"
           class="w-full p-2"
+          rows="6"
           name="customScript"
           placeholder="添加自定义脚本"
-          type="text"></textarea>
-        <f-btn
+          type="text"
+          @focus.once="fetchCustomScript"></textarea>
+        <Btn
           :disabled="savingCustomScript"
           class="my-8 w-full max-w-xl"
           @click="saveCustomScript()">
           保存自定义脚本
-        </f-btn>
+        </Btn>
         <h3 class="w-full text-lg">Daemon token</h3>
         <textarea
           v-model="token"
           class="w-full p-2"
-          name="token"
+          rows="4"
           placeholder="点击显示token"
           readonly
           type="text"

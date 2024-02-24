@@ -1,5 +1,7 @@
 <script setup>
-const auth = useAuth();
+import { useAuthStore, useSettingStore } from '~/store';
+
+const auth = useAuthStore();
 const settingStore = useSettingStore();
 
 /// region 新文章
@@ -10,10 +12,10 @@ function onArticleSubmit(path) {
 /// endregion 新文章
 
 if (import.meta.browser) {
-  auth.state.value.loginDialogVisible = !auth.state.value.isLogin;
+  auth.loginDialogVisible = !auth.isLogin;
 }
 
-const title = `新文章 - ${settingStore.value.siteTitle ?? '博客'}`;
+const title = `新文章 - ${settingStore.setting.siteTitle ?? '博客'}`;
 const description = `写新文章`;
 const meta = {
   title,
@@ -26,7 +28,7 @@ useSeoMeta(meta);
 
 <template>
   <div class="page">
-    <article-editor v-if="auth.state.value.isLogin" @submit="onArticleSubmit" />
+    <article-editor v-if="auth.isLogin" @submit="onArticleSubmit" />
     <page-head v-else title="请登录" />
   </div>
 </template>

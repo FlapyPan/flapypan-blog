@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-right: env(safe-area-inset-right, 0);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+  --safe-left: env(safe-area-inset-left, 0);
+}
+
+html:has(.backdrop) {
+  overflow: clip !important;
+}
+
 html,
 body {
   @apply w-full overflow-x-clip;
@@ -12,20 +23,40 @@ body {
   @apply bg-zinc-50 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200;
 }
 
+.safe-inset-0 {
+  inset: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+}
+
+.safe-left-0 {
+  left: var(--safe-left);
+}
+
+.safe-right-0 {
+  right: var(--safe-right);
+}
+
+.safe-top-0 {
+  top: var(--safe-top);
+}
+
+.safe-bottom-0 {
+  bottom: var(--safe-bottom);
+}
+
 img {
   @apply object-cover;
 }
 
 input,
 textarea {
-  @apply rounded-md bg-white bg-opacity-70 px-3 py-2 transition-colors dark:bg-zinc-800 dark:bg-opacity-80;
+  @apply shadow rounded-md bg-white px-3 py-2 transition dark:bg-zinc-800;
 
   &[disabled] {
-    @apply cursor-not-allowed opacity-30;
+    @apply cursor-not-allowed opacity-30 shadow-none;
   }
 
   &:focus {
-    @apply bg-primary-50 bg-opacity-50 outline-none dark:bg-primary-950 dark:bg-opacity-50;
+    @apply ring ring-primary-500 outline-none;
   }
 }
 

@@ -1,4 +1,10 @@
-export function dateFormat(maybeDate) {
+import type { MaybeRefOrGetter } from 'vue';
+
+type MaybeDate = number | string | Date;
+type DateFormat = `${string}-${string}-${string}` | '-';
+type DateTimeFormat = `${string}-${string}-${string}` | '-';
+
+export function dateFormat(maybeDate?: MaybeDate): DateFormat {
   if (!maybeDate) return '-';
   const date = new Date(maybeDate);
   const year = date.getFullYear();
@@ -7,14 +13,11 @@ export function dateFormat(maybeDate) {
   return `${year}-${month}-${day}`;
 }
 
-export function useDateFormat(maybeRefOrGetterDate) {
-  return computed(() => {
-    const date = toRef(maybeRefOrGetterDate);
-    return dateFormat(date.value);
-  });
+export function useDateFormat(date?: MaybeRefOrGetter<number | string | Date>) {
+  return computed(() => dateFormat(toRef(date).value));
 }
 
-export function dateTimeFormat(maybeDate) {
+export function dateTimeFormat(maybeDate?: MaybeDate): DateTimeFormat {
   if (!maybeDate) return '-';
   const date = new Date(maybeDate);
   const year = date.getFullYear();
@@ -26,9 +29,6 @@ export function dateTimeFormat(maybeDate) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-export function useDateTimeFormat(maybeRefOrGetterDate) {
-  return computed(() => {
-    const date = toRef(maybeRefOrGetterDate);
-    return dateTimeFormat(date.value);
-  });
+export function useDateTimeFormat(date?: MaybeRefOrGetter<number | string | Date>) {
+  return computed(() => dateTimeFormat(toRef(date).value));
 }

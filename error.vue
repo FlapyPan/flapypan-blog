@@ -1,4 +1,6 @@
 <script setup>
+import { useSettingStore } from '~/store';
+
 defineProps({
   error: Object,
 });
@@ -6,14 +8,14 @@ defineProps({
 const settingStore = useSettingStore();
 
 useServerSeoMeta({
-  author: settingStore.value.name,
-  ogImage: settingStore.value.banner ?? '/banner.webp',
+  author: settingStore.setting.name,
+  ogImage: settingStore.setting.banner ?? '/banner.webp',
 });
 </script>
 
 <template>
   <Head>
-    <Link :href="settingStore.favicon" rel="icon" />
+    <Link :href="settingStore.setting.favicon" rel="icon" />
   </Head>
   <div class="page flex flex-col items-center justify-center gap-6 p-6">
     <h2 class="text-xl">
@@ -24,7 +26,7 @@ useServerSeoMeta({
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ error.message }}</span>
       <span class="flex-1"></span>
-      <f-btn @click="clearError({ redirect: '/' })">返回主页</f-btn>
+      <Btn @click="clearError({ redirect: '/' })">返回主页</Btn>
     </div>
     <dev-only>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />

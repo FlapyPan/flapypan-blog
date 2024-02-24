@@ -11,19 +11,19 @@ defineProps({
       :key="_id"
       class="relative flex items-center py-2">
       <span class="mr-1 text-xs text-zinc-500">{{ dateFormat(createdAt) }}</span>
-      <f-btn :to="`/${path}`" icon="mingcute:document-line" text>
+      <Btn :to="`/${path}`" icon="mingcute:document-line" text>
         {{ title }}
-      </f-btn>
+      </Btn>
       <div class="flex-1"></div>
       <div class="hidden items-center gap-2 sm:flex">
-        <f-btn
+        <Btn
           v-for="name in tags"
           :key="name"
           :to="`/tag/${name}`"
           icon="mingcute:hashtag-line"
           text>
           {{ name }}
-        </f-btn>
+        </Btn>
       </div>
     </li>
   </ul>

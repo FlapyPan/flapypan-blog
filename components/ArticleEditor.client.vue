@@ -141,6 +141,6 @@ async function saveArticle() {
       preview-theme="default"
       @on-upload-img="onUploadImg"
       @on-error="catchEditorError" />
-    <f-btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle"> 保存发布 </f-btn>
+    <Btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle"> 保存发布 </Btn>
   </form>
 </template>

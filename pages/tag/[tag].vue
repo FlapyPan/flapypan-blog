@@ -1,17 +1,19 @@
 <script setup>
+import { useSettingStore } from '~/store';
+
 const route = useRoute();
 const settingStore = useSettingStore();
 
 /// region 获取 tag 信息
 const tag = computed(() => route.params.tag ?? '');
-const { data: articleData, pending: fetchingData } = useAsyncData(
+const { data: articleData, pending: fetchingData } = await useAsyncData(
   `tag:${tag.value}`,
   () => api(`/article/tag/${tag.value}`),
   { deep: false, watch: [tag] },
 );
 /// endregion 获取 tag 信息
 
-const title = `标签: ${tag.value ?? '标签'} - ${settingStore.value.siteTitle ?? '博客'}`;
+const title = `标签: ${tag.value ?? '标签'} - ${settingStore.setting.siteTitle ?? '博客'}`;
 const description = `${tag.value ?? '标签'} 下的所有文章`;
 const meta = {
   title,

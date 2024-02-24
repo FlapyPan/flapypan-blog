@@ -1,15 +1,15 @@
 <script setup>
+import { useAuthStore, useSettingStore } from '~/store';
+
+const auth = useAuthStore();
 const settingStore = useSettingStore();
 
 await callOnce(async () => {
-  const settingData = await api('/attribute/settings');
-  if (settingData) {
-    Object.assign(settingStore.value, settingData);
-  }
+  await settingStore.load();
 });
 
 if (import.meta.browser) {
-  useAuth().check();
+  auth.check();
   callOnce(() => {
     // 将自定义样式添加至 head
     api('/attribute/custom-style').then((data) => {
@@ -31,7 +31,7 @@ if (import.meta.browser) {
 
 <template>
   <Head>
-    <Link :href="settingStore.favicon" rel="icon" />
+    <Link :href="settingStore.setting.favicon" rel="icon" />
   </Head>
   <NuxtLayout>
     <app-bar />

@@ -1,7 +1,7 @@
+import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
 import scrollbar from 'tailwind-scrollbar';
 
-/** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
   content: [
@@ -20,4 +20,4 @@ export default {
     },
   },
   plugins: [scrollbar({ nocompatible: true })],
-};
+} satisfies Config;

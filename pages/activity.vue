@@ -1,14 +1,16 @@
 <script setup>
-const settingStore = useSettingStore();
+import { useSettingStore } from '~/store';
 import '~/assets/css/github-languages-colors.css';
 
-const { data: repos, pending: fetchingRepos } = useAsyncData(
-  `activity:${settingStore.value.name}:repos`,
-  async () => $fetch(`https://api.github.com/users/${settingStore.value.name}/repos`),
+const settingStore = useSettingStore();
+
+const { data: repos, pending: fetchingRepos } = useLazyAsyncData(
+  `activity:${settingStore.setting.name}:repos`,
+  async () => $fetch(`https://api.github.com/users/${settingStore.setting.name}/repos`),
   { deep: false },
 );
 
-const title = `活动 - ${settingStore.value.siteTitle ?? '博客'}`;
+const title = `活动 - ${settingStore.setting.siteTitle ?? '博客'}`;
 const description = `看看我最近鼓捣了些什么玩意吧`;
 const meta = {
   title,
@@ -23,8 +25,8 @@ useSeoMeta(meta);
 <template v-once>
   <div class="page">
     <page-head v-once :sub-title="description" title="最近活动" />
-    <figure v-if="settingStore.wakatime" class="mx-auto mb-6 max-w-3xl">
-      <embed :src="settingStore.wakatime" />
+    <figure v-if="settingStore.setting.wakatime" class="mx-auto mb-6 max-w-3xl">
+      <embed :src="settingStore.setting.wakatime" />
     </figure>
     <h3 class="mb-6 ml-2 text-xl">Github 仓库</h3>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
