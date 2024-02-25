@@ -93,7 +93,36 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
   <header
     class="fixed top-0 z-50 w-full bg-zinc-50 bg-opacity-70 px-3 shadow backdrop-blur transition-shadow dark:bg-zinc-900 dark:bg-opacity-60 md:px-6 print:hidden"
     @contextmenu.stop.prevent="toggleDrawer">
-    <div class="container mx-auto flex items-center transition-all">
+    <div
+      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row">
+      <nav class="hidden items-center gap-3 px-3 text-sm underline-offset-2 md:flex">
+        <nuxt-link
+          v-for="l in navLinks"
+          :key="l.routeName"
+          :class="{
+            [l.activeColor.text]: $route.name === l.routeName,
+            [`${l.activeColor.hoverText}`]: true,
+          }"
+          :title="l.title"
+          :to="l.to"
+          class="flex items-center transition-colors">
+          <Icon :name="l.icon" class="mr-1" />
+          {{ l.title }}
+        </nuxt-link>
+        <nuxt-link
+          v-for="{ _id, title, path } in links"
+          :key="_id"
+          :class="{ 'text-secondary-500': $route.path === `/${path}` }"
+          :title="title"
+          :to="`/${path}`"
+          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex">
+          <Icon class="mr-1" name="mingcute:document-line" />
+          {{ title }}
+        </nuxt-link>
+      </nav>
+
+      <div class="flex-1 hidden md:block"></div>
+
       <button
         class="flex items-center pr-1 text-sm transition-colors sm:hover:text-primary-500"
         @click="toggleDrawer()">
@@ -104,7 +133,7 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
         </span>
         <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
-      <Drawer v-model="drawerVisible" max-size="80vw">
+      <Drawer v-model="drawerVisible" max-size="80vw" location="right">
         <ul class="block rounded-xl bg-zinc-100 p-2 shadow-md dark:bg-zinc-900 lg:hidden">
           <li class="block md:hidden" v-for="l in navLinks" :key="l.routeName">
             <button
@@ -187,32 +216,7 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
         </div>
       </Drawer>
 
-      <nav class="hidden flex-1 items-center gap-3 px-3 text-sm underline-offset-2 md:flex">
-        <nuxt-link
-          v-for="l in navLinks"
-          :key="l.routeName"
-          :class="{
-            [l.activeColor.text]: $route.name === l.routeName,
-            [`${l.activeColor.hoverText}`]: true,
-          }"
-          :title="l.title"
-          :to="l.to"
-          class="flex items-center transition-colors">
-          <Icon :name="l.icon" class="mr-1" />
-          {{ l.title }}
-        </nuxt-link>
-        <div class="flex-1"></div>
-        <nuxt-link
-          v-for="{ _id, title, path } in links"
-          :key="_id"
-          :class="{ 'text-secondary-500': $route.path === `/${path}` }"
-          :title="title"
-          :to="`/${path}`"
-          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex">
-          <Icon class="mr-1" name="mingcute:document-line" />
-          {{ title }}
-        </nuxt-link>
-      </nav>
+      <div class="flex-1 md:hidden block"></div>
 
       <button
         title="切换配色"

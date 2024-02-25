@@ -79,7 +79,7 @@ function close() {
 
 <template>
   <Teleport to="body">
-    <div v-bind="$attrs">
+    <div v-bind="$attrs" class="print:hidden">
       <Backdrop v-model="visible" @close="close"></Backdrop>
       <Transition v-bind="computedTransition">
         <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">

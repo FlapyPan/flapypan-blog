@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useToast } from 'vue-toastification';
 
 export const useAuthStore = defineStore('auth', () => {
   const isLogin = shallowRef(false);
@@ -27,6 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
         sessionStorage.setItem('token', token);
       }
       isLogin.value = true;
+      useToast().success('登录成功');
     } else {
       isLogin.value = false;
       throw createError({ statusCode: 401, message: '登录失败' });
@@ -40,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
       isLogin.value = false;
       sessionStorage.removeItem('token');
       localStorage.removeItem('token');
+      useToast().info('退出登录');
     }
   };
 

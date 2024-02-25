@@ -1,5 +1,6 @@
 <script setup>
 import { MdCatalog, MdPreview } from 'md-editor-v3';
+import { useToast } from 'vue-toastification';
 import { useAuthStore, useSettingStore } from '~/store';
 import 'md-editor-v3/lib/style.css';
 
@@ -128,8 +129,52 @@ function toComments() {
 }
 
 function print() {
-  document.execCommand('print', false, null);
-  window.print();
+  rightDrawer.value = false;
+  useToast().info('正在打印文章...', {
+    timeout: 2000,
+    hideProgressBar: true,
+    pauseOnHover: false,
+    onClose: () => {
+      if (window.print) {
+        window.print();
+      } else {
+        document.execCommand('print', false, null);
+      }
+    },
+  });
+}
+
+async function copyLink() {
+  rightDrawer.value = false;
+  const toast = useToast();
+  if (!navigator.clipboard) {
+    toast.warning('浏览器不支持新剪贴板API');
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(location.href);
+    toast.info('链接已复制到剪贴板');
+  } catch (e) {
+    toast.warning('无法复制链接到剪贴板');
+  }
+}
+
+async function share() {
+  rightDrawer.value = false;
+  const url = location.href;
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: document.title,
+        url,
+      });
+    } catch (e) {
+      await copyLink();
+      useToast().error(e);
+    }
+  } else {
+    await copyLink();
+  }
 }
 
 /// endregion
@@ -256,6 +301,15 @@ useSeoMeta(meta);
               <div class="sticky top-0 z-10 bg-zinc-100 p-2 dark:bg-zinc-900">
                 <ul
                   class="border-b border-zinc-300 pb-2 dark:border-zinc-700 lg:border-none lg:pb-0">
+                  <li>
+                    <button
+                      :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
+                      class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-pink-500 hover:bg-opacity-10"
+                      @click="share()">
+                      <Icon class="mr-2 h-5 w-5 text-pink-400" name="mingcute:share-2-line" />
+                      分享文章
+                    </button>
+                  </li>
                   <li>
                     <button
                       :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"

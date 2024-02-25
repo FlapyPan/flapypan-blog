@@ -126,3 +126,7 @@ html.dark {
 .md-editor-catalog-active > span {
   @apply text-primary-500;
 }
+
+.Vue-Toastification__container {
+  @apply print:hidden;
+}

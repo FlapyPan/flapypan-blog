@@ -1,7 +1,9 @@
-import Toast, { POSITION } from 'vue-toastification';
+import Toast, { type PluginOptions, POSITION } from 'vue-toastification';
 
 export default defineNuxtPlugin(({ vueApp }) => {
   vueApp.use(Toast, {
+    timeout: 3000,
+    draggable: true,
     position: POSITION.BOTTOM_CENTER,
-  });
+  } satisfies PluginOptions);
 });

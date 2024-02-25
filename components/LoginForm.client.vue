@@ -1,9 +1,11 @@
 <script setup>
 import { useAuthStore } from '~/store';
+import { useToast } from 'vue-toastification';
 
 const emits = defineEmits(['close']);
 
 const auth = useAuthStore();
+const toast = useToast();
 
 /// region 登录
 const form = reactive({
@@ -12,18 +14,17 @@ const form = reactive({
   remember: false,
 });
 const isDoLogin = shallowRef(false);
-const loginError = shallowRef(null);
 
 async function login() {
   isDoLogin.value = true;
-  loginError.value = null;
   try {
     await auth.login(form);
     emits('close');
   } catch (e) {
-    loginError.value = e.message;
+    toast.error(e.message || '登录失败');
+  } finally {
+    isDoLogin.value = false;
   }
-  isDoLogin.value = false;
 }
 
 /// endregion 登录
@@ -48,9 +49,6 @@ async function login() {
       type="password"
       @keydown.enter="login" />
     <p class="flex items-center gap-2 pr-2">
-      <span v-show="loginError" class="text-xs text-red-500">
-        {{ loginError }}
-      </span>
       <span class="flex-1"></span>
       <input
         id="login-remember"

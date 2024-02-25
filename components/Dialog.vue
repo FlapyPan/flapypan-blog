@@ -26,7 +26,8 @@ function close() {
         v-show="visible"
         open
         :role="role"
-        class="fixed inset-0 z-[100] w-96 max-w-full overscroll-contain rounded-xl bg-zinc-100 p-4 text-current dark:bg-zinc-900"
+        v-bind="$attrs"
+        class="fixed inset-0 z-[100] w-96 max-w-full overscroll-contain rounded-xl bg-zinc-100 p-4 text-current dark:bg-zinc-900 print:hidden"
         @close="close">
         <h3 v-if="title" class="text-lg font-medium leading-6">
           {{ title }}
