@@ -24,7 +24,7 @@ useSeoMeta(meta);
 
 <template v-once>
   <div class="page">
-    <page-head v-once :sub-title="description" title="最近活动" />
+    <PageHead v-once :sub-title="description" title="最近活动" />
     <figure v-if="settingStore.setting.wakatime" class="mx-auto mb-6 max-w-3xl">
       <embed :src="settingStore.setting.wakatime" />
     </figure>

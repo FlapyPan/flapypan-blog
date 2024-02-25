@@ -14,19 +14,8 @@ function close() {
 
 <template>
   <Teleport to="body">
-    <transition
-      enter-active-class="transition duration-300"
-      enter-from-class="transform opacity-0"
-      enter-to-class="transform opacity-100"
-      leave-active-class="transition duration-300"
-      leave-from-class="transform opacity-100"
-      leave-to-class="transform opacity-0">
-      <div
-        v-show="visible"
-        @click="close"
-        class="fixed inset-0 z-50 overflow-x-hidden overscroll-contain bg-black bg-opacity-50 dark:bg-opacity-70"></div>
-    </transition>
-    <transition
+    <Backdrop v-model="visible" @close="close"></Backdrop>
+    <Transition
       enter-active-class="transition duration-200 ease-out"
       enter-from-class="transform scale-75 opacity-0"
       enter-to-class="transform scale-100 opacity-100"
@@ -46,6 +35,6 @@ function close() {
           <slot></slot>
         </div>
       </dialog>
-    </transition>
+    </Transition>
   </Teleport>
 </template>

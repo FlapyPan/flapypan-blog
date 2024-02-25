@@ -37,6 +37,18 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com', crossorigin: 'anonymous' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.loli.net/css2?family=Inter:wght@100..900&display=swap',
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.loli.net/css2?family=Fira+Code:wght@300..700&display=swap',
+        },
+      ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },

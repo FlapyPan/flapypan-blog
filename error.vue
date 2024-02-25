@@ -28,8 +28,8 @@ useServerSeoMeta({
       <span class="flex-1"></span>
       <Btn @click="clearError({ redirect: '/' })">返回主页</Btn>
     </div>
-    <dev-only>
+    <DevOnly>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />
-    </dev-only>
+    </DevOnly>
   </div>
 </template>

@@ -47,8 +47,7 @@ useSeoMeta(meta);
     <section
       class="sm:gap-18 flex w-full flex-col-reverse items-center justify-center gap-16 pt-36 text-center md:flex-row md:text-left lg:gap-52">
       <div>
-        <h1
-          class="font-serif text-3xl font-bold tracking-wide text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
+        <h1 class="text-3xl text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
           {{ settingStore.setting.siteTitle }}
         </h1>
         <div class="text-zinc-600 dark:text-zinc-400">
@@ -66,7 +65,7 @@ useSeoMeta(meta);
               <Icon name="mdi:github" />
             </a>
           </p>
-          <client-only>
+          <ClientOnly>
             <p v-if="settingStore.setting.hitoko" class="mt-4 text-center text-sm md:text-left">
               一言：{{ hitoko }}
             </p>
@@ -74,7 +73,7 @@ useSeoMeta(meta);
               {{ settingStore.setting.info }}
               <span class="animate-ping">_</span>
             </p>
-          </client-only>
+          </ClientOnly>
         </div>
       </div>
       <img
@@ -85,10 +84,10 @@ useSeoMeta(meta);
     <section class="mt-24">
       <h3 class="mb-3 mt-6 flex items-center">
         最近更新
-        <refresh-button :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
+        <RefreshButton :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
       </h3>
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <article-card v-for="a in articleData ?? []" :key="a._id" :article="a" />
+        <ArticleCard v-for="a in articleData ?? []" :key="a._id" :article="a" />
       </div>
       <div v-once class="mt-6 text-center">
         <Btn icon="mingcute:more-2-line" text to="/archive"> 查看更多 </Btn>

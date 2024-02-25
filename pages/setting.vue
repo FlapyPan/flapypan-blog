@@ -291,6 +291,6 @@ useSeoMeta(meta);
           @focus="getToken"></textarea>
       </div>
     </template>
-    <page-head v-else title="请登录" />
+    <PageHead v-else title="请登录" />
   </div>
 </template>

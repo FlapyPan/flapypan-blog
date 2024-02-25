@@ -28,7 +28,7 @@ useSeoMeta(meta);
 
 <template>
   <div class="page">
-    <article-editor v-if="auth.isLogin" @submit="onArticleSubmit" />
-    <page-head v-else title="请登录" />
+    <ArticleEditor v-if="auth.isLogin" @submit="onArticleSubmit" />
+    <PageHead v-else title="请登录" />
   </div>
 </template>

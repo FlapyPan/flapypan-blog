@@ -46,7 +46,7 @@ useSeoMeta(meta);
 
 <template>
   <div class="page">
-    <page-head sub-title="看看我都水了什么文章" title="文章归档" />
+    <PageHead sub-title="看看我都水了什么文章" title="文章归档" />
     <h3 class="my-3 flex items-center text-2xl">标签</h3>
     <div class="my-6 flex flex-wrap items-center gap-4">
       <template v-for="name in tagList" :key="name">
@@ -60,7 +60,7 @@ useSeoMeta(meta);
         <h3 class="my-3 text-2xl">
           {{ year }}
         </h3>
-        <article-timeline :list="list" />
+        <ArticleTimeline :list="list" />
       </template>
     </div>
     <p

@@ -9,6 +9,10 @@
   --safe-left: env(safe-area-inset-left, 0);
 }
 
+::selection {
+  @apply bg-primary-500 bg-opacity-70 text-white;
+}
+
 html:has(.backdrop) {
   overflow: clip !important;
 }
@@ -61,11 +65,7 @@ textarea {
 }
 
 .page {
-  @apply container mx-auto max-w-6xl py-16;
-}
-
-.f-input {
-  @apply rounded-xl;
+  @apply container mx-auto max-w-7xl py-16;
 }
 
 .animation-rotate {
@@ -102,7 +102,7 @@ html.dark {
 }
 
 :is(#read, #edit).md-editor {
-  @apply bg-zinc-50 dark:bg-zinc-900;
+  @apply bg-zinc-50 dark:bg-zinc-900 font-sans;
 
   .md-editor-preview {
     --md-theme-link-color: var(--primary-500);
@@ -111,6 +111,10 @@ html.dark {
     blockquote {
       @apply border-l-primary-500;
     }
+  }
+
+  pre, code {
+    @apply font-mono;
   }
 }
 

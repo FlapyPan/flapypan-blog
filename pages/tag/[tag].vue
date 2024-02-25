@@ -27,15 +27,15 @@ useSeoMeta(meta);
 
 <template>
   <div class="page">
-    <page-head class="mb-6">
+    <PageHead class="mb-6">
       <template #title>
         <div class="flex items-center justify-center">
           <Icon name="mingcute:hashtag-line" />
           {{ tag }}
         </div>
       </template>
-    </page-head>
-    <article-timeline :list="articleData" />
+    </PageHead>
+    <ArticleTimeline :list="articleData" />
     <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
   </div>
 </template>

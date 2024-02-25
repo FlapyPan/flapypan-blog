@@ -28,12 +28,9 @@ export const useSettingStore = defineStore('setting', () => {
     setting.value = { ...setting.value, ...data };
   };
 
-  const rightDrawer = shallowRef(false);
-
   return {
     setting,
     load,
     save,
-    rightDrawer,
   };
 });

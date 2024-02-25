@@ -104,7 +104,13 @@ async function summary() {
 
 /// endregion
 
-/// region 浮动按钮
+/// region 浮动按钮和抽屉
+
+const rightDrawer = shallowRef(false);
+
+function toggleDrawer() {
+  rightDrawer.value = !rightDrawer.value;
+}
 
 function toTop() {
   document.documentElement.scrollTo({
@@ -150,7 +156,7 @@ useSeoMeta(meta);
 </script>
 
 <template>
-  <div class="page">
+  <div class="page" @contextmenu.stop.prevent="toggleDrawer">
     <ClientOnly>
       <div v-if="auth.isLogin">
         <Drawer v-model="isEdit" location="bottom" size="100%" :closable="false">
@@ -169,7 +175,7 @@ useSeoMeta(meta);
         <Btn @click="clearError({ redirect: '/' })">返回主页</Btn>
       </div>
       <template v-if="articleData?._id">
-        <page-head :title="articleData?.title" class="mx-auto text-center"></page-head>
+        <PageHead :title="articleData?.title" class="mx-auto text-center"></PageHead>
         <div class="my-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
           <div class="flex items-center gap-1">
             <Icon name="mingcute:document-line" />
@@ -222,7 +228,7 @@ useSeoMeta(meta);
           </p>
         </div>
         <div class="flex justify-center gap-4">
-          <md-preview
+          <MdPreview
             v-if="articleData?._id"
             :model-value="articleData?.content"
             :no-img-zoom-in="false"
@@ -234,103 +240,92 @@ useSeoMeta(meta);
             preview-theme="default" />
           <div
             class="side themed-scrollbar sticky top-20 hidden w-64 overflow-y-auto px-4 lg:block">
-            <client-only>
-              <md-catalog
+            <ClientOnly>
+              <MdCatalog
                 :offset-top="180"
                 :scroll-element="scrollElement"
                 :scroll-element-offset-top="60"
                 editor-id="read" />
-            </client-only>
+            </ClientOnly>
           </div>
         </div>
-        <client-only>
-          <Teleport to="body">
-            <Transition
-              enter-active-class="transition-gpu duration-200"
-              enter-from-class="transform translate-x-full"
-              enter-to-class="transform translate-x-0"
-              leave-active-class="transition-gpu duration-200"
-              leave-from-class="transform translate-x-0"
-              leave-to-class="transform translate-x-full">
-              <div
-                v-show="settingStore.rightDrawer"
-                class="safe-right-0 safe-bottom-0 fixed z-[100] max-w-full p-4 print:hidden w-56">
-                <div class="rounded-xl bg-zinc-100 p-2 shadow-md dark:bg-zinc-900">
-                  <div class="max-h-[30vh] themed-scrollbar overflow-y-auto">
-                    <MdCatalog
-                      class="block lg:hidden"
-                      :offset-top="180"
-                      :scroll-element="scrollElement"
-                      :scroll-element-offset-top="60"
-                      editor-id="read" />
-                  </div>
-                  <hr class="my-2 block lg:hidden" />
-                  <ul class="">
-                    <li>
+        <ClientOnly>
+          <Drawer v-model="rightDrawer" location="right-bottom">
+            <div
+              class="themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-100 shadow-md dark:bg-zinc-900">
+              <div class="sticky top-0 z-10 bg-zinc-100 p-2 dark:bg-zinc-900">
+                <ul
+                  class="border-b border-zinc-300 pb-2 dark:border-zinc-700 lg:border-none lg:pb-0">
+                  <li>
+                    <button
+                      :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
+                      class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-orange-500 hover:bg-opacity-10"
+                      @click="print()">
+                      <Icon class="mr-2 h-5 w-5 text-orange-400" name="mingcute:print-line" />
+                      打印文章
+                    </button>
+                  </li>
+                  <template v-if="auth.isLogin">
+                    <li
+                      @click="
+                        rightDrawer = false;
+                        changePin(!articleData?.pinned);
+                      ">
                       <button
-                        :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
-                        class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-orange-500 hover:bg-opacity-10"
-                        @click="print()">
-                        <Icon class="mr-2 h-5 w-5 text-orange-400" name="mingcute:print-line" />
-                        打印文章
+                        v-if="articleData?.pinned"
+                        class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10">
+                        <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:pin-fill" />
+                        取消固定
+                      </button>
+                      <button
+                        v-else
+                        class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10">
+                        <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:pin-line" />
+                        固定文章
                       </button>
                     </li>
-                    <template v-if="auth.isLogin">
-                      <li
-                        @click="
-                          settingStore.rightDrawer = false;
-                          changePin(!articleData?.pinned);
-                        ">
-                        <button
-                          v-if="articleData?.pinned"
-                          class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10">
-                          <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:pin-fill" />
-                          取消固定
-                        </button>
-                        <button
-                          v-else
-                          class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10">
-                          <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:pin-line" />
-                          固定文章
-                        </button>
-                      </li>
-                      <li
-                        @click="
-                          settingStore.rightDrawer = false;
-                          openEdit();
-                        ">
-                        <button
-                          class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10">
-                          <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:edit-line" />
-                          编辑文章
-                        </button>
-                      </li>
-                      <li
-                        @click="
-                          settingStore.rightDrawer = false;
-                          deleteDialog = true;
-                        ">
-                        <button
-                          class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10">
-                          <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:delete-line" />
-                          删除文章
-                        </button>
-                        <Dialog v-model="deleteDialog" closable>
-                          <p class="mb-4">确认删除此文章 "{{ articleData?.title }}" ?</p>
-                          <div class="text-right">
-                            <Btn class="mr-4" text @click="deleteArticle">
-                              <span class="text-red-500"> 确认删除 </span>
-                            </Btn>
-                            <Btn text @click="deleteDialog = false"> 取消</Btn>
-                          </div>
-                        </Dialog>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
+                    <li
+                      @click="
+                        rightDrawer = false;
+                        openEdit();
+                      ">
+                      <button
+                        class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10">
+                        <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:edit-line" />
+                        编辑文章
+                      </button>
+                    </li>
+                    <li
+                      @click="
+                        rightDrawer = false;
+                        deleteDialog = true;
+                      ">
+                      <button
+                        class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10">
+                        <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:delete-line" />
+                        删除文章
+                      </button>
+                      <Dialog v-model="deleteDialog" closable>
+                        <p class="mb-4">确认删除此文章 "{{ articleData?.title }}" ?</p>
+                        <div class="text-right">
+                          <Btn class="mr-4" text @click="deleteArticle">
+                            <span class="text-red-500"> 确认删除 </span>
+                          </Btn>
+                          <Btn text @click="deleteDialog = false"> 取消</Btn>
+                        </div>
+                      </Dialog>
+                    </li>
+                  </template>
+                </ul>
               </div>
-            </Transition>
-          </Teleport>
+              <MdCatalog
+                class="block p-2 lg:hidden"
+                :offset-top="180"
+                :scroll-element="scrollElement"
+                :scroll-element-offset-top="60"
+                editor-id="read" />
+            </div>
+          </Drawer>
           <div class="fixed bottom-14 right-4 z-10 flex flex-col gap-2 md:right-12 print:hidden">
             <button
               class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
@@ -347,12 +342,12 @@ useSeoMeta(meta);
             <button
               class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
               title="更多"
-              @click="settingStore.rightDrawer = true">
+              @click="rightDrawer = true">
               <Icon name="mingcute:more-1-line" />
             </button>
           </div>
-        </client-only>
-        <giscus-card />
+        </ClientOnly>
+        <GiscusCard />
       </template>
     </ClientOnly>
   </div>

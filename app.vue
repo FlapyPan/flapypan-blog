@@ -4,9 +4,7 @@ import { useAuthStore, useSettingStore } from '~/store';
 const auth = useAuthStore();
 const settingStore = useSettingStore();
 
-await callOnce(async () => {
-  await settingStore.load();
-});
+await callOnce(settingStore.load);
 
 if (import.meta.browser) {
   auth.check();
@@ -34,10 +32,10 @@ if (import.meta.browser) {
     <Link :href="settingStore.setting.favicon" rel="icon" />
   </Head>
   <NuxtLayout>
-    <app-bar />
+    <AppBar />
     <main class="mx-auto px-3 sm:px-6">
       <NuxtPage />
     </main>
-    <app-footer />
+    <AppFooter />
   </NuxtLayout>
 </template>

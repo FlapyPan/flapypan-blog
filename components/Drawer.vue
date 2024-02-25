@@ -13,7 +13,7 @@ const computedTransition = computed(() => {
   const leaveActiveClass = 'transition-gpu duration-200';
   let hideClass = 'transform -translate-x-full';
   let showClass = 'transform translate-x-0';
-  if (props.location === 'right') {
+  if (props.location.startsWith('right')) {
     hideClass = 'transform translate-x-full';
     showClass = 'transform translate-x-0';
   }
@@ -45,19 +45,25 @@ const computedSize = computed(() => {
 const computedMaxSize = computed(() => {
   const size = typeof props.maxSize === 'number' ? `${props.maxSize}px` : props.maxSize;
   if (props.location === 'top' || props.location === 'bottom') {
-    return `max-height: ${size}; max-width: 100%;`;
+    return `max-height: ${size}; max-width: 100vw;`;
   }
-  return `max-width: ${size}; max-height: 100%;`;
+  return `max-width: ${size}; max-height: 100vh;`;
 });
 const computedLocation = computed(() => {
-  if (props.location === 'right') {
+  if (props.location === 'right' || props.location === 'right-top') {
     return 'top: var(--safe-top); right:var(--safe-right);';
+  }
+  if (props.location === 'right-bottom') {
+    return 'bottom: var(--safe-bottom); right:var(--safe-right);';
   }
   if (props.location === 'top') {
     return 'top: var(--safe-top); right: var(--safe-right); left: var(--safe-left);';
   }
   if (props.location === 'bottom') {
     return 'bottom: var(--safe-bottom); right: var(--safe-right); left:var(--safe-left);';
+  }
+  if (props.location === 'left-bottom') {
+    return 'bottom: var(--safe-bottom); right:var(--safe-left);';
   }
   return 'top: var(--safe-top); left: var(--safe-left);';
 });
@@ -78,7 +84,7 @@ function close() {
       <Transition v-bind="computedTransition">
         <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">
           <div
-            class="themed-scrollbar relative max-h-full max-w-full overflow-auto p-4 overscroll-contain">
+            class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4">
             <slot></slot>
           </div>
         </div>
