@@ -53,14 +53,14 @@ img {
 
 input,
 textarea {
-  @apply shadow rounded-md bg-white px-3 py-2 transition dark:bg-zinc-800;
+  @apply rounded-md bg-white px-3 py-2 shadow transition dark:bg-zinc-800;
 
   &[disabled] {
     @apply cursor-not-allowed opacity-30 shadow-none;
   }
 
   &:focus {
-    @apply ring ring-primary-500 outline-none;
+    @apply outline-none ring ring-primary-500;
   }
 }
 
@@ -102,7 +102,7 @@ html.dark {
 }
 
 :is(#read, #edit).md-editor {
-  @apply bg-zinc-50 dark:bg-zinc-900 font-sans;
+  @apply bg-zinc-50 font-sans dark:bg-zinc-900;
 
   .md-editor-preview {
     --md-theme-link-color: var(--primary-500);
@@ -113,7 +113,8 @@ html.dark {
     }
   }
 
-  pre, code {
+  pre,
+  code {
     @apply font-mono;
   }
 }

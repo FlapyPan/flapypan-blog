@@ -1,7 +1,7 @@
 <script setup>
 defineProps({
-  list: { type: Array, default: () => [] },
-});
+  list: { type: Array, default: () => [] }
+})
 </script>
 
 <template>
@@ -9,8 +9,11 @@ defineProps({
     <li
       v-for="{ _id, title, createdAt, path, tags } in list"
       :key="_id"
-      class="relative flex items-center py-2">
-      <span class="mr-1 text-xs text-zinc-500">{{ dateFormat(createdAt) }}</span>
+      class="relative flex items-center py-2"
+    >
+      <span class="mr-1 text-xs text-zinc-500">{{
+        dateFormat(createdAt)
+      }}</span>
       <Btn :to="`/${path}`" icon="mingcute:document-line" text>
         {{ title }}
       </Btn>
@@ -21,7 +24,8 @@ defineProps({
           :key="name"
           :to="`/tag/${name}`"
           icon="mingcute:hashtag-line"
-          text>
+          text
+        >
           {{ name }}
         </Btn>
       </div>

@@ -1,8 +1,8 @@
 <script setup>
 defineProps({
   title: { type: String, default: '' },
-  subTitle: { type: String, default: '' },
-});
+  subTitle: { type: String, default: '' }
+})
 </script>
 
 <template>

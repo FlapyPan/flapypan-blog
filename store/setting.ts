@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
 export const useSettingStore = defineStore('setting', () => {
   const setting = ref({
@@ -15,22 +15,22 @@ export const useSettingStore = defineStore('setting', () => {
     giscusRepo: '',
     giscusRepoId: '',
     giscusCategory: '',
-    giscusCategoryId: '',
-  });
+    giscusCategoryId: ''
+  })
 
   const load = async () => {
-    const data = await api('/attribute/settings');
-    setting.value = { ...setting.value, ...data };
-  };
+    const data = await api('/attribute/settings')
+    setting.value = { ...setting.value, ...data }
+  }
 
   const save = async () => {
-    const data = await api('/attribute/settings', 'POST', setting.value);
-    setting.value = { ...setting.value, ...data };
-  };
+    const data = await api('/attribute/settings', 'POST', setting.value)
+    setting.value = { ...setting.value, ...data }
+  }
 
   return {
     setting,
     load,
-    save,
-  };
-});
+    save
+  }
+})

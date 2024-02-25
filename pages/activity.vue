@@ -1,25 +1,26 @@
 <script setup>
-import { useSettingStore } from '~/store';
-import '~/assets/css/github-languages-colors.css';
+import { useSettingStore } from '~/store'
+import '~/assets/css/github-languages-colors.css'
 
-const settingStore = useSettingStore();
+const settingStore = useSettingStore()
 
 const { data: repos, pending: fetchingRepos } = useLazyAsyncData(
   `activity:${settingStore.setting.name}:repos`,
-  async () => $fetch(`https://api.github.com/users/${settingStore.setting.name}/repos`),
-  { deep: false },
-);
+  async () =>
+    $fetch(`https://api.github.com/users/${settingStore.setting.name}/repos`),
+  { deep: false }
+)
 
-const title = `活动 - ${settingStore.setting.siteTitle ?? '博客'}`;
-const description = `看看我最近鼓捣了些什么玩意吧`;
+const title = `活动 - ${settingStore.setting.siteTitle ?? '博客'}`
+const description = `看看我最近鼓捣了些什么玩意吧`
 const meta = {
   title,
   description,
   ogTitle: title,
-  ogDescription: description,
-};
-useServerSeoMeta(meta);
-useSeoMeta(meta);
+  ogDescription: description
+}
+useServerSeoMeta(meta)
+useSeoMeta(meta)
 </script>
 
 <template v-once>
@@ -35,8 +36,11 @@ useSeoMeta(meta);
         :key="repo._id"
         :href="repo.html_url"
         class="group flex flex-col gap-2 overflow-hidden rounded-xl bg-white p-4 transition dark:bg-zinc-800"
-        target="_blank">
-        <p class="text-lg underline-offset-2 group-hover:underline">{{ repo.full_name }}</p>
+        target="_blank"
+      >
+        <p class="text-lg underline-offset-2 group-hover:underline">
+          {{ repo.full_name }}
+        </p>
         <p class="py-2 text-xs text-zinc-500">{{ repo.description }}</p>
         <p class="flex-1"></p>
         <p class="flex items-center gap-4 text-sm">
@@ -45,16 +49,23 @@ useSeoMeta(meta);
               <Icon
                 :class="`lang-${repo.language}`"
                 class="mr-1 text-base"
-                name="mingcute:round-fill"></Icon>
+                name="mingcute:round-fill"
+              ></Icon>
             </span>
             {{ repo.language }}
           </span>
           <span v-if="repo.stargazers_count >= 0" class="flex items-center">
-            <Icon class="mr-1 text-base text-zinc-500" name="mingcute:star-line" />
+            <Icon
+              class="mr-1 text-base text-zinc-500"
+              name="mingcute:star-line"
+            />
             {{ repo.stargazers_count }}
           </span>
           <span v-if="repo.forks >= 0" class="flex items-center">
-            <Icon class="mr-1 text-base text-zinc-500" name="mingcute:git-merge-line" />
+            <Icon
+              class="mr-1 text-base text-zinc-500"
+              name="mingcute:git-merge-line"
+            />
             {{ repo.forks }}
           </span>
           <span class="flex-1"></span>
@@ -62,6 +73,8 @@ useSeoMeta(meta);
         </p>
       </a>
     </div>
-    <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
+    <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">
+      加载中...
+    </p>
   </div>
 </template>

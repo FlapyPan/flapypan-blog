@@ -1,3 +1,3 @@
-import { getAllTags } from '~/server/data/article';
+import { getAllTags } from '~/server/data/article'
 
-export default cachedEventHandler(async () => getAllTags());
+export default cachedEventHandler(async () => getAllTags())

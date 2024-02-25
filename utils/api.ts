@@ -1,4 +1,4 @@
-import { useAuthStore } from '~/store';
+import { useAuthStore } from '~/store'
 
 /**
  *
@@ -12,14 +12,15 @@ export default async function api<T = any>(
   url: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
   payload?: any,
-  jsonPayload: boolean = true,
+  jsonPayload: boolean = true
 ): Promise<T> {
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = {}
   if (import.meta.browser) {
-    const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    if (token) headers.Authorization = `Bearer ${token}`;
+    const token =
+      sessionStorage.getItem('token') || localStorage.getItem('token')
+    if (token) headers.Authorization = `Bearer ${token}`
   }
-  if (jsonPayload) headers['Content-Type'] = 'application/json';
+  if (jsonPayload) headers['Content-Type'] = 'application/json'
   try {
     return await $fetch(url, {
       baseURL: '/api',
@@ -28,19 +29,19 @@ export default async function api<T = any>(
       mode: 'same-origin',
       credentials: 'same-origin',
       redirect: 'follow',
-      body: jsonPayload ? JSON.stringify(payload) : payload,
-    });
+      body: jsonPayload ? JSON.stringify(payload) : payload
+    })
   } catch (e: any) {
-    const { data, message, status } = e;
+    const { data, message, status } = e
     if (status === 401) {
-      const auth = useAuthStore();
-      auth.isLogin = false;
+      const auth = useAuthStore()
+      auth.isLogin = false
     } else if (import.meta.browser) {
       // @ts-ignore
       import('vue-toastification').then(({ toast }) => {
-        toast.error(data?.message || message);
-      });
+        toast.error(data?.message || message)
+      })
     }
-    throw new Error(`${status} ${data?.message || message}`);
+    throw new Error(`${status} ${data?.message || message}`)
   }
 }

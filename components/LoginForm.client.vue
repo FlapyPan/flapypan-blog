@@ -1,29 +1,29 @@
 <script setup>
-import { useAuthStore } from '~/store';
-import { useToast } from 'vue-toastification';
+import { useAuthStore } from '~/store'
+import { useToast } from 'vue-toastification'
 
-const emits = defineEmits(['close']);
+const emits = defineEmits(['close'])
 
-const auth = useAuthStore();
-const toast = useToast();
+const auth = useAuthStore()
+const toast = useToast()
 
 /// region 登录
 const form = reactive({
   username: '',
   password: '',
-  remember: false,
-});
-const isDoLogin = shallowRef(false);
+  remember: false
+})
+const isDoLogin = shallowRef(false)
 
 async function login() {
-  isDoLogin.value = true;
+  isDoLogin.value = true
   try {
-    await auth.login(form);
-    emits('close');
+    await auth.login(form)
+    emits('close')
   } catch (e) {
-    toast.error(e.message || '登录失败');
+    toast.error(e.message || '登录失败')
   } finally {
-    isDoLogin.value = false;
+    isDoLogin.value = false
   }
 }
 
@@ -39,7 +39,8 @@ async function login() {
       name="username"
       placeholder="用户名"
       required
-      type="text" />
+      type="text"
+    />
     <input
       v-model="form.password"
       :disabled="isDoLogin"
@@ -47,7 +48,8 @@ async function login() {
       placeholder="密码"
       required
       type="password"
-      @keydown.enter="login" />
+      @keydown.enter="login"
+    />
     <p class="flex items-center gap-2 pr-2">
       <span class="flex-1"></span>
       <input
@@ -55,7 +57,8 @@ async function login() {
         v-model="form.remember"
         :disabled="isDoLogin"
         name="remember"
-        type="checkbox" />
+        type="checkbox"
+      />
       <label for="login-remember">记住我</label>
     </p>
     <Btn :disabled="isDoLogin" type="submit" @click="login"> 登录 </Btn>

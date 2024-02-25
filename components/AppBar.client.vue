@@ -1,25 +1,29 @@
 <script setup>
-import { useAuthStore, useSettingStore } from '~/store';
+import { useAuthStore, useSettingStore } from '~/store'
 
-const settingStore = useSettingStore();
-const auth = useAuthStore();
+const settingStore = useSettingStore()
+const auth = useAuthStore()
 
-const { data: links } = useLazyAsyncData('pinnedLinks', () => api('/article/pinned'), {
-  deep: false,
-});
+const { data: links } = useLazyAsyncData(
+  'pinnedLinks',
+  () => api('/article/pinned'),
+  {
+    deep: false
+  }
+)
 
-const drawerVisible = ref(false);
+const drawerVisible = ref(false)
 function toggleDrawer() {
-  drawerVisible.value = !drawerVisible.value;
+  drawerVisible.value = !drawerVisible.value
 }
 
-const state = shallowRef('');
+const state = shallowRef('')
 onMounted(() => {
-  const eventSource = new EventSource('/api/status/author');
+  const eventSource = new EventSource('/api/status/author')
   eventSource.addEventListener('message', (event) => {
-    state.value = event.data;
-  });
-});
+    state.value = event.data
+  })
+})
 
 const navLinks = [
   {
@@ -28,10 +32,10 @@ const navLinks = [
     activeColor: {
       text: 'text-primary-500',
       hoverText: 'sm:hover:text-primary-500',
-      background: 'bg-primary-500',
+      background: 'bg-primary-500'
     },
     title: '首页',
-    icon: 'mingcute:home-1-line',
+    icon: 'mingcute:home-1-line'
   },
   {
     routeName: 'archive',
@@ -39,10 +43,10 @@ const navLinks = [
     activeColor: {
       text: 'text-orange-500',
       hoverText: 'sm:hover:text-orange-500',
-      background: 'bg-orange-500',
+      background: 'bg-orange-500'
     },
     title: '博客',
-    icon: 'mingcute:archive-line',
+    icon: 'mingcute:archive-line'
   },
   {
     routeName: 'activity',
@@ -50,37 +54,41 @@ const navLinks = [
     activeColor: {
       text: 'text-pink-500',
       hoverText: 'sm:hover:text-pink-500',
-      background: 'bg-pink-500',
+      background: 'bg-pink-500'
     },
     title: '活动',
-    icon: 'mingcute:time-line',
-  },
-];
+    icon: 'mingcute:time-line'
+  }
+]
 
 /// region 配色模式
 
-const colorMode = useColorMode();
+const colorMode = useColorMode()
 
 const colorModeCircle = {
   system: 'light',
   light: 'dark',
-  dark: 'system',
-};
+  dark: 'system'
+}
 
 const colorModeIcon = computed(() => {
-  const preference = colorMode.preference;
-  if (preference === 'light') return 'mingcute:sun-line';
-  if (preference === 'dark') return 'mingcute:moon-line';
-  if (preference === 'system') return 'mingcute:computer-line';
-});
+  const preference = colorMode.preference
+  if (preference === 'light') return 'mingcute:sun-line'
+  if (preference === 'dark') return 'mingcute:moon-line'
+  if (preference === 'system') return 'mingcute:computer-line'
+})
 
 /// endregion
 
 /// region 访问量和其他数据
-const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/access`), {
-  server: false,
-  deep: false,
-});
+const { data: accessData } = await useLazyAsyncData(
+  `access:base`,
+  () => api(`/access`),
+  {
+    server: false,
+    deep: false
+  }
+)
 /// endregion
 </script>
 
@@ -92,20 +100,25 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
   </template>
   <header
     class="fixed top-0 z-50 w-full bg-zinc-50 bg-opacity-70 px-3 shadow backdrop-blur transition-shadow dark:bg-zinc-900 dark:bg-opacity-60 md:px-6 print:hidden"
-    @contextmenu.stop.prevent="toggleDrawer">
+    @contextmenu.stop.prevent="toggleDrawer"
+  >
     <div
-      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row">
-      <nav class="hidden items-center gap-3 px-3 text-sm underline-offset-2 md:flex">
+      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row"
+    >
+      <nav
+        class="hidden items-center gap-3 px-3 text-sm underline-offset-2 md:flex"
+      >
         <nuxt-link
           v-for="l in navLinks"
           :key="l.routeName"
           :class="{
             [l.activeColor.text]: $route.name === l.routeName,
-            [`${l.activeColor.hoverText}`]: true,
+            [`${l.activeColor.hoverText}`]: true
           }"
           :title="l.title"
           :to="l.to"
-          class="flex items-center transition-colors">
+          class="flex items-center transition-colors"
+        >
           <Icon :name="l.icon" class="mr-1" />
           {{ l.title }}
         </nuxt-link>
@@ -115,18 +128,24 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
           :class="{ 'text-secondary-500': $route.path === `/${path}` }"
           :title="title"
           :to="`/${path}`"
-          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex">
+          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex"
+        >
           <Icon class="mr-1" name="mingcute:document-line" />
           {{ title }}
         </nuxt-link>
       </nav>
 
-      <div class="flex-1 hidden md:block"></div>
+      <div class="hidden flex-1 md:block"></div>
 
       <button
         class="flex items-center pr-1 text-sm transition-colors sm:hover:text-primary-500"
-        @click="toggleDrawer()">
-        <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full" />
+        @click="toggleDrawer()"
+      >
+        <img
+          :src="settingStore.setting.avatar"
+          alt=""
+          class="h-5 w-5 rounded-full"
+        />
         <span v-if="state" class="ml-2 flex flex-col py-1 text-xs">
           <span>{{ settingStore.setting.name }}</span>
           <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
@@ -134,32 +153,53 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
         <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
-        <ul class="block rounded-xl bg-zinc-100 p-2 shadow-md dark:bg-zinc-900 lg:hidden">
+        <ul
+          class="block rounded-xl bg-zinc-100 p-2 shadow-md dark:bg-zinc-900 lg:hidden"
+        >
           <li class="block md:hidden" v-for="l in navLinks" :key="l.routeName">
             <button
               :class="[
-                $route.name === l.routeName ? `${l.activeColor.background} bg-opacity-10` : '',
+                $route.name === l.routeName
+                  ? `${l.activeColor.background} bg-opacity-10`
+                  : ''
               ]"
               :title="l.title"
               class="flex w-full items-center rounded-xl p-2 text-sm"
               @click="
-                drawerVisible = false;
-                navigateTo(l.to);
-              ">
-              <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
+                drawerVisible = false
+                navigateTo(l.to)
+              "
+            >
+              <Icon
+                :class="l.activeColor.text"
+                :name="l.icon"
+                class="mr-2 h-5 w-5"
+              />
               {{ l.title }}
             </button>
           </li>
-          <li class="block lg:hidden" v-for="{ _id, title, path } in links" :key="_id">
+          <li
+            class="block lg:hidden"
+            v-for="{ _id, title, path } in links"
+            :key="_id"
+          >
             <button
-              :class="[$route.path === `/${path}` ? 'bg-secondary-500 bg-opacity-10' : '']"
+              :class="[
+                $route.path === `/${path}`
+                  ? 'bg-secondary-500 bg-opacity-10'
+                  : ''
+              ]"
               :title="title"
               class="flex w-full items-center rounded-xl p-2 text-sm"
               @click="
-                drawerVisible = false;
-                navigateTo(`/${path}`);
-              ">
-              <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
+                drawerVisible = false
+                navigateTo(`/${path}`)
+              "
+            >
+              <Icon
+                class="mr-2 h-5 w-5 text-secondary-400"
+                name="mingcute:document-line"
+              />
               {{ title }}
             </button>
           </li>
@@ -167,33 +207,49 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
         <ul class="mt-2 rounded-xl bg-zinc-100 p-1 shadow-md dark:bg-zinc-900">
           <li v-if="auth.isLogin">
             <button
-              :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
+              :class="[
+                $route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : ''
+              ]"
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10"
               @click="
-                drawerVisible = false;
-                navigateTo('/new');
-              ">
-              <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                drawerVisible = false
+                navigateTo('/new')
+              "
+            >
+              <Icon
+                class="mr-2 h-5 w-5 text-secondary-400"
+                name="mingcute:add-line"
+              />
               写新文章
             </button>
           </li>
           <li v-if="auth.isLogin">
             <button
-              :class="[$route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : '']"
+              :class="[
+                $route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : ''
+              ]"
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10"
               @click="
-                drawerVisible = false;
-                navigateTo('/setting');
-              ">
-              <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                drawerVisible = false
+                navigateTo('/setting')
+              "
+            >
+              <Icon
+                class="mr-2 h-5 w-5 text-primary-400"
+                name="mingcute:settings-1-line"
+              />
               博客设置
             </button>
           </li>
           <li v-if="auth.isLogin">
             <button
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10"
-              @click="auth.logout()">
-              <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+              @click="auth.logout()"
+            >
+              <Icon
+                class="mr-2 h-5 w-5 text-red-400"
+                name="mingcute:exit-line"
+              />
               退出登录
             </button>
           </li>
@@ -201,27 +257,33 @@ const { data: accessData } = await useLazyAsyncData(`access:base`, () => api(`/a
             <button
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500 hover:bg-opacity-10"
               @click="
-                drawerVisible = false;
-                auth.loginDialogVisible = true;
-              ">
-              <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                drawerVisible = false
+                auth.loginDialogVisible = true
+              "
+            >
+              <Icon
+                class="mr-2 h-5 w-5 text-violet-400"
+                name="mingcute:user-1-line"
+              />
               管理员登录
             </button>
           </li>
         </ul>
         <div
-          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-100 p-3 text-xs shadow-md dark:bg-zinc-900">
+          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-100 p-3 text-xs shadow-md dark:bg-zinc-900"
+        >
           <p v-if="accessData?.today">今日访问量：{{ accessData.today }}</p>
           <p v-if="accessData?.all">总访问量：{{ accessData.all }}</p>
         </div>
       </Drawer>
 
-      <div class="flex-1 md:hidden block"></div>
+      <div class="block flex-1 md:hidden"></div>
 
       <button
         title="切换配色"
         class="flex items-center rounded-xl p-2 text-sm transition-colors sm:hover:text-primary-500"
-        @click="$colorMode.preference = colorModeCircle[$colorMode.preference]">
+        @click="$colorMode.preference = colorModeCircle[$colorMode.preference]"
+      >
         <Icon class="h-4 w-4" :name="colorModeIcon" />
       </button>
     </div>

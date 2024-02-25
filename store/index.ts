@@ -1,2 +1,2 @@
-export * from './auth';
-export * from './setting';
+export * from './auth'
+export * from './setting'

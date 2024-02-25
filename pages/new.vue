@@ -1,29 +1,29 @@
 <script setup>
-import { useAuthStore, useSettingStore } from '~/store';
+import { useAuthStore, useSettingStore } from '~/store'
 
-const auth = useAuthStore();
-const settingStore = useSettingStore();
+const auth = useAuthStore()
+const settingStore = useSettingStore()
 
 /// region 新文章
 function onArticleSubmit(path) {
   // 添加完成自动跳转
-  navigateTo(`/${path}`);
+  navigateTo(`/${path}`)
 }
 /// endregion 新文章
 
 if (import.meta.browser) {
-  auth.loginDialogVisible = !auth.isLogin;
+  auth.loginDialogVisible = !auth.isLogin
 }
 
-const title = `新文章 - ${settingStore.setting.siteTitle ?? '博客'}`;
-const description = `写新文章`;
+const title = `新文章 - ${settingStore.setting.siteTitle ?? '博客'}`
+const description = `写新文章`
 const meta = {
   title,
   description,
   ogTitle: title,
-  ogDescription: description,
-};
-useSeoMeta(meta);
+  ogDescription: description
+}
+useSeoMeta(meta)
 </script>
 
 <template>

@@ -1,11 +1,11 @@
-import type { Config } from 'tailwindcss';
-import { fontFamily } from 'tailwindcss/defaultTheme';
-import colors from 'tailwindcss/colors';
-import scrollbar from 'tailwind-scrollbar';
+import type { Config } from 'tailwindcss'
+import { fontFamily } from 'tailwindcss/defaultTheme'
+import colors from 'tailwindcss/colors'
+import scrollbar from 'tailwind-scrollbar'
 
-const sans = ['Inter', ...fontFamily.sans];
-const serif = ['Merriweather', ...fontFamily.serif];
-const mono = [...new Set(['Fira Code', ...fontFamily.mono, ...sans])];
+const sans = ['Inter', ...fontFamily.sans]
+const serif = ['Merriweather', ...fontFamily.serif]
+const mono = [...new Set(['Fira Code', ...fontFamily.mono, ...sans])]
 
 export default {
   darkMode: 'class',
@@ -14,16 +14,16 @@ export default {
     './layouts/**/*.vue',
     './pages/**/*.vue',
     './plugins/**/*.{js,ts}',
-    './app.vue',
+    './app.vue'
   ],
   theme: {
     extend: {
       colors: {
         primary: colors.indigo,
-        secondary: colors.green,
-      },
+        secondary: colors.green
+      }
     },
-    fontFamily: { sans, serif, mono },
+    fontFamily: { sans, serif, mono }
   },
-  plugins: [scrollbar({ nocompatible: true })],
-} satisfies Config;
+  plugins: [scrollbar({ nocompatible: true })]
+} satisfies Config
