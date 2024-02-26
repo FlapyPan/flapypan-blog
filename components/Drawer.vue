@@ -1,12 +1,21 @@
-<script setup>
-const visible = defineModel({ type: Boolean })
-const props = defineProps({
-  closable: { type: Boolean, default: true },
-  role: { type: String, default: 'dialog' },
-  location: { type: String, default: 'left' },
-  size: { type: [String, Number], default: '20rem' },
-  maxSize: { type: [String, Number], default: '100%' }
-})
+<script setup lang="ts">
+const visible = defineModel<boolean>()
+const props = withDefaults(
+  defineProps<{
+    closable?: boolean
+    role?: string
+    location?: string
+    size?: string | number
+    maxSize?: string | number
+  }>(),
+  {
+    closable: true,
+    role: 'dialog',
+    location: 'left',
+    size: '20rem',
+    maxSize: '100%',
+  },
+)
 
 const computedTransition = computed(() => {
   const enterActiveClass = 'transition-gpu duration-200'
@@ -31,20 +40,19 @@ const computedTransition = computed(() => {
     enterFromClass: hideClass,
     enterToClass: showClass,
     leaveFromClass: showClass,
-    leaveToClass: hideClass
+    leaveToClass: hideClass,
   }
 })
 
 const computedSize = computed(() => {
-  const size = typeof props.size === 'number' ? `${props.size}px` : props.size
+  const size = Number.isFinite(props.size) ? `${props.size}px` : props.size
   if (props.location === 'top' || props.location === 'bottom') {
     return `height: ${size};`
   }
   return `width: ${size};`
 })
 const computedMaxSize = computed(() => {
-  const size =
-    typeof props.maxSize === 'number' ? `${props.maxSize}px` : props.maxSize
+  const size = Number.isFinite(props.maxSize) ? `${props.maxSize}px` : props.maxSize
   if (props.location === 'top' || props.location === 'bottom') {
     return `max-height: ${size}; max-width: 100vw;`
   }
@@ -69,8 +77,7 @@ const computedLocation = computed(() => {
   return 'top: var(--safe-top); left: var(--safe-left);'
 })
 const computedStyle = computed(
-  () =>
-    `${computedLocation.value} ${computedSize.value} ${computedMaxSize.value}`
+  () => `${computedLocation.value} ${computedSize.value} ${computedMaxSize.value}`,
 )
 
 function close() {
@@ -84,15 +91,9 @@ function close() {
     <div v-bind="$attrs" class="print:hidden">
       <Backdrop v-model="visible" @close="close"></Backdrop>
       <Transition v-bind="computedTransition">
-        <div
-          v-if="visible"
-          role="menu"
-          :style="computedStyle"
-          class="fixed z-[100]"
-        >
+        <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">
           <div
-            class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4"
-          >
+            class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4">
             <slot></slot>
           </div>
         </div>

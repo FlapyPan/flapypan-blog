@@ -1,8 +1,8 @@
 import { createHooks } from 'hookable'
 
 export interface AuthorStatusData {
-  state: string | null | undefined
-  active: number | null | undefined
+  state: string | undefined
+  active: number | undefined
 }
 
 export interface StatusHooks {
@@ -15,7 +15,7 @@ export const statusHooks = createHooks<StatusHooks>()
 function defaultAuthorStatusData(): AuthorStatusData {
   return {
     state: '',
-    active: 0
+    active: 0,
   }
 }
 
@@ -40,7 +40,7 @@ export const statusDataHolder = {
     if (lastActive && Date.now() - lastActive > 1800000) {
       await this.set(defaultAuthorStatusData())
     }
-  }
+  },
 }
 
 statusHooks.hook('authorStatus:set', (data) => {

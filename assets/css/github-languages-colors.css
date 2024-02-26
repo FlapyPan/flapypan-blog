@@ -246,11 +246,11 @@
   color: #555555;
 }
 
-.lang-C# {
+.lang-C\# {
   color: #178600;
 }
 
-.lang-C + {
+.lang-C\+\+ {
   color: #f34b7d;
 }
 
@@ -558,11 +558,11 @@
   color: #ff790b;
 }
 
-.lang-F# {
+.lang-F\# {
   color: #b845fc;
 }
 
-.lang-F * {
+.lang-F\* {
   color: #572e30;
 }
 
@@ -1342,7 +1342,7 @@
   color: #438eff;
 }
 
-.lang-Objective-C + {
+.lang-Objective-C\+ {
   color: #6866fb;
 }
 
@@ -1566,7 +1566,7 @@
   color: #3572a5;
 }
 
-.lang-Q# {
+.lang-Q\# {
   color: #fed659;
 }
 
@@ -2038,7 +2038,7 @@
   color: #945db7;
 }
 
-.lang-Visual-Basic-6.0 {
+.lang-Visual-Basic-6\.0 {
   color: #2c6353;
 }
 

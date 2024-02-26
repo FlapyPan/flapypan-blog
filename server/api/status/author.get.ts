@@ -14,7 +14,7 @@ export default eventHandler(async (event) => {
   addAccess({
     ip: getRealIP(event),
     referrer: getHeader(event, 'Referer'),
-    ua: getHeader(event, 'User-Agent')
+    ua: getHeader(event, 'User-Agent'),
   })
   // 第一次连接直接发送
   hook(statusDataHolder.get())

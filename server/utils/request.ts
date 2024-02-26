@@ -1,13 +1,13 @@
-import type { ZodRawShape } from 'zod/lib/types'
-import type { EventHandlerRequest, H3Event } from 'h3'
+import type { ZodRawShape } from 'zod'
 import z from 'zod'
+import type { EventHandlerRequest, H3Event } from 'h3'
 
 const IP_HEADERS = [
   'X-Forwarded-For',
   'Proxy-Client-IP',
   'WL-Proxy-Client-IP',
   'HTTP_CLIENT_IP',
-  'HTTP_X_FORWARDED_FOR'
+  'HTTP_X_FORWARDED_FOR',
 ]
 
 export function getRealIP(event: H3Event) {
@@ -24,7 +24,7 @@ function parse<T extends ZodRawShape>(data: unknown, shape: T) {
     console.warn(`表单校验错误`, result.error)
     throw createError({
       statusCode: 400,
-      message: result.error.errors[0].message
+      message: result.error.errors[0].message,
     })
   }
   return result.data
@@ -32,16 +32,13 @@ function parse<T extends ZodRawShape>(data: unknown, shape: T) {
 
 export async function readSafeBody<T extends ZodRawShape>(
   event: H3Event<EventHandlerRequest>,
-  shape: T
+  shape: T,
 ) {
   const data = await readBody(event)
   return parse(data, shape)
 }
 
-export function readParams<T extends ZodRawShape>(
-  event: H3Event<EventHandlerRequest>,
-  shape: T
-) {
+export function readParams<T extends ZodRawShape>(event: H3Event<EventHandlerRequest>, shape: T) {
   const data = event.context.params
   return parse(data, shape)
 }

@@ -1,8 +1,14 @@
-<script setup>
-defineProps({
-  title: { type: String, default: '' },
-  subTitle: { type: String, default: '' }
-})
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    title?: string
+    subTitle?: string
+  }>(),
+  {
+    title: '',
+    subTitle: '',
+  },
+)
 </script>
 
 <template>

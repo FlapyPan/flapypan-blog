@@ -1,12 +1,22 @@
-<script setup>
-defineProps({
-  icon: { type: String, default: '' },
-  to: { type: String, default: '' },
-  href: { type: String, default: '' },
-  target: { type: String, default: '_self' },
-  text: { type: Boolean, default: false },
-  disabled: { type: Boolean, default: false }
-})
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    icon?: string
+    to?: string
+    href?: string
+    target?: string
+    text?: boolean
+    disabled?: boolean
+  }>(),
+  {
+    icon: '',
+    to: '',
+    href: '',
+    target: '',
+    text: false,
+    disabled: false,
+  },
+)
 </script>
 
 <template>
@@ -14,8 +24,7 @@ defineProps({
     :class="[text ? 'Btn--text' : 'Btn--normal']"
     :disabled="disabled"
     class="Btn"
-    draggable="false"
-  >
+    draggable="false">
     <template v-if="to !== ''">
       <nuxt-link :to="to" class="Btn-content">
         <Icon v-if="icon" :name="icon" class="mr-1" />

@@ -14,16 +14,16 @@ export default {
     './layouts/**/*.vue',
     './pages/**/*.vue',
     './plugins/**/*.{js,ts}',
-    './app.vue'
+    './app.vue',
   ],
   theme: {
     extend: {
       colors: {
         primary: colors.indigo,
-        secondary: colors.green
-      }
+        secondary: colors.green,
+      },
     },
-    fontFamily: { sans, serif, mono }
+    fontFamily: { sans, serif, mono },
   },
-  plugins: [scrollbar({ nocompatible: true })]
+  plugins: [scrollbar({ nocompatible: true })],
 } satisfies Config

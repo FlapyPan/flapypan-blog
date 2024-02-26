@@ -15,22 +15,22 @@ export const useSettingStore = defineStore('setting', () => {
     giscusRepo: '',
     giscusRepoId: '',
     giscusCategory: '',
-    giscusCategoryId: ''
+    giscusCategoryId: '',
   })
 
   const load = async () => {
-    const data = await api('/attribute/settings')
+    const data = await api<Record<string, any>>('/attribute/settings')
     setting.value = { ...setting.value, ...data }
   }
 
   const save = async () => {
-    const data = await api('/attribute/settings', 'POST', setting.value)
+    const data = await api<Record<string, any>>('/attribute/settings', 'POST', setting.value)
     setting.value = { ...setting.value, ...data }
   }
 
   return {
     setting,
     load,
-    save
+    save,
   }
 })

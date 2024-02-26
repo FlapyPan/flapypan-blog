@@ -14,13 +14,13 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async ({
     username,
     password,
-    remember
+    remember,
   }: {
     username: string
     password: string
     remember: boolean
   }) => {
-    const { token } = await api(`/auth/login`, 'POST', { username, password })
+    const { token } = await api<{ token: string }>(`/auth/login`, 'POST', { username, password })
     if (token && import.meta.browser) {
       if (remember) {
         localStorage.setItem('token', token)
@@ -51,6 +51,6 @@ export const useAuthStore = defineStore('auth', () => {
     loginDialogVisible,
     check,
     login,
-    logout
+    logout,
   }
 })

@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import type { ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
@@ -6,10 +7,8 @@ const settingStore = useSettingStore()
 /// region 标签数据
 const { pending: fetchingTagList, data: tagList } = await useAsyncData(
   `tag`,
-  () => api(`/tag`),
-  {
-    deep: false
-  }
+  () => api<string[]>(`/tag`),
+  { deep: false },
 )
 /// endregion 标签数据
 
@@ -17,8 +16,8 @@ const { pending: fetchingTagList, data: tagList } = await useAsyncData(
 const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
   `article:yearly`,
   () =>
-    api(`/article`).then((articleList) => {
-      const data = []
+    api<ArticleWithoutContent[]>(`/article`).then((articleList) => {
+      const data: { year: number; list: ArticleWithoutContent[] }[] = []
       let i = -1
       let lastYear = 0
       for (const article of articleList) {
@@ -32,7 +31,7 @@ const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
       }
       return data
     }),
-  { deep: false }
+  { deep: false },
 )
 /// endregion 文章列表
 
@@ -42,7 +41,7 @@ const meta = {
   title,
   description,
   ogTitle: title,
-  ogDescription: description
+  ogDescription: description,
 }
 useServerSeoMeta(meta)
 useSeoMeta(meta)
@@ -69,8 +68,7 @@ useSeoMeta(meta)
     </div>
     <p
       v-show="fetchingArticleData || fetchingTagList"
-      class="py-2 text-center text-sm text-zinc-500"
-    >
+      class="py-2 text-center text-sm text-zinc-500">
       加载中...
     </p>
   </div>

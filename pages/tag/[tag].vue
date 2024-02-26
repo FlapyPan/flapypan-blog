@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+import type { Ref } from 'vue'
+import type { ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
 const route = useRoute()
@@ -6,10 +8,16 @@ const settingStore = useSettingStore()
 
 /// region 获取 tag 信息
 const tag = computed(() => route.params.tag ?? '')
-const { data: articleData, pending: fetchingData } = await useAsyncData(
+const {
+  data: articleData,
+  pending: fetchingData,
+}: {
+  data: Ref<ArticleWithoutContent[]>
+  pending: Ref<boolean>
+} = await useAsyncData(
   `tag:${tag.value}`,
-  () => api(`/article/tag/${tag.value}`),
-  { deep: false, watch: [tag] }
+  () => api<ArticleWithoutContent[]>(`/article/tag/${tag.value}`),
+  { deep: false, watch: [tag] },
 )
 /// endregion 获取 tag 信息
 
@@ -19,7 +27,7 @@ const meta = {
   title,
   description,
   ogTitle: title,
-  ogDescription: description
+  ogDescription: description,
 }
 useServerSeoMeta(meta)
 useSeoMeta(meta)
@@ -36,8 +44,6 @@ useSeoMeta(meta)
       </template>
     </PageHead>
     <ArticleTimeline :list="articleData" />
-    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">
-      加载中...
-    </p>
+    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
   </div>
 </template>

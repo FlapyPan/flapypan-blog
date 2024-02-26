@@ -1,10 +1,17 @@
-<script setup>
-const visible = defineModel({ type: Boolean })
-const props = defineProps({
-  title: { type: String, default: '' },
-  closable: { type: Boolean, default: false },
-  role: { type: String, default: 'dialog' }
-})
+<script setup lang="ts">
+const visible = defineModel<boolean>()
+const props = withDefaults(
+  defineProps<{
+    title?: string
+    closable?: boolean
+    role?: string
+  }>(),
+  {
+    title: '',
+    closable: false,
+    role: 'dialog',
+  },
+)
 
 function close() {
   if (!props.closable) return
@@ -21,16 +28,14 @@ function close() {
       enter-to-class="transform scale-100 opacity-100"
       leave-active-class="transition duration-100 ease-in"
       leave-from-class="transform scale-100 opacity-100"
-      leave-to-class="transform scale-75 opacity-0"
-    >
+      leave-to-class="transform scale-75 opacity-0">
       <dialog
         v-show="visible"
         open
         :role="role"
         v-bind="$attrs"
         class="fixed inset-0 z-[100] w-96 max-w-full overscroll-contain rounded-xl bg-zinc-100 p-4 text-current dark:bg-zinc-900 print:hidden"
-        @close="close"
-      >
+        @close="close">
         <h3 v-if="title" class="text-lg font-medium leading-6">
           {{ title }}
         </h3>

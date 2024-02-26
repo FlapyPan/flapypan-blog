@@ -1,10 +1,13 @@
-<script setup>
+<script setup lang="ts">
+import type { ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
-const props = defineProps({
-  article: {}
-})
-const emits = defineEmits(['onRoute'])
+const props = defineProps<{
+  article: ArticleWithoutContent
+}>()
+const emits = defineEmits<{
+  (e: 'onRoute'): void
+}>()
 
 const settingStore = useSettingStore()
 
@@ -17,13 +20,8 @@ const formattedDate = useDateTimeFormat(props.article.updatedAt)
   <nuxt-link
     :to="`/${article.path}`"
     class="group relative flex items-center justify-between overflow-hidden rounded-xl border-2 border-transparent transition hover:border-primary-500"
-    @click="emits('onRoute')"
-  >
-    <img
-      :src="coverSrc"
-      alt=""
-      class="absolute inset-0 -z-10 object-cover object-center"
-    />
+    @click="emits('onRoute')">
+    <img :src="coverSrc" alt="" class="absolute inset-0 -z-10 object-cover object-center" />
     <div class="flex flex-col justify-center rounded-b-xl p-5">
       <h3 class="text-lg">
         {{ article.title }}
@@ -34,10 +32,8 @@ const formattedDate = useDateTimeFormat(props.article.updatedAt)
     </div>
     <Icon
       class="mr-4 translate-x-12 text-xl text-primary-500 transition-transform group-hover:translate-x-0 dark:text-primary-300"
-      name="mingcute:arrow-right-line"
-    />
+      name="mingcute:arrow-right-line" />
     <div
-      class="absolute inset-0 -z-10 bg-zinc-100 bg-opacity-60 dark:bg-zinc-800 dark:bg-opacity-60"
-    ></div>
+      class="absolute inset-0 -z-10 bg-zinc-100 bg-opacity-60 dark:bg-zinc-800 dark:bg-opacity-60"></div>
   </nuxt-link>
 </template>

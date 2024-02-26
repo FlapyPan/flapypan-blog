@@ -1,31 +1,24 @@
-import { Schema, type Types } from 'mongoose'
+import type { IAccess } from '~/types/models'
+import { Schema } from 'mongoose'
 import { defineMongooseModel } from '#nuxt/mongoose'
-
-export interface IAccess {
-  ip?: string
-  referrer?: string
-  ua?: string
-  articleId?: Types.ObjectId
-  createdAt: Date
-}
 
 export const AccessSchema = defineMongooseModel<IAccess>('Access', {
   ip: {
-    type: Schema.Types.String
+    type: Schema.Types.String,
   },
   referrer: {
-    type: Schema.Types.String
+    type: Schema.Types.String,
   },
   ua: {
-    type: Schema.Types.String
+    type: Schema.Types.String,
   },
   articleId: {
     type: Schema.Types.ObjectId,
-    index: true
+    index: true,
   },
   createdAt: {
     type: Schema.Types.Date,
     index: true,
-    default: () => new Date()
-  }
+    default: () => new Date(),
+  },
 })

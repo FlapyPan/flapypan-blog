@@ -2,14 +2,11 @@ import type { ObjectId } from 'bson'
 
 const listSelect = {
   content: 0,
-  summary: 0
+  summary: 0,
 }
 
 export function getRecentArticleList() {
-  return ArticleSchema.find({})
-    .limit(8)
-    .sort({ updatedAt: -1 })
-    .select(listSelect)
+  return ArticleSchema.find({}).limit(8).sort({ updatedAt: -1 }).select(listSelect)
 }
 
 export function getArticleList() {
@@ -40,17 +37,18 @@ export function getPinnedArticleList() {
 }
 
 interface ArticleAddRequest {
+  content: string
+  tags: string[]
   title: string
   path: string
   cover?: string | null
-  content: string
-  tags: string[]
+  pinned?: boolean | null
 }
 
 export async function addArticle(article: ArticleAddRequest) {
   const saved = await new ArticleSchema({
     ...article,
-    updatedAt: new Date()
+    updatedAt: new Date(),
   }).save()
   return { path: saved.path }
 }

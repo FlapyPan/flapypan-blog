@@ -23,11 +23,7 @@ export type SparkAIResult = {
 export const sparkAI = {
   _getWebsocketUrl(): string {
     const apiKey = ensure(process.env.SPARK_API_KEY, '未设置SPARK_API_KEY', 500)
-    const apiSecret = ensure(
-      process.env.SPARK_API_SECRET,
-      '未设置SPARK_API_SECRET',
-      500
-    )
+    const apiSecret = ensure(process.env.SPARK_API_SECRET, '未设置SPARK_API_SECRET', 500)
     const url = new URL('wss://spark-api.xf-yun.com/v3.5/chat')
     const host = url.host
     const path = url.pathname
@@ -50,7 +46,7 @@ export const sparkAI = {
     const data = JSON.stringify({
       header: { app_id: appId },
       parameter: { chat: { domain: 'generalv3.5', max_tokens: 128 } },
-      payload: { message: { text } }
+      payload: { message: { text } },
     })
     ws.onopen = () => ws.send(data)
     return await new Promise<string>((resolve, reject) => {
@@ -60,7 +56,7 @@ export const sparkAI = {
       ws.onmessage = ({ data }) => {
         const {
           header,
-          payload: { choices }
+          payload: { choices },
         } = JSON.parse(data.toString()) as SparkAIResult
         if (header.code !== 0) {
           reject(Error(header.message))
@@ -83,13 +79,12 @@ export const sparkAI = {
     return this.sendConversation([
       {
         role: 'system',
-        content:
-          '简洁地概括文章的主要内容，突出强调作者的核心论点和结论，控制在80个字以内'
+        content: '简洁地概括文章的主要内容，突出强调作者的核心论点和结论，控制在80个字以内',
       },
       {
         role: 'user',
-        content: text
-      }
+        content: text,
+      },
     ])
-  }
+  },
 }

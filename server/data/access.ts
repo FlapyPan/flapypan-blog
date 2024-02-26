@@ -1,9 +1,9 @@
 import type { ObjectId } from 'bson'
 
 interface AccessAddRequest {
-  ip?: string | null
-  referrer?: string | null
-  ua?: string | null
+  ip?: string
+  referrer?: string
+  ua?: string
   articleId?: string | ObjectId
 }
 
@@ -11,9 +11,7 @@ export function addAccess(access: AccessAddRequest) {
   new AccessSchema(access).save()
 }
 
-export function getArticleAccessCount(
-  articleId: string | ObjectId
-): Promise<number> {
+export function getArticleAccessCount(articleId: string | ObjectId): Promise<number> {
   return AccessSchema.countDocuments({ articleId })
 }
 

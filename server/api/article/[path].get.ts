@@ -9,7 +9,7 @@ export default cachedEventHandler(async (event) => {
     ip: getRealIP(event),
     referrer: getHeader(event, 'Referer'),
     ua: getHeader(event, 'User-Agent'),
-    articleId: article._id
+    articleId: article._id,
   })
   const accessCount = await getArticleAccessCount(article._id)
   return Object.assign(article.toObject(), { accessCount })

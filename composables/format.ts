@@ -29,8 +29,6 @@ export function dateTimeFormat(maybeDate?: MaybeDate): DateTimeFormat {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 }
 
-export function useDateTimeFormat(
-  date?: MaybeRefOrGetter<number | string | Date>
-) {
+export function useDateTimeFormat(date?: MaybeRefOrGetter<number | string | Date>) {
   return computed(() => dateTimeFormat(toRef(date).value))
 }

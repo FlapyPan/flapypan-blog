@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { useAuthStore, useSettingStore } from '~/store'
 
 const auth = useAuthStore()
 const settingStore = useSettingStore()
 
 /// region 新文章
-function onArticleSubmit(path) {
+function onArticleSubmit(path: string) {
   // 添加完成自动跳转
   navigateTo(`/${path}`)
 }
@@ -21,7 +21,7 @@ const meta = {
   title,
   description,
   ogTitle: title,
-  ogDescription: description
+  ogDescription: description,
 }
 useSeoMeta(meta)
 </script>

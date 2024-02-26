@@ -3,6 +3,6 @@ export default eventHandler(async (event) => {
   // 发送事件
   await statusHooks.callHook('authorStatus:set', {
     state: body,
-    active: Date.now()
+    active: Date.now(),
   })
 })
