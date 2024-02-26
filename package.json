@@ -1,15 +1,23 @@
 {
   "name": "flapypan-blog",
-  "description": "FlapyPan Blog",
+  "description": "A simple and efficient blogging system.",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
   "version": "2.3.5",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FlapyPan/flapypan-blog"
+  },
+  "license": "MPL-2.0",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "postinstall": "nuxt prepare",
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "start": "node .output/server/index.mjs",
+    "preview": "node .output/server/index.mjs",
     "format": "prettier . \"**/*.{js,ts,json,css,vue}\" --write"
   },
   "dependencies": {
