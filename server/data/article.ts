@@ -2,7 +2,6 @@ import type { ObjectId } from 'bson'
 
 const listSelect = {
   content: 0,
-  summary: 0,
 }
 
 export function getRecentArticleList() {

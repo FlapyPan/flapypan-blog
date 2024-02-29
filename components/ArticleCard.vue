@@ -13,7 +13,7 @@ const settingStore = useSettingStore()
 
 const coverSrc = shallowRef(props.article.cover || settingStore.setting.banner)
 const formattedUpdatedAt = useDateTimeFormat(props.article?.updatedAt)
-const desc = computed(() => props.article.summary ?? `${props.article.path} ${props.article.title}`)
+const desc = computed(() => props.article.summary ?? props.article.title)
 </script>
 
 <template>

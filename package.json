@@ -3,7 +3,7 @@
   "description": "A simple and efficient blogging system.",
   "homepage": "https://www.flapypan.top/",
   "author": "FlapyPan",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "type": "module",
   "repository": {
     "type": "git",
