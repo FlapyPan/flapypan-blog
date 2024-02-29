@@ -29,7 +29,7 @@ withDefaults(
         <slot name="subTitle" />
       </template>
     </p>
-    <div class="jump-in-600">
+    <div>
       <slot />
     </div>
   </section>

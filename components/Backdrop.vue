@@ -12,6 +12,6 @@ const emit = defineEmits<{ (e: 'close'): void }>()
     <div
       v-if="visible"
       @click="emit('close')"
-      class="backdrop themed-scrollbar fixed inset-0 z-50 overflow-x-hidden overscroll-contain bg-white bg-opacity-50 backdrop-blur transition-all duration-500 dark:bg-black dark:bg-opacity-50 print:hidden"></div>
+      class="backdrop themed-scrollbar fixed inset-0 z-50 overflow-x-hidden overscroll-contain bg-white bg-opacity-30 backdrop-blur transition-all duration-500 dark:bg-black dark:bg-opacity-20 print:hidden"></div>
   </Transition>
 </template>

@@ -16,7 +16,13 @@ export default defineNuxtConfig({
     '/new': { ssr: false },
     '/setting': { ssr: false },
   },
-  modules: ['@nuxtjs/color-mode', 'nuxt-icon', '@pinia/nuxt', 'nuxt-mongoose'],
+  modules: [
+    '@nuxtjs/color-mode',
+    'nuxt-icon',
+    '@formkit/auto-animate/nuxt',
+    '@pinia/nuxt',
+    'nuxt-mongoose',
+  ],
   colorMode: {
     preference: 'system',
     fallback: 'light',

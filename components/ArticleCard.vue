@@ -12,28 +12,47 @@ const emits = defineEmits<{
 const settingStore = useSettingStore()
 
 const coverSrc = shallowRef(props.article.cover || settingStore.setting.banner)
-
-const formattedDate = useDateTimeFormat(props.article.updatedAt)
+const formattedUpdatedAt = useDateTimeFormat(props.article?.updatedAt)
+const desc = computed(() => props.article.summary ?? `${props.article.path} ${props.article.title}`)
 </script>
 
 <template>
-  <nuxt-link
-    :to="`/${article.path}`"
-    class="group relative flex items-center justify-between overflow-hidden rounded-xl border-2 border-transparent transition hover:border-primary-500"
-    @click="emits('onRoute')">
-    <img :src="coverSrc" alt="" class="absolute inset-0 -z-10 object-cover object-center" />
-    <div class="flex flex-col justify-center rounded-b-xl p-5">
-      <h3 class="text-lg">
-        {{ article.title }}
-      </h3>
-      <div class="text-xs">
-        {{ formattedDate }}
-      </div>
-    </div>
-    <Icon
-      class="mr-4 translate-x-12 text-xl text-primary-500 transition-transform group-hover:translate-x-0 dark:text-primary-300"
-      name="mingcute:arrow-right-line" />
-    <div
-      class="absolute inset-0 -z-10 bg-zinc-100 bg-opacity-60 dark:bg-zinc-800 dark:bg-opacity-60"></div>
-  </nuxt-link>
+  <article class="flex min-h-60 flex-col gap-2 md:flex-row md:gap-8">
+    <nuxt-link
+      :to="`/${article.path}`"
+      @click="emits('onRoute')"
+      class="w-full max-w-full md:max-w-md">
+      <img :src="coverSrc" alt="" class="aspect-video w-full rounded-lg object-cover" />
+    </nuxt-link>
+    <section class="mt-4 flex h-full flex-1 flex-col items-start">
+      <nuxt-link :to="`/${article.path}`" @click="emits('onRoute')">
+        <h3 class="text-xl">
+          {{ article.title }}
+        </h3>
+      </nuxt-link>
+      <time class="mt-2 flex items-center gap-1 text-sm text-zinc-500">
+        <Icon name="mingcute:time-line" />
+        {{ formattedUpdatedAt }}
+      </time>
+      <p v-if="article.tags?.length > 0" class="mt-1 flex flex-wrap items-center gap-2">
+        <Btn
+          v-for="name in article.tags"
+          :key="name"
+          :to="`/tag/${name}`"
+          icon="mingcute:hashtag-line"
+          text>
+          {{ name }}
+        </Btn>
+      </p>
+      <p class="mt-4 text-sm leading-relaxed text-zinc-500">简介：{{ desc }}</p>
+      <Btn
+        class="mt-4"
+        icon="mingcute:right-line"
+        text
+        :to="`/${article.path}`"
+        @click="emits('onRoute')"
+        >查看更多
+      </Btn>
+    </section>
+  </article>
 </template>

@@ -208,8 +208,8 @@ useSeoMeta(meta)
     <ClientOnly>
       <div v-if="auth.isLogin">
         <Drawer v-model="isEdit" location="bottom" size="100%" :closable="false">
-          <div class="bg-zinc-50 dark:bg-zinc-950">
-            <Btn icon="mingcute:left-line" class="mb-4" @click="isEdit = false"> 取消</Btn>
+          <div class="bg-zinc-50 dark:bg-zinc-900 p-4 rounded-xl shadow">
+            <Btn icon="mingcute:left-line" class="mb-4" @click="isEdit = false">关闭</Btn>
             <ArticleEditor :article-data="editData" @submit="onSaveArticle"></ArticleEditor>
           </div>
         </Drawer>
@@ -227,12 +227,12 @@ useSeoMeta(meta)
         <div class="my-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
           <div class="flex items-center gap-1">
             <Icon name="mingcute:document-line" />
-            <span class="hidden text-sm md:inline-block print:inline-block"> 创建 </span>
+            <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
             <span class="text-sm">{{ formattedCreatedAt }}</span>
           </div>
           <div class="flex items-center gap-1 text-sm">
             <Icon name="mingcute:edit-line" />
-            <span class="hidden text-sm md:inline-block print:inline-block"> 修改 </span>
+            <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
             <span class="text-sm">{{ formattedUpdatedAt }}</span>
           </div>
         </div>
@@ -253,7 +253,7 @@ useSeoMeta(meta)
         </div>
         <div
           v-if="articleData.summary || auth.isLogin"
-          class="mx-auto my-6 max-w-xl rounded-xl bg-zinc-100 p-3 text-zinc-500 dark:bg-zinc-950">
+          class="mx-auto my-6 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900">
           <p class="text-xs leading-relaxed">
             <span class="font-bold">
               <Icon name="mingcute:notebook-line" />
@@ -300,8 +300,8 @@ useSeoMeta(meta)
         <ClientOnly>
           <Drawer v-model="rightDrawer" location="right-bottom">
             <div
-              class="themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-100 shadow-md dark:bg-zinc-900">
-              <div class="sticky top-0 z-10 bg-zinc-100 p-2 dark:bg-zinc-900">
+              class="themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 shadow-md dark:bg-zinc-900">
+              <div class="sticky top-0 z-10 bg-zinc-50 p-2 dark:bg-zinc-900">
                 <ul
                   class="border-b border-zinc-300 pb-2 dark:border-zinc-700 lg:border-none lg:pb-0">
                   <li>

@@ -40,12 +40,12 @@ useSeoMeta(meta)
       <embed :src="settingStore.setting.wakatime" />
     </figure>
     <h3 class="mb-6 ml-2 text-xl">Github 仓库</h3>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" v-auto-animate>
       <a
         v-for="repo in repos"
         :key="repo._id"
         :href="repo.html_url"
-        class="group flex flex-col gap-2 overflow-hidden rounded-xl bg-white p-4 transition dark:bg-zinc-800"
+        class="group flex flex-col gap-2 overflow-hidden rounded-xl bg-zinc-50 p-4 transition dark:bg-zinc-900"
         target="_blank">
         <p class="text-lg underline-offset-2 group-hover:underline">
           {{ repo.full_name }}
@@ -75,6 +75,9 @@ useSeoMeta(meta)
         </p>
       </a>
     </div>
+    <p v-if="!fetchingRepos && !repos?.length" class="py-2 text-center text-sm text-zinc-500">
+      暂无数据
+    </p>
     <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
   </div>
 </template>

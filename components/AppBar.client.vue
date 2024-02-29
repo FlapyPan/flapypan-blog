@@ -108,7 +108,7 @@ const { data: accessData } = await useLazyAsyncData(
     </Dialog>
   </template>
   <header
-    class="fixed top-0 z-50 w-full bg-zinc-50 bg-opacity-70 px-3 shadow backdrop-blur transition-shadow dark:bg-zinc-900 dark:bg-opacity-60 md:px-6 print:hidden"
+    class="fixed top-0 z-50 w-full bg-white bg-opacity-70 px-3 backdrop-blur-lg transition-shadow dark:bg-black dark:bg-opacity-60 md:px-6 print:hidden"
     @contextmenu.stop.prevent="toggleDrawer">
     <div
       class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row">
@@ -151,7 +151,7 @@ const { data: accessData } = await useLazyAsyncData(
         <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
-        <ul class="block rounded-xl bg-zinc-100 p-2 shadow-md dark:bg-zinc-900 lg:hidden">
+        <ul class="block rounded-xl bg-white p-2 shadow-md dark:bg-black lg:hidden">
           <li class="block md:hidden" v-for="l in navLinks" :key="l.routeName">
             <button
               :class="[
@@ -175,7 +175,7 @@ const { data: accessData } = await useLazyAsyncData(
             </button>
           </li>
         </ul>
-        <ul class="mt-2 rounded-xl bg-zinc-100 p-1 shadow-md dark:bg-zinc-900">
+        <ul class="mt-2 rounded-xl bg-zinc-50 p-1 shadow-md dark:bg-zinc-900">
           <li v-if="auth.isLogin">
             <button
               :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
@@ -212,7 +212,7 @@ const { data: accessData } = await useLazyAsyncData(
           </li>
         </ul>
         <div
-          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-100 p-3 text-xs shadow-md dark:bg-zinc-900">
+          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-50 p-3 text-xs shadow-md dark:bg-zinc-900">
           <p v-if="accessData?.today">今日访问量：{{ accessData.today }}</p>
           <p v-if="accessData?.all">总访问量：{{ accessData.all }}</p>
         </div>

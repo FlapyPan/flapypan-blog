@@ -24,7 +24,7 @@ body {
 
 body {
   --primary-500: rgb(99, 102, 241);
-  @apply bg-zinc-50 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-200;
+  @apply bg-white text-zinc-800 dark:bg-black dark:text-zinc-200;
 }
 
 .safe-inset-0 {
@@ -53,7 +53,7 @@ img {
 
 input,
 textarea {
-  @apply rounded-md bg-white px-3 py-2 shadow transition dark:bg-zinc-800;
+  @apply rounded-md bg-zinc-50 px-3 py-2 accent-primary-500 shadow transition dark:bg-zinc-800;
 
   &[disabled] {
     @apply cursor-not-allowed opacity-30 shadow-none;
@@ -62,6 +62,18 @@ textarea {
   &:focus {
     @apply outline-none ring ring-primary-500;
   }
+
+  &[type='checkbox'] {
+    @apply h-4 w-4 cursor-pointer accent-primary-500 ring-0;
+  }
+}
+
+label {
+  @apply cursor-pointer;
+}
+
+hr {
+  @apply border-primary-100 dark:border-primary-950;
 }
 
 .page {
@@ -102,7 +114,7 @@ html.dark {
 }
 
 :is(#read, #edit).md-editor {
-  @apply bg-zinc-50 font-sans dark:bg-zinc-900;
+  @apply bg-white font-sans dark:bg-black;
 
   .md-editor-preview {
     --md-theme-link-color: var(--primary-500);
@@ -119,13 +131,15 @@ html.dark {
   }
 }
 
-.md-editor-catalog-link > span {
-  @apply text-sm;
-}
+.md-editor-catalog {
+  .md-editor-catalog-link > span {
+    @apply text-sm;
+  }
 
-.md-editor-catalog-link > span:hover,
-.md-editor-catalog-active > span {
-  @apply text-primary-500;
+  .md-editor-catalog-link > span:hover,
+  .md-editor-catalog-active > span {
+    @apply text-primary-500;
+  }
 }
 
 .Vue-Toastification__container {

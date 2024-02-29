@@ -21,6 +21,7 @@
     "format": "prettier . \"**/*.{js,ts,json,css,vue}\" --write"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^0.8.1",
     "@nuxtjs/color-mode": "^3.3.2",
     "@pinia/nuxt": "^0.5.1",
     "giscus": "^1.5.0",

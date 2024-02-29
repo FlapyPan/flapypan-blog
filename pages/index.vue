@@ -15,7 +15,7 @@ const {
 /// endregion 文章数据
 
 /// region 随机一言
-const hitoko = shallowRef('加载中...')
+const hitoko = shallowRef('')
 
 async function fetchHitokoto(enable: boolean) {
   if (import.meta.browser) {
@@ -48,9 +48,9 @@ useSeoMeta(meta)
 </script>
 
 <template>
-  <div class="page">
+  <div>
     <section
-      class="sm:gap-18 flex w-full flex-col-reverse items-center justify-center gap-16 pt-36 text-center md:flex-row md:text-left lg:gap-52">
+      class="sm:gap-18 flex h-screen w-full flex-col-reverse items-center justify-center gap-16 text-center md:flex-row md:text-left lg:gap-52">
       <div>
         <h1 class="text-3xl text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
           {{ settingStore.setting.siteTitle }}
@@ -71,9 +71,13 @@ useSeoMeta(meta)
             </a>
           </p>
           <ClientOnly>
-            <p v-if="settingStore.setting.hitoko" class="mt-4 text-center text-sm md:text-left">
-              一言：{{ hitoko }}
-            </p>
+            <div
+              v-auto-animate
+              v-if="settingStore.setting.hitoko"
+              class="mt-4 text-center text-sm md:text-left">
+              <p v-if="hitoko">一言：{{ hitoko }}</p>
+              <p v-else>一言加载中...</p>
+            </div>
             <p v-else class="mt-4 text-center text-sm md:text-left">
               {{ settingStore.setting.info }}
               <span class="animate-ping">_</span>
@@ -86,16 +90,19 @@ useSeoMeta(meta)
         alt=""
         class="h-32 w-32 rounded-full md:h-40 md:w-40 lg:h-52 lg:w-52" />
     </section>
-    <section class="mt-24">
-      <h3 class="mb-3 mt-6 flex items-center">
+    <section class="page">
+      <h3 class="flex items-center">
         最近更新
         <RefreshButton :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
       </h3>
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <ArticleCard v-for="a in articleData ?? []" :key="a._id" :article="a" />
+      <div class="mt-8 flex flex-col gap-8" v-auto-animate>
+        <template v-for="(a, i) in articleData ?? []" :key="a._id">
+          <ArticleCard :article="a" />
+          <hr v-if="i < (articleData?.length ?? 0) - 1" />
+        </template>
       </div>
-      <div v-once class="mt-6 text-center">
-        <Btn icon="mingcute:more-2-line" text to="/archive">查看更多</Btn>
+      <div v-once class="mt-8 text-center">
+        <Btn icon="mingcute:more-2-line" text to="/archive">所有博客</Btn>
       </div>
       <GiscusCard />
     </section>

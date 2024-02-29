@@ -46,7 +46,7 @@ withDefaults(
   </button>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 .Btn {
   @apply relative inline-block transform-gpu overflow-hidden text-sm text-current transition disabled:cursor-not-allowed disabled:opacity-60;
 
@@ -57,21 +57,21 @@ withDefaults(
   &.Btn--text {
     &:not([disabled]) {
       .Btn-content {
-        @apply bg-gradient-to-r from-primary-300 to-primary-500 bg-no-repeat transition-all;
+        @apply py-0.5 bg-gradient-to-r from-primary-200 to-primary-500 bg-no-repeat text-primary-500 transition-all;
         background-position-y: 100%;
-        background-size: 0 1.5px;
+        background-size: 0 0.09375rem;
       }
 
       &:hover {
         .Btn-content {
-          background-size: 100% 1.5px;
+          background-size: 100% 0.09375rem;
         }
       }
     }
   }
 
   &.Btn--normal {
-    @apply rounded-lg bg-zinc-300 bg-opacity-30 dark:bg-zinc-800;
+    @apply rounded-lg bg-white shadow dark:bg-zinc-800;
 
     .Btn-content {
       @apply px-2 py-2;

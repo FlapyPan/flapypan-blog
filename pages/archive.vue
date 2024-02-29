@@ -5,7 +5,7 @@ import { useSettingStore } from '~/store'
 const settingStore = useSettingStore()
 
 /// region 标签数据
-const { pending: fetchingTagList, data: tagList } = await useAsyncData(
+const { pending: fetchingTagList, data: tagList } = await useLazyAsyncData(
   `tag`,
   () => api<string[]>(`/tag`),
   { deep: false },
@@ -13,7 +13,7 @@ const { pending: fetchingTagList, data: tagList } = await useAsyncData(
 /// endregion 标签数据
 
 /// region 文章列表
-const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
+const { pending: fetchingArticleData, data: articleData } = await useLazyAsyncData(
   `article:yearly`,
   () =>
     api<ArticleWithoutContent[]>(`/article`).then((articleList) => {
@@ -51,14 +51,14 @@ useSeoMeta(meta)
   <div class="page">
     <PageHead sub-title="看看我都水了什么文章" title="文章归档" />
     <h3 class="my-3 flex items-center text-2xl">标签</h3>
-    <div class="my-6 flex flex-wrap items-center gap-4">
+    <div class="my-6 flex flex-wrap items-center gap-4" v-auto-animate>
       <template v-for="name in tagList" :key="name">
         <Btn :to="`/tag/${name}`" icon="mingcute:hashtag-line" text>
           {{ name }}
         </Btn>
       </template>
     </div>
-    <div class="my-12">
+    <div class="my-12" v-auto-animate>
       <template v-for="{ year, list } in articleData ?? []" :key="year">
         <h3 class="my-3 text-2xl">
           {{ year }}
