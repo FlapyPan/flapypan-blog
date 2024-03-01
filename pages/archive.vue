@@ -5,7 +5,7 @@ import { useSettingStore } from '~/store'
 const settingStore = useSettingStore()
 
 /// region 标签数据
-const { pending: fetchingTagList, data: tagList } = await useLazyAsyncData(
+const { pending: fetchingTagList, data: tagList } = await useAsyncData(
   `tag`,
   () => api<string[]>(`/tag`),
   { deep: false },
@@ -13,7 +13,7 @@ const { pending: fetchingTagList, data: tagList } = await useLazyAsyncData(
 /// endregion 标签数据
 
 /// region 文章列表
-const { pending: fetchingArticleData, data: articleData } = await useLazyAsyncData(
+const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
   `article:yearly`,
   () =>
     api<ArticleWithoutContent[]>(`/article`).then((articleList) => {
@@ -43,12 +43,11 @@ const meta = {
   ogTitle: title,
   ogDescription: description,
 }
-useServerSeoMeta(meta)
 useSeoMeta(meta)
 </script>
 
 <template>
-  <div class="page">
+  <main class="page">
     <PageHead sub-title="看看我都水了什么文章" title="文章归档" />
     <h3 class="my-3 flex items-center text-2xl">标签</h3>
     <div class="my-6 flex flex-wrap items-center gap-4" v-auto-animate>
@@ -71,5 +70,5 @@ useSeoMeta(meta)
       class="py-2 text-center text-sm text-zinc-500">
       加载中...
     </p>
-  </div>
+  </main>
 </template>

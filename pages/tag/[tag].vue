@@ -29,12 +29,11 @@ const meta = {
   ogTitle: title,
   ogDescription: description,
 }
-useServerSeoMeta(meta)
 useSeoMeta(meta)
 </script>
 
 <template>
-  <div class="page">
+  <main class="page">
     <PageHead class="mb-6">
       <template #title>
         <div class="flex items-center justify-center">
@@ -45,5 +44,5 @@ useSeoMeta(meta)
     </PageHead>
     <ArticleTimeline :list="articleData" />
     <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
-  </div>
+  </main>
 </template>

@@ -9,12 +9,7 @@ export default defineNuxtConfig({
   },
   ssr: true,
   routeRules: {
-    '/activity': { ssr: false },
-    '/archive': { ssr: false },
-    '/tag': { ssr: false },
-    '/tag/**': { ssr: false },
-    '/new': { ssr: false },
-    '/setting': { ssr: false },
+    '/tag': { redirect: '/archive' },
   },
   modules: [
     '@nuxtjs/color-mode',

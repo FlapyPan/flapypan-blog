@@ -32,7 +32,7 @@ async function fetchHitokoto(enable: boolean) {
   }
 }
 
-watch(() => settingStore.setting.hitoko, fetchHitokoto, { immediate: true })
+onMounted(() => watch(() => settingStore.setting.hitoko, fetchHitokoto, { immediate: true }))
 /// endregion 随机一言
 
 const title = `${settingStore.setting.name} - ${settingStore.setting.siteTitle ?? '博客'}`
@@ -43,12 +43,11 @@ const meta = {
   ogTitle: title,
   ogDescription: description,
 }
-useServerSeoMeta(meta)
 useSeoMeta(meta)
 </script>
 
 <template>
-  <div>
+  <main>
     <section
       class="sm:gap-18 flex h-screen w-full flex-col-reverse items-center justify-center gap-16 text-center md:flex-row md:text-left lg:gap-52">
       <div>
@@ -70,19 +69,17 @@ useSeoMeta(meta)
               <Icon name="mdi:github" />
             </a>
           </p>
-          <ClientOnly>
-            <div
-              v-auto-animate
-              v-if="settingStore.setting.hitoko"
-              class="mt-4 text-center text-sm md:text-left">
-              <p v-if="hitoko">一言：{{ hitoko }}</p>
-              <p v-else>一言加载中...</p>
-            </div>
-            <p v-else class="mt-4 text-center text-sm md:text-left">
-              {{ settingStore.setting.info }}
-              <span class="animate-ping">_</span>
-            </p>
-          </ClientOnly>
+          <div
+            v-auto-animate
+            v-if="settingStore.setting.hitoko"
+            class="mt-4 text-center text-sm md:text-left">
+            <p v-if="hitoko">一言：{{ hitoko }}</p>
+            <p v-else>一言加载中...</p>
+          </div>
+          <p v-else class="mt-4 text-center text-sm md:text-left">
+            {{ settingStore.setting.info }}
+            <span class="animate-ping">_</span>
+          </p>
         </div>
       </div>
       <img
@@ -106,5 +103,5 @@ useSeoMeta(meta)
       </div>
       <GiscusCard />
     </section>
-  </div>
+  </main>
 </template>

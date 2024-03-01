@@ -18,7 +18,7 @@ type Repo = {
 const { data: repos, pending: fetchingRepos } = useLazyAsyncData(
   `activity:${settingStore.setting.name}:repos`,
   () => $fetch<Repo[]>(`https://api.github.com/users/${settingStore.setting.name}/repos`),
-  { deep: false },
+  { deep: false, server: false },
 )
 
 const title = `活动 - ${settingStore.setting.siteTitle ?? '博客'}`
@@ -29,16 +29,12 @@ const meta = {
   ogTitle: title,
   ogDescription: description,
 }
-useServerSeoMeta(meta)
 useSeoMeta(meta)
 </script>
 
 <template v-once>
-  <div class="page">
+  <main class="page">
     <PageHead v-once :sub-title="description" title="最近活动" />
-    <figure v-if="settingStore.setting.wakatime" class="mx-auto mb-6 max-w-3xl">
-      <embed :src="settingStore.setting.wakatime" />
-    </figure>
     <h3 class="mb-6 ml-2 text-xl">Github 仓库</h3>
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" v-auto-animate>
       <a
@@ -79,5 +75,8 @@ useSeoMeta(meta)
       暂无数据
     </p>
     <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
-  </div>
+    <figure v-if="settingStore.setting.wakatime" class="mx-auto mt-8 max-w-3xl">
+      <embed :src="settingStore.setting.wakatime" />
+    </figure>
+  </main>
 </template>

@@ -77,7 +77,7 @@ hr {
 }
 
 .page {
-  @apply container mx-auto max-w-7xl py-16;
+  @apply container mx-auto max-w-7xl px-3 py-16 sm:px-6;
 }
 
 .animation-rotate {
@@ -90,17 +90,14 @@ hr {
   }
 }
 
-.page-leave-active {
-  @apply transform-gpu transition-all duration-300;
-}
-
+.page-leave-active,
 .page-enter-active {
-  @apply transform-gpu transition-all duration-500;
+  @apply transform-gpu transition-all duration-300;
 }
 
 .page-enter-from,
 .page-leave-to {
-  @apply origin-top scale-x-150 opacity-0 blur-xl;
+  @apply opacity-0;
 }
 
 html,
@@ -116,7 +113,8 @@ html.dark {
 :is(#read, #edit).md-editor {
   @apply bg-white font-sans dark:bg-black;
 
-  .md-editor-preview {
+  .default-theme {
+    --md-theme-color: rgb(39 39 42 / var(--tw-text-opacity));
     --md-theme-link-color: var(--primary-500);
     --md-theme-link-hover-color: var(--primary-500);
 
@@ -129,6 +127,25 @@ html.dark {
   code {
     @apply font-mono;
   }
+}
+
+.dark :is(#read, #edit).md-editor .default-theme {
+  --md-theme-color: rgb(228 228 231 / var(--tw-text-opacity));
+  --md-theme-color-reverse: #222;
+  --md-theme-color-hover: #191919;
+  --md-theme-color-hover-inset: #444;
+  --md-theme-border-color: #2d2d2d;
+  --md-theme-border-color-reverse: #e6e6e6;
+  --md-theme-border-color-inset: #5a5a5a;
+  --md-theme-bg-color: #000;
+  --md-theme-bg-color-inset: #111;
+  --md-theme-bg-color-scrollbar-track: #0f0f0f;
+  --md-theme-bg-color-scrollbar-thumb: #2d2d2d;
+  --md-theme-bg-color-scrollbar-thumb-hover: #3a3a3a;
+  --md-theme-bg-color-scrollbar-thumb-active: #3a3a3a;
+  --md-theme-code-copy-tips-color: inherit;
+  --md-theme-code-copy-tips-bg-color: #3a3a3a;
+  --md-theme-code-active-color: #e6c07b;
 }
 
 .md-editor-catalog {

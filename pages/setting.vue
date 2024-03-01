@@ -79,7 +79,7 @@ useSeoMeta(meta)
 </script>
 
 <template>
-  <div class="page">
+  <main class="page">
     <template v-if="auth.isLogin">
       <div class="flex flex-col items-center gap-6">
         <h3 class="w-full text-lg">基础信息设置</h3>
@@ -295,5 +295,5 @@ useSeoMeta(meta)
       </div>
     </template>
     <PageHead v-else title="请登录" />
-  </div>
+  </main>
 </template>

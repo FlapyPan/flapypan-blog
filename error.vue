@@ -1,13 +1,14 @@
-<script setup>
+<script setup lang="ts">
+import type { NuxtError } from '#app'
 import { useSettingStore } from '~/store'
 
-defineProps({
-  error: Object,
-})
+defineProps<{
+  error: NuxtError
+}>()
 
 const settingStore = useSettingStore()
 
-useServerSeoMeta({
+useSeoMeta({
   author: settingStore.setting.name,
   ogImage: settingStore.setting.banner ?? '/banner.webp',
 })
@@ -17,7 +18,7 @@ useServerSeoMeta({
   <Head>
     <Link :href="settingStore.setting.favicon" rel="icon" />
   </Head>
-  <div class="page flex flex-col items-center justify-center gap-6 p-6">
+  <main class="page flex flex-col items-center justify-center gap-6 p-6">
     <h2 class="text-xl">
       {{ error.statusCode }}
     </h2>
@@ -31,5 +32,5 @@ useServerSeoMeta({
     <DevOnly>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />
     </DevOnly>
-  </div>
+  </main>
 </template>
