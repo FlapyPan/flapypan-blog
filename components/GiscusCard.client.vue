@@ -18,8 +18,7 @@ const theme = computed(() => `noborder_${colorMode.value}`)
 </script>
 
 <template>
-  <div id="giscus" class="pt-20 print:hidden">
-    <slot />
+  <div id="giscus" class="pt-20 print:hidden" v-bind="$attrs">
     <template v-if="valid">
       <giscus-widget
         id="comments"

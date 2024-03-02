@@ -154,7 +154,7 @@ const { data: accessData } = await useLazyAsyncData(
         <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
-        <ul class="block rounded-xl bg-white p-2 shadow-md dark:bg-black lg:hidden">
+        <ul class="block rounded-xl bg-zinc-50 p-2 shadow-md dark:bg-zinc-900 lg:hidden">
           <li v-for="l in navLinks" :key="l.routeName" class="block md:hidden">
             <button
               :class="[

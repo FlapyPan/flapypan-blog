@@ -6,12 +6,19 @@ const settingStore = useSettingStore()
 
 /// region 文章数据
 const {
-  pending: fetchingArticleData,
   data: articleData,
   refresh,
 } = await useAsyncData('article:latest', () => api<ArticleWithoutContent[]>('/article/recent'), {
   deep: false,
 })
+
+const pending = shallowRef(false)
+
+async function getArticleData() {
+  pending.value = true
+  await refresh()
+  setTimeout(() => pending.value = false, 1000)
+}
 /// endregion 文章数据
 
 /// region 随机一言
@@ -99,9 +106,12 @@ useSeoMeta(meta)
     <section class="page">
       <h3 class="flex items-center">
         最近更新
-        <RefreshButton :loading="fetchingArticleData" class="ml-2" @refresh="refresh()" />
+        <RefreshButton :loading="pending" class="ml-2" @refresh="getArticleData()" />
       </h3>
       <div v-auto-animate class="mt-8 flex flex-col gap-8">
+        <div v-if="pending" class="text-zinc-500 text-sm text-center">
+          加载中...
+        </div>
         <template v-for="(a, i) in articleData ?? []" :key="a._id">
           <ArticleCard :article="a" />
           <hr v-if="i < (articleData?.length ?? 0) - 1">

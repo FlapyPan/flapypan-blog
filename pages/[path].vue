@@ -8,6 +8,7 @@ import 'md-editor-v3/lib/style.css'
 const route = useRoute()
 const auth = useAuthStore()
 const settingStore = useSettingStore()
+const toast = useToast()
 
 // 文章路径
 const path = computed(() => route.params.path ?? '')
@@ -116,6 +117,27 @@ function closeDrawerAnd(f: Function, ...args: unknown[]) {
   f(...args)
 }
 
+const titleElement = shallowRef<HTMLElement | null>(null)
+const commentsElement = shallowRef<HTMLElement | null>(null)
+const atTop = shallowRef(true)
+const atComments = shallowRef(false)
+
+onMounted(() => {
+  if (!titleElement.value || !commentsElement.value) return
+  const topIntersectionObserver = new IntersectionObserver(([entry]) => {
+    atTop.value = entry.isIntersecting
+  })
+  topIntersectionObserver.observe(titleElement.value)
+  const commentsIntersectionObserver = new IntersectionObserver(([entry]) => {
+    atComments.value = entry.isIntersecting
+  })
+  commentsIntersectionObserver.observe(commentsElement.value)
+  onUnmounted(() => {
+    topIntersectionObserver.disconnect()
+    commentsIntersectionObserver.disconnect()
+  })
+})
+
 function toTop() {
   document.documentElement.scrollTo({
     top: 0,
@@ -132,8 +154,19 @@ function toComments() {
   })
 }
 
+async function download() {
+  const { content } = await api<Article>(`/article/${path.value}`)
+  const url = URL.createObjectURL(new Blob([content], { type: 'text/plain;charset=utf-8' }))
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${articleData.value?.title}.md`
+  a.click()
+  URL.revokeObjectURL(url)
+  toast.info('文章已下载')
+}
+
 function print() {
-  useToast().info('正在打印文章...', {
+  toast.info('正在打印文章...', {
     timeout: 2000,
     hideProgressBar: true,
     pauseOnHover: false,
@@ -148,9 +181,20 @@ function print() {
 }
 
 async function copyLink() {
-  const toast = useToast()
   if (!navigator.clipboard) {
-    toast.warning('浏览器不支持新剪贴板API')
+    const inputElement = document.createElement('input')
+    inputElement.value = location.href
+    inputElement.focus()
+    document.execCommand('copy')
+    toast.info('链接已复制到剪贴板')
+    return
+  }
+  const result = await navigator.permissions.query({
+    // @ts-expect-error 剪切板权限
+    name: 'clipboard-write',
+  })
+  if (result.state === 'denied') {
+    toast.warning('无剪贴板权限')
     return
   }
   try {
@@ -221,61 +265,63 @@ useSeoMeta(meta)
       </Btn>
     </div>
     <template v-if="articleData?._id">
-      <PageHead :title="articleData?.title" class="mx-auto text-center" />
-      <div class="my-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
-        <div class="flex items-center gap-1">
-          <Icon name="mingcute:document-line" />
-          <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
-          <span class="text-sm">{{ formattedCreatedAt }}</span>
+      <div ref="titleElement">
+        <PageHead :title="articleData?.title" class="mx-auto text-center" />
+        <div class="my-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
+          <div class="flex items-center gap-1">
+            <Icon name="mingcute:document-line" />
+            <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
+            <span class="text-sm">{{ formattedCreatedAt }}</span>
+          </div>
+          <div class="flex items-center gap-1 text-sm">
+            <Icon name="mingcute:edit-line" />
+            <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
+            <span class="text-sm">{{ formattedUpdatedAt }}</span>
+          </div>
         </div>
-        <div class="flex items-center gap-1 text-sm">
-          <Icon name="mingcute:edit-line" />
-          <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
-          <span class="text-sm">{{ formattedUpdatedAt }}</span>
-        </div>
-      </div>
-      <div class="my-4 flex flex-wrap items-center justify-center gap-2">
-        <div class="ml-3 flex items-center gap-1 print:hidden">
-          <Icon name="mingcute:book-6-line" />
-          <span class="text-sm">{{ articleData?.accessCount }}</span>
-          <span class="hidden text-sm md:inline-block">次访问</span>
-        </div>
-        <Btn
-          v-for="name in articleData?.tags || []"
-          :key="name"
-          :to="`/tag/${name}`"
-          icon="mingcute:hashtag-line"
-          text
-        >
-          {{ name }}
-        </Btn>
-      </div>
-      <div
-        v-if="articleData.summary || auth.isLogin"
-        class="mx-auto my-6 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900"
-      >
-        <p class="text-xs leading-relaxed">
-          <span class="font-bold">
-            <Icon name="mingcute:notebook-line" />
-            AI摘要：
-          </span>
-          {{ articleData?.summary ?? '无' }}
-        </p>
-        <p class="mt-3 flex items-center justify-between text-xs">
-          <Btn v-if="auth.isLogin" :disabled="summaryLoading" @click="summary">
-            {{ summaryLoading ? '生成中...' : '生成摘要' }}
+        <div class="my-4 flex flex-wrap items-center justify-center gap-2">
+          <div class="ml-3 flex items-center gap-1 print:hidden">
+            <Icon name="mingcute:book-6-line" />
+            <span class="text-sm">{{ articleData?.accessCount }}</span>
+            <span class="hidden text-sm md:inline-block">次访问</span>
+          </div>
+          <Btn
+            v-for="name in articleData?.tags || []"
+            :key="name"
+            :to="`/tag/${name}`"
+            icon="mingcute:hashtag-line"
+            text
+          >
+            {{ name }}
           </Btn>
-          <span v-else />
-          <span>
-            由
-            <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
-              讯飞星火认知大模型
-            </a>
-            生成
-          </span>
-        </p>
+        </div>
+        <div
+          v-if="articleData.summary || auth.isLogin"
+          class="mx-auto my-6 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900"
+        >
+          <p class="text-xs leading-relaxed">
+            <span class="font-bold">
+              <Icon name="mingcute:notebook-line" />
+              AI摘要：
+            </span>
+            {{ articleData?.summary ?? '无' }}
+          </p>
+          <p class="mt-3 flex items-center justify-between text-xs">
+            <Btn v-if="auth.isLogin" :disabled="summaryLoading" @click="summary">
+              {{ summaryLoading ? '生成中...' : '生成摘要' }}
+            </Btn>
+            <span v-else />
+            <span>
+              由
+              <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
+                讯飞星火认知大模型
+              </a>
+              生成
+            </span>
+          </p>
+        </div>
       </div>
-      <div class="flex justify-center gap-4">
+      <div class="flex justify-center gap-4 pb-24">
         <MdPreview
           v-if="articleData?._id"
           :model-value="articleData?.content"
@@ -319,12 +365,22 @@ useSeoMeta(meta)
               </li>
               <li>
                 <button
+                  :class="[$route.name === 'new' ? 'bg-blue-500 bg-opacity-10' : '']"
+                  class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-blue-500 hover:bg-opacity-10"
+                  @click="closeDrawerAnd(download)"
+                >
+                  <Icon class="mr-2 h-5 w-5 text-blue-400" name="mingcute:download-line" />
+                  下载文章(.md)
+                </button>
+              </li>
+              <li>
+                <button
                   :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
                   class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-orange-500 hover:bg-opacity-10"
                   @click="closeDrawerAnd(print)"
                 >
                   <Icon class="mr-2 h-5 w-5 text-orange-400" name="mingcute:print-line" />
-                  打印文章
+                  打印文章(.pdf)
                 </button>
               </li>
               <template v-if="auth.isLogin">
@@ -386,36 +442,44 @@ useSeoMeta(meta)
         </div>
       </Drawer>
       <ClientOnly>
-        <div class="fixed bottom-14 right-4 z-10 flex flex-col gap-2 md:right-12 print:hidden">
-          <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
-            title="回到顶部"
-            @click="toTop()"
-          >
-            <Icon name="mingcute:arrows-up-line" />
-          </button>
-          <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
-            title="评论区"
-            @click="toComments()"
-          >
-            <Icon name="mingcute:comment-line" />
-          </button>
-          <button
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 shadow dark:bg-zinc-900 sm:hover:text-primary-500"
-            title="更多"
-            @click="rightDrawer = true"
-          >
-            <Icon name="mingcute:more-1-line" />
-          </button>
+        <div class="fixed bottom-14 right-4 z-10 md:right-12 print:hidden">
+          <div class="flex flex-col justify-end gap-2 h-36">
+            <button
+              v-if="!atTop"
+              v-auto-animate
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 hover:text-primary-500"
+              title="回到顶部"
+              @click="toTop()"
+            >
+              <Icon name="mingcute:arrows-up-line" />
+            </button>
+            <button
+              v-if="!atComments"
+              v-auto-animate
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 hover:text-primary-500"
+              title="评论区"
+              @click="toComments()"
+            >
+              <Icon name="mingcute:comment-line" />
+            </button>
+            <button
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 shadow dark:bg-zinc-900"
+              title="更多"
+              @click="rightDrawer = true"
+            >
+              <Icon name="mingcute:more-1-line" />
+            </button>
+          </div>
         </div>
       </ClientOnly>
-      <GiscusCard />
+      <section ref="commentsElement">
+        <GiscusCard />
+      </section>
     </template>
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 .side {
   height: calc(100vh - 8rem);
 

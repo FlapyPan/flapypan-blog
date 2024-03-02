@@ -9,10 +9,13 @@ withDefaults(
     subTitle: '',
   },
 )
+
+const wrap = shallowRef<HTMLElement | null>(null)
+defineExpose({ wrap })
 </script>
 
 <template>
-  <section class="my-6 text-center">
+  <section v-bind="$attrs" ref="wrap" class="my-6 text-center">
     <h2 class="text-2xl font-bold text-zinc-700 dark:text-zinc-100 sm:text-3xl">
       <template v-if="title">
         {{ title }}
