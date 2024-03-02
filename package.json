@@ -1,7 +1,7 @@
 {
   "name": "flapypan-blog",
   "type": "module",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "A simple and efficient blogging system.",
   "author": "FlapyPan",
   "license": "MPL-2.0",
@@ -32,7 +32,7 @@
     "nuxt-icon": "^0.6.8",
     "nuxt-mongoose": "^1.0.5",
     "sharp": "^0.33.2",
-    "vue": "^3.4.20",
+    "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vue-toastification": "2.0.0-rc.5",
     "ws": "^8.16.0",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.4",
     "@nuxt/devtools": "latest",
-    "@types/jsonwebtoken": "^9.0.5",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/ws": "^8.5.10",
     "eslint": "^8.57.0",
     "postcss-preset-env": "^9.4.0",

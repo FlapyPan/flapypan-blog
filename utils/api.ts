@@ -15,14 +15,22 @@ export default async function api<T = unknown>(
   payload?: any,
   jsonPayload: boolean = true,
 ): Promise<T> {
-  const headers: Record<string, string> = {}
-  if (import.meta.browser) {
-    const token = sessionStorage.getItem('token') || localStorage.getItem('token')
-    if (token) headers.Authorization = `Bearer ${token}`
+  const event = useRequestEvent()
+  const headers: Record<string, string> = {
+    ...useRequestHeaders([
+      'cookie',
+      'X-Forwarded-For',
+      'Proxy-Client-IP',
+      'WL-Proxy-Client-IP',
+      'HTTP_CLIENT_IP',
+      'HTTP_X_FORWARDED_FOR',
+      'Referer',
+      'User-Agent',
+    ]),
   }
   if (jsonPayload) headers['Content-Type'] = 'application/json'
   try {
-    return await $fetch<T>(url, {
+    const res = await $fetch.raw<T>(url, {
       baseURL: '/api',
       method,
       headers,
@@ -31,6 +39,15 @@ export default async function api<T = unknown>(
       redirect: 'follow',
       body: jsonPayload ? JSON.stringify(payload) : payload,
     })
+    if (import.meta.browser) {
+      if (event) {
+        const cookies = (res.headers.get('set-cookie') || '').split(',')
+        for (const cookie of cookies) {
+          appendResponseHeader(event, 'set-cookie', cookie)
+        }
+      }
+    }
+    return res._data as T
   } catch (e) {
     const { data, message, status } = e as any
     if (status === 401) {

@@ -20,19 +20,11 @@ async function saveSetting() {
 }
 /// endregion
 
-/// region daemon 设置
-const token = shallowRef('')
-
-function getToken() {
-  token.value = sessionStorage.getItem('token') || localStorage.getItem('token') || ''
-}
-/// endregion
-
 /// region 自定义样式
 const { data: customStyleValue, execute: fetchCustomStyle } = useLazyAsyncData(
   'customStyle',
   () => api<string>('/attribute/custom-style'),
-  { deep: false, immediate: false },
+  { deep: false, immediate: false, server: false },
 )
 const savingCustomStyle = shallowRef(false)
 async function saveCustomStyle() {
@@ -50,10 +42,7 @@ async function saveCustomStyle() {
 const { data: customScriptValue, execute: fetchCustomScript } = useLazyAsyncData(
   'customScript',
   () => api<string>('/attribute/custom-script'),
-  {
-    deep: false,
-    immediate: false,
-  },
+  { deep: false, immediate: false, server: false },
 )
 const savingCustomScript = shallowRef(false)
 async function saveCustomScript() {
@@ -311,19 +300,6 @@ useSeoMeta(meta)
         >
           保存自定义脚本
         </Btn>
-        <h3 class="w-full text-lg">
-          Daemon token
-        </h3>
-        <textarea
-          v-model="token"
-          class="w-full p-2"
-          rows="4"
-          placeholder="点击显示token"
-          readonly
-          type="text"
-          @blur="token = ''"
-          @focus="getToken"
-        />
       </div>
     </template>
     <PageHead v-else title="请登录" />
