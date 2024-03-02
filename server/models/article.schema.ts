@@ -1,5 +1,5 @@
-import type { IArticle } from '~/types/models'
 import { Schema } from 'mongoose'
+import type { IArticle } from '~/types/models'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
 export const ArticleSchema = defineMongooseModel<IArticle>('Article', {

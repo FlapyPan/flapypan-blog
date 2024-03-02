@@ -1,5 +1,5 @@
-import type { IAttribute } from '~/types/models'
 import { Schema } from 'mongoose'
+import type { IAttribute } from '~/types/models'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
 export const AttributeSchema = defineMongooseModel<IAttribute>('Attribute', {

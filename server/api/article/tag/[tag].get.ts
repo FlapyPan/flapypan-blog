@@ -1,5 +1,5 @@
-import { getArticleListByTag } from '~/server/data/article'
 import z from 'zod'
+import { getArticleListByTag } from '~/server/data/article'
 
 export default cachedEventHandler(async (event) => {
   const { tag } = readParams(event, { tag: z.string() })

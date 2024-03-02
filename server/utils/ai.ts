@@ -1,12 +1,13 @@
+import process from 'node:process'
 import { createHmac } from 'node:crypto'
 import WebSocket from 'ws'
 
-export type SparkAIConversation = {
+export interface SparkAIConversation {
   role: 'system' | 'user' | 'assistant'
   content: string
 }
 
-export type SparkAIResult = {
+export interface SparkAIResult {
   header: {
     code: number
     message: string

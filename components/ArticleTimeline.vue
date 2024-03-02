@@ -9,19 +9,21 @@ withDefaults(defineProps<{ list?: ArticleWithoutContent[] }>(), { list: () => []
     <li
       v-for="{ _id, title, createdAt, path, tags, summary } in list"
       :key="_id"
-      class="relative flex items-center py-2">
+      class="relative flex items-center py-2"
+    >
       <span class="mr-1 text-xs text-zinc-500">{{ dateFormat(createdAt) }}</span>
       <Btn :to="`/${path}`" icon="mingcute:document-line" text :title="summary ?? title">
         {{ title }}
       </Btn>
-      <div class="flex-1"></div>
+      <div class="flex-1" />
       <div class="hidden items-center gap-2 sm:flex">
         <Btn
           v-for="name in tags"
           :key="name"
           :to="`/tag/${name}`"
           icon="mingcute:hashtag-line"
-          text>
+          text
+        >
           {{ name }}
         </Btn>
       </div>

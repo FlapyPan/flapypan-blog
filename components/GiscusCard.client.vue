@@ -6,10 +6,10 @@ const settingStore = useSettingStore()
 // 所有设置，缺一不可
 const valid = computed(
   () =>
-    settingStore.setting.giscusRepo?.trim() !== '' &&
-    settingStore.setting.giscusRepoId?.trim() !== '' &&
-    settingStore.setting.giscusCategory?.trim() !== '' &&
-    settingStore.setting.giscusCategoryId?.trim() !== '',
+    settingStore.setting.giscusRepo?.trim() !== ''
+    && settingStore.setting.giscusRepoId?.trim() !== ''
+    && settingStore.setting.giscusCategory?.trim() !== ''
+    && settingStore.setting.giscusCategoryId?.trim() !== '',
 )
 
 // 主题切换
@@ -33,10 +33,13 @@ const theme = computed(() => `noborder_${colorMode.value}`)
         lang="zh-CN"
         loading="eager"
         mapping="pathname"
-        reactionsenabled="1" />
+        reactionsenabled="1"
+      />
     </template>
     <template v-else>
-      <p class="cursor-not-allowed text-center text-xs text-zinc-500">未启用评论区</p>
+      <p class="cursor-not-allowed text-center text-xs text-zinc-500">
+        未启用评论区
+      </p>
     </template>
   </div>
 </template>

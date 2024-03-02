@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAuthStore, useSettingStore } from '~/store'
 import { useToast } from 'vue-toastification'
+import { useAuthStore, useSettingStore } from '~/store'
 
 const auth = useAuthStore()
 const settingStore = useSettingStore()
@@ -82,7 +82,9 @@ useSeoMeta(meta)
   <main class="page">
     <template v-if="auth.isLogin">
       <div class="flex flex-col items-center gap-6">
-        <h3 class="w-full text-lg">基础信息设置</h3>
+        <h3 class="w-full text-lg">
+          基础信息设置
+        </h3>
         <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点标题</span>
@@ -93,7 +95,8 @@ useSeoMeta(meta)
               name="title"
               placeholder="站点标题"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>站点图标链接</span>
@@ -104,7 +107,8 @@ useSeoMeta(meta)
               name="favicon"
               placeholder="站点图标链接"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>默认封面链接</span>
@@ -115,7 +119,8 @@ useSeoMeta(meta)
               name="banner"
               placeholder="默认封面链接"
               required
-              type="text" />
+              type="text"
+            >
           </label>
         </div>
         <div class="w-full">
@@ -128,10 +133,13 @@ useSeoMeta(meta)
               name="footer"
               placeholder="站点底部信息"
               required
-              type="text"></textarea>
+              type="text"
+            />
           </label>
         </div>
-        <h3 class="w-full text-lg">个人信息设置</h3>
+        <h3 class="w-full text-lg">
+          个人信息设置
+        </h3>
         <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>头像链接</span>
@@ -142,7 +150,8 @@ useSeoMeta(meta)
               name="avatar"
               placeholder="头像链接"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>作者名</span>
@@ -153,7 +162,8 @@ useSeoMeta(meta)
               name="name"
               placeholder="作者名"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <div class="col-span-2 flex items-center gap-4">
             <label class="flex flex-1 flex-wrap items-center gap-4 text-sm">
@@ -165,7 +175,8 @@ useSeoMeta(meta)
                 name="info"
                 placeholder="站点信息"
                 required
-                type="text" />
+                type="text"
+              >
             </label>
             <label class="flex flex-wrap items-center gap-2 text-sm">
               <span>随机一言</span>
@@ -176,7 +187,8 @@ useSeoMeta(meta)
                 name="hitoko"
                 placeholder="随机一言"
                 required
-                type="checkbox" />
+                type="checkbox"
+              >
             </label>
           </div>
           <label class="flex flex-wrap items-center gap-4 text-sm">
@@ -188,10 +200,13 @@ useSeoMeta(meta)
               name="email"
               placeholder="邮箱"
               required
-              type="text" />
+              type="text"
+            >
           </label>
         </div>
-        <h3 class="w-full text-lg">活动设置</h3>
+        <h3 class="w-full text-lg">
+          活动设置
+        </h3>
         <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>wakatime</span>
@@ -202,10 +217,13 @@ useSeoMeta(meta)
               name="wakatime"
               placeholder="wakatime"
               required
-              type="text" />
+              type="text"
+            >
           </label>
         </div>
-        <h3 class="w-full text-lg">Giscus 设置</h3>
+        <h3 class="w-full text-lg">
+          Giscus 设置
+        </h3>
         <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepo</span>
@@ -216,7 +234,8 @@ useSeoMeta(meta)
               name="giscusRepo"
               placeholder="giscusRepo"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusRepoId</span>
@@ -227,7 +246,8 @@ useSeoMeta(meta)
               name="giscusRepoId"
               placeholder="giscusRepoId"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategory</span>
@@ -238,7 +258,8 @@ useSeoMeta(meta)
               name="giscusCategory"
               placeholder="giscusCategory"
               required
-              type="text" />
+              type="text"
+            >
           </label>
           <label class="flex flex-wrap items-center gap-4 text-sm">
             <span>giscusCategoryId</span>
@@ -249,13 +270,16 @@ useSeoMeta(meta)
               name="giscusCategoryId"
               placeholder="giscusCategoryId"
               required
-              type="text" />
+              type="text"
+            >
           </label>
         </div>
         <Btn :disabled="savingSettings" class="my-8 w-full max-w-xl" @click="saveSetting()">
           保存设置
         </Btn>
-        <h3 class="w-full text-lg">自定义样式</h3>
+        <h3 class="w-full text-lg">
+          自定义样式
+        </h3>
         <textarea
           v-model="customStyleValue"
           class="w-full p-2"
@@ -263,11 +287,14 @@ useSeoMeta(meta)
           name="customStyle"
           placeholder="添加自定义样式"
           type="text"
-          @focus.once="fetchCustomStyle()"></textarea>
+          @focus.once="fetchCustomStyle()"
+        />
         <Btn :disabled="savingCustomStyle" class="my-8 w-full max-w-xl" @click="saveCustomStyle()">
           保存自定义样式
         </Btn>
-        <h3 class="w-full text-lg">自定义脚本</h3>
+        <h3 class="w-full text-lg">
+          自定义脚本
+        </h3>
         <textarea
           v-model="customScriptValue"
           class="w-full p-2"
@@ -275,14 +302,18 @@ useSeoMeta(meta)
           name="customScript"
           placeholder="添加自定义脚本"
           type="text"
-          @focus.once="fetchCustomScript()"></textarea>
+          @focus.once="fetchCustomScript()"
+        />
         <Btn
           :disabled="savingCustomScript"
           class="my-8 w-full max-w-xl"
-          @click="saveCustomScript()">
+          @click="saveCustomScript()"
+        >
           保存自定义脚本
         </Btn>
-        <h3 class="w-full text-lg">Daemon token</h3>
+        <h3 class="w-full text-lg">
+          Daemon token
+        </h3>
         <textarea
           v-model="token"
           class="w-full p-2"
@@ -291,7 +322,8 @@ useSeoMeta(meta)
           readonly
           type="text"
           @blur="token = ''"
-          @focus="getToken"></textarea>
+          @focus="getToken"
+        />
       </div>
     </template>
     <PageHead v-else title="请登录" />

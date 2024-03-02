@@ -11,7 +11,7 @@ const style = computed(() => ({
 </script>
 
 <template>
-  <div :style="style" class="loading-indicator safe-top-0 safe-right-0 safe-left-0"></div>
+  <div :style="style" class="loading-indicator safe-top-0 safe-right-0 safe-left-0" />
 </template>
 
 <style scoped lang="postcss">

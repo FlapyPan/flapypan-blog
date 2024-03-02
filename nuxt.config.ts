@@ -35,7 +35,7 @@ export default defineNuxtConfig({
   vue: {
     compilerOptions: {
       // 排除自定义组件，防止 vue 编译处理
-      isCustomElement: (tag) => ['giscus-widget'].includes(tag),
+      isCustomElement: tag => ['giscus-widget'].includes(tag),
     },
   },
   app: {
@@ -68,7 +68,7 @@ export default defineNuxtConfig({
     plugins: {
       'postcss-import': {},
       'tailwindcss/nesting': 'postcss-nesting',
-      tailwindcss: {},
+      'tailwindcss': {},
       'postcss-preset-env': {
         features: { 'nesting-rules': false },
       },

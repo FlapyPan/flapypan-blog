@@ -1,9 +1,10 @@
 import crypto from 'node:crypto'
+import process from 'node:process'
 import type { H3Event } from 'h3'
 import { sign, verify } from 'jsonwebtoken'
 import z from 'zod'
 
-type ContextUser = {
+interface ContextUser {
   username: string
   scope: string[]
 }
@@ -14,21 +15,14 @@ export const AUTH_SECRET = process.env.AUTH_SECRET || crypto.randomUUID()
 
 const TOKEN_TYPE = 'Bearer'
 
-function extractToken(authHeaderValue: string) {
-  const [, token] = authHeaderValue.split(`${TOKEN_TYPE} `)
-  return token
-}
-
 /**
  * 登录获取token
  */
 export async function login(event: H3Event): Promise<string> {
-  const result = z
-    .object({
-      username: z.literal(ensure(ADMIN_USERNAME, '用户名或密码未设置', 500)),
-      password: z.literal(ensure(ADMIN_PASSWORD, '用户名或密码未设置', 500)),
-    })
-    .safeParse(await readBody(event))
+  const result = z.object({
+    username: z.literal(ensure(ADMIN_USERNAME, '用户名或密码未设置', 500)),
+    password: z.literal(ensure(ADMIN_PASSWORD, '用户名或密码未设置', 500)),
+  }).safeParse(await readBody(event))
   if (!result.success) {
     throw createError({ statusCode: 401, message: '错误的用户名或密码' })
   }

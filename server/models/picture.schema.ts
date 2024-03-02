@@ -1,5 +1,5 @@
-import type { IPicture } from '~/types/models'
 import { Schema } from 'mongoose'
+import type { IPicture } from '~/types/models'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
 export const PictureSchema = defineMongooseModel<IPicture>('Picture', {

@@ -20,9 +20,10 @@ const desc = computed(() => props.article.summary ?? props.article.title)
   <article class="flex min-h-60 flex-col gap-2 md:flex-row md:gap-8">
     <nuxt-link
       :to="`/${article.path}`"
+      class="w-full max-w-full md:max-w-md"
       @click="emits('onRoute')"
-      class="w-full max-w-full md:max-w-md">
-      <img :src="coverSrc" alt="" class="aspect-video w-full rounded-lg object-cover" />
+    >
+      <img :src="coverSrc" alt="" class="aspect-video w-full rounded-lg object-cover">
     </nuxt-link>
     <section class="mt-4 flex h-full flex-1 flex-col items-start">
       <nuxt-link :to="`/${article.path}`" @click="emits('onRoute')">
@@ -40,18 +41,22 @@ const desc = computed(() => props.article.summary ?? props.article.title)
           :key="name"
           :to="`/tag/${name}`"
           icon="mingcute:hashtag-line"
-          text>
+          text
+        >
           {{ name }}
         </Btn>
       </p>
-      <p class="mt-4 text-sm leading-relaxed text-zinc-500">简介：{{ desc }}</p>
+      <p class="mt-4 text-sm leading-relaxed text-zinc-500">
+        简介：{{ desc }}
+      </p>
       <Btn
         class="mt-4"
         icon="mingcute:right-line"
         text
         :to="`/${article.path}`"
         @click="emits('onRoute')"
-        >查看更多
+      >
+        查看更多
       </Btn>
     </section>
   </article>

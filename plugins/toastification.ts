@@ -1,4 +1,4 @@
-import Toast, { type PluginOptions, POSITION } from 'vue-toastification'
+import Toast, { POSITION, type PluginOptions } from 'vue-toastification'
 
 export default defineNuxtPlugin(({ vueApp }) => {
   vueApp.use(Toast, {

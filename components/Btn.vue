@@ -24,7 +24,8 @@ withDefaults(
     :class="[text ? 'Btn--text' : 'Btn--normal']"
     :disabled="disabled"
     class="Btn"
-    draggable="false">
+    draggable="false"
+  >
     <template v-if="to !== ''">
       <nuxt-link :to="to" class="Btn-content">
         <Icon v-if="icon" :name="icon" class="mr-1" />

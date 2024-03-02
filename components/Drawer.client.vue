@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const visible = defineModel<boolean>()
 const props = withDefaults(
   defineProps<{
     closable?: boolean
@@ -16,6 +15,7 @@ const props = withDefaults(
     maxSize: '100%',
   },
 )
+const visible = defineModel<boolean>()
 
 const computedTransition = computed(() => {
   const enterActiveClass = 'transition-gpu duration-200'
@@ -89,12 +89,13 @@ function close() {
 <template>
   <Teleport to="body">
     <div v-bind="$attrs" class="print:hidden">
-      <Backdrop v-model="visible" @close="close"></Backdrop>
+      <Backdrop v-model="visible" @close="close" />
       <Transition v-bind="computedTransition">
         <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">
           <div
-            class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4">
-            <slot></slot>
+            class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4"
+          >
+            <slot />
           </div>
         </div>
       </Transition>

@@ -1,5 +1,5 @@
-import { setAttr } from '~/server/data/attribute'
 import z from 'zod'
+import { setAttr } from '~/server/data/attribute'
 
 export default eventHandler(async (event) => {
   const { key } = readParams(event, { key: z.string() })

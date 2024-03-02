@@ -42,7 +42,7 @@ const draftPersistInterval = setInterval(() => {
 onBeforeUnmount(() => clearInterval(draftPersistInterval))
 const editTags = computed({
   get: () => draft.value?.tags?.join(' '),
-  set: (val) => (draft.value.tags = [...new Set(val.split(' '))]),
+  set: val => (draft.value.tags = [...new Set(val.split(' '))]),
 })
 /// endregion 文章编辑持久化
 
@@ -96,7 +96,8 @@ async function saveArticle() {
           name="title"
           placeholder="文章标题"
           required
-          type="text" />
+          type="text"
+        >
       </label>
       <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>访问路径</span>
@@ -107,7 +108,8 @@ async function saveArticle() {
           name="path"
           placeholder="访问路径"
           required
-          type="text" />
+          type="text"
+        >
       </label>
       <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>封面链接</span>
@@ -118,7 +120,8 @@ async function saveArticle() {
           name="cover"
           placeholder="封面链接"
           required
-          type="text" />
+          type="text"
+        >
       </label>
       <label class="flex flex-wrap items-center gap-4 text-sm">
         <span>标签(空格分隔)</span>
@@ -129,7 +132,8 @@ async function saveArticle() {
           name="tags"
           placeholder="标签(空格分隔)"
           required
-          type="text" />
+          type="text"
+        >
       </label>
     </div>
     <MdEditor
@@ -140,7 +144,10 @@ async function saveArticle() {
       editor-id="edit"
       preview-theme="default"
       @on-upload-img="onUploadImg"
-      @on-error="catchEditorError" />
-    <Btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle"> 保存发布</Btn>
+      @on-error="catchEditorError"
+    />
+    <Btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle">
+      保存发布
+    </Btn>
   </form>
 </template>

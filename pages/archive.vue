@@ -17,7 +17,7 @@ const { pending: fetchingArticleData, data: articleData } = await useAsyncData(
   `article:yearly`,
   () =>
     api<ArticleWithoutContent[]>(`/article`).then((articleList) => {
-      const data: { year: number; list: ArticleWithoutContent[] }[] = []
+      const data: { year: number, list: ArticleWithoutContent[] }[] = []
       let i = -1
       let lastYear = 0
       for (const article of articleList) {
@@ -49,15 +49,17 @@ useSeoMeta(meta)
 <template>
   <main class="page">
     <PageHead sub-title="看看我都水了什么文章" title="文章归档" />
-    <h3 class="my-3 flex items-center text-2xl">标签</h3>
-    <div class="my-6 flex flex-wrap items-center gap-4" v-auto-animate>
+    <h3 class="my-3 flex items-center text-2xl">
+      标签
+    </h3>
+    <div v-auto-animate class="my-6 flex flex-wrap items-center gap-4">
       <template v-for="name in tagList" :key="name">
         <Btn :to="`/tag/${name}`" icon="mingcute:hashtag-line" text>
           {{ name }}
         </Btn>
       </template>
     </div>
-    <div class="my-12" v-auto-animate>
+    <div v-auto-animate class="my-12">
       <template v-for="{ year, list } in articleData ?? []" :key="year">
         <h3 class="my-3 text-2xl">
           {{ year }}
@@ -67,7 +69,8 @@ useSeoMeta(meta)
     </div>
     <p
       v-show="fetchingArticleData || fetchingTagList"
-      class="py-2 text-center text-sm text-zinc-500">
+      class="py-2 text-center text-sm text-zinc-500"
+    >
       加载中...
     </p>
   </main>

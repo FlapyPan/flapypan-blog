@@ -1,5 +1,5 @@
-import { deleteArticle } from '~/server/data/article'
 import z from 'zod'
+import { deleteArticle } from '~/server/data/article'
 
 export default eventHandler(async (event) => {
   // DELETE /api/article/[_id] 方法报 404 的临时解决方案

@@ -43,6 +43,8 @@ useSeoMeta(meta)
       </template>
     </PageHead>
     <ArticleTimeline :list="articleData" />
-    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
+    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">
+      加载中...
+    </p>
   </main>
 </template>

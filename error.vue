@@ -23,11 +23,14 @@ useSeoMeta({
       {{ error.statusCode }}
     </h2>
     <div
-      class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-zinc-50 dark:bg-red-700">
+      class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-zinc-50 dark:bg-red-700"
+    >
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ error.message }}</span>
-      <span class="flex-1"></span>
-      <Btn @click="clearError({ redirect: '/' })">返回主页</Btn>
+      <span class="flex-1" />
+      <Btn @click="clearError({ redirect: '/' })">
+        返回主页
+      </Btn>
     </div>
     <DevOnly>
       <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />

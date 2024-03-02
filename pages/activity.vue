@@ -4,7 +4,7 @@ import '~/assets/css/github-languages-colors.css'
 
 const settingStore = useSettingStore()
 
-type Repo = {
+interface Repo {
   _id: string
   name: string
   html_url: string
@@ -35,26 +35,30 @@ useSeoMeta(meta)
 <template v-once>
   <main class="page">
     <PageHead v-once :sub-title="description" title="最近活动" />
-    <h3 class="mb-6 ml-2 text-xl">Github 仓库</h3>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" v-auto-animate>
+    <h3 class="mb-6 ml-2 text-xl">
+      Github 仓库
+    </h3>
+    <div v-auto-animate class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       <a
         v-for="repo in repos"
         :key="repo._id"
         :href="repo.html_url"
         class="group flex flex-col gap-2 overflow-hidden rounded-xl bg-zinc-50 p-4 transition dark:bg-zinc-900"
-        target="_blank">
+        target="_blank"
+      >
         <p class="text-lg underline-offset-2 group-hover:underline">
           {{ repo.full_name }}
         </p>
         <p class="py-2 text-xs text-zinc-500">{{ repo.description }}</p>
-        <p class="flex-1"></p>
+        <p class="flex-1" />
         <p class="flex items-center gap-4 text-sm">
           <span v-if="repo.language" class="flex items-center">
             <span class="flex items-center text-zinc-500">
               <Icon
                 :class="`lang-${repo.language}`"
                 class="mr-1 text-base"
-                name="mingcute:round-fill"></Icon>
+                name="mingcute:round-fill"
+              />
             </span>
             {{ repo.language }}
           </span>
@@ -66,7 +70,7 @@ useSeoMeta(meta)
             <Icon class="mr-1 text-base text-zinc-500" name="mingcute:git-merge-line" />
             {{ repo.forks }}
           </span>
-          <span class="flex-1"></span>
+          <span class="flex-1" />
           <Icon class="text-base text-zinc-500" name="mdi:github" />
         </p>
       </a>
@@ -74,9 +78,11 @@ useSeoMeta(meta)
     <p v-if="!fetchingRepos && !repos?.length" class="py-2 text-center text-sm text-zinc-500">
       暂无数据
     </p>
-    <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">加载中...</p>
+    <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">
+      加载中...
+    </p>
     <figure v-if="settingStore.setting.wakatime" class="mx-auto mt-8 max-w-3xl">
-      <embed :src="settingStore.setting.wakatime" />
+      <embed :src="settingStore.setting.wakatime">
     </figure>
   </main>
 </template>

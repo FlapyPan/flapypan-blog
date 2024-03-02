@@ -1,6 +1,6 @@
+import { randomUUID } from 'node:crypto'
 import type { MultiPartData } from 'h3'
 import type { ObjectId } from 'bson'
-import { randomUUID } from 'node:crypto'
 import sharp from 'sharp'
 
 export async function addPicture({ data, filename }: MultiPartData): Promise<ObjectId> {

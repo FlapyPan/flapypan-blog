@@ -1,15 +1,15 @@
 {
   "name": "flapypan-blog",
-  "description": "A simple and efficient blogging system.",
-  "homepage": "https://www.flapypan.top/",
-  "author": "FlapyPan",
-  "version": "2.3.6",
   "type": "module",
+  "version": "2.3.7",
+  "description": "A simple and efficient blogging system.",
+  "author": "FlapyPan",
+  "license": "MPL-2.0",
+  "homepage": "https://www.flapypan.top/",
   "repository": {
     "type": "git",
     "url": "https://github.com/FlapyPan/flapypan-blog"
   },
-  "license": "MPL-2.0",
   "engines": {
     "node": ">=18"
   },
@@ -18,7 +18,8 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "preview": "node .output/server/index.mjs",
-    "format": "prettier . \"**/*.{js,ts,json,css,vue}\" --write"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
@@ -38,12 +39,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.6.4",
     "@nuxt/devtools": "latest",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/ws": "^8.5.10",
+    "eslint": "^8.57.0",
     "postcss-preset-env": "^9.4.0",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
@@ -54,14 +55,5 @@
     "Firefox >= 78",
     "Safari >= 14",
     "Edge >= 88"
-  ],
-  "prettier": {
-    "printWidth": 100,
-    "bracketSameLine": true,
-    "semi": false,
-    "singleQuote": true,
-    "plugins": [
-      "prettier-plugin-tailwindcss"
-    ]
-  }
+  ]
 }

@@ -102,16 +102,16 @@ const { data: accessData } = await useLazyAsyncData(
 </script>
 
 <template>
-  <template>
-    <Dialog v-model="auth.loginDialogVisible" closable>
-      <LoginForm @close="auth.loginDialogVisible = false" />
-    </Dialog>
-  </template>
+  <Dialog v-model="auth.loginDialogVisible" closable>
+    <LoginForm @close="auth.loginDialogVisible = false" />
+  </Dialog>
   <header
     class="fixed top-0 z-50 w-full bg-white bg-opacity-70 px-3 backdrop-blur-lg transition-shadow dark:bg-black dark:bg-opacity-60 md:px-6 print:hidden"
-    @contextmenu.stop.prevent="toggleDrawer">
+    @contextmenu.stop.prevent="toggleDrawer"
+  >
     <div
-      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row">
+      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row"
+    >
       <nav class="hidden items-center gap-3 px-3 text-sm underline-offset-2 md:flex">
         <nuxt-link
           v-for="l in navLinks"
@@ -122,7 +122,8 @@ const { data: accessData } = await useLazyAsyncData(
           }"
           :title="l.title"
           :to="l.to"
-          class="flex items-center transition-colors">
+          class="flex items-center transition-colors"
+        >
           <Icon :name="l.icon" class="mr-1" />
           {{ l.title }}
         </nuxt-link>
@@ -132,18 +133,20 @@ const { data: accessData } = await useLazyAsyncData(
           :class="{ 'text-secondary-500': $route.path === `/${path}` }"
           :title="title"
           :to="`/${path}`"
-          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex">
+          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex"
+        >
           <Icon class="mr-1" name="mingcute:document-line" />
           {{ title }}
         </nuxt-link>
       </nav>
 
-      <div class="hidden flex-1 md:block"></div>
+      <div class="hidden flex-1 md:block" />
 
       <button
         class="flex items-center pr-1 text-sm transition-colors sm:hover:text-primary-500"
-        @click="toggleDrawer()">
-        <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full" />
+        @click="toggleDrawer()"
+      >
+        <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
         <span v-if="state" class="ml-2 flex flex-col py-1 text-xs">
           <span>{{ settingStore.setting.name }}</span>
           <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
@@ -152,24 +155,26 @@ const { data: accessData } = await useLazyAsyncData(
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
         <ul class="block rounded-xl bg-white p-2 shadow-md dark:bg-black lg:hidden">
-          <li class="block md:hidden" v-for="l in navLinks" :key="l.routeName">
+          <li v-for="l in navLinks" :key="l.routeName" class="block md:hidden">
             <button
               :class="[
                 $route.name === l.routeName ? `${l.activeColor.background} bg-opacity-10` : '',
               ]"
               :title="l.title"
               class="flex w-full items-center rounded-xl p-2 text-sm"
-              @click="navigateToPath(l.to)">
+              @click="navigateToPath(l.to)"
+            >
               <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
               {{ l.title }}
             </button>
           </li>
-          <li class="block lg:hidden" v-for="{ _id, title, path } in links" :key="_id">
+          <li v-for="{ _id, title, path } in links" :key="_id" class="block lg:hidden">
             <button
               :class="[$route.path === `/${path}` ? 'bg-secondary-500 bg-opacity-10' : '']"
               :title="title"
               class="flex w-full items-center rounded-xl p-2 text-sm"
-              @click="navigateToPath(`/${path}`)">
+              @click="navigateToPath(`/${path}`)"
+            >
               <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
               {{ title }}
             </button>
@@ -180,7 +185,8 @@ const { data: accessData } = await useLazyAsyncData(
             <button
               :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10"
-              @click="navigateToPath('/new')">
+              @click="navigateToPath('/new')"
+            >
               <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
               写新文章
             </button>
@@ -189,7 +195,8 @@ const { data: accessData } = await useLazyAsyncData(
             <button
               :class="[$route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : '']"
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10"
-              @click="navigateToPath('/setting')">
+              @click="navigateToPath('/setting')"
+            >
               <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
               博客设置
             </button>
@@ -197,7 +204,8 @@ const { data: accessData } = await useLazyAsyncData(
           <li v-if="auth.isLogin">
             <button
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10"
-              @click="auth.logout()">
+              @click="auth.logout()"
+            >
               <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
               退出登录
             </button>
@@ -205,25 +213,32 @@ const { data: accessData } = await useLazyAsyncData(
           <li v-else>
             <button
               class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500 hover:bg-opacity-10"
-              @click="openLogin()">
+              @click="openLogin()"
+            >
               <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
               管理员登录
             </button>
           </li>
         </ul>
         <div
-          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-50 p-3 text-xs shadow-md dark:bg-zinc-900">
-          <p v-if="accessData?.today">今日访问量：{{ accessData.today }}</p>
-          <p v-if="accessData?.all">总访问量：{{ accessData.all }}</p>
+          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-50 p-3 text-xs shadow-md dark:bg-zinc-900"
+        >
+          <p v-if="accessData?.today">
+            今日访问量：{{ accessData?.today }}
+          </p>
+          <p v-if="accessData?.all">
+            总访问量：{{ accessData?.all }}
+          </p>
         </div>
       </Drawer>
 
-      <div class="block flex-1 md:hidden"></div>
+      <div class="block flex-1 md:hidden" />
 
       <button
         title="切换配色"
         class="flex items-center rounded-xl p-2 text-sm transition-colors sm:hover:text-primary-500"
-        @click="switchColorMode">
+        @click="switchColorMode"
+      >
         <Icon class="h-4 w-4" :name="colorModeIcon" />
       </button>
     </div>

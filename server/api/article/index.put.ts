@@ -5,8 +5,7 @@ export default eventHandler(async (event) => {
   const data = await readSafeBody(event, {
     _id: z.string().min(1),
     title: z.string().min(2, '标题长度2-32').max(32, '标题长度2-32').nullish(),
-    path: z
-      .string()
+    path: z.string()
       .min(2, '路径长度2-32')
       .max(64, '路径长度2-32')
       .regex(/^[a-z0-9:@._-]+$/, '路径只允许小写字母,数字,冒号,@,英文点,下划线,分隔符')

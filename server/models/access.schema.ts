@@ -1,5 +1,5 @@
-import type { IAccess } from '~/types/models'
 import { Schema } from 'mongoose'
+import type { IAccess } from '~/types/models'
 import { defineMongooseModel } from '#nuxt/mongoose'
 
 export const AccessSchema = defineMongooseModel<IAccess>('Access', {

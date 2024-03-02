@@ -3,7 +3,7 @@ import type { IAccess, IArticle, IAttribute, IPicture } from '~/types/models'
 type WithId<T> = T & { _id: string }
 
 type Access = WithId<IAccess>
-type AccessData = {
+interface AccessData {
   today?: number
   all?: number
 }
