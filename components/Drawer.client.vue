@@ -92,7 +92,7 @@ function close() {
       <Backdrop v-model="visible" @close="close" />
       <Transition v-bind="computedTransition">
         <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">
-          <div class="themed-scrollbar relative max-h-full max-w-full overflow-auto overscroll-contain p-4">
+          <div class="themed-scrollbar relative max-h-full max-w-full overflow-y-auto overflow-x-hidden overscroll-contain">
             <slot />
           </div>
         </div>

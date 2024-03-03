@@ -128,6 +128,22 @@ html.dark {
       @apply border-l-primary-500;
     }
 
+    pre:before {
+      @apply bg-zinc-800;
+    }
+
+    code {
+      @apply text-current bg-zinc-100 dark:bg-zinc-800 rounded py-0 px-1;
+    }
+
+    pre code {
+      @apply bg-zinc-800;
+
+      padding: 1em;
+      color: var(--md-theme-code-block-color);
+      border-radius: 0 0 5px 5px;
+    }
+
     ul {
       @apply list-disc;
     }

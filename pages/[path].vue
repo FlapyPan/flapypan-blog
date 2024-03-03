@@ -246,7 +246,7 @@ useSeoMeta(meta)
 <template>
   <main class="page" @contextmenu.stop.prevent="toggleDrawer">
     <Drawer v-if="auth.isLogin" v-model="isEdit" location="bottom" size="100%" :closable="false">
-      <div class="rounded-xl bg-zinc-50 p-4 border-all dark:bg-zinc-900">
+      <div class="bg-white p-4 dark:bg-black">
         <Btn icon="mingcute:left-line" class="mb-4" @click="isEdit = false">
           关闭
         </Btn>
@@ -260,7 +260,7 @@ useSeoMeta(meta)
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ articleDataError }}</span>
       <span class="flex-1" />
-      <Btn @click="clearError({ redirect: '/' })">
+      <Btn style="background: none;border: none;" @click="clearError({ redirect: '/' })">
         返回主页
       </Btn>
     </div>

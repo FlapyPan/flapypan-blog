@@ -94,7 +94,7 @@ async function saveArticle() {
 </script>
 
 <template>
-  <form class="flex flex-col gap-6 items-stretch" @submit.prevent.stop>
+  <form class="flex flex-col gap-6" @submit.prevent.stop>
     <TextFieldContainer>
       <TextField v-model="draft.title" label="文章标题" :disabled="saving" />
       <TextField v-model="draft.path" label="访问路径" :disabled="saving" />
@@ -104,22 +104,20 @@ async function saveArticle() {
           上传封面
         </Btn>
       </div>
-      <div class="border-all rounded-md flex text-sm">
-        <ul v-auto-animate class="flex items-center">
-          <li
-            v-for="(tag, i) in draft.tags"
-            :key="tag"
-            class="ml-2 rounded-xl px-2 flex items-center bg-primary-500 text-white gap-1"
-          >
-            <span class="textsm">{{ tag }}</span>
-            <Icon name="mingcute:close-line" class="cursor-pointer text-xs" @click="delTag(i)" />
-          </li>
-        </ul>
+      <div v-auto-animate class="border-all rounded-md flex items-center flex-wrap gap-1 p-2 text-sm">
+        <span
+          v-for="(tag, i) in draft.tags"
+          :key="tag"
+          class="rounded-xl px-2 flex items-center bg-primary-500 text-white gap-1"
+        >
+          <span class="textsm">{{ tag }}</span>
+          <Icon name="mingcute:close-line" class="cursor-pointer text-xs" @click="delTag(i)" />
+        </span>
         <input
           id="article-tags"
           v-model="editTags"
           :disabled="saving"
-          class="border-none ring-0 focus:ring-0 flex-1"
+          class="border-none ring-0 focus:ring-0 flex-1 p-1"
           placeholder="回车或空格添加标签"
           @keydown.delete="delLastTag()"
           @keydown.enter.prevent.stop="addTag()"

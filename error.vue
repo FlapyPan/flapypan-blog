@@ -28,7 +28,7 @@ useSeoMeta({
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ error.message }}</span>
       <span class="flex-1" />
-      <Btn @click="clearError({ redirect: '/' })">
+      <Btn style="background: none;border: none;" @click="clearError({ redirect: '/' })">
         返回主页
       </Btn>
     </div>

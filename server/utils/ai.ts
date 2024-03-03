@@ -51,7 +51,7 @@ export const sparkAI = {
     })
     ws.onopen = () => ws.send(data)
     return await new Promise<string>((resolve, reject) => {
-      const timeout = setTimeout(() => reject(Error('请求超时')), 10000)
+      const timeout = setTimeout(() => reject(Error('请求超时')), 30000)
       let lastSeq = -1
       const buffer: string[] = []
       ws.onmessage = ({ data }) => {

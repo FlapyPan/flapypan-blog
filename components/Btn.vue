@@ -21,6 +21,7 @@ withDefaults(
 
 <template>
   <button
+    v-bind="$attrs"
     :class="[text ? 'Btn--text' : 'Btn--normal']"
     :disabled="disabled"
     class="Btn"
