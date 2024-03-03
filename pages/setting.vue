@@ -70,234 +70,73 @@ useSeoMeta(meta)
 <template>
   <main class="page">
     <template v-if="auth.isLogin">
-      <div class="flex flex-col items-center gap-6">
-        <h3 class="w-full text-lg">
-          基础信息设置
-        </h3>
-        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>站点标题</span>
-            <input
-              v-model="settingStore.setting.siteTitle"
-              :disabled="savingSettings"
+      <div>
+        <TextFieldContainer title="基础信息">
+          <TextField v-model="settingStore.setting.siteTitle" :disabled="savingSettings" label="站点标题" />
+          <TextField v-model="settingStore.setting.favicon" :disabled="savingSettings" label="站点图标链接" />
+          <TextField v-model="settingStore.setting.banner" :disabled="savingSettings" label="默认封面链接" />
+          <TextField v-model="settingStore.setting.footer" :disabled="savingSettings" label="站点底部信息" />
+        </TextFieldContainer>
+        <TextFieldContainer title="个人信息">
+          <TextField v-model="settingStore.setting.avatar" :disabled="savingSettings" label="头像链接" />
+          <TextField v-model="settingStore.setting.name" :disabled="savingSettings" label="作者名" />
+          <div class="flex items-center gap-2">
+            <TextField
+              v-model="settingStore.setting.info"
               class="flex-1"
-              name="title"
-              placeholder="站点标题"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>站点图标链接</span>
-            <input
-              v-model="settingStore.setting.favicon"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="favicon"
-              placeholder="站点图标链接"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>默认封面链接</span>
-            <input
-              v-model="settingStore.setting.banner"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="banner"
-              placeholder="默认封面链接"
-              required
-              type="text"
-            >
-          </label>
-        </div>
-        <div class="w-full">
-          <label class="flex flex-col gap-4 text-sm">
-            <span>站点底部信息</span>
-            <textarea
-              v-model="settingStore.setting.footer"
-              :disabled="savingSettings"
-              class="p-2"
-              name="footer"
-              placeholder="站点底部信息"
-              required
-              type="text"
+              :disabled="settingStore.setting.hitoko || savingSettings"
+              label="站点信息"
             />
-          </label>
-        </div>
-        <h3 class="w-full text-lg">
-          个人信息设置
-        </h3>
-        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>头像链接</span>
-            <input
-              v-model="settingStore.setting.avatar"
+            <TextField
+              v-model="settingStore.setting.hitoko"
               :disabled="savingSettings"
-              class="flex-1"
-              name="avatar"
-              placeholder="头像链接"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>作者名</span>
-            <input
-              v-model="settingStore.setting.name"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="name"
-              placeholder="作者名"
-              required
-              type="text"
-            >
-          </label>
-          <div class="col-span-2 flex items-center gap-4">
-            <label class="flex flex-1 flex-wrap items-center gap-4 text-sm">
-              <span>站点信息</span>
-              <input
-                v-model="settingStore.setting.info"
-                :disabled="settingStore.setting.hitoko || savingSettings"
-                class="flex-1"
-                name="info"
-                placeholder="站点信息"
-                required
-                type="text"
-              >
-            </label>
-            <label class="flex flex-wrap items-center gap-2 text-sm">
-              <span>随机一言</span>
-              <input
-                v-model="settingStore.setting.hitoko"
-                :disabled="savingSettings"
-                class="flex-1"
-                name="hitoko"
-                placeholder="随机一言"
-                required
-                type="checkbox"
-              >
-            </label>
+              label="一言"
+              type="checkbox"
+            />
           </div>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>邮箱</span>
-            <input
-              v-model="settingStore.setting.email"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="email"
-              placeholder="邮箱"
-              required
-              type="text"
-            >
-          </label>
-        </div>
-        <h3 class="w-full text-lg">
-          活动设置
-        </h3>
-        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>wakatime</span>
-            <input
-              v-model="settingStore.setting.wakatime"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="wakatime"
-              placeholder="wakatime"
-              required
-              type="text"
-            >
-          </label>
-        </div>
-        <h3 class="w-full text-lg">
-          Giscus 设置
-        </h3>
-        <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>giscusRepo</span>
-            <input
-              v-model="settingStore.setting.giscusRepo"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="giscusRepo"
-              placeholder="giscusRepo"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>giscusRepoId</span>
-            <input
-              v-model="settingStore.setting.giscusRepoId"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="giscusRepoId"
-              placeholder="giscusRepoId"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>giscusCategory</span>
-            <input
-              v-model="settingStore.setting.giscusCategory"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="giscusCategory"
-              placeholder="giscusCategory"
-              required
-              type="text"
-            >
-          </label>
-          <label class="flex flex-wrap items-center gap-4 text-sm">
-            <span>giscusCategoryId</span>
-            <input
-              v-model="settingStore.setting.giscusCategoryId"
-              :disabled="savingSettings"
-              class="flex-1"
-              name="giscusCategoryId"
-              placeholder="giscusCategoryId"
-              required
-              type="text"
-            >
-          </label>
-        </div>
-        <Btn :disabled="savingSettings" class="my-8 w-full max-w-xl" @click="saveSetting()">
+          <TextField
+            v-model="settingStore.setting.email"
+            :disabled="savingSettings"
+            label="邮箱"
+            placeholder="邮箱"
+            required
+            type="text"
+          />
+        </TextFieldContainer>
+        <TextFieldContainer title="活动">
+          <TextField v-model="settingStore.setting.wakatime" :disabled="savingSettings" label="wakatime" />
+        </TextFieldContainer>
+        <TextFieldContainer title="Giscus">
+          <TextField v-model="settingStore.setting.giscusRepo" :disabled="savingSettings" label="giscusRepo" />
+          <TextField v-model="settingStore.setting.giscusRepoId" :disabled="savingSettings" label="giscusRepoId" />
+          <TextField v-model="settingStore.setting.giscusCategory" :disabled="savingSettings" label="giscusCategory" />
+          <TextField v-model="settingStore.setting.giscusCategory" :disabled="savingSettings" label="giscusCategory" />
+        </TextFieldContainer>
+        <Btn :disabled="savingSettings" class="mt-8" @click="saveSetting()">
           保存设置
         </Btn>
-        <h3 class="w-full text-lg">
-          自定义样式
-        </h3>
-        <textarea
-          v-model="customStyleValue"
-          class="w-full p-2"
-          rows="6"
-          name="customStyle"
-          placeholder="添加自定义样式"
-          type="text"
-          @focus.once="fetchCustomStyle()"
-        />
-        <Btn :disabled="savingCustomStyle" class="my-8 w-full max-w-xl" @click="saveCustomStyle()">
+        <TextFieldContainer title="自定义样式(CSS)" :md-cols="1">
+          <TextBlock
+            v-model="customStyleValue"
+            rows="6"
+            label="自定义样式将被插入到head标签"
+            placeholder="CSS"
+            @focus.once="fetchCustomStyle()"
+          />
+        </TextFieldContainer>
+        <Btn :disabled="savingCustomScript" class="mt-4" @click="saveCustomStyle()">
           保存自定义样式
         </Btn>
-        <h3 class="w-full text-lg">
-          自定义脚本
-        </h3>
-        <textarea
-          v-model="customScriptValue"
-          class="w-full p-2"
-          rows="6"
-          name="customScript"
-          placeholder="添加自定义脚本"
-          type="text"
-          @focus.once="fetchCustomScript()"
-        />
-        <Btn
-          :disabled="savingCustomScript"
-          class="my-8 w-full max-w-xl"
-          @click="saveCustomScript()"
-        >
+        <TextFieldContainer title="自定义脚本(JS)" :md-cols="1">
+          <TextBlock
+            v-model="customScriptValue"
+            rows="6"
+            label="自定义脚本将插入body标签"
+            placeholder="JS"
+            @focus.once="fetchCustomScript()"
+          />
+        </TextFieldContainer>
+        <Btn :disabled="savingCustomScript" class="mt-4" @click="saveCustomScript()">
           保存自定义脚本
         </Btn>
       </div>

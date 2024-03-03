@@ -1,50 +1,47 @@
 <script setup lang="ts">
-import { MdEditor, type Themes } from 'md-editor-v3'
+import { MdEditor } from 'md-editor-v3'
 import { useToast } from 'vue-toastification'
+import type { ArticleDraft } from '~/types/api'
+import 'md-editor-v3/lib/style.css'
 
-const props = defineProps({
-  articleData: {
-    type: Object,
-    default: () => ({
-      _id: 0,
-      title: '',
-      path: '',
-      cover: '',
-      content: '',
-      tags: [],
-    }),
-  },
+const props = withDefaults(defineProps<{
+  articleData?: ArticleDraft
+}>(), {
+  articleData: () => ({
+    _id: '',
+    title: '',
+    path: '',
+    cover: '',
+    content: '',
+    tags: [],
+  }),
 })
-const emits = defineEmits(['submit'])
+const emits = defineEmits<{ (e: 'submit', path: string): void }>()
 
 const toast = useToast()
 
-// 判断是否是新文章
-const isNewArticle = !props.articleData?._id
+/// region 文章数据
 
-/// region 文章编辑持久化
-const storageKey = isNewArticle ? 'draft_new' : `draft_id_${props.articleData._id}`
-
-// 编辑的草稿存放在 LocalStorage
-function loadDraft() {
-  const storageData = localStorage.getItem(storageKey)
-  if (storageData) {
-    // eslint-disable-next-line no-alert
-    if (window.confirm('读取到上次编辑的内容，是否继续？')) return JSON.parse(storageData)
-  }
-  return props.articleData
+const draft = ref(props.articleData)
+const editTags = shallowRef('')
+function addTag() {
+  if (!editTags.value) return
+  const tag = editTags.value.trim()
+  editTags.value = ''
+  if (draft.value.tags.includes(tag)) return
+  draft.value.tags = [...draft.value.tags, tag].toSorted()
+}
+function delTag(index: number) {
+  if (index < 0 || index >= draft.value.tags.length) return
+  draft.value.tags.splice(index, 1)
+}
+function delLastTag() {
+  if (editTags.value) return
+  if (!draft.value.tags.length) return
+  draft.value.tags.pop()
 }
 
-const draft = ref(loadDraft())
-const draftPersistInterval = setInterval(() => {
-  localStorage.setItem(storageKey, JSON.stringify(draft.value))
-}, 1000)
-onBeforeUnmount(() => clearInterval(draftPersistInterval))
-const editTags = computed({
-  get: () => draft.value?.tags?.join(' '),
-  set: val => (draft.value.tags = [...new Set(val.split(' '))]),
-})
-/// endregion 文章编辑持久化
+/// endregion
 
 const catchEditorError = ({ message }: Error) => toast.error(message)
 
@@ -58,22 +55,34 @@ async function uploadImg(file: File) {
   return `/api/picture/${_id}`
 }
 
+function openUpload() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'image/*'
+  input.multiple = false
+  input.onchange = async () => {
+    if (!input.files?.length) return
+    draft.value.cover = await uploadImg(input.files[0])
+  }
+  input.click()
+}
+
 async function onUploadImg(files: File[], cb: (urls: string[]) => void) {
   const res = await Promise.all(files.map(uploadImg))
   cb(res)
 }
 
-/// endregion 图片上传
+/// endregion
 
 /// region 文章保存
+
 const saving = shallowRef(false)
 
 async function saveArticle() {
   saving.value = true
-  const method = isNewArticle ? 'POST' : 'PUT'
+  const method = !props.articleData._id ? 'POST' : 'PUT'
   try {
     const { path } = await api<{ path: string }>(`/article`, method, draft.value)
-    setTimeout(() => localStorage.removeItem(storageKey), 3000)
     // 将文章路径传递给父组件
     emits('submit', path)
   } finally {
@@ -81,73 +90,58 @@ async function saveArticle() {
   }
 }
 
-/// endregion 文章保存
+/// endregion
 </script>
 
 <template>
-  <form class="flex flex-col items-center gap-6" @submit.prevent.stop>
-    <div class="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
-      <label class="flex flex-wrap items-center gap-4 text-sm">
-        <span>文章标题</span>
+  <form class="flex flex-col gap-6 items-stretch" @submit.prevent.stop>
+    <TextFieldContainer>
+      <TextField v-model="draft.title" label="文章标题" :disabled="saving" />
+      <TextField v-model="draft.path" label="访问路径" :disabled="saving" />
+      <div class="flex items-center gap-2">
+        <TextField v-model="draft.cover" class="flex-1" label="封面链接" :disabled="saving" />
+        <Btn @click="openUpload">
+          上传封面
+        </Btn>
+      </div>
+      <div class="border-all rounded-md flex text-sm">
+        <ul v-auto-animate class="flex items-center">
+          <li
+            v-for="(tag, i) in draft.tags"
+            :key="tag"
+            class="ml-2 rounded-xl px-2 flex items-center bg-primary-500 text-white gap-1"
+          >
+            <span class="textsm">{{ tag }}</span>
+            <Icon name="mingcute:close-line" class="cursor-pointer text-xs" @click="delTag(i)" />
+          </li>
+        </ul>
         <input
-          v-model="draft.title"
-          :disabled="saving"
-          class="flex-1"
-          name="title"
-          placeholder="文章标题"
-          required
-          type="text"
-        >
-      </label>
-      <label class="flex flex-wrap items-center gap-4 text-sm">
-        <span>访问路径</span>
-        <input
-          v-model="draft.path"
-          :disabled="saving"
-          class="flex-1"
-          name="path"
-          placeholder="访问路径"
-          required
-          type="text"
-        >
-      </label>
-      <label class="flex flex-wrap items-center gap-4 text-sm">
-        <span>封面链接</span>
-        <input
-          v-model="draft.cover"
-          :disabled="saving"
-          class="flex-1"
-          name="cover"
-          placeholder="封面链接"
-          required
-          type="text"
-        >
-      </label>
-      <label class="flex flex-wrap items-center gap-4 text-sm">
-        <span>标签(空格分隔)</span>
-        <input
+          id="article-tags"
           v-model="editTags"
           :disabled="saving"
-          class="flex-1"
-          name="tags"
-          placeholder="标签(空格分隔)"
-          required
-          type="text"
+          class="border-none ring-0 focus:ring-0 flex-1"
+          placeholder="回车或空格添加标签"
+          @keydown.delete="delLastTag()"
+          @keydown.enter.prevent.stop="addTag()"
+          @keydown.space.prevent.stop="addTag()"
+          @blur="addTag()"
         >
-      </label>
+      </div>
+    </TextFieldContainer>
+    <div class="flex justify-center">
+      <Btn :disabled="saving" class="w-full max-w-lg" @click="saveArticle">
+        保存发布
+      </Btn>
     </div>
     <MdEditor
       v-model="draft.content"
       :no-img-zoom-in="false"
-      :theme="$colorMode.value as Themes"
+      theme="light"
       code-theme="gradient"
       editor-id="edit"
       preview-theme="default"
       @on-upload-img="onUploadImg"
       @on-error="catchEditorError"
     />
-    <Btn :disabled="saving" class="w-full max-w-xl" @click="saveArticle">
-      保存发布
-    </Btn>
   </form>
 </template>

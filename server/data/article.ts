@@ -14,7 +14,7 @@ export function getArticleList() {
 
 export async function getAllTags() {
   const tags = await ArticleSchema.distinct('tags')
-  return tags.filter(tag => !!tag)
+  return tags.filter((tag) => !!tag)
 }
 
 export function getArticleById(_id: string | ObjectId) {

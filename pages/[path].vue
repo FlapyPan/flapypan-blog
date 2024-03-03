@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { MdCatalog, MdPreview } from 'md-editor-v3'
 import { useToast } from 'vue-toastification'
-import type { Article } from '~/types/api'
+import type { Article, ArticleDraft } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
-import 'md-editor-v3/lib/style.css'
+import 'md-editor-v3/lib/preview.css'
 
 const route = useRoute()
 const auth = useAuthStore()
@@ -55,11 +55,11 @@ async function deleteArticle() {
 /// endregion
 
 /// region 文章编辑
-const editData = shallowRef({})
+const editData = shallowRef<ArticleDraft>()
 const isEdit = shallowRef(false)
 
 function openEdit() {
-  editData.value = { ...articleData.value }
+  editData.value = { ...articleData.value! }
   isEdit.value = true
 }
 
@@ -246,7 +246,7 @@ useSeoMeta(meta)
 <template>
   <main class="page" @contextmenu.stop.prevent="toggleDrawer">
     <Drawer v-if="auth.isLogin" v-model="isEdit" location="bottom" size="100%" :closable="false">
-      <div class="rounded-xl bg-zinc-50 p-4 shadow dark:bg-zinc-900">
+      <div class="rounded-xl bg-zinc-50 p-4 border-all dark:bg-zinc-900">
         <Btn icon="mingcute:left-line" class="mb-4" @click="isEdit = false">
           关闭
         </Btn>
@@ -349,7 +349,7 @@ useSeoMeta(meta)
       </div>
       <Drawer v-model="rightDrawer" location="right-bottom">
         <div
-          class="themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 shadow-md dark:bg-zinc-900"
+          class="themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 border-all dark:bg-zinc-900"
         >
           <div class="sticky top-0 z-10 bg-zinc-50 p-2 dark:bg-zinc-900">
             <ul class="border-b border-zinc-300 pb-2 dark:border-zinc-700 lg:border-none lg:pb-0">
@@ -447,7 +447,7 @@ useSeoMeta(meta)
             <button
               v-if="!atTop"
               v-auto-animate
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 hover:text-primary-500"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 border-all dark:bg-zinc-900 hover:text-primary-500"
               title="回到顶部"
               @click="toTop()"
             >
@@ -456,14 +456,14 @@ useSeoMeta(meta)
             <button
               v-if="!atComments"
               v-auto-animate
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 shadow dark:bg-zinc-900 hover:text-primary-500"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 border-all dark:bg-zinc-900 hover:text-primary-500"
               title="评论区"
               @click="toComments()"
             >
               <Icon name="mingcute:comment-line" />
             </button>
             <button
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 shadow dark:bg-zinc-900"
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 border-all dark:bg-zinc-900"
               title="更多"
               @click="rightDrawer = true"
             >

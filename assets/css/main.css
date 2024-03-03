@@ -53,23 +53,25 @@ img {
 
 input,
 textarea {
-  @apply rounded-md bg-zinc-50 px-3 py-2 accent-primary-500 shadow transition dark:bg-zinc-800;
+  @apply rounded-md px-3 py-2 transition;
+  @apply accent-primary-500 bg-white dark:bg-black;
+  @apply border border-zinc-200 dark:border-zinc-800;
 
   &[disabled] {
-    @apply cursor-not-allowed opacity-30 shadow-none;
+    @apply cursor-not-allowed opacity-30 bg-zinc-300 dark:bg-zinc-700;
   }
 
   &:focus {
     @apply outline-none ring ring-primary-500;
   }
 
-  &[type='checkbox'] {
+  &[type="checkbox"] {
     @apply h-4 w-4 cursor-pointer accent-primary-500 ring-0;
   }
 }
 
 label {
-  @apply cursor-pointer;
+  @apply cursor-pointer select-none;
 }
 
 hr {
@@ -78,6 +80,10 @@ hr {
 
 .page {
   @apply container mx-auto max-w-7xl px-3 py-16 sm:px-6;
+}
+
+.border-all {
+  @apply border border-zinc-200 dark:border-zinc-800;
 }
 
 .animation-rotate {
@@ -111,7 +117,7 @@ html.dark {
 }
 
 :is(#read, #edit).md-editor {
-  @apply bg-white font-sans dark:bg-black;
+  @apply bg-white font-sans dark:bg-black rounded-md;
 
   .default-theme {
     --md-theme-color: rgb(39 39 42 / var(--tw-text-opacity));
@@ -120,6 +126,10 @@ html.dark {
 
     blockquote {
       @apply border-l-primary-500;
+    }
+
+    ul {
+      @apply list-disc;
     }
   }
 

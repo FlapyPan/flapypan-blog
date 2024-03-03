@@ -11,10 +11,6 @@ function onArticleSubmit(path: string) {
 }
 /// endregion 新文章
 
-if (import.meta.browser) {
-  auth.loginDialogVisible = !auth.isLogin
-}
-
 const title = `新文章 - ${settingStore.setting.siteTitle ?? '博客'}`
 const description = `写新文章`
 const meta = {

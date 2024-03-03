@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   build: {
-    transpile: ['jsonwebtoken', 'vue-toastification'],
+    transpile: ['vue-toastification'],
   },
   vite: {
     build: {
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   vue: {
     compilerOptions: {
       // 排除自定义组件，防止 vue 编译处理
-      isCustomElement: tag => ['giscus-widget'].includes(tag),
+      isCustomElement: (tag) => ['giscus-widget'].includes(tag),
     },
   },
   app: {

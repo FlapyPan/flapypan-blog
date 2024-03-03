@@ -72,7 +72,7 @@ withDefaults(
   }
 
   &.Btn--normal {
-    @apply rounded-lg bg-white shadow dark:bg-zinc-800;
+    @apply rounded-lg bg-zinc-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700;
 
     .Btn-content {
       @apply px-2 py-2;

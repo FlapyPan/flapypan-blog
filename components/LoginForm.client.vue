@@ -35,34 +35,19 @@ async function login() {
     <p class="ml-2 text-xl">
       登录
     </p>
-    <input
-      v-model="form.username"
-      :disabled="isDoLogin"
-      name="username"
-      placeholder="用户名"
-      required
-      type="text"
-    >
-    <input
-      v-model="form.password"
-      :disabled="isDoLogin"
-      name="password"
-      placeholder="密码"
-      required
-      type="password"
+    <TextField v-model="form.username" :disabled="isDoLogin" placeholder="用户名" />
+    <TextField
+      v-model="form.password" :disabled="isDoLogin" placeholder="密码" type="password"
       @keydown.enter="login"
-    >
-    <p class="flex items-center gap-2 pr-2">
-      <span class="flex-1" />
-      <input
-        id="login-remember"
+    />
+    <div class="flex justify-end">
+      <TextField
         v-model="form.remember"
         :disabled="isDoLogin"
-        name="remember"
+        label="记住我"
         type="checkbox"
-      >
-      <label for="login-remember">记住我</label>
-    </p>
+      />
+    </div>
     <Btn :disabled="isDoLogin" type="submit" @click="login">
       登录
     </Btn>

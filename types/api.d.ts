@@ -10,6 +10,7 @@ interface AccessData {
 
 type Article = WithId<IArticle>
 type ArticleWithoutContent = Omit<Article, 'content'>
+type ArticleDraft = Omit<(IArticle & { _id?: string }), 'createdAt' | 'updatedAt'>
 
 type Attribute = WithId<IAttribute>
 
