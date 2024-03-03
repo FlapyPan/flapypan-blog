@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import type { ArticleWithoutContent } from '~/types/api'
+import type { AccessData, ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
+
+/// region 访问量和其他数据
+const { data: accessData } = await useLazyAsyncData(
+  `access:base`,
+  () => api<AccessData>(`/access`),
+  { server: false, deep: false },
+)
+/// endregion
 
 /// region 文章数据
 const {
@@ -55,6 +63,26 @@ useSeoMeta(meta)
 
 <template>
   <main>
+    <ClientOnly>
+      <Teleport to="#app-bar">
+        <div class="flex items-center justify-between h-full">
+          <h1 class="text-sm">
+            <nuxt-link to="/" class="flex items-center gap-1">
+              <img :src="settingStore.setting.avatar" alt="" class="h-6 w-6 rounded-full">
+              <span>{{ settingStore.setting.siteTitle }}</span>
+            </nuxt-link>
+          </h1>
+          <div class="flex gap-1 text-xs">
+            <p v-if="accessData?.today">
+              今日访问:{{ accessData?.today }}
+            </p>
+            <p v-if="accessData?.all">
+              总访问:{{ accessData?.all }}
+            </p>
+          </div>
+        </div>
+      </Teleport>
+    </ClientOnly>
     <section
       class="sm:gap-18 flex h-screen w-full flex-col-reverse items-center justify-center gap-16 text-center md:flex-row md:text-left lg:gap-52"
     >

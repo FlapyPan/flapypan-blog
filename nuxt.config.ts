@@ -53,10 +53,9 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
       ],
       link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {
           rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
+          href: 'https://gstatic.loli.net',
           crossorigin: 'anonymous',
         },
         {

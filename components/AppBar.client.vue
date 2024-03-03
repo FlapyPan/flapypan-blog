@@ -1,15 +1,34 @@
 <script setup lang="ts">
-import type { AccessData, ArticleWithoutContent } from '~/types/api'
+import { useDebounceFn, useScroll } from '@vueuse/core'
+import type { ArticleWithoutContent } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
 const auth = useAuthStore()
+const route = useRoute()
 
 const { data: links } = useLazyAsyncData(
   'pinnedLinks',
   () => api<Partial<ArticleWithoutContent>[]>('/article/pinned'),
   { deep: false },
 )
+
+const { directions } = useScroll(window)
+const scrolled = shallowRef(false)
+watch(directions, useDebounceFn(({ top, bottom }) => {
+  if (scrolled.value && top) {
+    scrolled.value = false
+  } else if (!scrolled.value && bottom) {
+    scrolled.value = true
+  }
+}, 100))
+const toggleSub = computed(() => !([
+  'archive',
+  'activity',
+  'new',
+  'setting',
+].includes(route.name as string)) && scrolled.value)
+watch(() => route.path, () => scrolled.value = false)
 
 const drawerVisible = ref(false)
 
@@ -91,14 +110,6 @@ const colorModeIcon = computed(() => {
 })
 
 /// endregion
-
-/// region 访问量和其他数据
-const { data: accessData } = await useLazyAsyncData(
-  `access:base`,
-  () => api<AccessData>(`/access`),
-  { server: false, deep: false },
-)
-/// endregion
 </script>
 
 <template>
@@ -106,13 +117,15 @@ const { data: accessData } = await useLazyAsyncData(
     <LoginForm @close="auth.loginDialogVisible = false" />
   </Dialog>
   <header
-    class="fixed top-0 z-50 w-full bg-white bg-opacity-70 px-3 backdrop-blur-lg dark:bg-black dark:bg-opacity-60 md:px-6 print:hidden"
+    class="fixed top-0 z-50 w-full overflow-hidden bg-white transition-all duration-300 bg-opacity-70 px-3 backdrop-blur-lg dark:bg-black dark:bg-opacity-60 md:px-6 print:hidden"
+    :class="toggleSub ? 'h-10' : 'h-12'"
     @contextmenu.stop.prevent="toggleDrawer"
   >
     <div
-      class="container mx-auto flex flex-row-reverse items-center justify-between transition-all md:flex-row"
+      :class="{ '-translate-y-full': toggleSub }"
+      class="container h-12 mx-auto flex flex-row-reverse items-center justify-between transition-all duration-300 md:flex-row"
     >
-      <nav class="hidden items-center gap-3 px-3 text-sm underline-offset-2 md:flex">
+      <nav class="hidden items-center gap-3 text-sm underline-offset-2 md:flex">
         <nuxt-link
           v-for="l in navLinks"
           :key="l.routeName"
@@ -154,81 +167,73 @@ const { data: accessData } = await useLazyAsyncData(
         <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
-        <ul class="block rounded-xl bg-zinc-50 p-2 border-all dark:bg-zinc-900 lg:hidden">
-          <li v-for="l in navLinks" :key="l.routeName" class="block md:hidden">
-            <button
-              :class="[
-                $route.name === l.routeName ? `${l.activeColor.background} bg-opacity-10` : '',
-              ]"
-              :title="l.title"
-              class="flex w-full items-center rounded-xl p-2 text-sm"
-              @click="navigateToPath(l.to)"
-            >
-              <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
-              {{ l.title }}
-            </button>
-          </li>
-          <li v-for="{ _id, title, path } in links" :key="_id" class="block lg:hidden">
-            <button
-              :class="[$route.path === `/${path}` ? 'bg-secondary-500 bg-opacity-10' : '']"
-              :title="title"
-              class="flex w-full items-center rounded-xl p-2 text-sm"
-              @click="navigateToPath(`/${path}`)"
-            >
-              <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
-              {{ title }}
-            </button>
-          </li>
-        </ul>
-        <ul class="mt-2 rounded-xl bg-zinc-50 p-1 border-all dark:bg-zinc-900">
-          <li v-if="auth.isLogin">
-            <button
-              :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
-              class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10"
-              @click="navigateToPath('/new')"
-            >
-              <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
-              写新文章
-            </button>
-          </li>
-          <li v-if="auth.isLogin">
-            <button
-              :class="[$route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : '']"
-              class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10"
-              @click="navigateToPath('/setting')"
-            >
-              <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
-              博客设置
-            </button>
-          </li>
-          <li v-if="auth.isLogin">
-            <button
-              class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10"
-              @click="auth.logout()"
-            >
-              <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
-              退出登录
-            </button>
-          </li>
-          <li v-else>
-            <button
-              class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500 hover:bg-opacity-10"
-              @click="openLogin()"
-            >
-              <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
-              管理员登录
-            </button>
-          </li>
-        </ul>
-        <div
-          class="mt-2 flex flex-col gap-2 rounded-xl bg-zinc-50 p-3 text-xs border-all dark:bg-zinc-900"
-        >
-          <p v-if="accessData?.today">
-            今日访问量：{{ accessData?.today }}
-          </p>
-          <p v-if="accessData?.all">
-            总访问量：{{ accessData?.all }}
-          </p>
+        <div class="m-2">
+          <ul class="block rounded-xl bg-zinc-50 p-2 border-all dark:bg-zinc-900 lg:hidden">
+            <li v-for="l in navLinks" :key="l.routeName" class="block md:hidden">
+              <button
+                :class="[
+                  $route.name === l.routeName ? `${l.activeColor.background} bg-opacity-10` : '',
+                ]"
+                :title="l.title"
+                class="flex w-full items-center rounded-xl p-2 text-sm"
+                @click="navigateToPath(l.to)"
+              >
+                <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
+                {{ l.title }}
+              </button>
+            </li>
+            <li v-for="{ _id, title, path } in links" :key="_id" class="block lg:hidden">
+              <button
+                :class="[$route.path === `/${path}` ? 'bg-secondary-500 bg-opacity-10' : '']"
+                :title="title"
+                class="flex w-full items-center rounded-xl p-2 text-sm"
+                @click="navigateToPath(`/${path}`)"
+              >
+                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
+                {{ title }}
+              </button>
+            </li>
+          </ul>
+          <ul class="mt-2 rounded-xl bg-zinc-50 p-1 border-all dark:bg-zinc-900">
+            <li v-if="auth.isLogin">
+              <button
+                :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10"
+                @click="navigateToPath('/new')"
+              >
+                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                写新文章
+              </button>
+            </li>
+            <li v-if="auth.isLogin">
+              <button
+                :class="[$route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : '']"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10"
+                @click="navigateToPath('/setting')"
+              >
+                <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                博客设置
+              </button>
+            </li>
+            <li v-if="auth.isLogin">
+              <button
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10"
+                @click="auth.logout()"
+              >
+                <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+                退出登录
+              </button>
+            </li>
+            <li v-else>
+              <button
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500 hover:bg-opacity-10"
+                @click="openLogin()"
+              >
+                <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                管理员登录
+              </button>
+            </li>
+          </ul>
         </div>
       </Drawer>
 
@@ -242,5 +247,10 @@ const { data: accessData } = await useLazyAsyncData(
         <Icon class="h-4 w-4" :name="colorModeIcon" />
       </button>
     </div>
+    <div
+      id="app-bar"
+      class="container mx-auto transition-all duration-300 h-10 overflow-hidden"
+      :class="{ '-translate-y-12': toggleSub }"
+    />
   </header>
 </template>
