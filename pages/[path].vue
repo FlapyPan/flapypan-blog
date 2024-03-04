@@ -244,15 +244,21 @@ useSeoMeta(meta)
 </script>
 
 <template>
-  <main class="page" @contextmenu.stop.prevent="toggleDrawer">
+  <main class="page">
     <ClientOnly>
       <Teleport to="#app-bar">
         <div class="flex items-center h-full">
-          <h1 class="text-sm flex items-center gap-1 flex-1">
-            <Icon name="mingcute:document-line" />
-            <span class="text-nowrap text-ellipsis">{{ articleData?.title ?? '404' }}</span>
+          <h1 class="flex items-center flex-1 gap-2 text-sm text-nowrap text-ellipsis">
+            <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
+            <span class="font-medium">{{ articleData?.title ?? '404' }}</span>
+            <NuxtLink to="/" class="hidden md:inline-block text-zinc-500">
+              - {{ settingStore.setting.siteTitle }}
+            </NuxtLink>
           </h1>
-          <div v-if="articleData?._id" class="flex items-center gap-3 text-lg mr-2">
+          <div v-if="articleData?._id" class="flex items-center gap-3 text-lg">
+            <span class="hidden sm:inline-block text-xs font-mono text-zinc-500">
+              /{{ articleData?.path }}
+            </span>
             <Icon
               class="cursor-pointer transition hover:text-pink-500"
               name="mingcute:print-line"
@@ -292,104 +298,102 @@ useSeoMeta(meta)
       </Btn>
     </div>
     <template v-if="articleData?._id">
-      <div ref="titleElement">
-        <PageHead :title="articleData?.title" class="mx-auto text-center">
-          <div class="mb-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
-            <div class="flex items-center gap-1">
-              <Icon name="mingcute:document-line" />
-              <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
-              <span class="text-sm">{{ formattedCreatedAt }}</span>
-            </div>
-            <div class="flex items-center gap-1 text-sm">
-              <Icon name="mingcute:edit-line" />
-              <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
-              <span class="text-sm">{{ formattedUpdatedAt }}</span>
-            </div>
+      <div ref="titleElement" class="mx-auto text-center">
+        <div class="mb-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
+          <div class="flex items-center gap-1">
+            <Icon name="mingcute:document-line" />
+            <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
+            <span class="text-sm">{{ formattedCreatedAt }}</span>
           </div>
-          <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
-            <div class="ml-3 flex items-center gap-1 print:hidden">
-              <Icon name="mingcute:book-6-line" />
-              <span class="text-sm">{{ articleData?.accessCount }}</span>
-              <span class="hidden text-sm md:inline-block">次访问</span>
-            </div>
-            <Btn
-              v-for="name in articleData?.tags || []"
-              :key="name"
-              :to="`/tag/${name}`"
-              icon="mingcute:hashtag-line"
-              text
-            >
-              {{ name }}
-            </Btn>
+          <div class="flex items-center gap-1 text-sm">
+            <Icon name="mingcute:edit-line" />
+            <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
+            <span class="text-sm">{{ formattedUpdatedAt }}</span>
           </div>
-          <div
-            v-if="articleData.summary || auth.isLogin"
-            class="mx-auto mb-4 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900"
+        </div>
+        <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
+          <div class="ml-3 flex items-center gap-1 print:hidden">
+            <Icon name="mingcute:book-6-line" />
+            <span class="text-sm">{{ articleData?.accessCount }}</span>
+            <span class="hidden text-sm md:inline-block">次访问</span>
+          </div>
+          <Btn
+            v-for="name in articleData?.tags || []"
+            :key="name"
+            :to="`/tag/${name}`"
+            icon="mingcute:hashtag-line"
+            text
           >
-            <p class="text-xs leading-relaxed">
-              <span class="font-bold">
-                <Icon name="mingcute:notebook-line" />
-                AI摘要：
-              </span>
-              {{ articleData?.summary ?? '无' }}
-            </p>
-            <p class="mt-3 flex items-center justify-between text-xs">
-              <Btn v-if="auth.isLogin" :disabled="summaryLoading" @click="summary">
-                {{ summaryLoading ? '生成中...' : '生成摘要' }}
-              </Btn>
-              <span v-else />
-              <span>
-                由
-                <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
-                  讯飞星火认知大模型
-                </a>
-                生成
-              </span>
-            </p>
-          </div>
-          <ClientOnly>
-            <ul v-if="auth.isLogin" class="flex justify-center items-center gap-2">
-              <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
-                <button
-                  v-if="articleData?.pinned"
-                  class="flex items-center transition text-sm hover:text-secondary-500"
-                >
-                  <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
-                  取消固定
-                </button>
-                <button v-else class="flex items-center transition text-sm hover:text-secondary-500">
-                  <Icon class="mr-1 text-secondary-400" name="mingcute:pin-line" />
-                  固定文章
-                </button>
-              </li>
-              <li @click="closeDrawerAnd(openEdit)">
-                <button class="flex items-center transition text-sm hover:text-primary-500">
-                  <Icon class="mr-1 text-primary-400" name="mingcute:edit-line" />
-                  编辑文章
-                </button>
-              </li>
-              <li @click="closeDrawerAnd(() => (deleteDialog = true))">
-                <button class="flex items-center transition text-sm hover:text-red-500">
-                  <Icon class="mr-1 text-red-400" name="mingcute:delete-line" />
-                  删除文章
-                </button>
-                <Dialog v-model="deleteDialog" closable>
-                  <p class="mb-4">
-                    确认删除此文章 "{{ articleData?.title }}" ?
-                  </p>
-                  <div class="text-right">
-                    <Btn class="mr-4" text @click="deleteArticle">
-                      <span class="text-red-500">确认删除</span>
-                    </Btn>
-                    <Btn text @click="deleteDialog = false">
-                      取消
-                    </Btn>
-                  </div>
-                </Dialog>
-              </li>
-            </ul>
-          </ClientOnly>
-        </PageHead>
+            {{ name }}
+          </Btn>
+        </div>
+        <div
+          v-if="articleData.summary || auth.isLogin"
+          class="mx-auto mb-4 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900"
+        >
+          <p class="text-xs leading-relaxed">
+            <span class="font-bold">
+              <Icon name="mingcute:notebook-line" />
+              AI摘要：
+            </span>
+            {{ articleData?.summary ?? '无' }}
+          </p>
+          <p class="mt-3 flex items-center justify-between text-xs">
+            <Btn v-if="auth.isLogin" :disabled="summaryLoading" @click="summary">
+              {{ summaryLoading ? '生成中...' : '生成摘要' }}
+            </Btn>
+            <span v-else />
+            <span>
+              由
+              <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
+                讯飞星火认知大模型
+              </a>
+              生成
+            </span>
+          </p>
+        </div>
+        <ClientOnly>
+          <ul v-if="auth.isLogin" class="flex justify-center items-center gap-2">
+            <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
+              <button
+                v-if="articleData?.pinned"
+                class="flex items-center transition text-sm hover:text-secondary-500"
+              >
+                <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
+                取消固定
+              </button>
+              <button v-else class="flex items-center transition text-sm hover:text-secondary-500">
+                <Icon class="mr-1 text-secondary-400" name="mingcute:pin-line" />
+                固定文章
+              </button>
+            </li>
+            <li @click="closeDrawerAnd(openEdit)">
+              <button class="flex items-center transition text-sm hover:text-primary-500">
+                <Icon class="mr-1 text-primary-400" name="mingcute:edit-line" />
+                编辑文章
+              </button>
+            </li>
+            <li @click="closeDrawerAnd(() => (deleteDialog = true))">
+              <button class="flex items-center transition text-sm hover:text-red-500">
+                <Icon class="mr-1 text-red-400" name="mingcute:delete-line" />
+                删除文章
+              </button>
+              <Dialog v-model="deleteDialog" closable>
+                <p class="mb-4">
+                  确认删除此文章 "{{ articleData?.title }}" ?
+                </p>
+                <div class="text-right">
+                  <Btn class="mr-4" text @click="deleteArticle">
+                    <span class="text-red-500">确认删除</span>
+                  </Btn>
+                  <Btn text @click="deleteDialog = false">
+                    取消
+                  </Btn>
+                </div>
+              </Dialog>
+            </li>
+          </ul>
+        </ClientOnly>
       </div>
       <div class="flex justify-center gap-4 pb-24">
         <MdPreview

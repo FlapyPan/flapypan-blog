@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDebounceFn, useScroll } from '@vueuse/core'
+import { useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
 import type { ArticleWithoutContent } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
 
@@ -13,22 +13,32 @@ const { data: links } = useLazyAsyncData(
   { deep: false },
 )
 
-const { directions } = useScroll(window)
-const scrolled = shallowRef(false)
-watch(directions, useDebounceFn(({ top, bottom }) => {
-  if (scrolled.value && top) {
-    scrolled.value = false
-  } else if (!scrolled.value && bottom) {
-    scrolled.value = true
-  }
-}, 100))
-const toggleSub = computed(() => !([
+const [subOpened, toggleSubOpened] = useToggle(false)
+const debouncedToggleSubOpened = useThrottleFn(toggleSubOpened, 500)
+let lastScrollTop = 0
+const ignoreRouteNames = [
   'archive',
   'activity',
   'new',
   'setting',
-].includes(route.name as string)) && scrolled.value)
-watch(() => route.path, () => scrolled.value = false)
+]
+const { y, arrivedState } = useScroll(window, { offset: { top: 16 } })
+const watchScroll = useIntervalFn(() => {
+  if (subOpened.value && y.value < lastScrollTop) {
+    debouncedToggleSubOpened()
+  } else if (!subOpened.value && y.value > lastScrollTop) {
+    debouncedToggleSubOpened()
+  }
+  lastScrollTop = y.value
+}, 100)
+watch(() => route.name, (name) => {
+  toggleSubOpened(false)
+  if (ignoreRouteNames.includes(name as string)) {
+    watchScroll.pause()
+  } else {
+    watchScroll.resume()
+  }
+}, { immediate: true })
 
 const drawerVisible = ref(false)
 
@@ -89,27 +99,6 @@ const navLinks = [
     icon: 'mingcute:time-line',
   },
 ]
-
-/// region 配色模式
-
-const colorMode = useColorMode()
-
-function switchColorMode() {
-  const preference = colorMode.preference
-  if (preference === 'light') colorMode.preference = 'dark'
-  if (preference === 'dark') colorMode.preference = 'system'
-  if (preference === 'system') colorMode.preference = 'light'
-}
-
-const colorModeIcon = computed(() => {
-  const preference = colorMode.preference
-  if (preference === 'light') return 'mingcute:sun-line'
-  if (preference === 'dark') return 'mingcute:moon-line'
-  if (preference === 'system') return 'mingcute:computer-line'
-  return ''
-})
-
-/// endregion
 </script>
 
 <template>
@@ -117,13 +106,14 @@ const colorModeIcon = computed(() => {
     <LoginForm @close="auth.loginDialogVisible = false" />
   </Dialog>
   <header
-    class="fixed top-0 z-50 w-full overflow-hidden bg-white transition-all duration-300 bg-opacity-70 px-3 backdrop-blur-lg dark:bg-black dark:bg-opacity-60 md:px-6 print:hidden"
-    :class="toggleSub ? 'h-10' : 'h-12'"
+    class="fixed top-0 z-50 w-full overflow-hidden duration-200 px-3 md:px-6 print:hidden rounded-b-lg"
+    :class="[subOpened ? 'h-10' : 'h-12',
+             arrivedState.top ? '' : 'backdrop-blur-lg bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-60 shadow']"
     @contextmenu.stop.prevent="toggleDrawer"
   >
     <div
-      :class="{ '-translate-y-full': toggleSub }"
-      class="container h-12 mx-auto flex flex-row-reverse items-center justify-between transition-all duration-300 md:flex-row"
+      :class="{ '-translate-y-full': subOpened }"
+      class="container h-12 mx-auto flex flex-row-reverse items-center justify-between transition-transform duration-200 md:flex-row"
     >
       <nav class="hidden items-center gap-3 text-sm underline-offset-2 md:flex">
         <nuxt-link
@@ -239,18 +229,12 @@ const colorModeIcon = computed(() => {
 
       <div class="block flex-1 md:hidden" />
 
-      <button
-        title="切换配色"
-        class="flex items-center rounded-xl p-2 text-sm transition-colors sm:hover:text-primary-500"
-        @click="switchColorMode"
-      >
-        <Icon class="h-4 w-4" :name="colorModeIcon" />
-      </button>
+      <ColorModeSwitch />
     </div>
     <div
       id="app-bar"
-      class="container mx-auto transition-all duration-300 h-10 overflow-hidden"
-      :class="{ '-translate-y-12': toggleSub }"
+      class="mx-auto max-w-6xl transition-transform duration-200 h-10 overflow-hidden px-2"
+      :class="{ '-translate-y-12': subOpened }"
     />
   </header>
 </template>

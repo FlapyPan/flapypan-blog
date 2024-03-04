@@ -67,9 +67,9 @@ useSeoMeta(meta)
       <Teleport to="#app-bar">
         <div class="flex items-center justify-between h-full">
           <h1 class="text-sm">
-            <nuxt-link to="/" class="flex items-center gap-1">
-              <img :src="settingStore.setting.avatar" alt="" class="h-6 w-6 rounded-full">
-              <span>{{ settingStore.setting.siteTitle }}</span>
+            <nuxt-link to="/" class="flex items-center gap-2">
+              <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
+              <span class="font-medium">{{ settingStore.setting.siteTitle }}</span>
             </nuxt-link>
           </h1>
           <div class="flex gap-1 text-xs">
