@@ -33,7 +33,7 @@ const colorModeIcon = computed(() => colorModeIconMap[colorMode.preference] ?? '
     class="flex items-center rounded-xl p-2 text-sm transition-colors sm:hover:text-primary-500"
     @click="toggle()"
   >
-    <Icon class="h-4 w-4" :name="colorModeIcon" />
+    <Icon class="size-4" :name="colorModeIcon" />
   </button>
   <Teleport to="body">
     <Transition
@@ -46,17 +46,11 @@ const colorModeIcon = computed(() => colorModeIconMap[colorMode.preference] ?? '
     >
       <div
         v-if="showTip"
-        class="pointer-events-none fixed safe-top-0 safe-left-0 safe-right-0 safe-bottom-0 z-[999999999] flex justify-center items-center"
+        class="pointer-events-none fixed left-1/2 top-1/2 flex size-24 flex-col items-center justify-center rounded-xl bg-white/70 shadow-md backdrop-blur-lg dark:bg-black/50 print:hidden"
       >
-        <div class="backdrop-blur-lg rounded-xl shadow-md bg-white dark:bg-black bg-opacity-70 dark:bg-opacity-50 h-24 w-24 flex flex-col justify-center items-center">
-          <Icon class="h-6 w-6" :name="colorModeIcon" />
-          <span class="text-zinc-500 text-sm">{{ colorMode.preference }}</span>
-        </div>
+        <Icon class="size-6" :name="colorModeIcon" />
+        <span class="text-sm">{{ colorMode.preference }}</span>
       </div>
     </Transition>
   </Teleport>
 </template>
-
-<style scoped lang="postcss">
-
-</style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   title?: string
   cols?: 1 | 2 | 3
   mdCols?: 1 | 2 | 3
@@ -7,6 +7,11 @@ withDefaults(defineProps<{
   cols: 1,
   mdCols: 2,
 })
+
+const classNames = computed(() => [
+  props.cols && `grid-cols-${props.cols}`,
+  props.mdCols && `md:grid-cols-${props.mdCols}`,
+])
 </script>
 
 <template>
@@ -17,12 +22,7 @@ withDefaults(defineProps<{
       </h3>
       <hr class="mt-2 pb-4">
     </template>
-    <div
-      class="grid w-full gap-6" :class="[
-        cols && `grid-cols-${cols}`,
-        mdCols && `md:grid-cols-${mdCols}`,
-      ]"
-    >
+    <div class="grid w-full gap-6" :class="classNames">
       <slot />
     </div>
   </div>

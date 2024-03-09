@@ -12,7 +12,7 @@ const visible = defineModel<boolean>()
   >
     <div
       v-if="visible"
-      class="backdrop themed-scrollbar fixed inset-0 z-50 overflow-x-hidden overscroll-contain bg-white bg-opacity-30 backdrop-blur transition-all duration-500 dark:bg-black dark:bg-opacity-20 print:hidden"
+      class="backdrop themed-scrollbar fixed inset-0 z-50 overflow-x-hidden overscroll-contain bg-white/30 backdrop-blur transition-all duration-500 dark:bg-black/20 print:hidden"
       @click="emit('close')"
     />
   </Transition>

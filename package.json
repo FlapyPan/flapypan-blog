@@ -1,7 +1,7 @@
 {
   "name": "flapypan-blog",
   "type": "module",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "description": "A simple and efficient blogging system.",
   "author": "FlapyPan",
   "license": "MPL-2.0",
@@ -22,14 +22,15 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@eslint/eslintrc": "^3.0.2",
     "@formkit/auto-animate": "^0.8.1",
     "@nuxtjs/color-mode": "^3.3.2",
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.9.0",
     "giscus": "^1.5.0",
-    "md-editor-v3": "^4.11.3",
+    "md-editor-v3": "^4.12.1",
     "nuxt": "^3.10.3",
-    "nuxt-icon": "^0.6.8",
+    "nuxt-icon": "^0.6.9",
     "nuxt-mongoose": "^1.0.5",
     "sharp": "^0.33.2",
     "vue": "^3.4.21",
@@ -39,11 +40,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.6.4",
+    "@antfu/eslint-config": "^2.8.0",
     "@nuxt/devtools": "latest",
     "@types/ws": "^8.5.10",
     "eslint": "^8.57.0",
-    "postcss-preset-env": "^9.4.0",
+    "eslint-plugin-tailwindcss": "^3.14.3",
+    "postcss-preset-env": "^9.5.0",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",

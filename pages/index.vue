@@ -65,10 +65,10 @@ useSeoMeta(meta)
   <main>
     <ClientOnly>
       <Teleport to="#app-bar">
-        <div class="flex items-center justify-between h-full">
+        <div class="flex h-full items-center justify-between">
           <h1 class="text-sm">
             <nuxt-link to="/" class="flex items-center gap-2">
-              <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
+              <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
               <span class="font-medium">{{ settingStore.setting.siteTitle }}</span>
             </nuxt-link>
           </h1>
@@ -84,7 +84,7 @@ useSeoMeta(meta)
       </Teleport>
     </ClientOnly>
     <section
-      class="sm:gap-18 flex h-screen w-full flex-col-reverse items-center justify-center gap-16 text-center md:flex-row md:text-left lg:gap-52"
+      class="flex h-screen w-full flex-col-reverse items-center justify-center gap-16 text-center md:flex-row md:text-left lg:gap-52"
     >
       <div>
         <h1 class="text-3xl text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
@@ -128,7 +128,7 @@ useSeoMeta(meta)
       <img
         :src="settingStore.setting.avatar"
         alt=""
-        class="h-32 w-32 rounded-full md:h-40 md:w-40 lg:h-52 lg:w-52"
+        class="size-32 rounded-full md:size-40 lg:size-52"
       >
     </section>
     <section class="page">
@@ -137,7 +137,7 @@ useSeoMeta(meta)
         <RefreshButton :loading="pending" class="ml-2" @refresh="getArticleData()" />
       </h3>
       <div v-auto-animate class="mt-8 flex flex-col gap-8">
-        <div v-if="pending" class="text-zinc-500 text-sm text-center">
+        <div v-if="pending" class="text-center text-sm text-zinc-500">
           加载中...
         </div>
         <template v-for="(a, i) in articleData ?? []" :key="a._id">

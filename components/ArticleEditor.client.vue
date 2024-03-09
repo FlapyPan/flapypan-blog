@@ -104,20 +104,20 @@ async function saveArticle() {
           上传封面
         </Btn>
       </div>
-      <div v-auto-animate class="border-all rounded-md flex items-center flex-wrap gap-1 p-2 text-sm">
+      <div v-auto-animate class="border-all flex flex-wrap items-center gap-1 rounded-md p-2 text-sm">
         <span
           v-for="(tag, i) in draft.tags"
           :key="tag"
-          class="rounded-xl px-2 flex items-center bg-primary-500 text-white gap-1"
+          class="flex items-center gap-1 rounded-xl bg-primary-500 px-2 text-white"
         >
-          <span class="textsm">{{ tag }}</span>
+          <span class="text-sm">{{ tag }}</span>
           <Icon name="mingcute:close-line" class="cursor-pointer text-xs" @click="delTag(i)" />
         </span>
         <input
           id="article-tags"
           v-model="editTags"
           :disabled="saving"
-          class="border-none ring-0 focus:ring-0 flex-1 p-1"
+          class="flex-1 border-none p-1 ring-0 focus:ring-0"
           placeholder="回车或空格添加标签"
           @keydown.delete="delLastTag()"
           @keydown.enter.prevent.stop="addTag()"

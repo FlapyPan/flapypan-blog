@@ -106,14 +106,15 @@ hr {
   @apply opacity-0;
 }
 
-html,
+:root,
 .themed-scrollbar {
-  @apply scrollbar scrollbar-track-primary-50 scrollbar-thumb-primary-200 scrollbar-track-rounded-full
-  scrollbar-thumb-rounded-full scrollbar-w-2 dark:scrollbar-track-primary-950 dark:scrollbar-thumb-primary-900;
+  @apply scrollbar scrollbar-track-transparent scrollbar-thumb-primary-200
+  scrollbar-track-rounded-full scrollbar-thumb-rounded-full scrollbar-corner-rounded-full
+  scrollbar-w-2 dark:scrollbar-thumb-primary-900;
 }
 
-html.dark {
-  @apply scrollbar-track-primary-950 scrollbar-thumb-primary-900;
+:root.dark {
+  @apply scrollbar-thumb-primary-900 scrollbar-track-transparent;
 }
 
 :is(#read, #edit).md-editor {

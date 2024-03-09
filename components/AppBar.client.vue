@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
+import { useEventSource, useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
+import { useToast } from 'vue-toastification'
 import type { ArticleWithoutContent } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
 const auth = useAuthStore()
 const route = useRoute()
+const toast = useToast()
 
 const { data: links } = useLazyAsyncData(
   'pinnedLinks',
@@ -25,15 +27,15 @@ const ignoreRouteNames = [
 const { y, arrivedState } = useScroll(window, { offset: { top: 16 } })
 const watchScroll = useIntervalFn(() => {
   if (subOpened.value && y.value < lastScrollTop) {
-    debouncedToggleSubOpened()
+    debouncedToggleSubOpened(false)
   } else if (!subOpened.value && y.value > lastScrollTop) {
-    debouncedToggleSubOpened()
+    debouncedToggleSubOpened(true)
   }
   lastScrollTop = y.value
 }, 100)
 watch(() => route.name, (name) => {
-  toggleSubOpened(false)
   if (ignoreRouteNames.includes(name as string)) {
+    toggleSubOpened(false)
     watchScroll.pause()
   } else {
     watchScroll.resume()
@@ -56,13 +58,13 @@ function openLogin() {
   auth.loginDialogVisible = true
 }
 
-const state = shallowRef('')
-onMounted(() => {
-  const eventSource = new EventSource('/api/status/author')
-  eventSource.addEventListener('message', (event) => {
-    state.value = event.data
-  })
-})
+const { data: state } = useEventSource(
+  '/api/status/author',
+  [],
+  {
+    autoReconnect: { retries: 3, delay: 1000, onFailed: () => toast.error('SSE连接失败') },
+  },
+)
 
 const navLinks = [
   {
@@ -71,7 +73,7 @@ const navLinks = [
     activeColor: {
       text: 'text-primary-500',
       hoverText: 'sm:hover:text-primary-500',
-      background: 'bg-primary-500',
+      background: 'bg-primary-500/10',
     },
     title: '首页',
     icon: 'mingcute:home-1-line',
@@ -82,7 +84,7 @@ const navLinks = [
     activeColor: {
       text: 'text-orange-500',
       hoverText: 'sm:hover:text-orange-500',
-      background: 'bg-orange-500',
+      background: 'bg-orange-500/10',
     },
     title: '博客',
     icon: 'mingcute:archive-line',
@@ -93,7 +95,7 @@ const navLinks = [
     activeColor: {
       text: 'text-pink-500',
       hoverText: 'sm:hover:text-pink-500',
-      background: 'bg-pink-500',
+      background: 'bg-pink-500/10',
     },
     title: '活动',
     icon: 'mingcute:time-line',
@@ -106,41 +108,42 @@ const navLinks = [
     <LoginForm @close="auth.loginDialogVisible = false" />
   </Dialog>
   <header
-    class="fixed top-0 z-50 w-full overflow-hidden duration-200 px-3 md:px-6 print:hidden rounded-b-lg"
-    :class="[subOpened ? 'h-10' : 'h-12',
-             arrivedState.top ? '' : 'backdrop-blur-lg bg-white bg-opacity-80 dark:bg-black dark:bg-opacity-60 shadow']"
+    class="fixed top-0 z-50 w-full overflow-hidden rounded-b-lg px-3 duration-200 md:px-6 print:hidden"
+    :class="[subOpened ? 'h-8' : 'h-12', arrivedState.top ? '' : 'bg-white/80 shadow backdrop-blur-lg dark:bg-black/60']"
     @contextmenu.stop.prevent="toggleDrawer"
   >
     <div
       :class="{ '-translate-y-full': subOpened }"
-      class="container h-12 mx-auto flex flex-row-reverse items-center justify-between transition-transform duration-200 md:flex-row"
+      class="container mx-auto flex h-12 flex-row-reverse items-center justify-between transition-transform duration-200 md:flex-row"
     >
       <nav class="hidden items-center gap-3 text-sm underline-offset-2 md:flex">
-        <nuxt-link
+        <Btn
           v-for="l in navLinks"
           :key="l.routeName"
+          class="text-current"
           :class="{
             [l.activeColor.text]: $route.name === l.routeName,
             [`${l.activeColor.hoverText}`]: true,
           }"
           :title="l.title"
           :to="l.to"
-          class="flex items-center transition-colors"
+          :icon="l.icon"
+          text
         >
-          <Icon :name="l.icon" class="mr-1" />
           {{ l.title }}
-        </nuxt-link>
-        <nuxt-link
+        </Btn>
+        <Btn
           v-for="{ _id, title, path } in links"
           :key="_id"
           :class="{ 'text-secondary-500': $route.path === `/${path}` }"
           :title="title"
           :to="`/${path}`"
-          class="hidden items-center transition-colors sm:hover:text-secondary-500 lg:flex"
+          icon="mingcute:document-line"
+          text
+          class="hidden hover:text-secondary-500 lg:inline-flex"
         >
-          <Icon class="mr-1" name="mingcute:document-line" />
           {{ title }}
-        </nuxt-link>
+        </Btn>
       </nav>
 
       <div class="hidden flex-1 md:block" />
@@ -149,7 +152,7 @@ const navLinks = [
         class="flex items-center pr-1 text-sm transition-colors sm:hover:text-primary-500"
         @click="toggleDrawer()"
       >
-        <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
+        <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
         <span v-if="state" class="ml-2 flex flex-col py-1 text-xs">
           <span>{{ settingStore.setting.name }}</span>
           <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
@@ -158,68 +161,66 @@ const navLinks = [
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
         <div class="m-2">
-          <ul class="block rounded-xl bg-zinc-50 p-2 border-all dark:bg-zinc-900 lg:hidden">
+          <ul class="border-all block rounded-xl bg-zinc-50 p-2 dark:bg-zinc-900 lg:hidden">
             <li v-for="l in navLinks" :key="l.routeName" class="block md:hidden">
               <button
-                :class="[
-                  $route.name === l.routeName ? `${l.activeColor.background} bg-opacity-10` : '',
-                ]"
+                :class="$route.name === l.routeName ? l.activeColor.background : ''"
                 :title="l.title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateToPath(l.to)"
               >
-                <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 h-5 w-5" />
+                <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 size-5" />
                 {{ l.title }}
               </button>
             </li>
             <li v-for="{ _id, title, path } in links" :key="_id" class="block lg:hidden">
               <button
-                :class="[$route.path === `/${path}` ? 'bg-secondary-500 bg-opacity-10' : '']"
+                :class="$route.path === `/${path}` ? 'bg-secondary-500/10' : ''"
                 :title="title"
                 class="flex w-full items-center rounded-xl p-2 text-sm"
                 @click="navigateToPath(`/${path}`)"
               >
-                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:document-line" />
+                <Icon class="mr-2 size-5 text-secondary-400" name="mingcute:document-line" />
                 {{ title }}
               </button>
             </li>
           </ul>
-          <ul class="mt-2 rounded-xl bg-zinc-50 p-1 border-all dark:bg-zinc-900">
+          <ul class="border-all mt-2 rounded-xl bg-zinc-50 p-1 dark:bg-zinc-900">
             <li v-if="auth.isLogin">
               <button
-                :class="[$route.name === 'new' ? 'bg-secondary-500 bg-opacity-10' : '']"
-                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500 hover:bg-opacity-10"
+                :class="$route.name === 'new' ? 'bg-secondary-500/10' : ''"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500/10"
                 @click="navigateToPath('/new')"
               >
-                <Icon class="mr-2 h-5 w-5 text-secondary-400" name="mingcute:add-line" />
+                <Icon class="mr-2 size-5 text-secondary-400" name="mingcute:add-line" />
                 写新文章
               </button>
             </li>
             <li v-if="auth.isLogin">
               <button
-                :class="[$route.name === 'setting' ? 'bg-primary-500 bg-opacity-10' : '']"
-                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500 hover:bg-opacity-10"
+                :class="$route.name === 'setting' ? 'bg-primary-500/10' : ''"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500/10"
                 @click="navigateToPath('/setting')"
               >
-                <Icon class="mr-2 h-5 w-5 text-primary-400" name="mingcute:settings-1-line" />
+                <Icon class="mr-2 size-5 text-primary-400" name="mingcute:settings-1-line" />
                 博客设置
               </button>
             </li>
             <li v-if="auth.isLogin">
               <button
-                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500 hover:bg-opacity-10"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500/10"
                 @click="auth.logout()"
               >
-                <Icon class="mr-2 h-5 w-5 text-red-400" name="mingcute:exit-line" />
+                <Icon class="mr-2 size-5 text-red-400" name="mingcute:exit-line" />
                 退出登录
               </button>
             </li>
             <li v-else>
               <button
-                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500 hover:bg-opacity-10"
+                class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500/10"
                 @click="openLogin()"
               >
-                <Icon class="mr-2 h-5 w-5 text-violet-400" name="mingcute:user-1-line" />
+                <Icon class="mr-2 size-5 text-violet-400" name="mingcute:user-1-line" />
                 管理员登录
               </button>
             </li>
@@ -233,7 +234,7 @@ const navLinks = [
     </div>
     <div
       id="app-bar"
-      class="mx-auto max-w-6xl transition-transform duration-200 h-10 overflow-hidden px-2"
+      class="mx-auto h-8 max-w-6xl overflow-hidden px-2 transition-transform duration-200"
       :class="{ '-translate-y-12': subOpened }"
     />
   </header>

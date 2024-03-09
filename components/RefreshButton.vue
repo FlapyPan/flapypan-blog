@@ -8,7 +8,9 @@ const emits = defineEmits<{
 </script>
 
 <template>
-  <Btn :disabled="loading" @click="emits('refresh')">
-    <Icon :class="{ 'animation-rotate': loading }" name="mingcute:refresh-1-line" />
-  </Btn>
+  <ClientOnly>
+    <Btn v-bind="$attrs" text :disabled="loading" @click="emits('refresh')">
+      <Icon :class="{ 'animation-rotate': loading }" name="mingcute:refresh-1-line" />
+    </Btn>
+  </ClientOnly>
 </template>

@@ -10,19 +10,14 @@ if (import.meta.browser) {
   auth.check()
   callOnce(() => {
     // 将自定义样式添加至 head
-    api<string>('/attribute/custom-style').then((data) => {
-      if (!data) return
-      const style = document.createElement('style')
-      style.textContent = data
-      document.head.appendChild(style)
-    })
+    const link = document.createElement('link')
+    link.href = '/api/attribute/custom-style'
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
     // 将自定义脚本添加至 body
-    api<string>('/attribute/custom-script').then((data) => {
-      if (!data) return
-      const script = document.createElement('script')
-      script.textContent = data
-      document.body.appendChild(script)
-    })
+    const script = document.createElement('script')
+    script.src = '/api/attribute/custom-script'
+    document.body.appendChild(script)
   })
 }
 </script>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
 import type { ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
@@ -12,7 +13,7 @@ const emits = defineEmits<{
 const settingStore = useSettingStore()
 
 const coverSrc = shallowRef(props.article.cover || settingStore.setting.banner)
-const formattedUpdatedAt = useDateTimeFormat(props.article?.updatedAt)
+const formattedUpdatedAt = useDateFormat(props.article?.updatedAt, 'YYYY-MM-DD HH:mm:ss')
 const desc = computed(() => props.article.summary ?? props.article.title)
 </script>
 

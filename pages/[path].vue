@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { MdCatalog, MdPreview } from 'md-editor-v3'
+import { useClipboard, useDateFormat, useShare } from '@vueuse/core'
 import { useToast } from 'vue-toastification'
 import type { Article, ArticleDraft } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
@@ -31,8 +32,8 @@ const {
 )
 
 // 格式化时间
-const formattedCreatedAt = useDateTimeFormat(articleData.value?.createdAt)
-const formattedUpdatedAt = useDateTimeFormat(articleData.value?.updatedAt)
+const formattedCreatedAt = useDateFormat(articleData.value?.createdAt, 'YYYY-MM-DD')
+const formattedUpdatedAt = useDateFormat(articleData.value?.updatedAt, 'YYYY-MM-DD')
 
 /// endregion
 
@@ -108,10 +109,6 @@ async function summary() {
 
 const rightDrawer = shallowRef(false)
 
-function toggleDrawer() {
-  rightDrawer.value = !rightDrawer.value
-}
-
 function closeDrawerAnd(f: Function, ...args: unknown[]) {
   rightDrawer.value = false
   f(...args)
@@ -180,44 +177,19 @@ function print() {
   })
 }
 
-async function copyLink() {
-  if (!navigator.clipboard) {
-    const inputElement = document.createElement('input')
-    inputElement.value = location.href
-    inputElement.focus()
-    document.execCommand('copy')
-    toast.info('链接已复制到剪贴板')
-    return
-  }
-  const result = await navigator.permissions.query({
-    // @ts-expect-error 剪切板权限
-    name: 'clipboard-write',
-  })
-  if (result.state === 'denied') {
-    toast.warning('无剪贴板权限')
-    return
-  }
-  try {
-    await navigator.clipboard.writeText(location.href)
-    toast.info('链接已复制到剪贴板')
-  } catch (e) {
-    toast.warning('无剪贴板权限')
-  }
-}
+const { share, isSupported } = useShare()
+const { copy } = useClipboard({ legacy: true })
 
-async function share() {
+async function shareArticle() {
   const url = location.href
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: document.title,
-        url,
-      })
-    } catch (e) {
-      await copyLink()
-    }
+  if (isSupported.value) {
+    await share({
+      title: document.title,
+      url,
+    })
   } else {
-    await copyLink()
+    await copy(url)
+    toast.success('已复制链接')
   }
 }
 
@@ -247,16 +219,16 @@ useSeoMeta(meta)
   <main class="page">
     <ClientOnly>
       <Teleport to="#app-bar">
-        <div class="flex items-center h-full">
-          <h1 class="flex items-center flex-1 gap-2 text-sm text-nowrap text-ellipsis">
-            <img :src="settingStore.setting.avatar" alt="" class="h-5 w-5 rounded-full">
+        <div class="flex h-full items-center">
+          <h1 class="flex flex-1 items-center gap-2 text-ellipsis text-nowrap text-sm">
+            <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
             <span class="font-medium">{{ articleData?.title ?? '404' }}</span>
-            <NuxtLink to="/" class="hidden md:inline-block text-zinc-500">
+            <NuxtLink to="/" class="hidden text-zinc-500 md:inline-block">
               - {{ settingStore.setting.siteTitle }}
             </NuxtLink>
           </h1>
           <div v-if="articleData?._id" class="flex items-center gap-3 text-lg">
-            <span class="hidden sm:inline-block text-xs font-mono text-zinc-500">
+            <span class="hidden font-mono text-xs text-zinc-500 sm:inline-block">
               /{{ articleData?.path }}
             </span>
             <Icon
@@ -272,7 +244,7 @@ useSeoMeta(meta)
             <Icon
               class="cursor-pointer transition hover:text-green-500"
               name="mingcute:share-2-line"
-              @click="share"
+              @click="shareArticle"
             />
           </div>
         </div>
@@ -353,28 +325,28 @@ useSeoMeta(meta)
           </p>
         </div>
         <ClientOnly>
-          <ul v-if="auth.isLogin" class="flex justify-center items-center gap-2">
+          <ul v-if="auth.isLogin" class="flex items-center justify-center gap-2">
             <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
               <button
                 v-if="articleData?.pinned"
-                class="flex items-center transition text-sm hover:text-secondary-500"
+                class="flex items-center text-sm transition hover:text-secondary-500"
               >
                 <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
                 取消固定
               </button>
-              <button v-else class="flex items-center transition text-sm hover:text-secondary-500">
+              <button v-else class="flex items-center text-sm transition hover:text-secondary-500">
                 <Icon class="mr-1 text-secondary-400" name="mingcute:pin-line" />
                 固定文章
               </button>
             </li>
             <li @click="closeDrawerAnd(openEdit)">
-              <button class="flex items-center transition text-sm hover:text-primary-500">
+              <button class="flex items-center text-sm transition hover:text-primary-500">
                 <Icon class="mr-1 text-primary-400" name="mingcute:edit-line" />
                 编辑文章
               </button>
             </li>
             <li @click="closeDrawerAnd(() => (deleteDialog = true))">
-              <button class="flex items-center transition text-sm hover:text-red-500">
+              <button class="flex items-center text-sm transition hover:text-red-500">
                 <Icon class="mr-1 text-red-400" name="mingcute:delete-line" />
                 删除文章
               </button>
@@ -409,7 +381,7 @@ useSeoMeta(meta)
         />
         <div
           v-auto-animate
-          class="side themed-scrollbar sticky top-20 hidden w-64 overflow-y-auto px-4 lg:block"
+          class="themed-scrollbar sticky top-20 hidden h-[calc(100vh-8rem)] w-64 overflow-y-auto px-4 lg:block"
         >
           <ClientOnly>
             <MdCatalog
@@ -422,7 +394,7 @@ useSeoMeta(meta)
         </div>
       </div>
       <Drawer v-model="rightDrawer" class="block lg:hidden" location="right-bottom">
-        <div class="m-2 themed-scrollbar max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 border-all dark:bg-zinc-900">
+        <div class="themed-scrollbar border-all m-2 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 dark:bg-zinc-900">
           <MdCatalog
             class="p-2"
             :offset-top="180"
@@ -434,11 +406,11 @@ useSeoMeta(meta)
       </Drawer>
       <ClientOnly>
         <div class="fixed bottom-14 right-4 z-10 md:right-12 print:hidden">
-          <div class="flex flex-col justify-end gap-2 h-36">
+          <div class="flex h-36 flex-col justify-end gap-2">
             <button
               v-if="!atTop"
               v-auto-animate
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 border-all dark:bg-zinc-900 hover:text-primary-500"
+              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 hover:text-primary-500 dark:bg-zinc-900"
               title="回到顶部"
               @click="toTop()"
             >
@@ -447,14 +419,14 @@ useSeoMeta(meta)
             <button
               v-if="!atComments"
               v-auto-animate
-              class="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-50 border-all dark:bg-zinc-900 hover:text-primary-500"
+              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 hover:text-primary-500 dark:bg-zinc-900"
               title="评论区"
               @click="toComments()"
             >
               <Icon name="mingcute:comment-line" />
             </button>
             <button
-              class="flex lg:hidden h-10 w-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 border-all dark:bg-zinc-900"
+              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 dark:bg-zinc-900 lg:hidden"
               title="更多"
               @click="rightDrawer = true"
             >
@@ -471,11 +443,4 @@ useSeoMeta(meta)
 </template>
 
 <style scoped lang="postcss">
-.side {
-  height: calc(100vh - 8rem);
-
-  :deep(.md-editor-catalog) {
-    @apply h-full;
-  }
-}
 </style>

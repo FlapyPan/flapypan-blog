@@ -34,7 +34,7 @@ function close() {
         open
         :role="role"
         v-bind="$attrs"
-        class="fixed inset-0 z-[100] w-96 max-w-full overscroll-contain rounded-xl bg-white p-4 text-current border-all dark:bg-black print:hidden"
+        class="border-all fixed inset-0 z-[100] w-96 max-w-full overscroll-contain rounded-xl bg-white p-4 text-current dark:bg-black print:hidden"
         @close="close"
       >
         <h3 v-if="title" class="text-lg font-medium leading-6">
