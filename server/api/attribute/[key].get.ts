@@ -2,7 +2,10 @@ import z from 'zod'
 import { getAttr } from '~/server/data/attribute'
 
 export default cachedEventHandler(async (event) => {
+  const accept = getHeader(event, 'Accept')?.split(',')[0]
+  if (accept) {
+    setHeader(event, 'Content-Type', accept)
+  }
   const { key } = readParams(event, { key: z.string() })
-  const attr = await getAttr(key)
-  return attr?.value
+  return await getAttr(key)
 })

@@ -1,15 +1,13 @@
-export function getAttr(key: string) {
-  return AttributeSchema.findOne({ key })
+export async function getAttr<T = unknown>(key: string) {
+  const pair = await AttributeSchema.findOne({ key })
+  return pair?.value as T
 }
 
-export async function setAttr(key: string, value: any) {
+export async function setAttr<T = unknown>(key: string, value: T) {
   if ((await AttributeSchema.countDocuments({ key })) > 0) {
     await AttributeSchema.findOneAndUpdate({ key }, { $set: { value } })
   } else {
-    const attr = new AttributeSchema()
-    attr.key = key
-    attr.value = value
-    await attr.save()
+    await new AttributeSchema({ key, value }).save()
   }
   return getAttr(key)
 }

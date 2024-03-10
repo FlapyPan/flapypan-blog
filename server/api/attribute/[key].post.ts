@@ -4,6 +4,5 @@ import { setAttr } from '~/server/data/attribute'
 export default eventHandler(async (event) => {
   const { key } = readParams(event, { key: z.string() })
   const body = (await readBody(event)) ?? null
-  const attr = await setAttr(key, body)
-  return attr?.value
+  return await setAttr(key, body)
 })

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { useEventSource, useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
-import { useToast } from 'vue-toastification'
+import { useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
 import type { ArticleWithoutContent } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
 const auth = useAuthStore()
 const route = useRoute()
-const toast = useToast()
 
 const { data: links } = useLazyAsyncData(
   'pinnedLinks',
@@ -57,14 +55,6 @@ function openLogin() {
   drawerVisible.value = false
   auth.loginDialogVisible = true
 }
-
-const { data: state } = useEventSource(
-  '/api/status/author',
-  [],
-  {
-    autoReconnect: { retries: 3, delay: 1000, onFailed: () => toast.error('SSE连接失败') },
-  },
-)
 
 const navLinks = [
   {
@@ -153,11 +143,7 @@ const navLinks = [
         @click="toggleDrawer()"
       >
         <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
-        <span v-if="state" class="ml-2 flex flex-col py-1 text-xs">
-          <span>{{ settingStore.setting.name }}</span>
-          <span class="text-zinc-500" title="我的实时状态">{{ state }}</span>
-        </span>
-        <span v-else class="ml-2 py-3">{{ settingStore.setting.name }}</span>
+        <span class="ml-2 py-3">{{ settingStore.setting.name }}</span>
       </button>
       <Drawer v-model="drawerVisible" max-size="80vw" location="right">
         <div class="m-2">
