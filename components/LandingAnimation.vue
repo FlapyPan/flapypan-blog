@@ -18,14 +18,10 @@ onMounted(() => {
   >
     <div
       v-if="show"
-      class="fixed inset-0 z-[99999999] flex items-center justify-center overscroll-contain bg-white dark:bg-black"
+      class="fixed inset-0 z-[99999999] flex items-center justify-center overscroll-contain backdrop-blur-xl"
     >
       <div class="flex flex-col items-center gap-2">
-        <img
-          class="size-24 animate-bounce rounded-full shadow"
-          :src="settingStore.setting.avatar"
-          :alt="settingStore.setting.name"
-        >
+        <div class="size-4 animate-bounce rounded-full bg-primary-500" />
         <h1 class="text-xl">
           {{ settingStore.setting.siteTitle }}
         </h1>
