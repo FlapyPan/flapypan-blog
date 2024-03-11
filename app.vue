@@ -33,6 +33,7 @@ if (import.meta.browser) {
   </Head>
   <NuxtLayout>
     <LoadingIndicator />
+    <LandingAnimation />
     <AppBar />
     <NuxtPage />
     <AppFooter />
