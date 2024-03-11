@@ -1,7 +1,7 @@
 {
   "name": "flapypan-blog",
   "type": "module",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "description": "A simple and efficient blogging system.",
   "author": "FlapyPan",
   "license": "MPL-2.0",
@@ -28,6 +28,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.9.0",
     "giscus": "^1.5.0",
+    "jsonwebtoken": "^9.0.2",
     "md-editor-v3": "^4.12.1",
     "nuxt": "^3.10.3",
     "nuxt-icon": "^0.6.9",
@@ -42,6 +43,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.0",
     "@nuxt/devtools": "latest",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/ws": "^8.5.10",
     "eslint": "^8.57.0",
     "eslint-plugin-tailwindcss": "^3.14.3",

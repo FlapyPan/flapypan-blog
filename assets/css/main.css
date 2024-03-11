@@ -27,26 +27,6 @@ body {
   @apply bg-white text-zinc-800 dark:bg-black dark:text-zinc-200;
 }
 
-.safe-inset-0 {
-  inset: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
-}
-
-.safe-left-0 {
-  left: var(--safe-left);
-}
-
-.safe-right-0 {
-  right: var(--safe-right);
-}
-
-.safe-top-0 {
-  top: var(--safe-top);
-}
-
-.safe-bottom-0 {
-  bottom: var(--safe-bottom);
-}
-
 img {
   @apply object-cover;
 }
@@ -76,24 +56,6 @@ label {
 
 hr {
   @apply border-primary-100 dark:border-primary-950;
-}
-
-.page {
-  @apply container mx-auto max-w-7xl px-3 py-16 sm:px-6;
-}
-
-.border-all {
-  @apply border border-zinc-200 dark:border-zinc-800;
-}
-
-.animation-rotate {
-  animation: rotate 1s infinite;
-}
-
-@keyframes rotate {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .page-leave-active,
@@ -188,4 +150,48 @@ hr {
 
 .Vue-Toastification__container {
   @apply print:hidden;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  .safe-inset-0 {
+    inset: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  }
+
+  .safe-left-0 {
+    left: var(--safe-left);
+  }
+
+  .safe-right-0 {
+    right: var(--safe-right);
+  }
+
+  .safe-top-0 {
+    top: var(--safe-top);
+  }
+
+  .safe-bottom-0 {
+    bottom: var(--safe-bottom);
+  }
+
+  .page {
+    @apply container mx-auto max-w-7xl px-3 py-16 sm:px-6;
+  }
+
+  .border-all {
+    @apply shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:ring-zinc-100/10;
+  }
+
+  .card {
+    @apply border-all bg-white/90 backdrop-blur-md dark:bg-black/90;
+  }
+
+  .animation-rotate {
+    animation: rotate 1s infinite;
+  }
 }

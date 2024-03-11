@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   build: {
-    transpile: ['vue-toastification'],
+    transpile: ['jsonwebtoken', 'vue-toastification'],
   },
   vite: {
     build: {

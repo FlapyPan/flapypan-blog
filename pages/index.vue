@@ -9,10 +9,12 @@ const settingStore = useSettingStore()
 const heroElement = shallowRef<HTMLDivElement>()
 const { tilt, roll, source } = useParallax(heroElement)
 const heroEleStyle = computed<CSSProperties>(() => {
-  const ration = source.value === 'deviceOrientation' ? 20 : 10
+  const isOrientation = source.value === 'deviceOrientation'
+  const x = isOrientation ? roll.value * -20 : roll.value * 10
+  const y = isOrientation ? tilt.value * -20 : tilt.value * 10
   return {
-    transform: `rotateX(${roll.value * ration}deg) rotateY(${tilt.value * ration}deg)`,
-  }
+    transform: `rotateX(${x}deg) rotateY(${y}deg)`,
+  } satisfies CSSProperties
 })
 
 /// region 访问量和其他数据
@@ -45,17 +47,17 @@ const hitoko = shallowRef('')
 
 async function fetchHitokoto() {
   try {
-    const { hitokoto: text } = await $fetch<{ hitokoto: string }>(
+    const { hitokoto: text, from } = await $fetch<Record<string, unknown>>(
       'https://v1.hitokoto.cn?c=a&c=c&c=d&c=j&c=k',
     )
-    hitoko.value = text
+    hitoko.value = `${text} —— ${from}`
   } catch (e) {
     console.error(e)
-    hitoko.value = '加载失败...'
+    hitoko.value = settingStore.setting.info
   }
 }
 
-const { pause: pauseFetchHitokoto, resume: resumeFetchHitokoto } = useIntervalFn(fetchHitokoto, 10000)
+const { pause: pauseFetchHitokoto, resume: resumeFetchHitokoto } = useIntervalFn(fetchHitokoto, 20000)
 onMounted(() => watch(() => settingStore.setting.hitoko, (value) => {
   if (value) {
     if (!hitoko.value) {

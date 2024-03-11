@@ -18,7 +18,7 @@ const desc = computed(() => props.article.summary ?? props.article.title)
 </script>
 
 <template>
-  <article class="flex min-h-60 flex-col gap-2 md:flex-row md:gap-8">
+  <article class="flex min-h-60 flex-col gap-2 rounded-xl p-4 md:flex-row md:gap-8">
     <nuxt-link
       :to="`/${article.path}`"
       class="w-full max-w-full md:max-w-md"

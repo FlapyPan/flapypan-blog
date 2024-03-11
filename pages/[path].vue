@@ -220,8 +220,8 @@ useSeoMeta(meta)
     <ClientOnly>
       <Teleport to="#app-bar">
         <div class="flex h-full items-center">
-          <h1 class="flex flex-1 items-center gap-2 text-ellipsis text-nowrap text-sm">
-            <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
+          <h1 class="flex flex-1 items-center gap-2 text-ellipsis text-nowrap text-xs">
+            <img :src="settingStore.setting.avatar" alt="" class="size-4 rounded-full">
             <span class="font-medium">{{ articleData?.title ?? '404' }}</span>
             <NuxtLink to="/" class="hidden text-zinc-500 md:inline-block">
               - {{ settingStore.setting.siteTitle }}
@@ -270,7 +270,7 @@ useSeoMeta(meta)
       </Btn>
     </div>
     <template v-if="articleData?._id">
-      <div ref="titleElement" class="mx-auto text-center">
+      <div ref="titleElement" class="mx-auto">
         <div class="mb-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
           <div class="flex items-center gap-1">
             <Icon name="mingcute:document-line" />
@@ -394,7 +394,7 @@ useSeoMeta(meta)
         </div>
       </div>
       <Drawer v-model="rightDrawer" class="block lg:hidden" location="right-bottom">
-        <div class="themed-scrollbar border-all m-2 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl bg-zinc-50 dark:bg-zinc-900">
+        <div class="themed-scrollbar card m-2 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl">
           <MdCatalog
             class="p-2"
             :offset-top="180"
@@ -410,7 +410,7 @@ useSeoMeta(meta)
             <button
               v-if="!atTop"
               v-auto-animate
-              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 hover:text-primary-500 dark:bg-zinc-900"
+              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500"
               title="回到顶部"
               @click="toTop()"
             >
@@ -419,15 +419,14 @@ useSeoMeta(meta)
             <button
               v-if="!atComments"
               v-auto-animate
-              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 hover:text-primary-500 dark:bg-zinc-900"
+              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500"
               title="评论区"
               @click="toComments()"
             >
               <Icon name="mingcute:comment-line" />
             </button>
             <button
-              class="border-all flex size-10 items-center justify-center rounded-full bg-zinc-50 text-primary-500 dark:bg-zinc-900 lg:hidden"
-              title="更多"
+              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500" title="更多"
               @click="rightDrawer = true"
             >
               <Icon name="mingcute:more-1-line" />

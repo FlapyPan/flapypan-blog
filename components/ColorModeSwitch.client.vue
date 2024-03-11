@@ -46,7 +46,7 @@ const colorModeIcon = computed(() => colorModeIconMap[colorMode.preference] ?? '
     >
       <div
         v-if="showTip"
-        class="pointer-events-none fixed left-1/2 top-1/2 flex size-24 flex-col items-center justify-center rounded-xl bg-white/70 shadow-md backdrop-blur-lg dark:bg-black/50 print:hidden"
+        class="card pointer-events-none fixed left-1/2 top-1/2 flex size-24 -translate-x-1/2 -translate-y-1/2 transform-gpu flex-col items-center justify-center rounded-xl print:hidden"
       >
         <Icon class="size-6" :name="colorModeIcon" />
         <span class="text-sm">{{ colorMode.preference }}</span>
