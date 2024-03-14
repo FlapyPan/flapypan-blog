@@ -18,7 +18,7 @@ onMounted(() => {
   >
     <div
       v-if="show"
-      class="fixed inset-0 z-[99999999] flex items-center justify-center overscroll-contain backdrop-blur-xl"
+      class="pointer-events-none fixed inset-0 z-[99999999] flex select-none items-center justify-center bg-white dark:bg-black"
     >
       <div class="flex flex-col items-center gap-2">
         <div class="size-4 animate-bounce rounded-full bg-primary-500" />

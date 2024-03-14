@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useIntervalFn, useScroll, useThrottleFn, useToggle } from '@vueuse/core'
+import { useScroll, useToggle, watchPausable } from '@vueuse/core'
 import type { ArticleWithoutContent } from '~/types/api'
 import { useAuthStore, useSettingStore } from '~/store'
 
@@ -13,47 +13,39 @@ const { data: links } = useLazyAsyncData(
   { deep: false },
 )
 
-const [subOpened, toggleSubOpened] = useToggle(false)
-const debouncedToggleSubOpened = useThrottleFn(toggleSubOpened, 500)
-let lastScrollTop = 0
+const { arrivedState, directions } = useScroll(window, { eventListenerOptions: { passive: true }, throttle: 200 })
+const subOpened = shallowRef(false)
+const watchScroll = watchPausable(directions, ({ top, bottom }) => {
+  if (subOpened.value && top) {
+    subOpened.value = false
+  } else if (!subOpened.value && bottom) {
+    subOpened.value = true
+  }
+})
 const ignoreRouteNames = [
   'archive',
   'activity',
   'new',
   'setting',
 ]
-const { y, arrivedState } = useScroll(window, { offset: { top: 16 } })
-const watchScroll = useIntervalFn(() => {
-  const distance = y.value - lastScrollTop
-  if (subOpened.value && distance < 0) {
-    debouncedToggleSubOpened(false)
-  } else if (!subOpened.value && distance > 0) {
-    debouncedToggleSubOpened(true)
-  }
-  lastScrollTop = y.value
-}, 150)
 watch(() => route.name, (name) => {
   if (ignoreRouteNames.includes(name as string)) {
-    toggleSubOpened(false)
+    subOpened.value = false
     watchScroll.pause()
   } else {
     watchScroll.resume()
   }
 }, { immediate: true })
 
-const drawerVisible = ref(false)
-
-function toggleDrawer() {
-  drawerVisible.value = !drawerVisible.value
-}
+const [drawerVisible, toggleDrawer] = useToggle(false)
 
 function navigateToPath(path: string) {
-  drawerVisible.value = false
+  toggleDrawer(false)
   navigateTo(path)
 }
 
 function openLogin() {
-  drawerVisible.value = false
+  toggleDrawer(false)
   auth.loginDialogVisible = true
 }
 
@@ -102,7 +94,7 @@ const navLinks = [
     <header
       class="mx-auto size-full max-w-5xl overflow-hidden px-3 duration-300 sm:rounded-full md:px-6 print:hidden"
       :class="[arrivedState.top ? '' : 'card', subOpened ? 'max-w-4xl' : 'max-w-6xl']"
-      @contextmenu.stop.prevent="toggleDrawer"
+      @contextmenu.stop.prevent="toggleDrawer()"
     >
       <div
         :class="{ '-translate-y-full': subOpened }"

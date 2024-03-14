@@ -426,7 +426,8 @@ useSeoMeta(meta)
               <Icon name="mingcute:comment-line" />
             </button>
             <button
-              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500" title="更多"
+              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500 lg:hidden"
+              title="更多"
               @click="rightDrawer = true"
             >
               <Icon name="mingcute:more-1-line" />
