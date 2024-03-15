@@ -51,7 +51,7 @@ const navLinks = [
     activeColor: {
       text: 'text-primary-500',
       hoverText: 'sm:hover:text-primary-500',
-      background: 'bg-primary-500/10',
+      background: 'bg-primary-500/30',
     },
     title: '首页',
     icon: 'mingcute:home-1-line',
@@ -62,7 +62,7 @@ const navLinks = [
     activeColor: {
       text: 'text-orange-500',
       hoverText: 'sm:hover:text-orange-500',
-      background: 'bg-orange-500/10',
+      background: 'bg-orange-500/30',
     },
     title: '博客',
     icon: 'mingcute:archive-line',
@@ -73,7 +73,7 @@ const navLinks = [
     activeColor: {
       text: 'text-pink-500',
       hoverText: 'sm:hover:text-pink-500',
-      background: 'bg-pink-500/10',
+      background: 'bg-pink-500/30',
     },
     title: '活动',
     icon: 'mingcute:time-line',
@@ -140,7 +140,7 @@ const navLinks = [
               </li>
               <li v-for="{ _id, title, path } in links" :key="_id" class="block lg:hidden">
                 <button
-                  :class="$route.path === `/${path}` ? 'bg-secondary-500/10' : ''"
+                  :class="$route.path === `/${path}` ? 'bg-secondary-500/30' : ''"
                   :title="title"
                   class="flex w-full items-center rounded-xl p-2"
                   @click="navigateToPath(`/${path}`)"
@@ -153,8 +153,8 @@ const navLinks = [
             <ul class="card mt-2 rounded-xl p-1">
               <li v-if="auth.isLogin">
                 <button
-                  :class="$route.name === 'new' ? 'bg-secondary-500/10' : ''"
-                  class="group flex w-full items-center rounded-lg p-2 hover:bg-secondary-500/10"
+                  :class="$route.name === 'new' ? 'bg-secondary-500/30' : ''"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-secondary-500/30"
                   @click="navigateToPath('/new')"
                 >
                   <Icon class="mr-2 size-5 text-secondary-400" name="mingcute:add-line" />
@@ -163,8 +163,8 @@ const navLinks = [
               </li>
               <li v-if="auth.isLogin">
                 <button
-                  :class="$route.name === 'setting' ? 'bg-primary-500/10' : ''"
-                  class="group flex w-full items-center rounded-lg p-2 hover:bg-primary-500/10"
+                  :class="$route.name === 'setting' ? 'bg-primary-500/30' : ''"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-primary-500/30"
                   @click="navigateToPath('/setting')"
                 >
                   <Icon class="mr-2 size-5 text-primary-400" name="mingcute:settings-1-line" />
@@ -173,7 +173,7 @@ const navLinks = [
               </li>
               <li v-if="auth.isLogin">
                 <button
-                  class="group flex w-full items-center rounded-lg p-2 hover:bg-red-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-red-500/30"
                   @click="auth.logout()"
                 >
                   <Icon class="mr-2 size-5 text-red-400" name="mingcute:exit-line" />
@@ -182,7 +182,7 @@ const navLinks = [
               </li>
               <li v-else>
                 <button
-                  class="group flex w-full items-center rounded-lg p-2 hover:bg-violet-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-violet-500/30"
                   @click="openLogin()"
                 >
                   <Icon class="mr-2 size-5 text-violet-400" name="mingcute:user-1-line" />

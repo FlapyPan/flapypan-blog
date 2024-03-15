@@ -183,7 +183,7 @@ hr {
   }
 
   .page {
-    @apply container mx-auto max-w-7xl px-3 pb-16 pt-24 sm:px-6;
+    @apply container mx-auto max-w-7xl px-2 pb-16 pt-16 sm:pt-24 sm:px-6;
   }
 
   .card {
