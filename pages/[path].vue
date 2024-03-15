@@ -260,24 +260,7 @@ useSeoMeta(meta)
           <h1 class="text-2xl">
             {{ articleData?.title }}
           </h1>
-          <div class="my-4 flex flex-wrap items-center gap-4 text-sm">
-            <div class="flex items-center gap-1">
-              <Icon name="mingcute:document-line" />
-              <span class="print:inline-block">创建时间</span>
-              <span>{{ formattedCreatedAt }}</span>
-            </div>
-            <div class="flex items-center gap-1">
-              <Icon name="mingcute:edit-line" />
-              <span class="print:inline-block">修改时间</span>
-              <span>{{ formattedUpdatedAt }}</span>
-            </div>
-          </div>
-          <div class="flex items-center gap-1 text-sm">
-            <Icon name="mingcute:book-6-line" />
-            <span>{{ articleData?.accessCount }}</span>
-            <span>次阅读</span>
-          </div>
-          <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
+          <div class="mt-4 flex flex-wrap items-center gap-2">
             <Btn
               v-for="name in articleData?.tags || []"
               :key="name"
@@ -288,9 +271,26 @@ useSeoMeta(meta)
               {{ name }}
             </Btn>
           </div>
-          <div v-if="articleData.summary || auth.isLogin">
+          <div class="mt-4 flex flex-wrap items-center gap-4 text-sm">
+            <div class="flex items-center gap-1">
+              <Icon name="mingcute:document-line" />
+              <span class="print:inline-block">创建时间</span>
+              <span>{{ formattedCreatedAt }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Icon name="mingcute:edit-line" />
+              <span class="print:inline-block">修改时间</span>
+              <span>{{ formattedUpdatedAt }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Icon name="mingcute:book-6-line" />
+              <span>{{ articleData?.accessCount }}</span>
+              <span>次阅读</span>
+            </div>
+          </div>
+          <div v-if="articleData.summary || auth.isLogin" class="mt-4">
             <p class="leading-relaxed">
-              <span class="font-bold">
+              <span class="font-medium">
                 <Icon name="mingcute:notebook-line" />
                 AI摘要：
               </span>
