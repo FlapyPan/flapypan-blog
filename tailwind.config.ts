@@ -19,8 +19,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.indigo,
-        secondary: colors.green,
+        primary: colors.sky,
+        secondary: colors.emerald,
       },
     },
     fontFamily: { sans, serif, mono },

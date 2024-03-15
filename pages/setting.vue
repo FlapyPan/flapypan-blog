@@ -112,7 +112,7 @@ useSeoMeta(meta)
           <TextField v-model="settingStore.setting.giscusCategory" :disabled="savingSettings" label="giscusCategory" />
           <TextField v-model="settingStore.setting.giscusCategory" :disabled="savingSettings" label="giscusCategory" />
         </TextFieldContainer>
-        <Btn :disabled="savingSettings" class="mt-8" @click="saveSetting()">
+        <Btn primary :disabled="savingSettings" class="mt-8" @click="saveSetting()">
           保存设置
         </Btn>
         <TextFieldContainer title="自定义样式(CSS)" :md-cols="1">
@@ -124,7 +124,7 @@ useSeoMeta(meta)
             @focus.once="fetchCustomStyle()"
           />
         </TextFieldContainer>
-        <Btn :disabled="savingCustomScript" class="mt-4" @click="saveCustomStyle()">
+        <Btn primary :disabled="savingCustomScript" class="mt-4" @click="saveCustomStyle()">
           保存自定义样式
         </Btn>
         <TextFieldContainer title="自定义脚本(JS)" :md-cols="1">
@@ -136,11 +136,13 @@ useSeoMeta(meta)
             @focus.once="fetchCustomScript()"
           />
         </TextFieldContainer>
-        <Btn :disabled="savingCustomScript" class="mt-4" @click="saveCustomScript()">
+        <Btn primary :disabled="savingCustomScript" class="mt-4" @click="saveCustomScript()">
           保存自定义脚本
         </Btn>
       </div>
     </template>
-    <PageHead v-else title="请登录" />
+    <h2 v-else class="text-3xl">
+      请登录
+    </h2>
   </main>
 </template>

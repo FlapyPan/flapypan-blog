@@ -18,7 +18,7 @@ const placeholderProp = computed<string>(() => props.placeholder ?? props.label 
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-2 text-sm" :class="props.class">
+  <div class="flex flex-wrap items-center gap-2" :class="props.class">
     <label v-if="label" :for="id">{{ label }}</label>
     <input
       v-bind="$attrs"

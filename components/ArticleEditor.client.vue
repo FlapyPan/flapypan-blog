@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MdEditor } from 'md-editor-v3'
+import { MdEditor, type Themes } from 'md-editor-v3'
 import { useToast } from 'vue-toastification'
 import type { ArticleDraft } from '~/types/api'
 import 'md-editor-v3/lib/style.css'
@@ -97,21 +97,21 @@ async function saveArticle() {
   <form class="flex flex-col gap-6" @submit.prevent.stop>
     <TextFieldContainer>
       <TextField v-model="draft.title" label="文章标题" :disabled="saving" />
-      <TextField v-model="draft.path" label="访问路径" :disabled="saving" />
+      <TextField v-model="draft.path" label="阅读路径" :disabled="saving" />
       <div class="flex items-center gap-2">
         <TextField v-model="draft.cover" class="flex-1" label="封面链接" :disabled="saving" />
-        <Btn @click="openUpload">
+        <Btn secondary @click="openUpload">
           上传封面
         </Btn>
       </div>
-      <div v-auto-animate class="border-all flex flex-wrap items-center gap-1 rounded-md p-2 text-sm">
+      <div v-auto-animate class="flex flex-wrap items-center gap-1 rounded-md border px-2 py-1">
         <span
           v-for="(tag, i) in draft.tags"
           :key="tag"
           class="flex items-center gap-1 rounded-xl bg-primary-500 px-2 text-white"
         >
           <span class="text-sm">{{ tag }}</span>
-          <Icon name="mingcute:close-line" class="cursor-pointer text-xs" @click="delTag(i)" />
+          <Icon name="mingcute:close-line" class="cursor-pointer" @click="delTag(i)" />
         </span>
         <input
           id="article-tags"
@@ -127,16 +127,16 @@ async function saveArticle() {
       </div>
     </TextFieldContainer>
     <div class="flex justify-center">
-      <Btn :disabled="saving" class="w-full max-w-lg" @click="saveArticle">
+      <Btn primary :disabled="saving" class="w-full max-w-lg" @click="saveArticle">
         保存发布
       </Btn>
     </div>
     <MdEditor
       v-model="draft.content"
       :no-img-zoom-in="false"
-      theme="light"
       code-theme="gradient"
       editor-id="edit"
+      :theme="$colorMode.preference as Themes"
       preview-theme="default"
       @on-upload-img="onUploadImg"
       @on-error="catchEditorError"

@@ -17,7 +17,7 @@ const heroEleStyle = computed<CSSProperties>(() => {
   } satisfies CSSProperties
 })
 
-/// region 访问量和其他数据
+/// region 阅读量和其他数据
 const { data: accessData } = await useLazyAsyncData(
   `access:base`,
   () => api<AccessData>(`/access`),
@@ -84,26 +84,6 @@ useSeoMeta(meta)
 
 <template>
   <main>
-    <ClientOnly>
-      <Teleport to="#app-bar">
-        <div class="flex h-full items-center justify-between">
-          <h1 class="text-sm">
-            <nuxt-link to="/" class="flex items-center gap-2">
-              <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
-              <span class="font-medium">{{ settingStore.setting.siteTitle }}</span>
-            </nuxt-link>
-          </h1>
-          <div class="flex gap-1 text-xs">
-            <p v-if="accessData?.today">
-              今日访问:{{ accessData?.today }}
-            </p>
-            <p v-if="accessData?.all">
-              总访问:{{ accessData?.all }}
-            </p>
-          </div>
-        </div>
-      </Teleport>
-    </ClientOnly>
     <section
       ref="heroElement"
       style="perspective: 200px"
@@ -114,10 +94,10 @@ useSeoMeta(meta)
         class="flex flex-col-reverse items-center justify-center gap-16 text-center will-change-transform md:flex-row md:text-left lg:gap-52"
       >
         <div>
-          <h1 class="text-3xl text-zinc-700 dark:text-zinc-100 sm:text-4xl lg:text-5xl">
+          <h1 class="text-3xl text-stone-700 dark:text-stone-100 sm:text-4xl lg:text-5xl">
             {{ settingStore.setting.siteTitle }}
           </h1>
-          <div class="text-zinc-600 dark:text-zinc-400">
+          <div class="text-stone-600 dark:text-stone-400">
             <p class="mt-6 flex items-center justify-center gap-4 text-2xl md:justify-start md:gap-2">
               <a
                 :href="`mailto:${settingStore.setting.email}`"
@@ -134,7 +114,7 @@ useSeoMeta(meta)
                 <Icon name="mdi:github" />
               </a>
             </p>
-            <div v-if="settingStore.setting.hitoko" class="mt-4 text-center text-sm md:w-72 md:text-left">
+            <div v-if="settingStore.setting.hitoko" class="mt-4 text-center md:w-72 md:text-left">
               <p v-if="hitoko">
                 {{ hitoko }}
               </p>
@@ -142,7 +122,7 @@ useSeoMeta(meta)
                 加载中...
               </p>
             </div>
-            <p v-else class="mt-4 text-center text-sm md:text-left">
+            <p v-else class="mt-4 text-center md:text-left">
               {{ settingStore.setting.info }}
               <span class="animate-ping">_</span>
             </p>
@@ -161,16 +141,15 @@ useSeoMeta(meta)
         <RefreshButton :loading="pending" class="ml-2" @refresh="getArticleData()" />
       </h3>
       <div v-auto-animate class="mt-8 flex flex-col gap-8">
-        <div v-if="pending" class="text-center text-sm text-zinc-500">
+        <div v-if="pending" class="text-center text-stone-500">
           加载中...
         </div>
-        <template v-for="(a, i) in articleData ?? []" :key="a._id">
+        <template v-for="a in articleData ?? []" :key="a._id">
           <ArticleCard :article="a" />
-          <hr v-if="i < (articleData?.length ?? 0) - 1">
         </template>
       </div>
       <div v-once class="mt-8 text-center">
-        <Btn icon="mingcute:more-2-line" text to="/archive">
+        <Btn icon="mingcute:more-2-line" secondary to="/archive">
           所有博客
         </Btn>
       </div>

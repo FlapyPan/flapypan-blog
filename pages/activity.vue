@@ -34,7 +34,6 @@ useSeoMeta(meta)
 
 <template v-once>
   <main class="page">
-    <PageHead v-once :sub-title="description" title="最近活动" />
     <h3 class="mb-6 ml-2 text-xl">
       Github 仓库
     </h3>
@@ -43,17 +42,17 @@ useSeoMeta(meta)
         v-for="repo in repos"
         :key="repo._id"
         :href="repo.html_url"
-        class="group flex flex-col gap-2 overflow-hidden rounded-xl bg-zinc-50 p-4 transition dark:bg-zinc-900"
+        class="card group flex flex-col gap-2 overflow-hidden rounded-xl p-4 transition"
         target="_blank"
       >
         <p class="text-lg underline-offset-2 group-hover:underline">
           {{ repo.full_name }}
         </p>
-        <p class="py-2 text-xs text-zinc-500">{{ repo.description }}</p>
+        <p class="py-2 text-stone-500">{{ repo.description }}</p>
         <p class="flex-1" />
-        <p class="flex items-center gap-4 text-sm">
+        <p class="flex items-center gap-4">
           <span v-if="repo.language" class="flex items-center">
-            <span class="flex items-center text-zinc-500">
+            <span class="flex items-center text-stone-500">
               <Icon
                 :class="`lang-${repo.language}`"
                 class="mr-1 text-base"
@@ -63,25 +62,25 @@ useSeoMeta(meta)
             {{ repo.language }}
           </span>
           <span v-if="repo.stargazers_count >= 0" class="flex items-center">
-            <Icon class="mr-1 text-base text-zinc-500" name="mingcute:star-line" />
+            <Icon class="mr-1 text-base text-stone-500" name="mingcute:star-line" />
             {{ repo.stargazers_count }}
           </span>
           <span v-if="repo.forks >= 0" class="flex items-center">
-            <Icon class="mr-1 text-base text-zinc-500" name="mingcute:git-merge-line" />
+            <Icon class="mr-1 text-base text-stone-500" name="mingcute:git-merge-line" />
             {{ repo.forks }}
           </span>
           <span class="flex-1" />
-          <Icon class="text-base text-zinc-500" name="mdi:github" />
+          <Icon class="text-base text-stone-500" name="mdi:github" />
         </p>
       </a>
     </div>
-    <p v-if="!fetchingRepos && !repos?.length" class="py-2 text-center text-sm text-zinc-500">
+    <p v-if="!fetchingRepos && !repos?.length" class="py-2 text-center text-stone-500">
       暂无数据
     </p>
-    <p v-show="fetchingRepos" class="py-2 text-center text-sm text-zinc-500">
+    <p v-show="fetchingRepos" class="py-2 text-center text-stone-500">
       加载中...
     </p>
-    <figure v-if="settingStore.setting.wakatime" class="mx-auto mt-8 max-w-3xl">
+    <figure v-if="settingStore.setting.wakatime" class="mt-8 max-w-3xl">
       <embed :src="settingStore.setting.wakatime">
     </figure>
   </main>

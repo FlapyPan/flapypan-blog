@@ -25,7 +25,7 @@ onMounted(() => {
         <h1 class="text-xl">
           {{ settingStore.setting.siteTitle }}
         </h1>
-        <p class="animate-pulse text-zinc-500">
+        <p class="animate-pulse text-stone-500">
           loading...
         </p>
       </div>

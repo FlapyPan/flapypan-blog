@@ -48,7 +48,6 @@ useSeoMeta(meta)
 
 <template>
   <main class="page">
-    <PageHead sub-title="看看我都水了什么文章" title="文章归档" />
     <h3 class="my-3 flex items-center text-2xl">
       标签
     </h3>
@@ -69,7 +68,7 @@ useSeoMeta(meta)
     </div>
     <p
       v-show="fetchingArticleData || fetchingTagList"
-      class="py-2 text-center text-sm text-zinc-500"
+      class="py-2 text-center text-stone-500"
     >
       加载中...
     </p>

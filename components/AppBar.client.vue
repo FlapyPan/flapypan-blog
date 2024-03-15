@@ -22,18 +22,13 @@ const watchScroll = watchPausable(directions, ({ top, bottom }) => {
     subOpened.value = true
   }
 })
-const ignoreRouteNames = [
-  'archive',
-  'activity',
-  'new',
-  'setting',
-]
+const enabledRouteNames = ['path']
 watch(() => route.name, (name) => {
-  if (ignoreRouteNames.includes(name as string)) {
+  if (enabledRouteNames.includes(name as string)) {
+    watchScroll.resume()
+  } else {
     subOpened.value = false
     watchScroll.pause()
-  } else {
-    watchScroll.resume()
   }
 }, { immediate: true })
 
@@ -87,44 +82,38 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="fixed top-0 z-50 h-10 w-full sm:top-2">
+  <div class="fixed top-0 z-50 h-14 w-full md:top-2 md:px-2">
     <Dialog v-model="auth.loginDialogVisible" closable>
       <LoginForm @close="auth.loginDialogVisible = false" />
     </Dialog>
     <header
-      class="mx-auto size-full max-w-5xl overflow-hidden px-3 duration-300 sm:rounded-full md:px-6 print:hidden"
-      :class="[arrivedState.top ? '' : 'card', subOpened ? 'max-w-4xl' : 'max-w-6xl']"
+      class="mx-auto size-full max-w-5xl overflow-hidden bg-primary-50 px-4 duration-300 dark:bg-stone-800 md:rounded-full md:px-2 print:hidden"
+      :class="[arrivedState.top ? '' : 'shadow', subOpened ? 'max-w-4xl' : 'max-w-6xl']"
       @contextmenu.stop.prevent="toggleDrawer()"
     >
       <div
         :class="{ '-translate-y-full': subOpened }"
-        class="mx-auto flex h-10 flex-row-reverse items-center justify-between transition-transform duration-200 md:flex-row"
+        class="mx-auto flex h-14 items-center justify-between transition-transform duration-200"
       >
-        <nav class="hidden items-center gap-3 text-sm underline-offset-2 md:flex">
+        <nav class="hidden items-center gap-1 underline-offset-2 md:flex">
           <Btn
             v-for="l in navLinks"
             :key="l.routeName"
-            class="text-current"
-            :class="{
-              [l.activeColor.text]: $route.name === l.routeName,
-              [`${l.activeColor.hoverText}`]: true,
-            }"
+            :primary="$route.name === l.routeName"
             :title="l.title"
             :to="l.to"
             :icon="l.icon"
-            text
           >
             {{ l.title }}
           </Btn>
           <Btn
             v-for="{ _id, title, path } in links"
             :key="_id"
-            :class="{ 'text-secondary-500': $route.path === `/${path}` }"
+            :secondary="$route.path === `/${path}`"
             :title="title"
             :to="`/${path}`"
             icon="mingcute:document-line"
-            text
-            class="hidden hover:text-secondary-500 lg:inline-flex"
+            class="hidden lg:inline-flex"
           >
             {{ title }}
           </Btn>
@@ -132,13 +121,9 @@ const navLinks = [
 
         <div class="hidden flex-1 md:block" />
 
-        <button
-          class="flex items-center pr-1 text-sm transition-colors sm:hover:text-primary-500"
-          @click="toggleDrawer()"
-        >
-          <img :src="settingStore.setting.avatar" alt="" class="size-5 rounded-full">
-          <span class="ml-2 py-3">{{ settingStore.setting.name }}</span>
-        </button>
+        <Btn primary class="mr-2" icon="mingcute:menu-line" @click="toggleDrawer()">
+          <span class="font-medium">{{ settingStore.setting.name }}</span>
+        </Btn>
         <Drawer v-model="drawerVisible" max-size="80vw" location="right">
           <div class="m-2">
             <ul class="card block rounded-xl p-2 lg:hidden">
@@ -146,7 +131,7 @@ const navLinks = [
                 <button
                   :class="$route.name === l.routeName ? l.activeColor.background : ''"
                   :title="l.title"
-                  class="flex w-full items-center rounded-xl p-2 text-sm"
+                  class="flex w-full items-center rounded-xl p-2"
                   @click="navigateToPath(l.to)"
                 >
                   <Icon :class="l.activeColor.text" :name="l.icon" class="mr-2 size-5" />
@@ -157,7 +142,7 @@ const navLinks = [
                 <button
                   :class="$route.path === `/${path}` ? 'bg-secondary-500/10' : ''"
                   :title="title"
-                  class="flex w-full items-center rounded-xl p-2 text-sm"
+                  class="flex w-full items-center rounded-xl p-2"
                   @click="navigateToPath(`/${path}`)"
                 >
                   <Icon class="mr-2 size-5 text-secondary-400" name="mingcute:document-line" />
@@ -169,7 +154,7 @@ const navLinks = [
               <li v-if="auth.isLogin">
                 <button
                   :class="$route.name === 'new' ? 'bg-secondary-500/10' : ''"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-secondary-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-secondary-500/10"
                   @click="navigateToPath('/new')"
                 >
                   <Icon class="mr-2 size-5 text-secondary-400" name="mingcute:add-line" />
@@ -179,7 +164,7 @@ const navLinks = [
               <li v-if="auth.isLogin">
                 <button
                   :class="$route.name === 'setting' ? 'bg-primary-500/10' : ''"
-                  class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-primary-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-primary-500/10"
                   @click="navigateToPath('/setting')"
                 >
                   <Icon class="mr-2 size-5 text-primary-400" name="mingcute:settings-1-line" />
@@ -188,7 +173,7 @@ const navLinks = [
               </li>
               <li v-if="auth.isLogin">
                 <button
-                  class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-red-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-red-500/10"
                   @click="auth.logout()"
                 >
                   <Icon class="mr-2 size-5 text-red-400" name="mingcute:exit-line" />
@@ -197,7 +182,7 @@ const navLinks = [
               </li>
               <li v-else>
                 <button
-                  class="group flex w-full items-center rounded-lg p-2 text-sm hover:bg-violet-500/10"
+                  class="group flex w-full items-center rounded-lg p-2 hover:bg-violet-500/10"
                   @click="openLogin()"
                 >
                   <Icon class="mr-2 size-5 text-violet-400" name="mingcute:user-1-line" />
@@ -214,8 +199,8 @@ const navLinks = [
       </div>
       <div
         id="app-bar"
-        class="h-10 overflow-hidden transition-transform duration-200"
-        :class="{ '-translate-y-10': subOpened }"
+        class="h-14 overflow-hidden transition-transform duration-200"
+        :class="{ '-translate-y-full': subOpened }"
       />
     </header>
   </div>

@@ -18,7 +18,7 @@ const placeholderProp = computed<string>(() => props.placeholder ?? props.label 
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 text-sm" :class="props.class">
+  <div class="flex flex-col gap-2" :class="props.class">
     <label v-if="label" :for="id">{{ label }}</label>
     <textarea
       v-bind="$attrs"

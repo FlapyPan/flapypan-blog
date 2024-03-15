@@ -219,33 +219,17 @@ useSeoMeta(meta)
   <main class="page">
     <ClientOnly>
       <Teleport to="#app-bar">
-        <div class="flex h-full items-center">
-          <h1 class="flex flex-1 items-center gap-2 text-ellipsis text-nowrap text-xs">
-            <img :src="settingStore.setting.avatar" alt="" class="size-4 rounded-full">
-            <span class="font-medium">{{ articleData?.title ?? '404' }}</span>
-            <NuxtLink to="/" class="hidden text-zinc-500 md:inline-block">
-              - {{ settingStore.setting.siteTitle }}
-            </NuxtLink>
-          </h1>
-          <div v-if="articleData?._id" class="flex items-center gap-3 text-lg">
-            <span class="hidden font-mono text-xs text-zinc-500 sm:inline-block">
+        <div class="flex h-full items-center justify-between">
+          <h1 class="flex items-center gap-2 text-nowrap md:pl-2">
+            <span class="text-sm font-medium md:text-base">{{ articleData?.title ?? '404' }}</span>
+            <span class="hidden font-mono text-sm text-stone-500 md:inline-block">
               /{{ articleData?.path }}
             </span>
-            <Icon
-              class="cursor-pointer transition hover:text-pink-500"
-              name="mingcute:print-line"
-              @click="print"
-            />
-            <Icon
-              class="cursor-pointer transition hover:text-blue-500"
-              name="mingcute:download-line"
-              @click="download"
-            />
-            <Icon
-              class="cursor-pointer transition hover:text-green-500"
-              name="mingcute:share-2-line"
-              @click="shareArticle"
-            />
+          </h1>
+          <div v-if="articleData?._id" class="flex items-center gap-2 text-lg">
+            <Btn icon="mingcute:print-line" secondary single @click="print" />
+            <Btn icon="mingcute:download-line" secondary single @click="download" />
+            <Btn icon="mingcute:share-2-line" secondary single @click="shareArticle" />
           </div>
         </div>
       </Teleport>
@@ -260,7 +244,7 @@ useSeoMeta(meta)
     </Drawer>
     <div
       v-if="articleDataError"
-      class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-zinc-50 dark:bg-red-700"
+      class="flex flex-wrap items-center gap-2 rounded-lg bg-red-400 px-6 py-3 text-stone-50 dark:bg-red-700"
     >
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ articleDataError }}</span>
@@ -270,104 +254,107 @@ useSeoMeta(meta)
       </Btn>
     </div>
     <template v-if="articleData?._id">
-      <div ref="titleElement" class="mx-auto">
-        <div class="mb-4 flex flex-wrap items-center justify-center gap-2 text-zinc-500">
-          <div class="flex items-center gap-1">
-            <Icon name="mingcute:document-line" />
-            <span class="hidden text-sm md:inline-block print:inline-block">创建</span>
-            <span class="text-sm">{{ formattedCreatedAt }}</span>
+      <div ref="titleElement" class="card mx-auto flex flex-col overflow-hidden rounded-3xl md:flex-row">
+        <img :src="articleData.cover || settingStore.setting.banner" alt="" class="aspect-video rounded-3xl md:w-1/2">
+        <div class="flex-1 p-8">
+          <h1 class="text-2xl">
+            {{ articleData?.title }}
+          </h1>
+          <div class="my-4 flex flex-wrap items-center gap-4 text-sm">
+            <div class="flex items-center gap-1">
+              <Icon name="mingcute:document-line" />
+              <span class="print:inline-block">创建时间</span>
+              <span>{{ formattedCreatedAt }}</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <Icon name="mingcute:edit-line" />
+              <span class="print:inline-block">修改时间</span>
+              <span>{{ formattedUpdatedAt }}</span>
+            </div>
           </div>
           <div class="flex items-center gap-1 text-sm">
-            <Icon name="mingcute:edit-line" />
-            <span class="hidden text-sm md:inline-block print:inline-block">修改</span>
-            <span class="text-sm">{{ formattedUpdatedAt }}</span>
-          </div>
-        </div>
-        <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
-          <div class="ml-3 flex items-center gap-1 print:hidden">
             <Icon name="mingcute:book-6-line" />
-            <span class="text-sm">{{ articleData?.accessCount }}</span>
-            <span class="hidden text-sm md:inline-block">次访问</span>
+            <span>{{ articleData?.accessCount }}</span>
+            <span>次阅读</span>
           </div>
-          <Btn
-            v-for="name in articleData?.tags || []"
-            :key="name"
-            :to="`/tag/${name}`"
-            icon="mingcute:hashtag-line"
-            text
-          >
-            {{ name }}
-          </Btn>
-        </div>
-        <div
-          v-if="articleData.summary || auth.isLogin"
-          class="mx-auto mb-4 max-w-xl rounded-xl bg-zinc-50 p-3 text-zinc-500 dark:bg-zinc-900"
-        >
-          <p class="text-xs leading-relaxed">
-            <span class="font-bold">
-              <Icon name="mingcute:notebook-line" />
-              AI摘要：
-            </span>
-            {{ articleData?.summary ?? '无' }}
-          </p>
-          <p class="mt-3 flex items-center justify-between text-xs">
-            <Btn v-if="auth.isLogin" :disabled="summaryLoading" @click="summary">
-              {{ summaryLoading ? '生成中...' : '生成摘要' }}
+          <div class="mb-4 flex flex-wrap items-center justify-center gap-2">
+            <Btn
+              v-for="name in articleData?.tags || []"
+              :key="name"
+              :to="`/tag/${name}`"
+              icon="mingcute:hashtag-line"
+              text
+            >
+              {{ name }}
             </Btn>
-            <span v-else />
-            <span>
-              由
-              <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
-                讯飞星火认知大模型
-              </a>
-              生成
-            </span>
-          </p>
+          </div>
+          <div v-if="articleData.summary || auth.isLogin">
+            <p class="leading-relaxed">
+              <span class="font-bold">
+                <Icon name="mingcute:notebook-line" />
+                AI摘要：
+              </span>
+              {{ articleData?.summary ?? '无' }}
+            </p>
+            <p class="mt-3 flex items-center justify-between">
+              <Btn v-if="auth.isLogin" :disabled="summaryLoading" primary @click="summary">
+                {{ summaryLoading ? '生成中...' : '生成摘要' }}
+              </Btn>
+              <span v-else />
+              <span class="text-sm">
+                由
+                <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
+                  讯飞星火认知大模型
+                </a>
+                生成
+              </span>
+            </p>
+          </div>
+          <ClientOnly>
+            <ul v-if="auth.isLogin" class="mt-8 flex items-center gap-2">
+              <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
+                <button
+                  v-if="articleData?.pinned"
+                  class="flex items-center transition hover:text-secondary-500"
+                >
+                  <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
+                  取消固定
+                </button>
+                <button v-else class="flex items-center transition hover:text-secondary-500">
+                  <Icon class="mr-1 text-secondary-400" name="mingcute:pin-line" />
+                  固定文章
+                </button>
+              </li>
+              <li @click="closeDrawerAnd(openEdit)">
+                <button class="flex items-center transition hover:text-primary-500">
+                  <Icon class="mr-1 text-primary-400" name="mingcute:edit-line" />
+                  编辑文章
+                </button>
+              </li>
+              <li @click="closeDrawerAnd(() => (deleteDialog = true))">
+                <button class="flex items-center transition hover:text-red-500">
+                  <Icon class="mr-1 text-red-400" name="mingcute:delete-line" />
+                  删除文章
+                </button>
+                <Dialog v-model="deleteDialog" closable>
+                  <p class="mb-4">
+                    确认删除此文章 "{{ articleData?.title }}" ?
+                  </p>
+                  <div class="text-right">
+                    <Btn class="mr-4" text @click="deleteArticle">
+                      <span class="text-red-500">确认删除</span>
+                    </Btn>
+                    <Btn text @click="deleteDialog = false">
+                      取消
+                    </Btn>
+                  </div>
+                </Dialog>
+              </li>
+            </ul>
+          </ClientOnly>
         </div>
-        <ClientOnly>
-          <ul v-if="auth.isLogin" class="flex items-center justify-center gap-2">
-            <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
-              <button
-                v-if="articleData?.pinned"
-                class="flex items-center text-sm transition hover:text-secondary-500"
-              >
-                <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
-                取消固定
-              </button>
-              <button v-else class="flex items-center text-sm transition hover:text-secondary-500">
-                <Icon class="mr-1 text-secondary-400" name="mingcute:pin-line" />
-                固定文章
-              </button>
-            </li>
-            <li @click="closeDrawerAnd(openEdit)">
-              <button class="flex items-center text-sm transition hover:text-primary-500">
-                <Icon class="mr-1 text-primary-400" name="mingcute:edit-line" />
-                编辑文章
-              </button>
-            </li>
-            <li @click="closeDrawerAnd(() => (deleteDialog = true))">
-              <button class="flex items-center text-sm transition hover:text-red-500">
-                <Icon class="mr-1 text-red-400" name="mingcute:delete-line" />
-                删除文章
-              </button>
-              <Dialog v-model="deleteDialog" closable>
-                <p class="mb-4">
-                  确认删除此文章 "{{ articleData?.title }}" ?
-                </p>
-                <div class="text-right">
-                  <Btn class="mr-4" text @click="deleteArticle">
-                    <span class="text-red-500">确认删除</span>
-                  </Btn>
-                  <Btn text @click="deleteDialog = false">
-                    取消
-                  </Btn>
-                </div>
-              </Dialog>
-            </li>
-          </ul>
-        </ClientOnly>
       </div>
-      <div class="flex justify-center gap-4 pb-24">
+      <div class="mt-6 flex justify-center gap-4 md:mt-16">
         <MdPreview
           v-if="articleData?._id"
           :model-value="articleData?.content"
@@ -393,7 +380,7 @@ useSeoMeta(meta)
           </ClientOnly>
         </div>
       </div>
-      <Drawer v-model="rightDrawer" class="block lg:hidden" location="right-bottom">
+      <Drawer v-model="rightDrawer" class="block md:hidden" location="right-bottom">
         <div class="themed-scrollbar card m-2 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl">
           <MdCatalog
             class="p-2"
@@ -405,33 +392,34 @@ useSeoMeta(meta)
         </div>
       </Drawer>
       <ClientOnly>
-        <div class="fixed bottom-14 right-4 z-10 md:right-12 print:hidden">
+        <div class="fixed bottom-14 right-4 z-10 lg:right-12 print:hidden">
           <div class="flex h-36 flex-col justify-end gap-2">
-            <button
+            <Btn
               v-if="!atTop"
               v-auto-animate
-              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500"
+              single
+              icon="mingcute:arrows-up-line"
               title="回到顶部"
+              primary
               @click="toTop()"
-            >
-              <Icon name="mingcute:arrows-up-line" />
-            </button>
-            <button
+            />
+            <Btn
               v-if="!atComments"
               v-auto-animate
-              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500"
+              single
               title="评论区"
+              primary
+              icon="mingcute:comment-line"
               @click="toComments()"
-            >
-              <Icon name="mingcute:comment-line" />
-            </button>
-            <button
-              class="card flex size-10 items-center justify-center rounded-full hover:text-primary-500 lg:hidden"
+            />
+            <Btn
+              class="lg:hidden"
+              single
               title="更多"
+              icon="mingcute:more-1-line"
+              primary
               @click="rightDrawer = true"
-            >
-              <Icon name="mingcute:more-1-line" />
-            </button>
+            />
           </div>
         </div>
       </ClientOnly>

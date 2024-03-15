@@ -34,16 +34,12 @@ useSeoMeta(meta)
 
 <template>
   <main class="page">
-    <PageHead class="mb-6">
-      <template #title>
-        <div class="flex items-center justify-center">
-          <Icon name="mingcute:hashtag-line" />
-          {{ tag }}
-        </div>
-      </template>
-    </PageHead>
+    <h3 class="my-3 flex items-center text-2xl">
+      <Icon name="mingcute:hashtag-line" />
+      {{ tag }}
+    </h3>
     <ArticleTimeline :list="articleData" />
-    <p v-show="fetchingData" class="py-2 text-center text-sm text-zinc-500">
+    <p v-show="fetchingData" class="py-2 text-center text-stone-500">
       加载中...
     </p>
   </main>

@@ -12,7 +12,7 @@ withDefaults(defineProps<{ list?: ArticleWithoutContent[] }>(), { list: () => []
       :key="_id"
       class="relative flex items-center py-2"
     >
-      <span class="mr-1 text-xs text-zinc-500">{{ useDateFormat(createdAt, 'YYYY-MM-DD').value }}</span>
+      <span class="mr-1 text-stone-500">{{ useDateFormat(createdAt, 'YYYY-MM-DD').value }}</span>
       <Btn :to="`/${path}`" icon="mingcute:document-line" text :title="summary ?? title">
         {{ title }}
       </Btn>

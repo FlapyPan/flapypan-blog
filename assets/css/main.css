@@ -7,7 +7,7 @@
   --safe-right: env(safe-area-inset-right, 0);
   --safe-bottom: env(safe-area-inset-bottom, 0);
   --safe-left: env(safe-area-inset-left, 0);
-  --primary-500: rgb(99, 102, 241);
+  --primary-500: #0ea5e9;
 
   color-scheme: light dark;
 
@@ -30,7 +30,7 @@ html:has(.backdrop) {
 
 html,
 body {
-  @apply w-full overflow-x-clip text-zinc-800 dark:text-zinc-200;
+  @apply w-full overflow-x-clip bg-white dark:bg-black text-stone-900 dark:text-stone-100;
 }
 
 img {
@@ -41,10 +41,10 @@ input,
 textarea {
   @apply rounded-md px-3 py-2 transition;
   @apply accent-primary-500 bg-white dark:bg-black;
-  @apply border border-zinc-200 dark:border-zinc-800;
+  @apply border border-stone-200 dark:border-stone-800;
 
   &[disabled] {
-    @apply cursor-not-allowed opacity-30 bg-zinc-300 dark:bg-zinc-700;
+    @apply cursor-not-allowed opacity-30 bg-stone-300 dark:bg-stone-700;
   }
 
   &:focus {
@@ -98,15 +98,15 @@ hr {
     }
 
     pre:before {
-      @apply bg-zinc-800;
+      @apply bg-stone-800;
     }
 
     code {
-      @apply text-current bg-zinc-100 dark:bg-zinc-800 rounded py-0 px-1;
+      @apply text-current bg-stone-100 dark:bg-stone-800 rounded py-0 px-1;
     }
 
     pre code {
-      @apply bg-zinc-800;
+      @apply bg-stone-800;
 
       padding: 1em;
       color: var(--md-theme-code-block-color);
@@ -144,9 +144,6 @@ hr {
 }
 
 .md-editor-catalog {
-  .md-editor-catalog-link > span {
-    @apply text-sm;
-  }
 
   .md-editor-catalog-link > span:hover,
   .md-editor-catalog-active > span {
@@ -186,15 +183,11 @@ hr {
   }
 
   .page {
-    @apply container mx-auto max-w-7xl px-3 py-16 sm:px-6;
-  }
-
-  .border-all {
-    @apply shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:ring-zinc-100/10;
+    @apply container mx-auto max-w-7xl px-3 pb-16 pt-24 sm:px-6;
   }
 
   .card {
-    @apply border-all bg-white/90 backdrop-blur-md dark:bg-black/90;
+    @apply bg-primary-50 dark:bg-stone-800;
   }
 
   .animation-rotate {

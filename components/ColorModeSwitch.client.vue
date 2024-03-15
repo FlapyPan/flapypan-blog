@@ -28,13 +28,9 @@ const colorModeIcon = computed(() => colorModeIconMap[colorMode.preference] ?? '
 </script>
 
 <template>
-  <button
-    title="切换配色"
-    class="flex items-center rounded-xl p-2 text-sm transition-colors sm:hover:text-primary-500"
-    @click="toggle()"
-  >
-    <Icon class="size-4" :name="colorModeIcon" />
-  </button>
+  <Btn secondary single title="切换配色" @click="toggle()">
+    <Icon :name="colorModeIcon" />
+  </Btn>
   <Teleport to="body">
     <Transition
       enter-active-class="transition duration-200 ease-out"
@@ -46,7 +42,7 @@ const colorModeIcon = computed(() => colorModeIconMap[colorMode.preference] ?? '
     >
       <div
         v-if="showTip"
-        class="card pointer-events-none fixed left-1/2 top-1/2 flex size-24 -translate-x-1/2 -translate-y-1/2 transform-gpu flex-col items-center justify-center rounded-xl print:hidden"
+        class="card pointer-events-none fixed left-1/2 top-1/2 flex size-24 -translate-x-1/2 -translate-y-1/2 transform-gpu flex-col items-center justify-center rounded-3xl shadow-lg print:hidden"
       >
         <Icon class="size-6" :name="colorModeIcon" />
         <span class="text-sm">{{ colorMode.preference }}</span>

@@ -18,7 +18,7 @@ const theme = computed(() => `noborder_${colorMode.value}`)
 </script>
 
 <template>
-  <div id="giscus" class="pt-20 print:hidden" v-bind="$attrs">
+  <div id="giscus" class="print:hidden" v-bind="$attrs">
     <template v-if="valid">
       <giscus-widget
         id="comments"
@@ -34,11 +34,6 @@ const theme = computed(() => `noborder_${colorMode.value}`)
         mapping="pathname"
         reactionsenabled="1"
       />
-    </template>
-    <template v-else>
-      <p class="cursor-not-allowed text-center text-xs text-zinc-500">
-        未启用评论区
-      </p>
     </template>
   </div>
 </template>
