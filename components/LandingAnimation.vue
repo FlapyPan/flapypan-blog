@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSettingStore } from '~/store'
+import loadingImg from '~/assets/img/loading.gif'
 
 const settingStore = useSettingStore()
 
@@ -21,7 +22,7 @@ onMounted(() => {
       class="pointer-events-none fixed inset-0 z-[99999999] flex select-none items-center justify-center bg-white dark:bg-black"
     >
       <div class="flex flex-col items-center gap-2">
-        <div class="size-4 animate-bounce rounded-full bg-primary-500" />
+        <img alt="" :src="loadingImg" class="size-24">
         <h1 class="text-xl">
           {{ settingStore.setting.siteTitle }}
         </h1>
