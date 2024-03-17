@@ -27,6 +27,6 @@ const placeholderProp = computed<string>(() => props.placeholder ?? props.label 
       class="flex-1"
       :class="innerClass"
       :placeholder="placeholderProp"
-    />
+    ></textarea>
   </div>
 </template>

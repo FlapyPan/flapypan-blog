@@ -16,7 +16,7 @@ withDefaults(defineProps<{ list?: ArticleWithoutContent[] }>(), { list: () => []
       <Btn :to="`/${path}`" icon="mingcute:document-line" text :title="summary ?? title">
         {{ title }}
       </Btn>
-      <div class="flex-1" />
+      <div class="flex-1"></div>
       <div class="hidden items-center gap-2 sm:flex">
         <Btn
           v-for="name in tags"

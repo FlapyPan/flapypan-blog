@@ -93,7 +93,7 @@ function close() {
       <Transition v-bind="computedTransition">
         <div v-if="visible" role="menu" :style="computedStyle" class="fixed z-[100]">
           <div class="themed-scrollbar relative max-h-full max-w-full overflow-y-auto overflow-x-hidden overscroll-contain">
-            <slot />
+            <slot></slot>
           </div>
         </div>
       </Transition>

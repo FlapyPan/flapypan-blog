@@ -14,7 +14,7 @@ const style = computed(() => ({
   <div
     :style="style"
     class="safe-top-0 safe-right-0 safe-left-0 pointer-events-none fixed z-[99999] h-0.5 w-auto origin-left bg-gradient-to-r from-primary-300 to-primary-500 transition-all duration-300"
-  />
+  ></div>
 </template>
 
 <style scoped lang="postcss">

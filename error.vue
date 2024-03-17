@@ -27,13 +27,13 @@ useSeoMeta({
     >
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ error.message }}</span>
-      <span class="flex-1" />
+      <span class="flex-1"></span>
       <Btn style="background: none;border: none;" @click="clearError({ redirect: '/' })">
         返回主页
       </Btn>
     </div>
     <DevOnly>
-      <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10" />
+      <textarea :value="JSON.stringify(error, null, 2)" class="w-full p-4" readonly rows="10"></textarea>
     </DevOnly>
   </main>
 </template>

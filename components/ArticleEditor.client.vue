@@ -123,7 +123,7 @@ async function saveArticle() {
           @keydown.enter.prevent.stop="addTag()"
           @keydown.space.prevent.stop="addTag()"
           @blur="addTag()"
-        >
+        />
       </div>
     </TextFieldContainer>
     <div class="flex justify-center">

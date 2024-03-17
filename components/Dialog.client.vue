@@ -41,7 +41,7 @@ function close() {
           {{ title }}
         </h3>
         <div class="mt-2">
-          <slot />
+          <slot></slot>
         </div>
       </dialog>
     </Transition>

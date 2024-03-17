@@ -15,6 +15,15 @@ export default antfu(
       'style/arrow-parens': ['error', 'always'],
       'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
       'node/prefer-global/buffer': 'off',
+      'vue/html-self-closing': ['error', {
+        html: {
+          void: 'always',
+          normal: 'never',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
+      }],
     },
   },
 )

@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import { useIntervalFn, useParallax } from '@vueuse/core'
-import type { CSSProperties } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
 import type { AccessData, ArticleWithoutContent } from '~/types/api'
 import { useSettingStore } from '~/store'
 
 const settingStore = useSettingStore()
-
-const heroElement = shallowRef<HTMLDivElement>()
-const { tilt, roll, source } = useParallax(heroElement)
-const heroEleStyle = computed<CSSProperties>(() => {
-  const isOrientation = source.value === 'deviceOrientation'
-  const x = isOrientation ? roll.value * -20 : roll.value * 10
-  const y = isOrientation ? tilt.value * -20 : tilt.value * 10
-  return {
-    transform: `rotateX(${x}deg) rotateY(${y}deg)`,
-  } satisfies CSSProperties
-})
 
 /// region 阅读量和其他数据
 const { data: accessData } = await useLazyAsyncData(
@@ -84,15 +72,8 @@ useSeoMeta(meta)
 
 <template>
   <main>
-    <section
-      ref="heroElement"
-      style="perspective: 200px"
-      class="flex h-screen w-full items-center justify-center p-12"
-    >
-      <div
-        :style="heroEleStyle"
-        class="flex flex-col-reverse items-center justify-center gap-16 text-center will-change-transform md:flex-row md:text-left lg:gap-52"
-      >
+    <section class="flex h-screen w-full items-center justify-center p-12">
+      <div class="flex flex-col-reverse items-center justify-center gap-8 text-center md:flex-row md:text-left lg:gap-48">
         <div>
           <h1 class="text-3xl text-stone-700 dark:text-stone-100 sm:text-4xl lg:text-5xl">
             {{ settingStore.setting.siteTitle }}
@@ -126,13 +107,17 @@ useSeoMeta(meta)
               {{ settingStore.setting.info }}
               <span class="animate-ping">_</span>
             </p>
+            <p class="flex justify-center gap-2 pt-4 text-sm text-stone-500 md:justify-start">
+              <span v-if="accessData?.today">今日阅读：{{ accessData.today }}</span>
+              <span v-if="accessData?.all">总阅读：{{ accessData.all }}</span>
+            </p>
           </div>
         </div>
         <img
           :src="settingStore.setting.avatar"
           alt=""
           class="size-32 rounded-full md:size-40 lg:size-52"
-        >
+        />
       </div>
     </section>
     <section class="page">

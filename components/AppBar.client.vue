@@ -119,7 +119,7 @@ const navLinks = [
           </Btn>
         </nav>
 
-        <div class="hidden flex-1 md:block" />
+        <div class="hidden flex-1 md:block"></div>
 
         <Btn primary class="mr-2" icon="mingcute:menu-line" @click="toggleDrawer()">
           <span class="font-medium">{{ settingStore.setting.name }}</span>
@@ -193,7 +193,7 @@ const navLinks = [
           </div>
         </Drawer>
 
-        <div class="block flex-1 md:hidden" />
+        <div class="block flex-1 md:hidden"></div>
 
         <ColorModeSwitch />
       </div>
@@ -201,7 +201,7 @@ const navLinks = [
         id="app-bar"
         class="h-14 overflow-hidden transition-transform duration-200"
         :class="{ '-translate-y-full': subOpened }"
-      />
+      ></div>
     </header>
   </div>
 </template>

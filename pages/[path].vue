@@ -248,24 +248,21 @@ useSeoMeta(meta)
     >
       <Icon class="text-lg" name="mingcute:close-circle-line" />
       <span class="text-sm">{{ articleDataError }}</span>
-      <span class="flex-1" />
+      <span class="flex-1"></span>
       <Btn style="background: none;border: none;" @click="clearError({ redirect: '/' })">
         返回主页
       </Btn>
     </div>
     <template v-if="articleData?._id">
       <div ref="titleElement" class="card mx-auto flex flex-col overflow-hidden rounded-3xl md:flex-row">
-        <img :src="articleData.cover || settingStore.setting.banner" alt="" class="aspect-video rounded-3xl md:w-1/2">
+        <img :src="articleData.cover || settingStore.setting.banner" alt="" class="aspect-video rounded-3xl md:w-1/2" />
         <div class="flex-1 p-8">
           <h1 class="text-2xl">
             {{ articleData?.title }}
           </h1>
           <div class="mt-4 flex flex-wrap items-center gap-2">
             <Btn
-              v-for="name in articleData?.tags || []"
-              :key="name"
-              :to="`/tag/${name}`"
-              icon="mingcute:hashtag-line"
+              v-for="name in articleData?.tags || []" :key="name" :to="`/tag/${name}`" icon="mingcute:hashtag-line"
               text
             >
               {{ name }}
@@ -300,7 +297,7 @@ useSeoMeta(meta)
               <Btn v-if="auth.isLogin" :disabled="summaryLoading" primary @click="summary">
                 {{ summaryLoading ? '生成中...' : '生成摘要' }}
               </Btn>
-              <span v-else />
+              <span v-else></span>
               <span class="text-sm">
                 由
                 <a class="underline" href="https://xinghuo.xfyun.cn/" target="_blank">
@@ -313,10 +310,7 @@ useSeoMeta(meta)
           <ClientOnly>
             <ul v-if="auth.isLogin" class="mt-8 flex items-center gap-2">
               <li @click="closeDrawerAnd(changePin, !articleData?.pinned)">
-                <button
-                  v-if="articleData?.pinned"
-                  class="flex items-center transition hover:text-secondary-500"
-                >
+                <button v-if="articleData?.pinned" class="flex items-center transition hover:text-secondary-500">
                   <Icon class="mr-1 text-secondary-400" name="mingcute:pin-fill" />
                   取消固定
                 </button>
@@ -356,14 +350,8 @@ useSeoMeta(meta)
       </div>
       <div class="mt-6 flex justify-center gap-4 md:mt-16">
         <MdPreview
-          v-if="articleData?._id"
-          :model-value="articleData?.content"
-          :no-img-zoom-in="false"
-          :scroll-element="scrollElement"
-          theme="light"
-          class="flex-1"
-          code-theme="gradient"
-          editor-id="read"
+          v-if="articleData?._id" :model-value="articleData?.content" :no-img-zoom-in="false"
+          :scroll-element="scrollElement" theme="light" class="flex-1" code-theme="gradient" editor-id="read"
           preview-theme="default"
         />
         <div
@@ -372,9 +360,7 @@ useSeoMeta(meta)
         >
           <ClientOnly>
             <MdCatalog
-              :offset-top="180"
-              :scroll-element="scrollElement"
-              :scroll-element-offset-top="60"
+              :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
               editor-id="read"
             />
           </ClientOnly>
@@ -383,10 +369,7 @@ useSeoMeta(meta)
       <Drawer v-model="rightDrawer" class="block md:hidden" location="right-bottom">
         <div class="themed-scrollbar card m-2 max-h-[calc(100vh-4rem)] overflow-y-auto rounded-xl">
           <MdCatalog
-            class="p-2"
-            :offset-top="180"
-            :scroll-element="scrollElement"
-            :scroll-element-offset-top="60"
+            class="p-2" :offset-top="180" :scroll-element="scrollElement" :scroll-element-offset-top="60"
             editor-id="read"
           />
         </div>
@@ -395,31 +378,14 @@ useSeoMeta(meta)
         <div class="fixed bottom-14 right-4 z-10 lg:right-12 print:hidden">
           <div class="flex h-36 flex-col justify-end gap-2">
             <Btn
-              v-if="!atTop"
-              v-auto-animate
-              single
-              icon="mingcute:arrows-up-line"
-              title="回到顶部"
-              primary
+              v-if="!atTop" v-auto-animate single icon="mingcute:arrows-up-line" title="回到顶部" primary
               @click="toTop()"
             />
             <Btn
-              v-if="!atComments"
-              v-auto-animate
-              single
-              title="评论区"
-              primary
-              icon="mingcute:comment-line"
+              v-if="!atComments" v-auto-animate single title="评论区" primary icon="mingcute:comment-line"
               @click="toComments()"
             />
-            <Btn
-              class="lg:hidden"
-              single
-              title="更多"
-              icon="mingcute:more-1-line"
-              primary
-              @click="rightDrawer = true"
-            />
+            <Btn class="lg:hidden" single title="更多" icon="mingcute:more-1-line" primary @click="rightDrawer = true" />
           </div>
         </div>
       </ClientOnly>

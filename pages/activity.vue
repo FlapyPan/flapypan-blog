@@ -49,7 +49,7 @@ useSeoMeta(meta)
           {{ repo.full_name }}
         </p>
         <p class="py-2 text-stone-500">{{ repo.description }}</p>
-        <p class="flex-1" />
+        <p class="flex-1"></p>
         <p class="flex items-center gap-4">
           <span v-if="repo.language" class="flex items-center">
             <span class="flex items-center text-stone-500">
@@ -69,7 +69,7 @@ useSeoMeta(meta)
             <Icon class="mr-1 text-base text-stone-500" name="mingcute:git-merge-line" />
             {{ repo.forks }}
           </span>
-          <span class="flex-1" />
+          <span class="flex-1"></span>
           <Icon class="text-base text-stone-500" name="mdi:github" />
         </p>
       </a>
@@ -81,7 +81,7 @@ useSeoMeta(meta)
       加载中...
     </p>
     <figure v-if="settingStore.setting.wakatime" class="mt-8 max-w-3xl">
-      <embed :src="settingStore.setting.wakatime">
+      <embed :src="settingStore.setting.wakatime" />
     </figure>
   </main>
 </template>

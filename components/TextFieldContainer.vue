@@ -20,10 +20,10 @@ const classNames = computed(() => [
       <h3 class="w-full text-lg">
         {{ title }}
       </h3>
-      <hr class="mt-2 pb-4">
+      <hr class="mt-2 pb-4" />
     </template>
     <div class="grid w-full gap-6" :class="classNames">
-      <slot />
+      <slot></slot>
     </div>
   </div>
 </template>

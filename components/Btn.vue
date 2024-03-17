@@ -55,6 +55,6 @@ const classNames = computed<string>(() => {
       :class="{ 'mr-1': !single }"
       :name="icon"
     />
-    <slot />
+    <slot></slot>
   </Component>
 </template>
