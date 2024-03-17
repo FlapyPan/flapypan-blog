@@ -41,7 +41,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.8.2",
+    "@antfu/eslint-config": "^2.8.3",
     "@nuxt/devtools": "latest",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/ws": "^8.5.10",
