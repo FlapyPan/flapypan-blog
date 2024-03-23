@@ -10,14 +10,6 @@ export default defineNuxtConfig({
   ssr: true,
   routeRules: {
     '/tag': { redirect: '/archive' },
-    '/': { cache: { maxAge: 60 } },
-    '/activity': { cache: { maxAge: 60 } },
-    '/archive': { cache: { maxAge: 60 } },
-    '/tag/**': { cache: { maxAge: 60 } },
-    '/new': { cache: false },
-    '/setting': { cache: false },
-    '/api/**': { cache: false },
-    '/**': { cache: { maxAge: 60 } },
   },
   modules: [
     '@nuxtjs/color-mode',

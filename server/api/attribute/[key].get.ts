@@ -1,7 +1,7 @@
 import z from 'zod'
 import { getAttr } from '~/server/data/attribute'
 
-export default cachedEventHandler(async (event) => {
+export default eventHandler(async (event) => {
   const accept = getHeader(event, 'Accept')?.split(',')[0]
   if (accept) {
     setHeader(event, 'Content-Type', accept)

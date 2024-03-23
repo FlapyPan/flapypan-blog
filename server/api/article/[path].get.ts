@@ -2,7 +2,7 @@ import z from 'zod'
 import { getArticleByPath } from '~/server/data/article'
 import { addAccess, getArticleAccessCount } from '~/server/data/access'
 
-export default cachedEventHandler(async (event) => {
+export default eventHandler(async (event) => {
   const { path } = readParams(event, { path: z.string() })
   const article = ensure(await getArticleByPath(path), '不存在的文章', 404)
   void addAccess({

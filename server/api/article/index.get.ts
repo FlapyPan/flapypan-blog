@@ -1,5 +1,5 @@
 import { getArticleList } from '~/server/data/article'
 
-export default cachedEventHandler(async () => {
+export default eventHandler(async () => {
   return getArticleList()
 })
