@@ -1,62 +1,59 @@
 # FlapyPan Blog
 
-一款简单高效的个人博客系统
+[![Netlify Status](https://api.netlify.com/api/v1/badges/873d3af7-747a-4c77-b2f5-cd2ef2a454e9/deploy-status)](https://app.netlify.com/sites/flapypan/deploys)
 
-## 技术栈
+一款简单高效的在线个人博客系统
 
-- Vue 3.x
-- Nuxt.js 3
-- TailwindCSS
-- MongoDB
-- md-editor-v3
-
-## 启动方法
-
-**前置要求**
+## 部署运行
 
 - `node.js` (version >= 18)
 - `pnpm` (version >= 6)
+- `MongoDB` (version >= 6)
 
-> pnpm 可以使用 npm 来安装 `npm install -g pnpm`
+### Serverless 部署
 
-克隆本仓库源码，并安装依赖
+请注意配置必要的环境变量，可参考：[.env.example](.env.example)
+
+Serverless 部署推荐使用 [MongoDB Atlas](https://www.mongodb.com/atlas) 免费数据库
+
+#### Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FFlapyPan%2Fflapypan-blog&env=MONGODB_URI,ADMIN_USERNAME,ADMIN_PASSWORD,AUTH_SECRET)
+
+#### Netlify
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https%3A%2F%2Fgithub.com%2FFlapyPan%2Fflapypan-blog#MONGODB_URI=&ADMIN_USERNAME=&ADMIN_PASSWORD=&AUTH_SECRET=)
+
+#### AWS Amplify
+
+<https://aws.amazon.com/cn/amplify/>
+
+### 自主部署
+
+`.env` 配置文件参考：[.env.example](.env.example)
+
+#### Node.js
 
 ```shell
-git clone <仓库地址> # 替换成对应的仓库地址
-cd flapypan-blog # 进入对应目录
-pnpm i # 安装依赖
+git clone https://github.com/FlapyPan/flapypan-blog
+cd flapypan-blog
+pnpm insall
+# 开发模式
+pnpm run dev
+# 生产模式
+pnpm run build && pnpm run preview
 ```
 
-### 环境配置
+#### Deno.js
 
-查看 `.env.example` 示例
+适配中...
 
-### 开发模式启动
+#### Bun.js
 
-```shell
-pnpm dev # 运行开发服务器
-```
-
-### 编译运行
-
-编译完成后可以在`.output`目录下可以找到编译产物
-
-```shell
-pnpm build # 编译
-# 运行
-pnpm run start
-# 或
-node .output/server/index.mjs
-```
+适配中...
 
 ## 评论系统配置(可选)
 
 参考 Giscus [官方教程](https://giscus.app/zh-CN)
 
 获取到对应的 `repo` `repoid` `category` `categoryid` 后，登录博客后台填入相应的位置保存即可
-
-## 配置 AI 摘要生成(可选)
-
-前往[讯飞开放平台](https://console.xfyun.cn/services/bm35)获取 API 配置(仅支持 V3.5 模型)
-
-参考`.env.example`配置环境变量
